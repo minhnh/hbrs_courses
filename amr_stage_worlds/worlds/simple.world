@@ -13,7 +13,7 @@ paused 1
 
 resolution 0.02
 
-speedup -1.0
+speedup 1.0
 
 # configure the GUI window
 window
