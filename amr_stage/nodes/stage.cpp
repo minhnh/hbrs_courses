@@ -88,7 +88,6 @@ public:
   /** Infinite application loop. */
   void run()
   {
-    ros::WallRate r(10.0);
     world_->Start();
 
     while(ros::ok())
@@ -102,7 +101,7 @@ public:
             ros::spinOnce();        
         } else
         {
-            Fl::wait(r.expectedCycleTime().toSec());
+            Fl::wait(wall_rate_.expectedCycleTime().toSec());
             wall_rate_.sleep();
             //world_->UpdateAll();
             ros::spinOnce();
