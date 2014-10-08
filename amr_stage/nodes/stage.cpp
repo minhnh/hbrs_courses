@@ -41,7 +41,7 @@ public:
     ros::NodeHandle pn("~");
     std::string world_file;
     int window_width, window_height;
-    bool headless;
+    
     pn.param<std::string>("world_file", world_file, "/opt/stage/share/stage/worlds/simple.world");
     pn.param<int>("window_width", window_width, 400);
     pn.param<int>("window_height", window_height, 300);
@@ -88,12 +88,26 @@ public:
   /** Infinite application loop. */
   void run()
   {
+    ros::WallRate r(10.0);
     world_->Start();
-    while(ros::ok() && !world_->UpdateAll())
+
+    while(ros::ok())
     {
-      ros::spinOnce();
-      Fl::wait();
-      wall_rate_.sleep();
+        if (headless)
+        {
+            while(!world_->UpdateAll())
+            {
+                wall_rate_.sleep();
+            }
+            ros::spinOnce();        
+        } else
+        {
+            Fl::wait(r.expectedCycleTime().toSec());
+            wall_rate_.sleep();
+            //world_->UpdateAll();
+            ros::spinOnce();
+            
+        }
     }
     world_->QuitAll();
     world_->Stop();
@@ -270,6 +284,8 @@ private:
   // World size (according to the world description file)
   double world_width_;
   double world_height_;
+
+  bool headless;
 
 };
 
