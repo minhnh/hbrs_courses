@@ -56,15 +56,15 @@ add_definitions(-Wno-deprecated)
 
 #...: stage
 find_path(STAGE_INCLUDE_DIR stage.hh
-  /opt/ros/hydro/include/Stage-4.1/
+  /opt/ros/indigo/include/Stage-4.1/
 )
 find_library(STAGE_LIBRARY stage
-  /opt/ros/hydro/lib64
-  /opt/ros/hydro/lib
+  /opt/ros/indigo/lib64
+  /opt/ros/indigo/lib
 )
 
 if(NOT STAGE_INCLUDE_DIR OR NOT STAGE_LIBRARY)
-  message(SEND_ERROR "Could not find Stage-4.1 installation under /opt/ros/hydro.")
+  message(SEND_ERROR "Could not find Stage-4.1 installation under /opt/ros/indigo.")
 endif(NOT STAGE_INCLUDE_DIR OR NOT STAGE_LIBRARY)
 
 include_directories(
@@ -97,6 +97,8 @@ target_link_libraries(stage
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
   ${orocos_kdl_LIBRARIES}
+  -lm
+  -ldl
 )
 
 catkin_package(

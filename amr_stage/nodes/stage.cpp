@@ -41,7 +41,6 @@ public:
     ros::NodeHandle pn("~");
     std::string world_file;
     int window_width, window_height;
-    
     pn.param<std::string>("world_file", world_file, "/opt/stage/share/stage/worlds/simple.world");
     pn.param<int>("window_width", window_width, 400);
     pn.param<int>("window_height", window_height, 300);
@@ -218,7 +217,7 @@ private:
   void createTransformsPublisher()
   {
     KDL::Tree tree("base_footprint");
-    tree.addSegment(KDL::Segment("base_link", KDL::Joint("base_joint", KDL::Joint::None), KDL::Frame(KDL::Vector(0,0,0.5))), "base_footprint");
+    tree.addSegment(KDL::Segment("base_link", KDL::Joint("base_joint"), KDL::Frame(KDL::Vector(0,0,0.5))), "base_footprint");
     for (const auto& ranger : rangers_)
     {
       KDL::Tree subtree("base_link");
@@ -268,6 +267,7 @@ private:
   ros::Time simulation_time_;
   ros::WallRate wall_rate_;
   std::unique_ptr<robot_state_publisher::RobotStatePublisher> fixed_transforms_publisher_;
+  bool headless;
 
   ros::Subscriber cmdvel_subscriber_;
   dynamic_reconfigure::Server<amr_stage::StageConfig> reconfigure_server_;
@@ -283,8 +283,6 @@ private:
   // World size (according to the world description file)
   double world_width_;
   double world_height_;
-
-  bool headless;
 
 };
 
