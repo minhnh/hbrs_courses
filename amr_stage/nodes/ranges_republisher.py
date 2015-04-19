@@ -28,5 +28,5 @@ if __name__ == '__main__':
     except KeyError:
         filter_ids = False
     ranges_sub = rospy.Subscriber('ranges_in', Ranges, rangesCallback)
-    ranges_pub = rospy.Publisher('ranges_out', Range)
+    ranges_pub = rospy.Publisher('ranges_out', Range, queue_size = 100)
     rospy.spin()
