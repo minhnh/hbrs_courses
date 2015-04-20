@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Stage node with "empty" world -->
+  <include file="$(find amr_stage)/launch/stage.launch">
+    <arg name="world" value="empty"/>
+  </include>
+
+  <!-- Motion controller node with "diff" velocity controller -->
+  <node pkg="amr_navigation" type="motion_controller" name="motion_controller" required="true" output="screen">
+    <param name="controller" value="diff" type="str"/>
+  </node>
+
+</launch>
