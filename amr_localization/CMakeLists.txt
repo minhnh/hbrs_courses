@@ -67,6 +67,23 @@ target_link_libraries(pose_likelihood_server
   ${catkin_LIBRARIES}
 )
 
+#...: particle_filter
+add_executable(particle_filter
+  nodes/particle_filter.cpp
+  src/particle_filter.cpp
+  src/particle_visualizer.cpp
+)
+
+add_dependencies(particle_filter 
+  ${catkin_EXPORTED_TARGETS}
+)
+
+target_link_libraries(particle_filter 
+  ${Boost_LIBRARIES}
+  ${catkin_LIBRARIES}
+)
+
+
 catkin_package(
     DEPENDS
     CATKIN_DEPENDS roscpp tf visualization_msgs amr_msgs amr_srvs amr_stage amr_mapping
