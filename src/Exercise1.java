@@ -31,6 +31,11 @@ public class Exercise1 {
 		double[] intermediatePositions = new double[NUMBER_OF_TIME_STEPS];
 
 		// your code here
+		for (int i = 0; i < NUMBER_OF_TIME_STEPS; i++) {
+			intermediatePositions[i] = startPosition +
+											velocity*i*(timeToTravel/
+														NUMBER_OF_TIME_STEPS);
+		}
 
 		return intermediatePositions;
 	}
@@ -44,6 +49,16 @@ public class Exercise1 {
 	 */
 	public void printFibonacciSequence(int maximumNumber) {
 		// your code here
+		int i = 1;
+		int tmp = i;
+		int prev_i = 0;
+		while (i < maximumNumber) {
+			System.out.print(i + " ");
+			tmp = i;
+			i = prev_i + i;
+			prev_i = tmp;
+		}
+		System.out.println();
 	}
 
 	public static void main(String[] args) {
