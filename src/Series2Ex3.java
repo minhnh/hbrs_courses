@@ -14,7 +14,7 @@ public class Series2Ex3 {
 		Gear gear = new Gear();
 		int loopCount = 0;
 		int v = 0;
-		int v_prev = 0;
+		int vPrev = 0;
 
 		robot.addPart(ls);
 		ls.activate(true);
@@ -24,9 +24,9 @@ public class Series2Ex3 {
 		gear.forward();
 
 		while (true) {
-			v_prev = v;
+			vPrev = v;
 			v = ls.getValue();
-			if (v == v_prev) {
+			if (Math.abs(v - vPrev) < 10) {
 				continue;
 			}
 			if (loopCount > 3) {

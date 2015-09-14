@@ -14,7 +14,7 @@ public class Series2Ex2 {
 		LightSensor ls = new LightSensor(SensorPort.S3);
 		Gear gear = new Gear();
 		int stripeCount = 0;
-		int v_prev = 0;
+		int vPrev = 0;
 		int v = 0;
 
 		robot.addPart(ls);
@@ -25,11 +25,11 @@ public class Series2Ex2 {
 		gear.forward();
 
 		while (true) {
-			v_prev = v;
+			vPrev = v;
 			v = ls.getValue();
-			if (v == v_prev) {
+			if (v == vPrev) {
 				continue;
-			} else if (v < v_prev) {
+			} else if (v < vPrev) {
 				stripeCount += 1;
 				robot.playTone(2000, 1000);
 				NxtContext.setStatusText("value: " + stripeCount);
