@@ -16,6 +16,7 @@ public class Exercise1 {
 	private LegoRobot robot;
 	private Gear gear;
 	private TouchSensor ts;
+	private boolean pointRight = false;
 
 	Exercise1() {
 
@@ -24,7 +25,7 @@ public class Exercise1 {
 		ts = new TouchSensor(SensorPort.S3);
 		robot.addPart(ts);
 		robot.addPart(gear);
-		gear.setSpeed(60);
+		gear.setSpeed(30);
 		gear.forward();
 
 		while (true) {
@@ -38,47 +39,24 @@ public class Exercise1 {
 
 			gear.backward(1000);
 
-			NxtContext.setStatusText("direction: " + gear.getDirection());
-			if (gear.getDirection() < 10.0) { /* Pointing right */
+			if (pointRight) {
 
-				/* Turn right until pointing down */
-				while (gear.getDirection() < 90) {
-					gear.right(40);
-					NxtContext.setStatusText("direction: "
-							+ gear.getDirection());
-				}
-
+				gear.right(1250);
 				gear.forward(1000);
-
-				/* Turn right until pointing right */
-				while (gear.getDirection() < 180) {
-					gear.right(40);
-					NxtContext.setStatusText("direction: "
-							+ gear.getDirection());
-				}
-
-				/* Continue forward */
+				gear.right(1250);
 				gear.forward();
-			} else if (gear.getDirection() > 170.0) { /* Pointing left */
 
-				/* Turn left until pointing down */
-				while (gear.getDirection() > 90) {
-					gear.left(40);
-					NxtContext.setStatusText("direction: "
-							+ gear.getDirection());
-				}
+				pointRight = false;
 
+			} else { /* Pointing left */
+
+				gear.left(1250);
 				gear.forward(1000);
-
-				/* Turn left until pointing right */
-				while (gear.getDirection() > 0) {
-					gear.left(40);
-					NxtContext.setStatusText("direction: "
-							+ gear.getDirection());
-				}
-
-				/* Continue forward */
+				gear.left(1250);
 				gear.forward();
+
+				pointRight = true;
+
 			}
 		}
 	}
