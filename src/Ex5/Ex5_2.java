@@ -5,10 +5,11 @@ import ch.aplu.robotsim.*;
 public class Ex5_2
 {
 	Gear gear;
-	boolean returnTrip = false;
+	boolean returnTrip = false;		//Indicate the direction of travel
 	
 	Ex5_2()
 	{
+		/*Instancing robot and part objects*/
 		NxtRobot robot = new NxtRobot();
 		gear = new Gear();
 		LightSensor sensor1 = new LightSensor(SensorPort.S1);
@@ -16,22 +17,26 @@ public class Ex5_2
 		TouchSensor tSensor = new TouchSensor(SensorPort.S1);
 		int triggerLevel = 500;
 		
+		/*Add parts to robot*/
 		robot.addPart(gear);
 		robot.addPart(sensor1);
 		robot.addPart(sensor2);
 		robot.addPart(tSensor);
 		
-		gear.forward();
+		gear.forward();		//Start the robot
 		
 		while(true)
 		{
+			/*If the touch sensor is pressed, the robot turns 180 and then goes forward*/
 			if (tSensor.isPressed())
 			{
 				gear.right(1500);
 				gear.forward();
-				returnTrip = !returnTrip;
+				returnTrip = !returnTrip;		//Set the current traveling direction
 			}
 			
+			/*If both light sensors are dark, turn the robot until both sensors are light
+			 *Turing direction is determined by the direction of travel*/
 			if (sensor1.getValue() < triggerLevel && sensor2.getValue() < triggerLevel)
 			{
 				if(returnTrip)
@@ -42,21 +47,21 @@ public class Ex5_2
 				{
 					gear.right();
 				}
-				
 			}
+			/*If both light sensors are bright, the robot goes forward*/
 			else if (sensor1.getValue() > triggerLevel && sensor2.getValue() > triggerLevel)
 			{
 				gear.forward();
 			}
+			/*If right light sensors is dark, turn the robot to the left*/
 			else if (sensor1.getValue() < triggerLevel)
 			{
 				gear.left();
-				NxtContext.setStatusText("Left");
 			}
+			/*If left light sensors is dark, turn the robot to the right*/
 			else if (sensor2.getValue() < triggerLevel)
 			{
 				gear.right();
-				NxtContext.setStatusText("right");
 			}
 			NxtContext.setStatusText(String.valueOf(tSensor.isPressed()));
 		}
@@ -67,6 +72,7 @@ public class Ex5_2
 		new Ex5_2();
 	}
 	
+	/*Simulation environment*/
 	static
 	{
 		NxtContext.useBackground("sprites/track.png");
