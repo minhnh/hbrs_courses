@@ -12,21 +12,20 @@ public class Ex4_2 implements TouchListener
 	
 	Ex4_2()
 	{
+		/*Instancing robot, part, and listener objects*/
 		NxtRobot robot = new NxtRobot();
 		TouchSensor tSensor = new TouchSensor(SensorPort.S2);
 		tSensor.addTouchListener(this);
 		
+		/*Add parts to robot*/
 		robot.addPart(gear);
 		robot.addPart(uSensor);
 		robot.addPart(tSensor);
 		
+		/*Start the robot: Search -> Steer -> Move to*/
 
-		gear.right();
 		int min = search();
-		
 		steerToMin(min);
-		
-		gear.forward();
 		goToMin(uSensor);
 
 	}
@@ -36,38 +35,41 @@ public class Ex4_2 implements TouchListener
 		new Ex4_2();
 	}
 	
+	/*If the touch sensor is pressed, run over the obstacle*/
 	public void pressed(SensorPort arg0) 
 	{
 		gear.forward();
 	}
 
+	/*If the touch sensor is released, restart sequence: Search -> Steer -> Move to*/
 	public void released(SensorPort arg0) 
 	{
-		gear.right();
-		int min = search();
-		
+		int min = search();	
 		steerToMin(min);
-		
-		gear.forward();
 		goToMin(uSensor);
 	}
 	
+	/*Robot rotates 360 to search for the closest object*/
 	public int search()
 	{
 		int distance = 0;
 		int min = 500;
-		boolean searchHalf = false;
+		boolean searchHalf = false;		//Indicated that the robot has searched half of the area
+		
+		gear.right();
 		
 		while(true)
 		{	
 			distance = uSensor.getDistance();
 			
+			/*Get the minimum distance*/
 			if(distance < min && distance != -1 && distance > 50)
 			{
 				min = distance;
 			}
 			NxtContext.setStatusText(String.valueOf(distance) + ": " + String.valueOf(min));
 			
+			/*Break the search loop when a full 360 search is done*/
 			if(gear.getDirection() == 180.0)
 			{
 				searchHalf = true;
@@ -81,10 +83,13 @@ public class Ex4_2 implements TouchListener
 	}	
 	
 
-
+	/*Robot turns to the direction of the closet object*/
 	public void steerToMin(int min)
 	{
 		int distance = 0;
+		gear.right();
+		
+		/*The robot turns until the minimum distance is found again*/
 		while(true)
 		{	
 			distance = uSensor.getDistance();
@@ -97,6 +102,7 @@ public class Ex4_2 implements TouchListener
 		}
 	}
 
+	/*Robot goes to the closest object. It stops when the distance is smaller than 5*/
 	public void goToMin(UltrasonicSensor uSensor)
 	{
 		int distance = 0;
@@ -113,6 +119,7 @@ public class Ex4_2 implements TouchListener
 		}
 	}
 	
+	/*Simulation environment*/
 	static
 	{
 		Point[] mesh =
@@ -125,6 +132,7 @@ public class Ex4_2 implements TouchListener
 		NxtContext.setStartPosition(25, 25);
 		NxtContext.setStartDirection(0);
 		
+		/*Create 3 obstacles with random positions*/
 		Random rd = new Random();
 		int x = 0;
 		int y = 0;
