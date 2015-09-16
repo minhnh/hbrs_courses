@@ -17,8 +17,7 @@ public class Exercise2 {
 	private NxtRobot robot;
 	private Gear gear;
 	private TouchSensor ts;
-	private double currentDirection = 270.0;
-	private boolean turnedRight = false;
+	private int pathStep = 0;
 
 	Exercise2() {
 
@@ -36,24 +35,32 @@ public class Exercise2 {
 	}
 
 	private void coursHandler() {
-		currentDirection = gear.getDirection();
-		NxtContext.setStatusText("direction: " + currentDirection);
 		if (ts.isPressed()) {
 
 			gear.backward(1000);
 
-			/* Turn right if have not done so */
-			if (!turnedRight) {
-				gear.right(1250);
+			/* Traverse maze based on prior maze knowledge */
+			switch (pathStep) {
+			case 0:
+			case 3:
+			case 6:
+				gear.left(1250);
 				gear.forward();
-				turnedRight = true;
-				return;
+				break;
+			case 1:
+			case 2:
+			case 4:
+			case 5:
+			case 7:
+				gear.right(1270);
+				gear.forward();
+				break;
+			default:
+				gear.stop();
 			}
-			/* Turn to opposite direction if have turned right */
-			gear.left(2500);
-			gear.forward();
-			turnedRight = false;
-			return;
+
+			pathStep++;
+
 		}
 	}
 
