@@ -1,16 +1,16 @@
-package Ex4;
+package series4;
 
 import java.awt.Point;
 import java.util.Random;
 
 import ch.aplu.robotsim.*;
 
-public class Ex4_2 implements TouchListener
+public class Exercise2 implements TouchListener
 {
 	Gear gear = new Gear();
 	UltrasonicSensor uSensor = new UltrasonicSensor(SensorPort.S1);
 	
-	Ex4_2()
+	Exercise2()
 	{
 		/*Instancing robot, part, and listener objects*/
 		NxtRobot robot = new NxtRobot();
@@ -32,7 +32,7 @@ public class Ex4_2 implements TouchListener
 	
 	public static void main(String[] args) 
 	{
-		new Ex4_2();
+		new Exercise2();
 	}
 	
 	/*If the touch sensor is pressed, run over the obstacle*/
