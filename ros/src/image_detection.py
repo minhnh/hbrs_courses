@@ -11,6 +11,7 @@ class ProcessImage():
 		self.contour = None
 		self.x = None
 		self.y = None
+		
 	
 	def showImage(self,windowName, imageToDisplay):
 		cv2.imshow(windowName,imageToDisplay)
@@ -48,6 +49,15 @@ class ProcessImage():
 		cy = int(M['m01']/M['m00'])
 		self.x = cx
 		self.y = cy
-
+	
+	def position(self):
+		height, width, channels = self.image.shape
+		rel_orign_x = width / 2
+		rel_origin_y = height / 2
+		if(self.x > rel_origin_x):
+			location = 'right'
+		else :
+			location = 'left'
+		return location
 
 
