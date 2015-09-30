@@ -11,7 +11,7 @@ class ProcessImage():
 		self.contour = None
 		self.x = None
 		self.y = None
-	
+
 	def showImage(self,windowName, imageToDisplay):
 		cv2.imshow(windowName,imageToDisplay)
 
@@ -23,9 +23,9 @@ class ProcessImage():
 		lower_bound = np.array([0,100,100])
 		upper_bound = np.array([10,255,255])
 
-		mask = cv2.inRange(hsv,lower_bound,upper_bound)
+		mask = cv2.inRange(hsv, lower_bound, upper_bound)
 		#cv2.imshow('mask',mask)
-		res = cv2.bitwise_and(self.image,self.image,mask=mask)
+		res = cv2.bitwise_and(self.image, self.image, mask=mask)
 
 		return res
 
