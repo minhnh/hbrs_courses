@@ -101,8 +101,9 @@ def process_image(image_ros):
     ''' Expect image of type sensor_msgs/Image '''
 
     # Convert to Mat image
+    bridge = CvBridge()
     try:
-        image = CvBridge.imgmsg_to_cv2(image_ros, "bgr8")
+        image = bridge.imgmsg_to_cv2(image_ros, "bgr8")
     except CvBridgeError, e:
         print e
         return None

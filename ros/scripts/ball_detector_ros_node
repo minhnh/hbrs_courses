@@ -8,7 +8,6 @@ __author__ = 'Minh Nguyen'
 
 import sys
 import ball_detector_ros.ball_detector as bd
-import ball_detector_ros.ball_image as bi
 
 if __name__ == '__main__':
-    bd.test_process_image(sys.argv[1])
+    bd.webcam_test()
