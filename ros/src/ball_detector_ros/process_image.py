@@ -35,6 +35,19 @@ class ProcessImage():
         self.x = cx
         self.y = cy
 
+    def ballPosition(self):
+	'''returns the location of ball in the image'''
+	#TODO : logic to find forward or backward position of ball
+	height, width, channels = self.image.shape
+	relative_OriginX = width / 2
+	relative_OriginY = height / 2
+	location = None
+	if(self.x > relative_OriginX):
+		location = 'right'
+	elif(self.x < relative_OriginX)
+		location = 'left'
+	return location
+	
 def detect_ball(filtered_image):
     ''' Return whether a ball is captured '''
     return true
@@ -69,4 +82,5 @@ def process_image(image):
     res = cv2.bitwise_and(image, image, mask=mask)
 
     return res
+
 
