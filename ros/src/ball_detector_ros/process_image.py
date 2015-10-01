@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 import rospy
+from cv_bridge import CvBridge, CvBridgeError
 
 class ProcessImage():
     def __init__(self,image):
@@ -96,8 +97,16 @@ class ProcessImage():
             location = 'left'
         return location
 
-def process_image(image):
-    ''' Expect image of type Mat '''
+def process_image(image_ros):
+    ''' Expect image of type sensor_msgs/Image '''
+
+    # Convert to Mat image
+    try:
+        image = CvBridge.imgmsg_to_cv2(image_ros, "bgr8")
+    except CvBridgeError, e:
+        print e
+        return None
+
 
     # Create a ProcessImage instance
     pi_instance = ProcessImage(image)
