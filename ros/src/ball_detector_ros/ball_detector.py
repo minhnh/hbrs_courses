@@ -11,11 +11,7 @@ def test_process_image(filename):
         print "Invalid input file"
         return 1
 
-    res = bdr_pi.process_image(image)
-
-    cv2.imshow('image', res)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    position = bdr_pi.process_image(image)
 
     return 0
 
