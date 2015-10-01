@@ -5,7 +5,7 @@ import rospy
 from std_msgs.msg import String
 from sensor_msgs.msg import Image
 import cv2
-import ball_detector_ros.ball_detector as bd
+import ball_detector_ros.process_image as bdr_pi
 import sys
 
 '''
@@ -14,8 +14,8 @@ Publisher class: Handle the publishing of output
 class publisher():
     def __init__(self):
         self.pub = rospy.Publisher('~position', String, queue_size=100, latch=False)
-    def publish_output(self,msg):
-        self.pub.publish_position(msg)
+    def publish_position(self,msg):
+        self.pub.publish(msg)
 
 class subcriber():
     state = "INIT"
@@ -55,14 +55,13 @@ class run():
         r = rospy.Rate(10)
         while not rospy.is_shutdown():
 	    if sub.state == "PROC" and sub.input_img.data:			#If in processing state and an image is received
-		position_output = String()
-		position_output.data = bd.test_process_image(sys.argv[1])	#Run the image processor. The output must be String
-                #pub.publish_position(position_output)				#Publish the String output
+		position_output = bdr_pi.process_image(sub.input_img)		#Run the image processor.
+                pub.publish_position(position_output)				#Publish the String output
 	    elif sub.state == "INIT":						#If in initiate state
 		rospy.loginfo("Waiting for e_start") 	
     	    r.sleep()
 
-'''	
+'''
 if __name__ == '__main__':    
     run()
 '''
