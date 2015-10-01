@@ -12,20 +12,61 @@ class ProcessImage():
         self.x = None
         self.y = None
 
-    def showImage(self,windowName, imageToDisplay):
-        cv2.imshow(windowName,imageToDisplay)
+    def show_image(self, windowName):
+        cv2.imshow(windowName, self.image)
 
-    def drawContours(self,MaskImage):
-        gray = cv2.cvtColor(MaskImage,cv2.COLOR_BGR2GRAY)
-        ret, thres = cv2.threshold(gray,10,255,0)
-        contours,hierarchy = cv2.findContours(thres,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+    def perform_morphology(self, mask_image):
+        '''
+        Morphology operations
+        - Opening to clear noise
+        - Closing to clear holes inside shape
+        Return morphology result
+        '''
+        set5 = np.ones((5, 5), np.uint8)
+        set17 = np.ones((21,21), np.uint8)
+        mask_image = cv2.morphologyEx(mask_image, cv2.MORPH_CLOSE, set5)
+        mask_image = cv2.morphologyEx(mask_image, cv2.MORPH_OPEN, set17)
+
+        return mask_image
+
+    def filter_red(self):
+        '''
+        Set the bounds for Red color. Handle wrap around case for H > 350
+        Note: Ranges of HSV in OpenCV are
+        - H: 0-180
+        - S: 0-255
+        - V: 0-255
+        Return filtered image
+        '''
+        hsv = cv2.cvtColor(self.image, cv2.COLOR_BGR2HSV)
+        lower_bound = np.array([0.00*180, 0.13*256, 0.17*256])
+        upper_bound = np.array([0.02*180, 1.00*256, 1.00*256])
+        mask = cv2.inRange(hsv, lower_bound, upper_bound)
+        lower_bound = np.array([0.96*180, 0.13*256, 0.17*256])
+        upper_bound = np.array([1.00*180, 1.00*256, 0.99*256])
+        mask_high = cv2.inRange(hsv, lower_bound, upper_bound)
+        mask = cv2.bitwise_or(mask, mask_high)
+
+        # Run Morphology on mask
+        mask = self.perform_morphology(mask)
+
+        return cv2.bitwise_and(self.image, self.image, mask=mask)
+
+    def draw_contours(self):
+        ''' Draw contours around a red filtered image '''
+        filtered_img = cv2.cvtColor(self.filter_red(),
+                                    cv2.COLOR_BGR2GRAY)
+        contours, hierarchy = cv2.findContours(filtered_img, cv2.RETR_TREE,
+                                    cv2.CHAIN_APPROX_SIMPLE)
 
         #find the largest contour
         areas = [cv2.contourArea(c) for c in contours]
         largestIndex = np.argmax(areas)
-        cnt = contours[largestIndex]
-        self.contours = cnt
-        cv2.drawContours(self.image,[cnt],0,(255,0,0),1)
+        if contours == 0:
+            self.contours = None
+            return
+        self.contours = contours[largestIndex]
+        cv2.drawContours(self.image, [self.contours], 0, (255,0,0), 1)
 
     def centroid(self):
         #find the centroid of ball
@@ -35,52 +76,41 @@ class ProcessImage():
         self.x = cx
         self.y = cy
 
-    def ballPosition(self):
-	'''returns the location of ball in the image'''
-	#TODO : logic to find forward or backward position of ball
-	height, width, channels = self.image.shape
-	relative_OriginX = width / 2
-	relative_OriginY = height / 2
-	location = None
-	if(self.x > relative_OriginX):
-		location = 'right'
-	elif(self.x < relative_OriginX)
-		location = 'left'
-	return location
-	
-def detect_ball(filtered_image):
-    ''' Return whether a ball is captured '''
-    return true
+    def ball_position(self):
+        '''returns the location of ball in the image'''
+
+        self.draw_contours()
+
+        if self.contours == None:
+            return None
+
+        self.centroid()
+
+        height, width, channels = self.image.shape
+        relative_OriginX = width / 2
+        relative_OriginY = height / 2
+        location = None
+        if (self.x > relative_OriginX):
+            location = 'right'
+        elif (self.x < relative_OriginX):
+            location = 'left'
+        return location
 
 def process_image(image):
-    ''' Expect image of type IplImage '''
+    ''' Expect image of type Mat '''
 
-    #convert image to hsv
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    # Create a ProcessImage instance
+    pi_instance = ProcessImage(image)
 
-    # Set the bounds for Red color. Handle wrap around case for H > 350
-    # Note: Ranges of HSV in OpenCV are
-    #       - H: 0-180
-    #       - S: 0-255
-    #       - V: 0-255
-    lower_bound = np.array([0.00*180, 0.23*256, 0.23*256])
-    upper_bound = np.array([0.02*180, 1.00*256, 1.00*256])
-    mask = cv2.inRange(hsv, lower_bound, upper_bound)
-    lower_bound = np.array([0.96*180, 0.23*256, 0.23*256])
-    upper_bound = np.array([1.00*180, 1.00*256, 0.99*256])
-    mask_high = cv2.inRange(hsv, lower_bound, upper_bound)
-    mask = cv2.bitwise_or(mask, mask_high)
+    # Calculate ball position
+    position = pi_instance.ball_position()
 
-    # Morphology operations
-    # Opening to clear noise
-    # Closing to clear holes inside shape
-    set5 = np.ones((5, 5), np.uint8)
-    set17 = np.ones((21,21), np.uint8)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, set5)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, set17)
 
-    res = cv2.bitwise_and(image, image, mask=mask)
+    print position
+    pi_instance.show_image("Image with Contour")
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
-    return res
+    return position
 
 
