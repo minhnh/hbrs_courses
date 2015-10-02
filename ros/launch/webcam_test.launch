@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <launch>
   <node name="usb_cam" pkg="usb_cam" type="usb_cam_node" output="screen" >
     <param name="video_device" value="/dev/video0" />
@@ -10,5 +11,9 @@
   <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
     <remap from="image" to="/usb_cam/image_raw"/>
     <param name="autosize" value="true" />
+  </node>
+  <node name="ball_detector" pkg="fc_youbot_hackathon_python" type="ball_detector_ros_node"
+      respawn="false" output="screen">
+      <remap from="~input_image" to="/usb_cam/image_raw" />
   </node>
 </launch>
