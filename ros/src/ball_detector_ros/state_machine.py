@@ -13,8 +13,13 @@ class publisher():
     def __init__(self):
         self.pub = rospy.Publisher('~position', String, queue_size=100,
                                         latch=False)
+        self.pub2 = rospy.Publisher('~event_out', String, queue_size=100,
+                                        latch=False)
     def publish_position(self,msg):
         self.pub.publish(msg)
+    
+    def publish_event_out(self,msg):
+        self.pub2.publish(msg)
 
 class subcriber():
     state = "INIT"
@@ -54,6 +59,7 @@ def run():
         if sub.state == "PROC" and sub.input_img.data:              #If in processing state and an image is received
             position_output = bdr_pi.process_image(sub.input_img)   #Run the image processor.
             pub.publish_position(position_output)                   #Publish the String output
+            pub.publish_event_out(msg)
         elif sub.state == "INIT":                                   #If in initiate state
             rospy.loginfo("Waiting for e_start")
         r.sleep()
