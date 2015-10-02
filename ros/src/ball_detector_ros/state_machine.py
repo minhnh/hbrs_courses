@@ -37,7 +37,10 @@ class subcriber():
         elif msg.data == 'e_stop':  #Switch to stop state
             rospy.loginfo("Stoping")
             self.state = "INIT"
-        else:
+	elif msg.data == 'e_trigger':
+	    rospy.loginfo("Triggering")
+	    self.state = "TRIG"        
+	else:
             rospy.loginfo("Waiting")
 
     def input_image_cb(self, img):  #Get image message from sensor
@@ -56,13 +59,15 @@ def run():
     #Processing loop
     r = rospy.Rate(10)
     while not rospy.is_shutdown():
-        if sub.state == "PROC" and sub.input_img.data:                  #If in processing state and an image is received
+        if sub.state == "PROC" or sub.state == "TRIG" and sub.input_img.data:                  #If in processing state and an image is received
             position_output = bdr_pi.process_image(sub.input_img)       #Run the image processor.
             pub.publish_position(position_output)                       #Publish the String output
             if position_output == "left" or position_output == "right":
                 pub.publish_event_out("e_found_ball")
             elif position_output == "none":
                 pub.publish_event_out("e_no_ball")
+	    if sub.state == "TRIG":
+		sub.state == "INIT"
         elif sub.state == "INIT":                                       #If in initiate state
             rospy.loginfo("Waiting for e_start")
         r.sleep()
