@@ -59,9 +59,9 @@ def run():
     #Processing loop
     r = rospy.Rate(10)
     while not rospy.is_shutdown():
-        if sub.state == "PROC" or sub.state == "TRIG" and sub.input_img.data:                  #If in processing state and an image is received
-            position_output = bdr_pi.process_image(sub.input_img)       #Run the image processor.
-            pub.publish_position(position_output)                       #Publish the String output
+        if (sub.state == "PROC" or sub.state == "TRIG") and sub.input_img.data:         #If in processing state and an image is received
+            position_output = bdr_pi.process_image(sub.input_img)       		#Run the image processor.
+            pub.publish_position(position_output)                       		#Publish the String output
             if position_output == "left" or position_output == "right":
                 pub.publish_event_out("e_found_ball")
             elif position_output == "none":
