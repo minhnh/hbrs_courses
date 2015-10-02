@@ -28,7 +28,7 @@ class subcriber():
     def event_in_cb(self, msg):
         if msg.data == 'e_start':	#Switch to start state
             rospy.loginfo("Starting")
-	    self.state = "PROC"                       
+	    self.state = "PROC"
         elif msg.data == 'e_stop':	#Switch to stop state
             rospy.loginfo("Stoping")
 	    self.state = "INIT"
@@ -45,9 +45,9 @@ class run():
     def __init__(self):
 	#Initiate node
 	rospy.init_node('ball_detector_node', anonymous=False)
-        rospy.loginfo("ball_detector_node is now running")  
-	
-	#Create publisher, subcriber        
+        rospy.loginfo("ball_detector_node is now running")
+
+	#Create publisher, subcriber
 	pub = publisher()
 	sub = subcriber()
 
@@ -58,13 +58,13 @@ class run():
 		position_output = bdr_pi.process_image(sub.input_img)		#Run the image processor.
                 pub.publish_position(position_output)				#Publish the String output
 	    elif sub.state == "INIT":						#If in initiate state
-		rospy.loginfo("Waiting for e_start") 	
+		rospy.loginfo("Waiting for e_start")
     	    r.sleep()
 
 '''
-if __name__ == '__main__':    
+if __name__ == '__main__':
     run()
 '''
 
-    
+
 

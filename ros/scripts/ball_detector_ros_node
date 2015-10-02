@@ -10,4 +10,4 @@ import sys
 import ball_detector_ros.ball_detector as bd
 
 if __name__ == '__main__':
-    bd.webcam_test()
+    bd.main()

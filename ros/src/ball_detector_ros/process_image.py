@@ -60,12 +60,14 @@ class ProcessImage():
         contours, hierarchy = cv2.findContours(filtered_img, cv2.RETR_TREE,
                                     cv2.CHAIN_APPROX_SIMPLE)
 
-        #find the largest contour
-        areas = [cv2.contourArea(c) for c in contours]
-        largestIndex = np.argmax(areas)
-        if contours == 0:
+        #find the largest contour, save None to self.contours if contours empty
+        try:
+            areas = [cv2.contourArea(c) for c in contours]
+            largestIndex = np.argmax(areas)
+        except ValueError, e:
             self.contours = None
             return
+
         self.contours = contours[largestIndex]
         cv2.drawContours(self.image, [self.contours], 0, (255,0,0), 1)
 
@@ -108,18 +110,17 @@ def process_image(image_ros):
         print e
         return None
 
-
     # Create a ProcessImage instance
     pi_instance = ProcessImage(image)
 
     # Calculate ball position
     position = pi_instance.ball_position()
 
-
-    print position
-    pi_instance.show_image("Image with Contour")
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # Debugging functions
+    # print position
+    # pi_instance.show_image("Image with Contour")
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     return position
 

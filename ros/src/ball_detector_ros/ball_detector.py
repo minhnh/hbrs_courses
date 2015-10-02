@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 
-import rospy
 import sys
 import time
-import cv2
-import ball_detector_ros.process_image as bdr_pi
+import rospy
 import roslib
 from sensor_msgs.msg import Image
+import cv2
 from cv_bridge import CvBridge, CvBridgeError
+import ball_detector_ros.process_image as bdr_pi
+import ball_detector_ros.state_machine as bdr_sm
 
-def webcam_test():
-
+def test_webcam():
 
     bridge = CvBridge()
     frames_ignored = 60
@@ -29,10 +29,8 @@ def webcam_test():
         except rospy.ROSInterruptException:
             return None
 
-
     # Ramp the camera - these frames will be discarded and are only used to allow v4l2
     # to adjust light levels, if necessary
-
     for i in range(frames_ignored):
         temp = get_image()
 
@@ -53,7 +51,6 @@ def webcam_test():
     # capture object until your script exits
     camera.release()
 
-
 def test_process_image(filename):
     image = cv2.imread(filename, cv2.CV_LOAD_IMAGE_COLOR)
     if (image == None):
@@ -64,3 +61,5 @@ def test_process_image(filename):
 
     return 0
 
+def main():
+    bdr_sm.run()
