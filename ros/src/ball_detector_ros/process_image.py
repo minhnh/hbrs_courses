@@ -7,7 +7,6 @@ from cv_bridge import CvBridge, CvBridgeError
 
 class ProcessImage():
     def __init__(self,image):
-        rospy.loginfo("ProcessImage initialized")
         self.image = image #reference image initialization
         self.contour = None
         self.x = None

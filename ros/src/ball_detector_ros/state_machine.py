@@ -25,8 +25,8 @@ class subcriber():
     state = "INIT"
     input_img = Image()
     def __init__(self):
-        # ~input_image, /usb_cam/image_raw
         self.event_in = rospy.Subscriber('~event_in', String, self.event_in_cb)
+        # ~input_image, /usb_cam/image_raw
         self.input_image = rospy.Subscriber('~input_image', Image,
                                                 self.input_image_cb)
 
@@ -43,6 +43,9 @@ class subcriber():
             self.state = "TRIG"
         else:
             rospy.loginfo("Waiting")
+
+    def set_state(self, state):
+        self.state = state
 
     def input_image_cb(self, img):  #Get image message from sensor
         self.input_img = img
@@ -64,10 +67,10 @@ def run():
             position_output = bdr_pi.process_image(sub.input_img)               #Run the image processor.
             pub.publish_position(position_output)                               #Publish the String output
             if sub.state == "TRIG":
-                sub.state == "INIT"
+                sub.set_state("INIT")
             if position_output == "left" or position_output == "right":
                 pub.publish_event_out("e_found_ball")
-            elif position_output == "none":
+            elif position_output == None:
                 pub.publish_event_out("e_no_ball")
         elif sub.state == "INIT":                                       #If in initiate state
             rospy.loginfo("Waiting for e_start")
