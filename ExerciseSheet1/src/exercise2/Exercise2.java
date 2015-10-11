@@ -1,5 +1,5 @@
 /*
- * Exercise1.java
+ * Exercise2.java
  * 
  * @author:	Minh Nguyen
  * @date:	12.10.2015
