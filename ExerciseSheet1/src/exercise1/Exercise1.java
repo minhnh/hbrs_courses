@@ -25,18 +25,23 @@ public class Exercise1 {
 		float mean = 0.0f;
 		float variance = 0.0f;
 
-		System.out.print("Input an integer number from 1 to 100: ");
-		while (!scanner.hasNextInt()) {
-			System.out.print("Integer between 1 and 100, please: ");
-			scanner.nextLine();
-		}
-		n = scanner.nextInt();
-		scanner.nextLine();
+		while (true) {
+			System.out.print("Input an integer number from 1 to 100: ");
+			if (!scanner.hasNextInt()) {
+				System.out.print("Integer between 1 and 100, please: ");
+				scanner.nextLine();
+				continue;
+			}
 
-		if (n < 1 || n > 100) {
-			scanner.close();
-			System.err.println("Number out of acceptable range");
-			System.exit(-1);
+			n = scanner.nextInt();
+			scanner.nextLine();
+
+			if (n < 1 || n > 100) {
+				System.out.println("Number out of acceptable range");
+				continue;
+			}
+
+			break;
 		}
 
 		System.out.print("Now input " + n + " integers: ");
