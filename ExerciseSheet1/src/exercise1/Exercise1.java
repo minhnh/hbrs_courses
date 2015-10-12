@@ -33,6 +33,12 @@ public class Exercise1 {
 		n = scanner.nextInt();
 		scanner.nextLine();
 
+		if (n < 1 || n > 100) {
+			scanner.close();
+			System.err.println("Number out of acceptable range");
+			System.exit(-1);
+		}
+
 		System.out.print("Now input " + n + " integers: ");
 		for (int i = 0; i < n; i++) {
 			if (!scanner.hasNextInt()) {

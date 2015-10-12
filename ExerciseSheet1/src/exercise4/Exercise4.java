@@ -7,13 +7,23 @@
 
 package exercise4;
 
+import java.util.Scanner;
+
 public class Exercise4 {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print("Input the diameter of type double: ");
+		while (!scanner.hasNextInt()) {
+			System.out.print("Integer between 1 and 100, please: ");
+			scanner.nextLine();
+		}
+		int n = scanner.nextInt();
+		scanner.nextLine();
 
 	}
 
