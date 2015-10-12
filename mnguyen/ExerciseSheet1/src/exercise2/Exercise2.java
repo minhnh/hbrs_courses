@@ -93,9 +93,13 @@ public class Exercise2 {
 	public static void main(String[] args) {
 		Exercise2 ex2 = new Exercise2();
 
+		long time1 = System.nanoTime();
 		long count = ex2.segmentedSieve(Integer.MAX_VALUE, 32768, false);
+		long time2 = System.nanoTime();
 
 		System.out.println("Found " + count + " primes.");
+		System.out.format("Time elapsed in seconds: %.4f\n",
+				((double) time2 - time1) / 1.0e9);
 
 	}
 
