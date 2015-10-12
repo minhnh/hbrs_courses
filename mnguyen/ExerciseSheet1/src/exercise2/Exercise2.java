@@ -16,7 +16,7 @@ public class Exercise2 {
 	 * Prime generation method based on the implementation of the segmented
 	 * sieve of Eratosthenes from http://primesieve.org
 	 */
-	public long segmentedSieve(long limit, int segmentSize) {
+	public long segmentedSieve(long limit, int segmentSize, boolean print) {
 
 		int limitSqrt = (int) Math.sqrt((double) limit);
 		boolean smallPrimes[] = new boolean[limitSqrt + 1];
@@ -34,7 +34,7 @@ public class Exercise2 {
 		ArrayList<Long> primes = new ArrayList<Long>();
 		ArrayList<Integer> nextCompositeIndex = new ArrayList<Integer>();
 		int smallPrime = 2;
-		int prime = 3;
+		long prime = 3;
 		boolean sieve[] = new boolean[segmentSize];
 
 		for (long low = 0; low <= limit; low += segmentSize) {
@@ -48,10 +48,11 @@ public class Exercise2 {
 			 * Add the small primes and the corresponding composites in the next
 			 * segment.
 			 */
-			for (; smallPrime * smallPrime <= high; smallPrime++) {
+			for (; (long) smallPrime * smallPrime <= high; smallPrime++) {
 				if (smallPrimes[smallPrime]) {
 					primes.add((long) smallPrime);
-					nextCompositeIndex.add(smallPrime * smallPrime - (int) low);
+					nextCompositeIndex.add((int) ((long) smallPrime
+							* smallPrime - low));
 				}
 			}
 
@@ -60,23 +61,27 @@ public class Exercise2 {
 				int j = nextCompositeIndex.get(i);
 				for (long k = primes.get(i) * 2; j < segmentSize; j += k) {
 					sieve[j] = false;
-					nextCompositeIndex.set(i, j - segmentSize);
 				}
+				nextCompositeIndex.set(i, j - segmentSize);
 			}
 
 			for (; prime <= high; prime += 2) {
 				if (sieve[(int) (prime - low)]) { // a prime is found
 					count++;
-					System.out.print(prime + " ");
-					if ((count % 10) == 0) {
-						System.out.println();
+					if (print) {
+						System.out.print(prime + " ");
+						if ((count % 10) == 0) {
+							System.out.println();
+						}
 					}
 				}
 			}
 
 		}
 
-		System.out.println();
+		if (print) {
+			System.out.println();
+		}
 
 		return count;
 
@@ -88,7 +93,7 @@ public class Exercise2 {
 	public static void main(String[] args) {
 		Exercise2 ex2 = new Exercise2();
 
-		long count = ex2.segmentedSieve(Integer.MAX_VALUE, 32768);
+		long count = ex2.segmentedSieve(Integer.MAX_VALUE, 32768, false);
 
 		System.out.println("Found " + count + " primes.");
 
