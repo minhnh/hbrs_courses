@@ -32,7 +32,7 @@ public class Exercise2 {
 		}
 
 		ArrayList<Long> primes = new ArrayList<Long>();
-		ArrayList<Integer> nextCompositeIndex = new ArrayList<Integer>();
+		ArrayList<Integer> nextSegmentCompositeIndex = new ArrayList<Integer>();
 		int smallPrime = 2;
 		long prime = 3;
 		boolean sieve[] = new boolean[segmentSize];
@@ -51,18 +51,18 @@ public class Exercise2 {
 			for (; (long) smallPrime * smallPrime <= high; smallPrime++) {
 				if (smallPrimes[smallPrime]) {
 					primes.add((long) smallPrime);
-					nextCompositeIndex.add((int) ((long) smallPrime
+					nextSegmentCompositeIndex.add((int) ((long) smallPrime
 							* smallPrime - low));
 				}
 			}
 
 			/* Sieve the current segment */
-			for (int i = 1; i < primes.size(); i++) {
-				int j = nextCompositeIndex.get(i);
+			for (int i = 1; i < nextSegmentCompositeIndex.size(); i++) {
+				int j = nextSegmentCompositeIndex.get(i);
 				for (long k = primes.get(i) * 2; j < segmentSize; j += k) {
 					sieve[j] = false;
 				}
-				nextCompositeIndex.set(i, j - segmentSize);
+				nextSegmentCompositeIndex.set(i, j - segmentSize);
 			}
 
 			for (; prime <= high; prime += 2) {
