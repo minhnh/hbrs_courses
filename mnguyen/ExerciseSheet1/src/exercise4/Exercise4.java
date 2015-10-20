@@ -68,16 +68,34 @@ public class Exercise4 {
 
 		scanner.close();
 
-		double result = 0.0f;
+		System.out.format(
+				"Precision%17sDiameter%3sIncrease %%%21sArea%3sIncrease %%\n",
+				"", "", "", "");
+
+		double circumference = 0.0d;
+		double circumferencePercent = 0.0d;
+		double area = 0.0d;
+		double areaPercent = 0.0d;
+		double temp = 0.0d;
 		for (int i = 0; i < maxPrecision + 1; i++) {
-			result = diameter * ex4.roundPi(i);
-			System.out.format("Circumference (precision = %3d): %10.20f\n", i,
-					result);
+
+			double pi = ex4.roundPi(i);
+
+			temp = diameter * pi;
+			if (circumference > 0.001) {
+				circumferencePercent = (temp - circumference) / circumference
+						* 100;
+			}
+			circumference = temp;
+
+			temp = (diameter / 2) * (diameter / 2) * pi;
+			if (area > 0.001) {
+				areaPercent = (temp - area) / area * 100;
+			}
+			area = temp;
+
+			System.out.format("%9d%25.20f%13.3e%25.20f%13.3e\n", i,
+					circumference, circumferencePercent, area, areaPercent);
 		}
-
-		System.out.format("Circumference (no rounding): %10.20f", diameter
-				* Math.PI);
-
 	}
-
 }

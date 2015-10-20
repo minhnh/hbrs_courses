@@ -35,8 +35,9 @@ public class Exercise3 {
 	}
 
 	/* f(n) = e^n */
-	public double function6(int n) {
-		return Math.pow(Math.E, n);
+	public double function6(int n, double precision) {
+		/* e = (1 + 1/precision) ^ precision */
+		return Math.pow((1 + 1 / precision), (int) n * precision);
 	}
 
 	/**
@@ -60,8 +61,8 @@ public class Exercise3 {
 			function3Data = ex3.function3(i);
 			function4Data = ex3.function4(i);
 			function5Data = ex3.function5(i);
-			function6Data = ex3.function6(i);
-			System.out.format("%13d%13d%13d%13.3f%13.3f%13.3e%13.3e\n", i,
+			function6Data = ex3.function6(i, 1.11010201e8);
+			System.out.format("%13d%13d%13d%13.3f%13.3f%13.3e%25.15e\n", i,
 					function1Data, function2Data, function3Data, function4Data,
 					function5Data, function6Data);
 		}
