@@ -1,6 +1,14 @@
 #ifndef ENVIRONMENT_HPP
 #define ENVIRONMENT_HPP
 
+enum CellType
+{
+    CELL_DIRT = 0,
+    CELL_SPACE,
+    CELL_START,
+    CELL_OBSTACLE
+};
+
 class Environment
 {
     public:
