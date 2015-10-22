@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+"""
+This script is a simple python node which imports
+source code of ros_python_example1.
+"""
+#-*- encoding: utf-8 -*-
+__author__ = 'Minh Nguyen'
+
+import sys
+import ball_detector_ros.ball_detector as bd
+
+if __name__ == '__main__':
+    bd.main()
