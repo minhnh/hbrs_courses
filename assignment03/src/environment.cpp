@@ -14,16 +14,40 @@ Environment::Environment()
 
 void Environment::run()
 {
-    load_map(1);
-    print_map();
-    cout << get_value_at(162,5) << endl;
-    
+	int index = 0;
+	cout << "Please enter map index: ";
+	cin >> index;
+	if ( load_map(index) != -1)
+	{
+		print_map();
+		cout << get_value_at(67,10) << endl;
+	}
+	else
+	{
+		cout << "Invalid map index"<< endl;
+	}
 }
 
 int Environment::load_map(int map_index)
 {
 	ifstream mapFile;
-	mapFile.open("bin/maps/map1.txt");
+	if (map_index == 1)
+	{
+		mapFile.open("bin/maps/map1.txt");
+	}
+	else if (map_index == 2)
+	{
+		mapFile.open("bin/maps/map2.txt");
+	}
+	else if (map_index == 3)
+	{
+		mapFile.open("bin/maps/map3.txt");
+	}
+	else
+	{
+		return -1;
+	}
+	
 	char c;
 	int width = 0;
 	int height = 0;
@@ -59,6 +83,7 @@ int Environment::load_map(int map_index)
 	else
 	{
 		cout << "Cannot open"<<endl;
+		return -1;
 	}
 
 	// close the opened file.
