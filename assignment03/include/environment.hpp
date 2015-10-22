@@ -17,7 +17,11 @@ class Environment
         void run();
         int load_map(int map_index);
         void initialize_map();
+        char get_value_at(int x, int y);
         void print_map();
+        std::string map;
+        int mapHeight;
+        int mapWidth;
 
     private:
         
