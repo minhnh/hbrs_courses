@@ -8,8 +8,10 @@ using namespace std;
 Environment::Environment()
 {
 	map.clear();
-	mapHeight = 0;
-	mapWidth = 0;
+	map_Height = 0;
+	map_Width = 0;
+	start_X = 0;
+	start_Y = 0;
 }
 
 void Environment::run()
@@ -20,7 +22,8 @@ void Environment::run()
 	if ( load_map(index) != -1)
 	{
 		print_map();
-		cout << get_value_at(67,10) << endl;
+		cout << get_value_at(start_X,start_Y) << endl;
+		cout << "X:" << start_X << "   " << "Y:" << start_Y << endl;
 	}
 	else
 	{
@@ -73,12 +76,18 @@ int Environment::load_map(int map_index)
 				}
 			}
 			
+			if (c == 's')
+			{
+				start_X = map.length() - (height * (width + 1));
+				start_Y = height;
+			}
+			
 			map = map + c;
 			c = mapFile.get();
 		}
-		mapHeight = height;
-		mapWidth = width;
-		cout << "H:" << mapHeight << " W:" << mapWidth <<endl;
+		map_Height = height;
+		map_Width = width;
+		cout << "H:" << map_Height << " W:" << map_Width <<endl;
 	}
 	else
 	{
@@ -95,9 +104,9 @@ int Environment::load_map(int map_index)
 char Environment::get_value_at(int x, int y)
 {
 	//mapWidth + 1: map width does not count the \n at the end of each line
-	if (x < mapWidth && y < mapHeight)
+	if (x < map_Width && y < map_Height)
 	{
-		return map[x + y * (mapWidth + 1)];
+		return map[x + y * (map_Width + 1)];
 	}
 	return -1;
 }
