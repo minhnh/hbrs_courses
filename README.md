@@ -20,7 +20,7 @@ __Outputs Topics__:
 * `∼/position`: Horizontal position of the ball expressed as a string ”left” or ”right” depending on if the centre of the ball is on the left or right of the image
 
 ## 2. Image Processing
-Following steps are observed:
+Following steps are observed (based on [this tutorial](http://wiki.elphel.com/index.php?title=OpenCV_Tennis_balls_recognizing_tutorial "OpenCV Tennis balls recognizing tutorial") from Elphel Project Wiki):
 
 * Convert from ROS's `sensor_msgs/Image` to OpenCV's 'Mat' object
 * Convert image's color from BGR to HSV type
