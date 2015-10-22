@@ -17,7 +17,17 @@ Agent::~Agent()
 void Agent::run()
 {
     print_map();
-    bfs();
+    int index = 0;
+	cout << "Please enter search method index: ";
+	cin >> index;
+	if ( index == 1)
+	{
+		bfs();
+	}
+	else
+	{
+		cout << "Invalid search index"<< endl;
+	}
     
 }
 
@@ -28,9 +38,15 @@ void Agent::print_map()
 
 int Agent::bfs()
 {
+	cout << "\033[2J"; //Clear screen before display
+	cout << "\033[1;1H]"; //move Cursor to row 1 column 1
+	cout << "Breath first search";
+	
 	int number_of_dust = 0;
 	int current_node = 0;
 	int check_node = 0;
+	int stored_node = 1;
+	int checked_node = 1;
 	queue <int> searchTree;
 	searchTree.push(get_index_at(start_X,start_Y));
 	while(searchTree.size() > 0)
@@ -45,13 +61,16 @@ int Agent::bfs()
 		{
 			searchTree.push(check_node);
 			map[check_node] = '-';
+			stored_node = stored_node + 1;
 		}
 		else if ( map[check_node] == '*')
 		{
 			searchTree.push(check_node);
 			number_of_dust = number_of_dust + 1;
 			map[check_node] = '-';
+			stored_node = stored_node + 1;
 		}
+		checked_node = checked_node + 1;
 		
 		
 		//Check left point
@@ -60,13 +79,16 @@ int Agent::bfs()
 		{
 			searchTree.push(check_node);
 			map[check_node] = '-';
+			stored_node = stored_node + 1;
 		}
 		else if ( map[check_node] == '*')
 		{
 			searchTree.push(check_node);
 			number_of_dust = number_of_dust + 1;
 			map[check_node] = '-';
+			stored_node = stored_node + 1;
 		}
+		checked_node = checked_node + 1;
 		
 		//Check above point
 		check_node = current_node + map_Width + 1;
@@ -74,13 +96,16 @@ int Agent::bfs()
 		{
 			searchTree.push(check_node);
 			map[check_node] = '-';
+			stored_node = stored_node + 1;
 		}
 		else if ( map[check_node] == '*')
 		{
 			searchTree.push(check_node);
 			number_of_dust = number_of_dust + 1;
 			map[check_node] = '-';
+			stored_node = stored_node + 1;
 		}
+		checked_node = checked_node + 1;
 		
 		//Check below point
 		check_node = current_node - map_Width - 1;
@@ -88,17 +113,23 @@ int Agent::bfs()
 		{
 			searchTree.push(check_node);
 			map[check_node] = '-';
+			stored_node = stored_node + 1;
 		}
 		else if ( map[check_node] == '*')
 		{
 			searchTree.push(check_node);
 			number_of_dust = number_of_dust + 1;
 			map[check_node] = '-';
+			stored_node = stored_node + 1;
 		}
-		cout << searchTree.size()<<endl;
+		checked_node = checked_node + 1;
+		cout << "\033[2;1H]"; //move Cursor to row 2 column 1
+		cout << "Node in queue:" << searchTree.size()<<endl;
 		cout << map << endl;
 	}
-	cout << number_of_dust << endl;
+	cout << "Number of dust :" << number_of_dust << endl;
+	cout << "Stored node    :" << stored_node << endl;
+	cout << "Checked node   :" << checked_node << endl;
 }
 
 int Agent::dfs()

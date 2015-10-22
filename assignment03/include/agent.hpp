@@ -13,6 +13,11 @@ class Agent
         int dfs();
         
         void get_map_data(int,int,int,int);
+
+        
+    private:
+        
+        void print_map();
         std::string map;
         char get_value_at(int x, int y);
         int get_index_at(int x, int y);
@@ -20,11 +25,6 @@ class Agent
         int map_Width;
         int start_X;
         int start_Y;
-        
-    private:
-        
-        void print_map();
-        
 };
 
 
