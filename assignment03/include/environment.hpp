@@ -4,9 +4,9 @@
 enum CellType
 {
     CELL_DIRT = 0,
-    CELL_SPACE,
-    CELL_START,
-    CELL_OBSTACLE
+    CELL_SPACE = 1,
+    CELL_START = 2,
+    CELL_OBSTACLE = 3
 };
 
 class Environment
@@ -27,6 +27,17 @@ class Environment
 
     private:
         
+};
+
+class Point
+{
+	public:
+		Point(int X,int Y);
+		void set_x(int);
+		void set_y(int);
+		void set_xy(int,int);
+		int x;
+		int y;
 };
 
 #endif

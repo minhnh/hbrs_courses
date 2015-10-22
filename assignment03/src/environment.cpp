@@ -21,9 +21,9 @@ void Environment::run()
 	cin >> index;
 	if ( load_map(index) != -1)
 	{
-		print_map();
-		cout << get_value_at(start_X,start_Y) << endl;
-		cout << "X:" << start_X << "   " << "Y:" << start_Y << endl;
+		Agent robot(map);
+		robot.get_map_data(map_Height, map_Width, start_X, start_Y);
+		robot.run();
 	}
 	else
 	{
@@ -113,11 +113,27 @@ char Environment::get_value_at(int x, int y)
 
 void Environment::initialize_map()
 {
-   
+	
 }
 
 
 void Environment::print_map()
 {
     cout << map << endl;
+}
+
+void Point::set_x(int X)
+{
+	x = X;
+}
+
+void Point::set_y(int Y)
+{
+	y = Y;
+}
+
+void Point::set_xy(int X, int Y)
+{
+	x = X;
+	y = Y;
 }
