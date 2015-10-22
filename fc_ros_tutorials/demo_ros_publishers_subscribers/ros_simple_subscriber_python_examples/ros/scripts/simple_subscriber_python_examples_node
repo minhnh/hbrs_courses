@@ -18,5 +18,5 @@ if __name__ == '__main__':
     '''
     rospy.init_node('simple_subscriber_python_examples_node', anonymous=False)
     rospy.loginfo("simple_subscriber_python_examples_node is now running")
-    eventin_sub = rospy.Subscriber("~event_in", String, eventin_cb)
+    eventin_sub = rospy.Subscriber("/simple_publisher_python_examples_node/event_out", String, eventin_cb)
     rospy.spin()

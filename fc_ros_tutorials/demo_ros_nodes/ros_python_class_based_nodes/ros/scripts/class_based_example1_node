@@ -17,7 +17,7 @@ class DemoClass():
 
 def initlize_node():
     '''
-    Initilize node and spin which simply keeps python 
+    Initilize node and spin which simply keeps python
     from exiting until this node is stopped
     '''
     rospy.init_node('class_based_example1_node', anonymous=False)

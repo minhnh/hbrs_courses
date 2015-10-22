@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-This script demostrates the way of filling 
+This script demostrates the way of filling
 ros std_msgs by giving few examples.
 """
 #-*- encoding: utf-8 -*-
@@ -10,7 +10,7 @@ from demo_class import *
 
 def initlize_node():
     '''
-    Initilize node and spin which simply keeps python 
+    Initilize node and spin which simply keeps python
     from exiting until this node is stopped
     '''
     rospy.init_node('std_messages_examples_node', anonymous=False)

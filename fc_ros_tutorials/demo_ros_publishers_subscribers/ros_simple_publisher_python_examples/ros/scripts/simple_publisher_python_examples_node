@@ -23,5 +23,5 @@ if __name__ == '__main__':
 
     loop_rate = rospy.Rate(10)
     while not rospy.is_shutdown():
-    	eventout_pub.publish(eventout_msg)
-    	loop_rate.sleep()
+        eventout_pub.publish(eventout_msg)
+        loop_rate.sleep()

@@ -1,13 +1,15 @@
 #!/usr/bin/env python
 '''
-This script demostrates the way of filling 
+This script demostrates the way of filling
 ros common_msgs by giving few examples.
 '''
 import rospy
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import PointStamped
 from geometry_msgs.msg import Pose2D
+from geometry_msgs.msg import Pose
 from geometry_msgs.msg import PoseWithCovariance
+from geometry_msgs.msg import Quaternion
 from geometry_msgs.msg import TwistWithCovariance
 from geometry_msgs.msg import PoseStamped
 from geometry_msgs.msg import Twist
@@ -18,6 +20,7 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import LaserScan
 from sensor_msgs.msg import Range
 from trajectory_msgs.msg import JointTrajectoryPoint
+from std_msgs.msg import Header
 
 class DemoClass():
     def __init__(self):
@@ -73,12 +76,42 @@ class DemoClass():
         Please, do it your self for practice
         '''
         pose_2d_msg = Pose2D()
+        pose_2d_msg.x = 1.0
+        pose_2d_msg.y = 2.0
+        pose_2d_msg.theta = 0.0
+        rospy.loginfo("Pose2D values: x = %f, y = %f, theta = %f"
+            % (pose_2d_msg.x, pose_2d_msg.y, pose_2d_msg.theta))
 
         '''
         Fill pose stamped message
         Please, do it your self for practice
         '''
         pose_stamped_msg = PoseStamped()
+
+        header_sub_msg = Header()
+        header_sub_msg.seq = 0
+        header_sub_msg.stamp = rospy.get_rostime()
+        header_sub_msg.frame_id = "world_frame"
+
+        point_sub_msg = Point()
+        point_sub_msg.x = 2.0
+        point_sub_msg.y = 2.0
+        point_sub_msg.z = 2.0
+
+        quart_sub_msg = Quaternion()
+        quart_sub_msg.x = 3.0
+        quart_sub_msg.y = 4.0
+        quart_sub_msg.z = 5.0
+        quart_sub_msg.w = 6.0
+
+        pose_sub_msg = Pose()
+        pose_sub_msg.position = point_sub_msg
+        pose_sub_msg.orientation = quart_sub_msg
+
+        pose_stamped_msg.pose = pose_sub_msg
+        pose_stamped_msg.header = header_sub_msg
+
+        rospy.loginfo("Quaternion w: %f" % pose_stamped_msg.pose.orientation.w)
 
         '''
         Fill transform message
@@ -111,14 +144,14 @@ class DemoClass():
         '''
         laser_scan_msg = LaserScan()
 
-        #Step 1: 
+        #Step 1:
         num_readings = 100
         laser_frequency = 40
         ranges = []
         intensities = []
         count = 0
         i = 0
-        
+
         #generate some fake data for laser scan
         while (i < num_readings):
             ranges.append(count)
