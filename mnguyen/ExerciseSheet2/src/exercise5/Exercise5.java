@@ -24,6 +24,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -50,6 +51,8 @@ public class Exercise5 {
 	private JPanel pictureLeftPanel;
 	private JPanel pictureRightPanel;
 	private JButton buttonLoadColor;
+	private JPanel normPanel;
+	private JLabel lblNormValue;
 
 	/**
 	 * Launch the application.
@@ -112,6 +115,20 @@ public class Exercise5 {
 		}
 	}
 
+	private void setNormValue() {
+		double result = 0.0d;
+		Color colorLeft = pictureLeftPanel.getBackground();
+		Color colorRight = pictureRightPanel.getBackground();
+		int redChange = colorLeft.getRed() - colorRight.getRed();
+		int greenChange = colorLeft.getGreen() - colorRight.getGreen();
+		int blueChange = colorLeft.getBlue() - colorRight.getBlue();
+
+		result = Math.sqrt(redChange * redChange + greenChange * greenChange + blueChange * blueChange);
+
+		String resultString = String.format("%5.5f", result);
+		lblNormValue.setText(resultString);
+	}
+
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -130,34 +147,70 @@ public class Exercise5 {
 
 		picturePanel = new JPanel();
 		picturePanel.setMaximumSize(new Dimension(300, 300));
+
+		normPanel = new JPanel();
+		normPanel.setBorder(
+				new TitledBorder(null, "Norm Difference", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup().addContainerGap()
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(picturePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
-								.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 322, GroupLayout.PREFERRED_SIZE)
-								.addGap(18).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap()));
 		groupLayout
-				.setVerticalGroup(
-						groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-												.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 136,
-														GroupLayout.PREFERRED_SIZE)
-												.addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
-														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(picturePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)
+								.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 322,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(18)
+										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
+												.addComponent(normPanel, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(choosePicturePanel, GroupLayout.DEFAULT_SIZE,
+														GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+								.addPreferredGap(ComponentPlacement.RELATED, 48, Short.MAX_VALUE))).addContainerGap()));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+										.addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE).addComponent(
+												normPanel, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
 				.addPreferredGap(ComponentPlacement.RELATED).addComponent(picturePanel, GroupLayout.PREFERRED_SIZE,
-						GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+						GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addContainerGap(18, Short.MAX_VALUE)));
+		GridBagLayout gbl_normPanel = new GridBagLayout();
+		gbl_normPanel.columnWidths = new int[] { 100, 100, 0 };
+		gbl_normPanel.rowHeights = new int[] { 0, 0 };
+		gbl_normPanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_normPanel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
+		normPanel.setLayout(gbl_normPanel);
+
+		lblNormValue = new JLabel("N/A");
+		GridBagConstraints gbc_lblNormValue = new GridBagConstraints();
+		gbc_lblNormValue.fill = GridBagConstraints.VERTICAL;
+		gbc_lblNormValue.insets = new Insets(0, 0, 0, 5);
+		gbc_lblNormValue.gridx = 0;
+		gbc_lblNormValue.gridy = 0;
+		normPanel.add(lblNormValue, gbc_lblNormValue);
+
+		JButton buttonCompute = new JButton("Compute");
+		GridBagConstraints gbc_btnCompute = new GridBagConstraints();
+		gbc_btnCompute.fill = GridBagConstraints.BOTH;
+		gbc_btnCompute.gridx = 1;
+		gbc_btnCompute.gridy = 0;
+		normPanel.add(buttonCompute, gbc_btnCompute);
 		GridBagLayout gbl_leftPicturePanel = new GridBagLayout();
 		gbl_leftPicturePanel.columnWidths = new int[] { 300, 300, 0 };
 		gbl_leftPicturePanel.rowHeights = new int[] { 300, 0 };
 		gbl_leftPicturePanel.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
 		gbl_leftPicturePanel.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
 		picturePanel.setLayout(gbl_leftPicturePanel);
+		buttonCompute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setNormValue();
+			}
+		});
 
 		pictureLeftPanel = new JPanel();
 		pictureLeftPanel.setBorder(null);
@@ -222,11 +275,11 @@ public class Exercise5 {
 		rdbtnRight.setAction(setPictureRightAction);
 
 		buttonLoadColor = new JButton("Load Color");
-		GridBagConstraints gbc_button = new GridBagConstraints();
-		gbc_button.fill = GridBagConstraints.HORIZONTAL;
-		gbc_button.gridx = 1;
-		gbc_button.gridy = 1;
-		choosePicturePanel.add(buttonLoadColor, gbc_button);
+		GridBagConstraints gbc_btnLoadColor = new GridBagConstraints();
+		gbc_btnLoadColor.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnLoadColor.gridx = 1;
+		gbc_btnLoadColor.gridy = 1;
+		choosePicturePanel.add(buttonLoadColor, gbc_btnLoadColor);
 		GridBagLayout gbl_colorPanel = new GridBagLayout();
 		gbl_colorPanel.columnWidths = new int[] { 50, 200, 50, 0 };
 		gbl_colorPanel.rowHeights = new int[] { 36, 0, 0, 0 };
@@ -393,5 +446,4 @@ public class Exercise5 {
 			rdbtnLeft.setSelected(false);
 		}
 	}
-
 }
