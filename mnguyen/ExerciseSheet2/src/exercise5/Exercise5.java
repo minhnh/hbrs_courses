@@ -48,6 +48,7 @@ public class Exercise5 {
 	private JPanel picturePanel;
 	private JPanel pictureLeftPanel;
 	private JPanel pictureRightPanel;
+	private JButton buttonLoadColor;
 
 	/**
 	 * Launch the application.
@@ -76,7 +77,7 @@ public class Exercise5 {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("AST WS 2015 - Exercise 5 (by Minh Nguyen)");
 		frame.setBounds(100, 100, 625, 500);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -100,16 +101,18 @@ public class Exercise5 {
 								.addGroup(groupLayout.createSequentialGroup()
 										.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 322,
 												GroupLayout.PREFERRED_SIZE)
-										.addGap(33).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
+										.addGap(18).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
 												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		groupLayout
-				.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-										.addComponent(choosePicturePanel, GroupLayout.DEFAULT_SIZE, 136,
-												Short.MAX_VALUE)
-								.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
+				.setVerticalGroup(
+						groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 136,
+														GroupLayout.PREFERRED_SIZE)
+												.addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
+														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 				.addGap(18).addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 						GroupLayout.PREFERRED_SIZE).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		GridBagLayout gbl_leftPicturePanel = new GridBagLayout();
@@ -144,35 +147,27 @@ public class Exercise5 {
 		gbc_pictureRightPanel.gridy = 0;
 		picturePanel.add(pictureRightPanel, gbc_pictureRightPanel);
 		GridBagLayout gbl_choosePicturePanel = new GridBagLayout();
-		gbl_choosePicturePanel.columnWidths = new int[] { 10, 100, 0 };
-		gbl_choosePicturePanel.rowHeights = new int[] { 35, 35, 40, 0 };
+		gbl_choosePicturePanel.columnWidths = new int[] { 100, 100, 0 };
+		gbl_choosePicturePanel.rowHeights = new int[] { 25, 25, 0 };
 		gbl_choosePicturePanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gbl_choosePicturePanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_choosePicturePanel.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		choosePicturePanel.setLayout(gbl_choosePicturePanel);
 
 		rdbtnLeft = new JRadioButton("Left");
 		GridBagConstraints gbc_rdbtnLeft = new GridBagConstraints();
 		gbc_rdbtnLeft.anchor = GridBagConstraints.WEST;
-		gbc_rdbtnLeft.insets = new Insets(0, 0, 5, 0);
-		gbc_rdbtnLeft.gridx = 1;
+		gbc_rdbtnLeft.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnLeft.gridx = 0;
 		gbc_rdbtnLeft.gridy = 0;
 		choosePicturePanel.add(rdbtnLeft, gbc_rdbtnLeft);
 		rdbtnLeft.setAction(setPictureLeftAction);
 
-		rdbtnRight = new JRadioButton("Right");
-		GridBagConstraints gbc_rdbtnRight = new GridBagConstraints();
-		gbc_rdbtnRight.anchor = GridBagConstraints.WEST;
-		gbc_rdbtnRight.insets = new Insets(0, 0, 5, 0);
-		gbc_rdbtnRight.gridx = 1;
-		gbc_rdbtnRight.gridy = 1;
-		choosePicturePanel.add(rdbtnRight, gbc_rdbtnRight);
-		rdbtnRight.setAction(setPictureRightAction);
-
 		btnSetColor = new JButton("Set Color");
 		GridBagConstraints gbc_btnSetColor = new GridBagConstraints();
-		gbc_btnSetColor.anchor = GridBagConstraints.WEST;
+		gbc_btnSetColor.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnSetColor.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSetColor.gridx = 1;
-		gbc_btnSetColor.gridy = 2;
+		gbc_btnSetColor.gridy = 0;
 		choosePicturePanel.add(btnSetColor, gbc_btnSetColor);
 		btnSetColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -185,12 +180,43 @@ public class Exercise5 {
 				}
 			}
 		});
+
+		rdbtnRight = new JRadioButton("Right");
+		GridBagConstraints gbc_rdbtnRight = new GridBagConstraints();
+		gbc_rdbtnRight.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnRight.insets = new Insets(0, 0, 0, 5);
+		gbc_rdbtnRight.gridx = 0;
+		gbc_rdbtnRight.gridy = 1;
+		choosePicturePanel.add(rdbtnRight, gbc_rdbtnRight);
+		rdbtnRight.setAction(setPictureRightAction);
+
+		buttonLoadColor = new JButton("Load Color");
+		GridBagConstraints gbc_button = new GridBagConstraints();
+		gbc_button.fill = GridBagConstraints.HORIZONTAL;
+		gbc_button.gridx = 1;
+		gbc_button.gridy = 1;
+		choosePicturePanel.add(buttonLoadColor, gbc_button);
 		GridBagLayout gbl_colorPanel = new GridBagLayout();
 		gbl_colorPanel.columnWidths = new int[] { 50, 200, 50, 0 };
 		gbl_colorPanel.rowHeights = new int[] { 36, 0, 0, 0 };
 		gbl_colorPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		gbl_colorPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		colorPanel.setLayout(gbl_colorPanel);
+		buttonLoadColor.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (rdbtnLeft.isSelected()) {
+					Color color = pictureLeftPanel.getBackground();
+					redSlider.setValue(color.getRed());
+					greenSlider.setValue(color.getGreen());
+					blueSlider.setValue(color.getBlue());
+				} else if (rdbtnRight.isSelected()) {
+					Color color = pictureRightPanel.getBackground();
+					redSlider.setValue(color.getRed());
+					greenSlider.setValue(color.getGreen());
+					blueSlider.setValue(color.getBlue());
+				}
+			}
+		});
 
 		redLabel = new JLabel("Red");
 		GridBagConstraints gbc_redLabel = new GridBagConstraints();
