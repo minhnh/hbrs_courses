@@ -37,7 +37,8 @@ public class Exercise5 {
 	private JButton btnSetColor;
 	private JRadioButton rdbtnRight;
 	private JRadioButton rdbtnLeft;
-	private final Action setColorAction = new SetColorAction();
+	private final Action setPictureLeftAction = new SetPictureLeftAction();
+	private final Action setPictureRightAction = new SetPictureRightAction();
 	private JLabel greenLabel;
 	private JSlider greenSlider;
 	private JPanel colorPanel;
@@ -74,7 +75,7 @@ public class Exercise5 {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 625, 510);
+		frame.setBounds(100, 100, 625, 500);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -97,17 +98,18 @@ public class Exercise5 {
 								.addGroup(groupLayout.createSequentialGroup()
 										.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 322,
 												GroupLayout.PREFERRED_SIZE)
-										.addGap(33).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE, 133,
-												GroupLayout.PREFERRED_SIZE)))
+										.addGap(33).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(choosePicturePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
-						.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
+		groupLayout
+				.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
+								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+										.addComponent(choosePicturePanel, GroupLayout.DEFAULT_SIZE, 136,
+												Short.MAX_VALUE)
+								.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
 				.addGap(18).addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.PREFERRED_SIZE).addContainerGap(16, Short.MAX_VALUE)));
+						GroupLayout.PREFERRED_SIZE).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		GridBagLayout gbl_leftPicturePanel = new GridBagLayout();
 		gbl_leftPicturePanel.columnWidths = new int[] { 300, 300, 0 };
 		gbl_leftPicturePanel.rowHeights = new int[] { 300, 0 };
@@ -138,7 +140,7 @@ public class Exercise5 {
 		gbc_pictureRightPanel.gridy = 0;
 		picturePanel.add(pictureRightPanel, gbc_pictureRightPanel);
 		GridBagLayout gbl_choosePicturePanel = new GridBagLayout();
-		gbl_choosePicturePanel.columnWidths = new int[] { 10, 120, 0 };
+		gbl_choosePicturePanel.columnWidths = new int[] { 10, 100, 0 };
 		gbl_choosePicturePanel.rowHeights = new int[] { 35, 35, 40, 0 };
 		gbl_choosePicturePanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
 		gbl_choosePicturePanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
@@ -151,7 +153,7 @@ public class Exercise5 {
 		gbc_rdbtnLeft.gridx = 1;
 		gbc_rdbtnLeft.gridy = 0;
 		choosePicturePanel.add(rdbtnLeft, gbc_rdbtnLeft);
-		rdbtnLeft.setAction(setColorAction);
+		rdbtnLeft.setAction(setPictureLeftAction);
 
 		rdbtnRight = new JRadioButton("Right");
 		GridBagConstraints gbc_rdbtnRight = new GridBagConstraints();
@@ -160,6 +162,7 @@ public class Exercise5 {
 		gbc_rdbtnRight.gridx = 1;
 		gbc_rdbtnRight.gridy = 1;
 		choosePicturePanel.add(rdbtnRight, gbc_rdbtnRight);
+		rdbtnRight.setAction(setPictureRightAction);
 
 		btnSetColor = new JButton("Set Color");
 		GridBagConstraints gbc_btnSetColor = new GridBagConstraints();
@@ -254,18 +257,37 @@ public class Exercise5 {
 		frame.getContentPane().setLayout(groupLayout);
 	}
 
-	private class SetColorAction extends AbstractAction {
+	private class SetPictureLeftAction extends AbstractAction {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public SetColorAction() {
+		public SetPictureLeftAction() {
 			putValue(NAME, "Left");
-			putValue(SHORT_DESCRIPTION, "Some short description");
+			putValue(SHORT_DESCRIPTION, "Choose left picture to set color");
 		}
 
 		public void actionPerformed(ActionEvent e) {
+			rdbtnLeft.setSelected(true);
+			rdbtnRight.setSelected(false);
+		}
+	}
+
+	private class SetPictureRightAction extends AbstractAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public SetPictureRightAction() {
+			putValue(NAME, "Right");
+			putValue(SHORT_DESCRIPTION, "Choose right picture to set color");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			rdbtnRight.setSelected(true);
+			rdbtnLeft.setSelected(false);
 		}
 	}
 
