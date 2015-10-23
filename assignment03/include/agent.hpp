@@ -11,13 +11,12 @@ class Agent
         void run();
         int bfs();
         int dfs();
-        int dfs_re(int x, int y);
-       
         void get_map_data(int,int,int,int);
 
         
     private:
         
+        int dfs_re(int x, int y);
         void print_map();
         std::string map;
         char get_value_at(int x, int y);
