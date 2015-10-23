@@ -12,6 +12,7 @@ Environment::Environment()
 	map_Width = 0;
 	start_X = 0;
 	start_Y = 0;
+	number_of_dust = 0;
 }
 
 void Environment::run()
@@ -22,7 +23,7 @@ void Environment::run()
 	if ( load_map(index) != -1)
 	{
 		Agent robot(map);
-		robot.get_map_data(map_Height, map_Width, start_X, start_Y);
+		robot.get_map_data(map_Height, map_Width, start_X, start_Y,number_of_dust);
 		robot.run();
 	}
 	else
@@ -80,6 +81,10 @@ int Environment::load_map(int map_index)
 			{
 				start_X = map.length() - (height * (width + 1));
 				start_Y = height;
+			}
+			else if (c == '*')
+			{
+				number_of_dust++;
 			}
 			
 			map = map + c;

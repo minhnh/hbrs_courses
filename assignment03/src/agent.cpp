@@ -132,6 +132,10 @@ int Agent::bfs()
 		cout << "\033[2;1H]"; //move Cursor to row 2 column 1
 		cout << "Node in queue:" << searchTree.size()<<endl;
 		cout << map << endl;
+		if (number_of_dust >= max_number_of_dust)
+		{
+			break;
+		}
 	}
 	cout << "Number of dust :" << number_of_dust << endl;
 	cout << "Stored node    :" << stored_node << endl;
@@ -146,10 +150,18 @@ int Agent::dfs()
 
 	int number_of_dust = 0;
     int max_depth = 0;
+    dfs_checked_node = 0;
+    dfs_stored_node = 0;
 
-    number_of_dust += dfs_re(start_X, start_Y, &max_depth);
+	while ( number_of_dust < max_number_of_dust)
+	{
+		number_of_dust += dfs_re(start_X, start_Y, &max_depth);
+    }
     cout << "Number of dust: " << number_of_dust << endl;
-    cout << "Max Depth: " << max_depth << endl;
+    cout << "Max Depth     : " << max_depth << endl;
+    cout << "Stored node   : " << dfs_stored_node << endl;
+    cout << "Checked node  : " << dfs_checked_node << endl;
+
 
     return number_of_dust;
 }
@@ -158,7 +170,7 @@ int Agent::dfs_re(int x, int y, int * max_depth) {
     static int call_num = 0;
     int dust_num = 0;
     char value = get_value_at(x, y);
-
+	dfs_checked_node ++;
     call_num++;
     if (call_num > *max_depth) {
         *max_depth = call_num;
@@ -184,18 +196,20 @@ int Agent::dfs_re(int x, int y, int * max_depth) {
         dust_num += dfs_re(x + 1, y, max_depth); // right
         dust_num += dfs_re(x, y + 1, max_depth); // up
         dust_num += dfs_re(x, y - 1, max_depth); // down
+        dfs_stored_node++;
     }
 
     call_num--;
     return dust_num;
 }
 
-void Agent::get_map_data(int mapH, int mapW, int sX, int sY)
+void Agent::get_map_data(int mapH, int mapW, int sX, int sY, int nd)
 {
 	map_Height = mapH;
 	map_Width = mapW;
 	start_X = sX;
 	start_Y = sY;
+	max_number_of_dust = nd;
 }
 
 char Agent::get_value_at(int x, int y)

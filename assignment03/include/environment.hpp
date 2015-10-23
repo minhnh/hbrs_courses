@@ -24,6 +24,7 @@ class Environment
         int map_Width;
         int start_X;
         int start_Y;
+        int number_of_dust;
 
     private:
         

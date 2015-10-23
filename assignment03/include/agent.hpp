@@ -11,7 +11,7 @@ class Agent
         void run();
         int bfs();
         int dfs();
-        void get_map_data(int,int,int,int);
+        void get_map_data(int,int,int,int,int);
 
         
     private:
@@ -26,6 +26,9 @@ class Agent
         int map_Width;
         int start_X;
         int start_Y;
+        int max_number_of_dust;
+        int dfs_checked_node;
+        int dfs_stored_node;
 };
 
 
