@@ -12,7 +12,7 @@ enum CellType
 class Environment
 {
     public:
-        
+
         Environment();
         void run();
         int load_map(int map_index);
@@ -27,18 +27,18 @@ class Environment
         int number_of_dust;
 
     private:
-        
+
 };
 
 class Point
 {
-	public:
-		Point(int X,int Y);
-		void set_x(int);
-		void set_y(int);
-		void set_xy(int,int);
-		int x;
-		int y;
+    public:
+        Point(int X,int Y);
+        void set_x(int);
+        void set_y(int);
+        void set_xy(int,int);
+        int x;
+        int y;
 };
 
 #endif
