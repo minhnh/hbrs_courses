@@ -176,6 +176,13 @@ public class Exercise5 {
 		choosePicturePanel.add(btnSetColor, gbc_btnSetColor);
 		btnSetColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (rdbtnLeft.isSelected()) {
+					pictureLeftPanel.setBackground(
+							new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
+				} else if (rdbtnRight.isSelected()) {
+					pictureRightPanel.setBackground(
+							new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
+				}
 			}
 		});
 		GridBagLayout gbl_colorPanel = new GridBagLayout();
