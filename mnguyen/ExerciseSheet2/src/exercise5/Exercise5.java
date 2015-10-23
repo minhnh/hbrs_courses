@@ -197,6 +197,7 @@ public class Exercise5 {
 		gbc_rdbtnLeft.gridy = 0;
 		choosePicturePanel.add(rdbtnLeft, gbc_rdbtnLeft);
 		rdbtnLeft.setAction(setPictureLeftAction);
+		rdbtnLeft.setSelected(true);
 
 		btnSetColor = new JButton("Set Color");
 		GridBagConstraints gbc_btnSetColor = new GridBagConstraints();
