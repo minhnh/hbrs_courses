@@ -168,12 +168,18 @@ int Agent::dfs()
 
 int Agent::dfs_re(int x, int y, int * max_depth) {
     static int call_num = 0;
+    static int number_of_dust = 0;
     int dust_num = 0;
     char value = get_value_at(x, y);
+
     dfs_checked_node ++;
     call_num++;
     if (call_num > *max_depth) {
         *max_depth = call_num;
+    }
+
+    if (number_of_dust >= max_number_of_dust) {
+        return 0;
     }
 
     if (value == 0 || value == '=' || value == '|' || value == '-') {
@@ -192,6 +198,7 @@ int Agent::dfs_re(int x, int y, int * max_depth) {
     if ( value == 's' || value == '*' || value == ' ' ) {
         set_value_at(x, y, '-');
         dust_num = (value == '*') ? 1 : 0;
+        number_of_dust += (value == '*') ? 1 : 0;
         dust_num += dfs_re(x - 1, y, max_depth); // left
         dust_num += dfs_re(x + 1, y, max_depth); // right
         dust_num += dfs_re(x, y + 1, max_depth); // up
