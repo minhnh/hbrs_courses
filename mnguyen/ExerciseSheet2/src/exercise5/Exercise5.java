@@ -24,7 +24,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -73,6 +72,44 @@ public class Exercise5 {
 	 */
 	public Exercise5() {
 		initialize();
+	}
+
+	private void getTextFieldInt(JTextField textField, JSlider slider) {
+		int value = 0;
+		try {
+			value = Integer.parseInt(textField.getText());
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Invalid input");
+			return;
+		}
+		if (value < 0 || value > 255) {
+			JOptionPane.showMessageDialog(null, "Input not in range 0-255");
+		} else {
+			slider.setValue(value);
+		}
+	}
+
+	private void setSlidersFromPicture() {
+		Color color;
+		if (rdbtnLeft.isSelected()) {
+			color = pictureLeftPanel.getBackground();
+		} else if (rdbtnRight.isSelected()) {
+			color = pictureRightPanel.getBackground();
+		} else {
+			color = new Color(127, 127, 127);
+		}
+		redSlider.setValue(color.getRed());
+		greenSlider.setValue(color.getGreen());
+		blueSlider.setValue(color.getBlue());
+	}
+
+	private void setPictureFromSliders() {
+		Color colors = new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue());
+		if (rdbtnLeft.isSelected()) {
+			pictureLeftPanel.setBackground(colors);
+		} else if (rdbtnRight.isSelected()) {
+			pictureRightPanel.setBackground(colors);
+		}
 	}
 
 	/**
@@ -170,13 +207,7 @@ public class Exercise5 {
 		choosePicturePanel.add(btnSetColor, gbc_btnSetColor);
 		btnSetColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (rdbtnLeft.isSelected()) {
-					pictureLeftPanel.setBackground(
-							new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
-				} else if (rdbtnRight.isSelected()) {
-					pictureRightPanel.setBackground(
-							new Color(redSlider.getValue(), greenSlider.getValue(), blueSlider.getValue()));
-				}
+				setPictureFromSliders();
 			}
 		});
 
@@ -203,17 +234,7 @@ public class Exercise5 {
 		colorPanel.setLayout(gbl_colorPanel);
 		buttonLoadColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (rdbtnLeft.isSelected()) {
-					Color color = pictureLeftPanel.getBackground();
-					redSlider.setValue(color.getRed());
-					greenSlider.setValue(color.getGreen());
-					blueSlider.setValue(color.getBlue());
-				} else if (rdbtnRight.isSelected()) {
-					Color color = pictureRightPanel.getBackground();
-					redSlider.setValue(color.getRed());
-					greenSlider.setValue(color.getGreen());
-					blueSlider.setValue(color.getBlue());
-				}
+				setSlidersFromPicture();
 			}
 		});
 
@@ -225,10 +246,11 @@ public class Exercise5 {
 		gbc_redLabel.gridy = 0;
 		colorPanel.add(redLabel, gbc_redLabel);
 
-		redSlider = new JSlider(0, 255, 128);
+		redSlider = new JSlider(0, 255, 127);
 		redSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				redValue.setText(Integer.toString(redSlider.getValue()));
+				setPictureFromSliders();
 			}
 		});
 		redSlider.setMajorTickSpacing(32);
@@ -244,12 +266,7 @@ public class Exercise5 {
 		redValue = new JTextField();
 		redValue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int value = Integer.parseInt(redValue.getText());
-				if (value < 0 || value > 255) {
-					JOptionPane.showMessageDialog(frame, "Invalid input");
-				} else {
-					redSlider.setValue(value);
-				}
+				getTextFieldInt(redValue, redSlider);
 			}
 		});
 		GridBagConstraints gbc_redValue = new GridBagConstraints();
@@ -261,62 +278,19 @@ public class Exercise5 {
 		redValue.setColumns(10);
 		redValue.setText(Integer.toString(redSlider.getValue()));
 
-		blueLabel = new JLabel("Blue");
-		GridBagConstraints gbc_blueLabel = new GridBagConstraints();
-		gbc_blueLabel.anchor = GridBagConstraints.EAST;
-		gbc_blueLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_blueLabel.gridx = 0;
-		gbc_blueLabel.gridy = 1;
-		colorPanel.add(blueLabel, gbc_blueLabel);
-
-		blueSlider = new JSlider(0, 255, 128);
-		blueSlider.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				blueValue.setText(Integer.toString(blueSlider.getValue()));
-			}
-		});
-		blueSlider.setMinorTickSpacing(8);
-		blueSlider.setMajorTickSpacing(32);
-		blueSlider.setPaintTicks(true);
-		GridBagConstraints gbc_blueSlider = new GridBagConstraints();
-		gbc_blueSlider.fill = GridBagConstraints.HORIZONTAL;
-		gbc_blueSlider.insets = new Insets(0, 0, 5, 5);
-		gbc_blueSlider.gridx = 1;
-		gbc_blueSlider.gridy = 1;
-		colorPanel.add(blueSlider, gbc_blueSlider);
-
-		blueValue = new JTextField();
-		blueValue.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int value = Integer.parseInt(blueValue.getText());
-				if (value < 0 || value > 255) {
-					JOptionPane.showMessageDialog(frame, "Invalid input");
-				} else {
-					blueSlider.setValue(value);
-				}
-			}
-		});
-		GridBagConstraints gbc_blueColor = new GridBagConstraints();
-		gbc_blueColor.fill = GridBagConstraints.HORIZONTAL;
-		gbc_blueColor.insets = new Insets(0, 0, 5, 0);
-		gbc_blueColor.gridx = 2;
-		gbc_blueColor.gridy = 1;
-		colorPanel.add(blueValue, gbc_blueColor);
-		blueValue.setColumns(10);
-		blueValue.setText(Integer.toString(blueSlider.getValue()));
-
 		greenLabel = new JLabel("Green");
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
 		gbc_label_2.anchor = GridBagConstraints.EAST;
-		gbc_label_2.insets = new Insets(0, 0, 0, 5);
+		gbc_label_2.insets = new Insets(0, 0, 5, 5);
 		gbc_label_2.gridx = 0;
-		gbc_label_2.gridy = 2;
+		gbc_label_2.gridy = 1;
 		colorPanel.add(greenLabel, gbc_label_2);
 
-		greenSlider = new JSlider(0, 255, 128);
+		greenSlider = new JSlider(0, 255, 127);
 		greenSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				greenValue.setText(Integer.toString(greenSlider.getValue()));
+				setPictureFromSliders();
 			}
 		});
 		greenSlider.setMajorTickSpacing(32);
@@ -324,30 +298,65 @@ public class Exercise5 {
 		greenSlider.setPaintTicks(true);
 		GridBagConstraints gbc_slider_2 = new GridBagConstraints();
 		gbc_slider_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_slider_2.insets = new Insets(0, 0, 0, 5);
+		gbc_slider_2.insets = new Insets(0, 0, 5, 5);
 		gbc_slider_2.gridx = 1;
-		gbc_slider_2.gridy = 2;
+		gbc_slider_2.gridy = 1;
 		colorPanel.add(greenSlider, gbc_slider_2);
 
 		greenValue = new JTextField();
 		greenValue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int value = Integer.parseInt(greenValue.getText());
-				if (value < 0 || value > 255) {
-					JOptionPane.showMessageDialog(frame, "Invalid input");
-				} else {
-					greenSlider.setValue(value);
-				}
+				getTextFieldInt(greenValue, greenSlider);
 			}
 		});
 		GridBagConstraints gbc_greenValue = new GridBagConstraints();
+		gbc_greenValue.insets = new Insets(0, 0, 5, 0);
 		gbc_greenValue.fill = GridBagConstraints.HORIZONTAL;
 		gbc_greenValue.gridx = 2;
-		gbc_greenValue.gridy = 2;
+		gbc_greenValue.gridy = 1;
 		colorPanel.add(greenValue, gbc_greenValue);
 		greenValue.setColumns(10);
-		frame.getContentPane().setLayout(groupLayout);
 		greenValue.setText(Integer.toString(greenSlider.getValue()));
+
+		blueLabel = new JLabel("Blue");
+		GridBagConstraints gbc_blueLabel = new GridBagConstraints();
+		gbc_blueLabel.anchor = GridBagConstraints.EAST;
+		gbc_blueLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_blueLabel.gridx = 0;
+		gbc_blueLabel.gridy = 2;
+		colorPanel.add(blueLabel, gbc_blueLabel);
+
+		blueSlider = new JSlider(0, 255, 127);
+		blueSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				blueValue.setText(Integer.toString(blueSlider.getValue()));
+				setPictureFromSliders();
+			}
+		});
+		blueSlider.setMinorTickSpacing(8);
+		blueSlider.setMajorTickSpacing(32);
+		blueSlider.setPaintTicks(true);
+		GridBagConstraints gbc_blueSlider = new GridBagConstraints();
+		gbc_blueSlider.fill = GridBagConstraints.HORIZONTAL;
+		gbc_blueSlider.insets = new Insets(0, 0, 0, 5);
+		gbc_blueSlider.gridx = 1;
+		gbc_blueSlider.gridy = 2;
+		colorPanel.add(blueSlider, gbc_blueSlider);
+
+		blueValue = new JTextField();
+		blueValue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getTextFieldInt(blueValue, blueSlider);
+			}
+		});
+		GridBagConstraints gbc_blueColor = new GridBagConstraints();
+		gbc_blueColor.fill = GridBagConstraints.HORIZONTAL;
+		gbc_blueColor.gridx = 2;
+		gbc_blueColor.gridy = 2;
+		colorPanel.add(blueValue, gbc_blueColor);
+		blueValue.setColumns(10);
+		blueValue.setText(Integer.toString(blueSlider.getValue()));
+		frame.getContentPane().setLayout(groupLayout);
 	}
 
 	private class SetPictureLeftAction extends AbstractAction {
@@ -384,11 +393,4 @@ public class Exercise5 {
 		}
 	}
 
-	public Border getColorPanelBorder() {
-		return colorPanel.getBorder();
-	}
-
-	public void setColorPanelBorder(Border border) {
-		colorPanel.setBorder(border);
-	}
 }
