@@ -155,7 +155,8 @@ int Agent::dfs_re(int x, int y) {
     int dust_num = 0;
     char value = get_value_at(x, y);
 
-    cout << "\033[2;1H]" << endl; //move Cursor to row 2 column 1
+    cout << "\033[2;1H]"; //move Cursor to row 2 column 1
+    cout << "X: " << x << " Y: "  << y << endl;
     print_map();
 
     usleep(10000);
