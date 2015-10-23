@@ -97,17 +97,17 @@ public class Exercise5 {
 								.addGroup(groupLayout.createSequentialGroup()
 										.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 322,
 												GroupLayout.PREFERRED_SIZE)
-										.addGap(33).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE, 114,
+										.addGap(33).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE, 133,
 												GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+						.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(choosePicturePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE)
-						.addComponent(colorPanel, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)).addGap(18)
-				.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.PREFERRED_SIZE).addContainerGap(14, Short.MAX_VALUE)));
+						.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 136, GroupLayout.PREFERRED_SIZE))
+				.addGap(18).addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+						GroupLayout.PREFERRED_SIZE).addContainerGap(16, Short.MAX_VALUE)));
 		GridBagLayout gbl_leftPicturePanel = new GridBagLayout();
 		gbl_leftPicturePanel.columnWidths = new int[] { 300, 300, 0 };
 		gbl_leftPicturePanel.rowHeights = new int[] { 300, 0 };
@@ -138,10 +138,10 @@ public class Exercise5 {
 		gbc_pictureRightPanel.gridy = 0;
 		picturePanel.add(pictureRightPanel, gbc_pictureRightPanel);
 		GridBagLayout gbl_choosePicturePanel = new GridBagLayout();
-		gbl_choosePicturePanel.columnWidths = new int[] { 0, 100, 0 };
-		gbl_choosePicturePanel.rowHeights = new int[] { 20, 0, 0, 0, 0 };
+		gbl_choosePicturePanel.columnWidths = new int[] { 10, 120, 0 };
+		gbl_choosePicturePanel.rowHeights = new int[] { 35, 35, 40, 0 };
 		gbl_choosePicturePanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gbl_choosePicturePanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_choosePicturePanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		choosePicturePanel.setLayout(gbl_choosePicturePanel);
 
 		rdbtnLeft = new JRadioButton("Left");
@@ -149,7 +149,7 @@ public class Exercise5 {
 		gbc_rdbtnLeft.anchor = GridBagConstraints.WEST;
 		gbc_rdbtnLeft.insets = new Insets(0, 0, 5, 0);
 		gbc_rdbtnLeft.gridx = 1;
-		gbc_rdbtnLeft.gridy = 1;
+		gbc_rdbtnLeft.gridy = 0;
 		choosePicturePanel.add(rdbtnLeft, gbc_rdbtnLeft);
 		rdbtnLeft.setAction(setColorAction);
 
@@ -158,14 +158,14 @@ public class Exercise5 {
 		gbc_rdbtnRight.anchor = GridBagConstraints.WEST;
 		gbc_rdbtnRight.insets = new Insets(0, 0, 5, 0);
 		gbc_rdbtnRight.gridx = 1;
-		gbc_rdbtnRight.gridy = 2;
+		gbc_rdbtnRight.gridy = 1;
 		choosePicturePanel.add(rdbtnRight, gbc_rdbtnRight);
 
 		btnSetColor = new JButton("Set Color");
 		GridBagConstraints gbc_btnSetColor = new GridBagConstraints();
 		gbc_btnSetColor.anchor = GridBagConstraints.WEST;
 		gbc_btnSetColor.gridx = 1;
-		gbc_btnSetColor.gridy = 3;
+		gbc_btnSetColor.gridy = 2;
 		choosePicturePanel.add(btnSetColor, gbc_btnSetColor);
 		btnSetColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
