@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <unistd.h>
 #include "agent.hpp"
 
 using namespace std;
@@ -24,6 +25,10 @@ void Agent::run()
 	{
 		bfs();
 	}
+    else if (index == 2)
+    {
+        dfs();
+    }
 	else
 	{
 		cout << "Invalid search index"<< endl;
@@ -33,7 +38,7 @@ void Agent::run()
 
 void Agent::print_map()
 {
-   cout << map;
+   cout << map << endl;
 }
 
 int Agent::bfs()
@@ -134,7 +139,37 @@ int Agent::bfs()
 
 int Agent::dfs()
 {
-    
+    cout << "\033[2J"; //Clear screen before display
+	cout << "\033[1;1H]"; //move Cursor to row 1 column 1
+	cout << "Depth first search";
+
+	int number_of_dust = 0;
+
+    number_of_dust += dfs_re(start_X, start_Y);
+    cout << "Number of dust :" << number_of_dust << endl;
+
+    return number_of_dust;
+}
+
+int Agent::dfs_re(int x, int y) {
+    int dust_num = 0;
+    char value = get_value_at(x, y);
+
+    cout << "\033[2;1H]" << endl; //move Cursor to row 2 column 1
+    print_map();
+
+    usleep(10000);
+
+    if ( value == 's' || value == '*' || value == ' ' ) {
+        set_value_at(x, y, '-');
+        dust_num = (value == '*') ? 1 : 0;
+        dust_num += dfs_re(x - 1, y); // left
+        dust_num += dfs_re(x + 1, y); // right
+        dust_num += dfs_re(x, y + 1); // up
+        dust_num += dfs_re(x, y - 1); // down
+    }
+
+    return dust_num;
 }
 
 void Agent::get_map_data(int mapH, int mapW, int sX, int sY)
@@ -153,6 +188,17 @@ char Agent::get_value_at(int x, int y)
 		return map[x + y * (map_Width + 1)];
 	}
 	return -1;
+}
+
+char Agent::set_value_at(int x, int y, char value)
+{
+	//mapWidth + 1: map width does not count the \n at the end of each line
+	if (x < map_Width && y < map_Height)
+	{
+		map[x + y * (map_Width + 1)] = value;
+        return 1;
+	}
+	return 0;
 }
 
 int Agent::get_index_at(int x, int y)

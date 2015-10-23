@@ -11,7 +11,8 @@ class Agent
         void run();
         int bfs();
         int dfs();
-        
+        int dfs_re(int x, int y);
+       
         void get_map_data(int,int,int,int);
 
         
@@ -20,6 +21,7 @@ class Agent
         void print_map();
         std::string map;
         char get_value_at(int x, int y);
+        char set_value_at(int x, int y, char value);
         int get_index_at(int x, int y);
         int map_Height;
         int map_Width;
