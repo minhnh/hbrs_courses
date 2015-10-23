@@ -1,6 +1,7 @@
 #include <iostream>
 #include <queue>
 #include <unistd.h>
+#include <stdio.h>
 #include "agent.hpp"
 
 using namespace std;
@@ -155,14 +156,16 @@ int Agent::dfs_re(int x, int y) {
     int dust_num = 0;
     char value = get_value_at(x, y);
 
-    if (value == 0)
+    if (value == 0 || value == '=' || value == '|' || value == '-')
         return dust_num;
 
     cout << "\033[2;1H]"; //move Cursor to row 2 column 1
-    cout << "X: " << x << " Y: "  << y << endl;
+    printf("X:%4dY:%4d\n", x, y);
+    set_value_at(x, y, 's');
     print_map();
 
-    usleep(10000);
+    usleep(30000);
+    set_value_at(x, y, value);
 
     if ( value == 's' || value == '*' || value == ' ' ) {
         set_value_at(x, y, '-');
