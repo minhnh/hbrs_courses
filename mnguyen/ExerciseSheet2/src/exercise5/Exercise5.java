@@ -23,6 +23,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Exercise5 {
 
@@ -33,7 +35,7 @@ public class Exercise5 {
 	private JLabel redLabel;
 	private JLabel blueLabel;
 	private JSlider blueSlider;
-	private JTextField blueColor;
+	private JTextField blueValue;
 	private JButton btnSetColor;
 	private JRadioButton rdbtnRight;
 	private JRadioButton rdbtnLeft;
@@ -118,6 +120,7 @@ public class Exercise5 {
 		picturePanel.setLayout(gbl_leftPicturePanel);
 
 		pictureLeftPanel = new JPanel();
+		pictureLeftPanel.setBorder(null);
 		FlowLayout flowLayout = (FlowLayout) pictureLeftPanel.getLayout();
 		flowLayout.setVgap(0);
 		flowLayout.setHgap(0);
@@ -130,6 +133,7 @@ public class Exercise5 {
 		picturePanel.add(pictureLeftPanel, gbc_pictureLeftPanel);
 
 		pictureRightPanel = new JPanel();
+		pictureRightPanel.setBorder(null);
 		FlowLayout flowLayout_1 = (FlowLayout) pictureRightPanel.getLayout();
 		flowLayout_1.setVgap(0);
 		flowLayout_1.setHgap(0);
@@ -189,7 +193,15 @@ public class Exercise5 {
 		gbc_redLabel.gridy = 0;
 		colorPanel.add(redLabel, gbc_redLabel);
 
-		redSlider = new JSlider();
+		redSlider = new JSlider(0, 255, 128);
+		redSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				redValue.setText(Integer.toString(redSlider.getValue()));
+			}
+		});
+		redSlider.setMajorTickSpacing(32);
+		redSlider.setPaintTicks(true);
+		redSlider.setMinorTickSpacing(8);
 		GridBagConstraints gbc_redSlider = new GridBagConstraints();
 		gbc_redSlider.fill = GridBagConstraints.HORIZONTAL;
 		gbc_redSlider.insets = new Insets(0, 0, 5, 5);
@@ -205,6 +217,7 @@ public class Exercise5 {
 		gbc_redValue.gridy = 0;
 		colorPanel.add(redValue, gbc_redValue);
 		redValue.setColumns(10);
+		redValue.setText(Integer.toString(redSlider.getValue()));
 
 		blueLabel = new JLabel("Blue");
 		GridBagConstraints gbc_blueLabel = new GridBagConstraints();
@@ -214,7 +227,15 @@ public class Exercise5 {
 		gbc_blueLabel.gridy = 1;
 		colorPanel.add(blueLabel, gbc_blueLabel);
 
-		blueSlider = new JSlider();
+		blueSlider = new JSlider(0, 255, 128);
+		blueSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				blueValue.setText(Integer.toString(blueSlider.getValue()));
+			}
+		});
+		blueSlider.setMinorTickSpacing(8);
+		blueSlider.setMajorTickSpacing(32);
+		blueSlider.setPaintTicks(true);
 		GridBagConstraints gbc_blueSlider = new GridBagConstraints();
 		gbc_blueSlider.fill = GridBagConstraints.HORIZONTAL;
 		gbc_blueSlider.insets = new Insets(0, 0, 5, 5);
@@ -222,14 +243,15 @@ public class Exercise5 {
 		gbc_blueSlider.gridy = 1;
 		colorPanel.add(blueSlider, gbc_blueSlider);
 
-		blueColor = new JTextField();
+		blueValue = new JTextField();
 		GridBagConstraints gbc_blueColor = new GridBagConstraints();
 		gbc_blueColor.fill = GridBagConstraints.HORIZONTAL;
 		gbc_blueColor.insets = new Insets(0, 0, 5, 0);
 		gbc_blueColor.gridx = 2;
 		gbc_blueColor.gridy = 1;
-		colorPanel.add(blueColor, gbc_blueColor);
-		blueColor.setColumns(10);
+		colorPanel.add(blueValue, gbc_blueColor);
+		blueValue.setColumns(10);
+		blueValue.setText(Integer.toString(blueSlider.getValue()));
 
 		greenLabel = new JLabel("Green");
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
@@ -239,7 +261,15 @@ public class Exercise5 {
 		gbc_label_2.gridy = 2;
 		colorPanel.add(greenLabel, gbc_label_2);
 
-		greenSlider = new JSlider();
+		greenSlider = new JSlider(0, 255, 128);
+		greenSlider.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				greenValue.setText(Integer.toString(greenSlider.getValue()));
+			}
+		});
+		greenSlider.setMajorTickSpacing(32);
+		greenSlider.setMinorTickSpacing(8);
+		greenSlider.setPaintTicks(true);
 		GridBagConstraints gbc_slider_2 = new GridBagConstraints();
 		gbc_slider_2.fill = GridBagConstraints.HORIZONTAL;
 		gbc_slider_2.insets = new Insets(0, 0, 0, 5);
@@ -255,6 +285,7 @@ public class Exercise5 {
 		colorPanel.add(greenValue, gbc_greenValue);
 		greenValue.setColumns(10);
 		frame.getContentPane().setLayout(groupLayout);
+		greenValue.setText(Integer.toString(greenSlider.getValue()));
 	}
 
 	private class SetPictureLeftAction extends AbstractAction {
