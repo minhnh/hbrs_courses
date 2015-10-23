@@ -16,7 +16,7 @@ class Agent
         
     private:
         
-        int dfs_re(int x, int y);
+        int dfs_re(int x, int y, int * max_depth_p);
         void print_map();
         std::string map;
         char get_value_at(int x, int y);
