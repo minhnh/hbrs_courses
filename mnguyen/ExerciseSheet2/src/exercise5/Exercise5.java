@@ -18,6 +18,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
@@ -241,6 +242,16 @@ public class Exercise5 {
 		colorPanel.add(redSlider, gbc_redSlider);
 
 		redValue = new JTextField();
+		redValue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int value = Integer.parseInt(redValue.getText());
+				if (value < 0 || value > 255) {
+					JOptionPane.showMessageDialog(frame, "Invalid input");
+				} else {
+					redSlider.setValue(value);
+				}
+			}
+		});
 		GridBagConstraints gbc_redValue = new GridBagConstraints();
 		gbc_redValue.fill = GridBagConstraints.HORIZONTAL;
 		gbc_redValue.insets = new Insets(0, 0, 5, 0);
@@ -275,6 +286,16 @@ public class Exercise5 {
 		colorPanel.add(blueSlider, gbc_blueSlider);
 
 		blueValue = new JTextField();
+		blueValue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int value = Integer.parseInt(blueValue.getText());
+				if (value < 0 || value > 255) {
+					JOptionPane.showMessageDialog(frame, "Invalid input");
+				} else {
+					blueSlider.setValue(value);
+				}
+			}
+		});
 		GridBagConstraints gbc_blueColor = new GridBagConstraints();
 		gbc_blueColor.fill = GridBagConstraints.HORIZONTAL;
 		gbc_blueColor.insets = new Insets(0, 0, 5, 0);
@@ -309,6 +330,16 @@ public class Exercise5 {
 		colorPanel.add(greenSlider, gbc_slider_2);
 
 		greenValue = new JTextField();
+		greenValue.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int value = Integer.parseInt(greenValue.getText());
+				if (value < 0 || value > 255) {
+					JOptionPane.showMessageDialog(frame, "Invalid input");
+				} else {
+					greenSlider.setValue(value);
+				}
+			}
+		});
 		GridBagConstraints gbc_greenValue = new GridBagConstraints();
 		gbc_greenValue.fill = GridBagConstraints.HORIZONTAL;
 		gbc_greenValue.gridx = 2;
