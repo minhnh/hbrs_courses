@@ -153,10 +153,8 @@ int Agent::dfs()
     dfs_checked_node = 0;
     dfs_stored_node = 0;
 
-    while ( number_of_dust < max_number_of_dust)
-    {
-        number_of_dust += dfs_re(start_X, start_Y, &max_depth);
-    }
+    number_of_dust += dfs_re(start_X, start_Y, &max_depth);
+
     cout << "Number of dust: " << number_of_dust << endl;
     cout << "Max Depth     : " << max_depth << endl;
     cout << "Stored node   : " << dfs_stored_node << endl;
@@ -168,8 +166,10 @@ int Agent::dfs()
 
 int Agent::dfs_re(int x, int y, int * max_depth) {
     static int call_num = 0;
+    static int number_of_dust = 0;
     int dust_num = 0;
     char value = get_value_at(x, y);
+
     dfs_checked_node ++;
     call_num++;
     if (call_num > *max_depth) {
@@ -179,6 +179,11 @@ int Agent::dfs_re(int x, int y, int * max_depth) {
     if (value == 0 || value == '=' || value == '|' || value == '-') {
         call_num--;
         return dust_num;
+    }
+
+    if (number_of_dust >= max_number_of_dust) {
+        call_num--;
+        return 0;
     }
 
     cout << "\033[2;1H]"; //move Cursor to row 2 column 1
@@ -192,6 +197,7 @@ int Agent::dfs_re(int x, int y, int * max_depth) {
     if ( value == 's' || value == '*' || value == ' ' ) {
         set_value_at(x, y, '-');
         dust_num = (value == '*') ? 1 : 0;
+        number_of_dust += (value == '*') ? 1 : 0;
         dust_num += dfs_re(x - 1, y, max_depth); // left
         dust_num += dfs_re(x + 1, y, max_depth); // right
         dust_num += dfs_re(x, y + 1, max_depth); // up
