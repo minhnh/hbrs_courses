@@ -142,6 +142,7 @@ int Agent::bfs()
     cout << "Checked node   :" << checked_node << endl;
 }
 
+/* Depth First Search Implementation */
 int Agent::dfs()
 {
     cout << "\033[2J"; //Clear screen before display
@@ -151,66 +152,67 @@ int Agent::dfs()
     int number_of_dust = 0;
     int max_depth = 0;
     dfs_checked_node = 0;
-    dfs_stored_node = 0;
 
-    number_of_dust += dfs_re(start_X, start_Y, &max_depth);
+    /* Recursive call to start depth first search */
+    dfs_re(start_X, start_Y, &max_depth, &number_of_dust);
 
-    cout << "Number of dust: " << number_of_dust << endl;
-    cout << "Max Depth     : " << max_depth << endl;
-    cout << "Stored node   : " << dfs_stored_node << endl;
-    cout << "Checked node  : " << dfs_checked_node << endl;
-
+    cout << "Number of dust         : " << number_of_dust << endl;
+    cout << "Number of stored nodes : " << max_depth << endl;
+    cout << "Number of checked nodes: " << dfs_checked_node << endl;
 
     return number_of_dust;
 }
 
-int Agent::dfs_re(int x, int y, int * max_depth) {
+/* Recursive depth first search
+ * @param max_depth: x coordinate
+ */
+void Agent::dfs_re(int x, int y, int * max_depth, int * number_of_dust) {
     static int call_num = 0;
-    static int number_of_dust = 0;
-    int dust_num = 0;
     char value = get_value_at(x, y);
 
     dfs_checked_node ++;
+
+    /* Calculate maximum recursive depth reached */
     call_num++;
     if (call_num > *max_depth) {
         *max_depth = call_num;
     }
 
-    if (number_of_dust >= max_number_of_dust) {
-        return 0;
-    }
-
+    /* Return if current node is an obstacle / visited node/ wall */
     if (value == 0 || value == '=' || value == '|' || value == '-') {
         call_num--;
-        return dust_num;
+        return;
     }
 
-    if (number_of_dust >= max_number_of_dust) {
+    /* Return if found all dusts */
+    if (*number_of_dust >= max_number_of_dust) {
         call_num--;
-        return 0;
+        return;
     }
 
+    /* Print current coordinates */
     cout << "\033[2;1H]"; //move Cursor to row 2 column 1
-    printf("X:%4dY:%4d\n", x, y);
+    printf("X:%4d Y:%4d\n", x, y);
     set_value_at(x, y, 's');
     print_map();
 
+    /* Sleep timer for visibility */
     usleep(30000);
     set_value_at(x, y, value);
 
+    /* Found space or dust (if not starting position), make recursive
+     * calls to adjacent cells */
     if ( value == 's' || value == '*' || value == ' ' ) {
         set_value_at(x, y, '-');
-        dust_num = (value == '*') ? 1 : 0;
-        number_of_dust += (value == '*') ? 1 : 0;
-        dust_num += dfs_re(x - 1, y, max_depth); // left
-        dust_num += dfs_re(x + 1, y, max_depth); // right
-        dust_num += dfs_re(x, y + 1, max_depth); // up
-        dust_num += dfs_re(x, y - 1, max_depth); // down
-        dfs_stored_node++;
+        *number_of_dust += (value == '*') ? 1 : 0;
+        dfs_re(x - 1, y, max_depth, number_of_dust); // left
+        dfs_re(x + 1, y, max_depth, number_of_dust); // right
+        dfs_re(x, y + 1, max_depth, number_of_dust); // up
+        dfs_re(x, y - 1, max_depth, number_of_dust); // down
     }
 
     call_num--;
-    return dust_num;
+    return;
 }
 
 void Agent::get_map_data(int mapH, int mapW, int sX, int sY, int nd)
