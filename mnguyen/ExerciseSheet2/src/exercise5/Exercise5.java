@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -92,18 +93,15 @@ public class Exercise5 {
 		picturePanel = new JPanel();
 		picturePanel.setMaximumSize(new Dimension(300, 300));
 		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
-		groupLayout
-				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addContainerGap()
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addGroup(groupLayout.createSequentialGroup()
-										.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 322,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
+				.createSequentialGroup().addContainerGap()
+				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(picturePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+								.addComponent(colorPanel, GroupLayout.PREFERRED_SIZE, 322, GroupLayout.PREFERRED_SIZE)
+								.addGap(18).addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+				.addContainerGap()));
 		groupLayout
 				.setVerticalGroup(
 						groupLayout.createParallelGroup(Alignment.LEADING)
@@ -113,8 +111,9 @@ public class Exercise5 {
 														GroupLayout.PREFERRED_SIZE)
 												.addComponent(choosePicturePanel, GroupLayout.PREFERRED_SIZE,
 														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGap(18).addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-						GroupLayout.PREFERRED_SIZE).addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
+				.addPreferredGap(ComponentPlacement.RELATED).addComponent(picturePanel, GroupLayout.PREFERRED_SIZE,
+						GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		GridBagLayout gbl_leftPicturePanel = new GridBagLayout();
 		gbl_leftPicturePanel.columnWidths = new int[] { 300, 300, 0 };
 		gbl_leftPicturePanel.rowHeights = new int[] { 300, 0 };
@@ -129,7 +128,6 @@ public class Exercise5 {
 		flowLayout.setHgap(0);
 		pictureLeftPanel.setBackground(Color.RED);
 		GridBagConstraints gbc_pictureLeftPanel = new GridBagConstraints();
-		gbc_pictureLeftPanel.insets = new Insets(0, 0, 0, 5);
 		gbc_pictureLeftPanel.fill = GridBagConstraints.BOTH;
 		gbc_pictureLeftPanel.gridx = 0;
 		gbc_pictureLeftPanel.gridy = 0;
