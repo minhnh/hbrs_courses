@@ -164,7 +164,7 @@ int Agent::dfs()
 }
 
 /* Recursive depth first search
- * @param max_depth: x coordinate
+ * @param max_depth: maximum recursive depth recorded
  */
 void Agent::dfs_re(int x, int y, int * max_depth, int * number_of_dust) {
     static int call_num = 0;
