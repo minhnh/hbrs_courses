@@ -176,6 +176,10 @@ int Agent::dfs_re(int x, int y, int * max_depth) {
         *max_depth = call_num;
     }
 
+    if (number_of_dust >= max_number_of_dust) {
+        return 0;
+    }
+
     if (value == 0 || value == '=' || value == '|' || value == '-') {
         call_num--;
         return dust_num;
