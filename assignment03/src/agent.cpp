@@ -2,6 +2,7 @@
 #include <queue>
 #include <unistd.h>
 #include <stdio.h>
+#include <ctime>
 #include "agent.hpp"
 
 using namespace std;
@@ -20,21 +21,22 @@ void Agent::run()
 {
     print_map();
     int index = 0;
+
     cout << "Please enter search method index: ";
     cin >> index;
-    if ( index == 1)
-    {
+    if ( index == 1) {
+        time_t start = time(NULL);
         bfs();
-    }
-    else if (index == 2)
-    {
+        cout    << "Search time (s):"
+                << std::difftime(std::time(NULL), start) << endl;
+    } else if (index == 2) {
+        time_t start = time(NULL);
         dfs();
-    }
-    else
-    {
+        cout    << "Search time (s)        : "
+                << std::difftime(std::time(NULL), start) << endl;
+    } else {
         cout << "Invalid search index"<< endl;
     }
-
 }
 
 void Agent::print_map()
@@ -197,8 +199,8 @@ void Agent::dfs_re(int x, int y, int * max_depth, int * number_of_dust) {
     print_map();
 
     /* Sleep timer for visibility */
-    usleep(30000);
-    set_value_at(x, y, value);
+    //usleep(30000);
+    //set_value_at(x, y, value);
 
     /* Found space or dust (if not starting position), make recursive
      * calls to adjacent cells */
