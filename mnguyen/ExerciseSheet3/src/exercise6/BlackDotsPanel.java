@@ -20,7 +20,7 @@ public class BlackDotsPanel extends JPanel {
 	private Color dotColor = new Color(255, 255, 255);
 
 	public enum FieldName {
-		RECTANGLE_WIDTH, RECTANGLE_HEIGHT, BAR_WIDTH, BAR_HEIGHT, RECTANGLE_COLOR, BAR_COLOR, DOT_COLOR
+		RECTANGLE_WIDTH, RECTANGLE_HEIGHT, BAR_WIDTH, BAR_HEIGHT, RECTANGLE_COLOR, BAR_COLOR, DOT_COLOR, UNKNOWN
 	}
 
 	public BlackDotsPanel() {
