@@ -24,6 +24,10 @@ import exercise6.BlackDotsPicturePanel.FieldName;
 
 public class BlackDotsPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel chooseColorPanelBlackDots;
 	private JPanel itemSizePanelBlackDots;
 	private BlackDotsPicturePanel blackDotsPicture;
@@ -134,7 +138,6 @@ public class BlackDotsPanel extends JPanel {
 		buttonSetColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				FieldName fieldName = FieldName.UNKNOWN;
 				if (rdbtnRectangles.isSelected()) {
 					fieldName = FieldName.RECTANGLE_COLOR;
@@ -207,19 +210,9 @@ public class BlackDotsPanel extends JPanel {
 		gbc_buttonSetSize.gridx = 1;
 		gbc_buttonSetSize.gridy = 2;
 
-		JTextField sizeTextField = new JTextField();
-		sizeTextField.setHorizontalAlignment(SwingConstants.CENTER);
-		sizeTextField.setText("20");
-		GridBagConstraints gbc_sizeTextField = new GridBagConstraints();
-		gbc_sizeTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_sizeTextField.insets = new Insets(0, 0, 5, 0);
-		gbc_sizeTextField.gridx = 1;
-		gbc_sizeTextField.gridy = 3;
-		sizeTextField.setColumns(10);
-
 		JSlider sliderSize = new JSlider();
 		sliderSize.setMajorTickSpacing(20);
-		sliderSize.setValue(20);
+		sliderSize.setValue(40);
 		sliderSize.setMinimum(10);
 		sliderSize.setPaintTicks(true);
 		GridBagConstraints gbc_sliderSize = new GridBagConstraints();
@@ -228,7 +221,33 @@ public class BlackDotsPanel extends JPanel {
 		gbc_sliderSize.gridx = 0;
 		gbc_sliderSize.gridy = 4;
 
+		JTextField sizeTextField = new JTextField();
+		sizeTextField.setHorizontalAlignment(SwingConstants.CENTER);
+		sizeTextField.setText(Integer.toString(sliderSize.getValue()));
+		GridBagConstraints gbc_sizeTextField = new GridBagConstraints();
+		gbc_sizeTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_sizeTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_sizeTextField.gridx = 1;
+		gbc_sizeTextField.gridy = 3;
+		sizeTextField.setColumns(10);
+
 		/* Link elements' actions */
+		buttonSetSize.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				FieldName fieldName = FieldName.UNKNOWN;
+				if (rdbtnRectangleWidth.isSelected()) {
+					fieldName = FieldName.RECTANGLE_WIDTH;
+				} else if (rdbtnRectangleHeight.isSelected()) {
+					fieldName = FieldName.RECTANGLE_HEIGHT;
+				} else if (rdbtnBarWidth.isSelected()) {
+					fieldName = FieldName.BAR_WIDTH;
+				} else if (rdbtnBarHeight.isSelected()) {
+					fieldName = FieldName.BAR_HEIGHT;
+				}
+				blackDotsPicture.updateDimension(fieldName, sliderSize.getValue());
+			}
+		});
 		Exercise6.set4RadioButtonActions(rdbtnRectangleWidth, rdbtnRectangleHeight, rdbtnBarWidth, rdbtnBarHeight);
 		Exercise6.setSliderTextFieldActions(sliderSize, sizeTextField);
 
@@ -238,8 +257,8 @@ public class BlackDotsPanel extends JPanel {
 		itemSizePanelBlackDots.add(rdbtnBarWidth, gbc_rdbtnBarWidth);
 		itemSizePanelBlackDots.add(rdbtnBarHeight, gbc_rdbtnBarHeight);
 		itemSizePanelBlackDots.add(buttonSetSize, gbc_buttonSetSize);
-		itemSizePanelBlackDots.add(sizeTextField, gbc_sizeTextField);
 		itemSizePanelBlackDots.add(sliderSize, gbc_sliderSize);
+		itemSizePanelBlackDots.add(sizeTextField, gbc_sizeTextField);
 	}
 
 }

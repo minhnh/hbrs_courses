@@ -109,6 +109,9 @@ public class BlackDotsPicturePanel extends JPanel {
 							(int) (rectangleDiagDistance + 0.5) - 1, 0, 360);
 				}
 			}
+
+			isDrawingDots = true;
+			drawnRectangleWidth = rectangleWidth;
 		}
 
 	}
