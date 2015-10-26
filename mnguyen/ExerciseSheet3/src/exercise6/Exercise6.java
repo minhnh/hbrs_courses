@@ -70,24 +70,19 @@ public class Exercise6 {
 		JPanel blackDotsPanel = new JPanel();
 		tabbedPane.addTab("Black Dots", null, blackDotsPanel, null);
 
-		chooseColorPanel = new JPanel();
-		chooseColorPanel.setBorder(BorderFactory.createTitledBorder("Choose Item Color"));
-		GridBagLayout gbl_chooseColorPanel = new GridBagLayout();
-		gbl_chooseColorPanel.columnWidths = new int[] { 100, 100, 0 };
-		gbl_chooseColorPanel.rowHeights = new int[] { 30, 30, 30, 0 };
-		gbl_chooseColorPanel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
-		gbl_chooseColorPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		chooseColorPanel.setLayout(gbl_chooseColorPanel);
-
 		picturePanel = new JPanel();
 		picturePanel.setMaximumSize(new Dimension(300, 300));
 		picturePanel.setMinimumSize(new Dimension(300, 300));
 
+		/* Initialize Color Picker Frame */
+		initializeColorPicker();
+
 		JPanel itemSizePanel = new JPanel();
-		GroupLayout gl_itemSizePanel = new GroupLayout(blackDotsPanel);
-		gl_itemSizePanel.setHorizontalGroup(gl_itemSizePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_itemSizePanel.createSequentialGroup().addGap(18)
-						.addGroup(gl_itemSizePanel.createParallelGroup(Alignment.LEADING, false)
+
+		GroupLayout gl_blackDotsPanel = new GroupLayout(blackDotsPanel);
+		gl_blackDotsPanel.setHorizontalGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_blackDotsPanel.createSequentialGroup().addGap(18)
+						.addGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(itemSizePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE)
 								.addComponent(chooseColorPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
@@ -95,11 +90,11 @@ public class Exercise6 {
 						.addGap(18)
 						.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, 354, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(30, Short.MAX_VALUE)));
-		gl_itemSizePanel.setVerticalGroup(gl_itemSizePanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_itemSizePanel.createSequentialGroup().addContainerGap().addGroup(gl_itemSizePanel
+		gl_blackDotsPanel.setVerticalGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_blackDotsPanel.createSequentialGroup().addContainerGap().addGroup(gl_blackDotsPanel
 						.createParallelGroup(Alignment.LEADING)
 						.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_itemSizePanel.createSequentialGroup()
+						.addGroup(gl_blackDotsPanel.createSequentialGroup()
 								.addComponent(chooseColorPanel, GroupLayout.PREFERRED_SIZE, 113,
 										GroupLayout.PREFERRED_SIZE)
 								.addGap(18).addComponent(itemSizePanel, GroupLayout.DEFAULT_SIZE,
@@ -127,7 +122,24 @@ public class Exercise6 {
 		gbc_button.gridy = 0;
 		itemSizePanel.add(button, gbc_button);
 
-		JColorChooser tcc = new JColorChooser(blackDotsPanel.getForeground());
+		blackDotsPanel.setLayout(gl_blackDotsPanel);
+
+		parallelLinesPanel = new JPanel();
+		tabbedPane.addTab("ParallelLines", null, parallelLinesPanel, null);
+		frame.getContentPane().setLayout(groupLayout);
+	}
+
+	private void initializeColorPicker() {
+		chooseColorPanel = new JPanel();
+		chooseColorPanel.setBorder(BorderFactory.createTitledBorder("Choose Item Color"));
+		GridBagLayout gbl_chooseColorPanel = new GridBagLayout();
+		gbl_chooseColorPanel.columnWidths = new int[] { 100, 100, 0 };
+		gbl_chooseColorPanel.rowHeights = new int[] { 30, 30, 30, 0 };
+		gbl_chooseColorPanel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_chooseColorPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		chooseColorPanel.setLayout(gbl_chooseColorPanel);
+
+		JColorChooser tcc = new JColorChooser(chooseColorPanel.getForeground());
 		tcc.setPreviewPanel(new JPanel());
 
 		JButton btnPickColor = new JButton("Pick Color");
@@ -147,12 +159,12 @@ public class Exercise6 {
 		chooseColorPanel.add(rdbtnRectangle, gbc_rdbtnRectangle);
 
 		colorChosenPanel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.insets = new Insets(0, 0, 5, 0);
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 1;
-		gbc_panel.gridy = 0;
-		chooseColorPanel.add(colorChosenPanel, gbc_panel);
+		GridBagConstraints gbc_ChosenPanel = new GridBagConstraints();
+		gbc_ChosenPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_ChosenPanel.fill = GridBagConstraints.BOTH;
+		gbc_ChosenPanel.gridx = 1;
+		gbc_ChosenPanel.gridy = 0;
+		chooseColorPanel.add(colorChosenPanel, gbc_ChosenPanel);
 
 		JRadioButton rdbtnBars = new JRadioButton("Bars");
 		GridBagConstraints gbc_rdbtnBars = new GridBagConstraints();
@@ -183,10 +195,6 @@ public class Exercise6 {
 		gbc_buttonSetColor.gridy = 2;
 		chooseColorPanel.add(buttonSetColor, gbc_buttonSetColor);
 		picturePanel.setLayout(new CardLayout(0, 0));
-		blackDotsPanel.setLayout(gl_itemSizePanel);
-
-		parallelLinesPanel = new JPanel();
-		tabbedPane.addTab("ParallelLines", null, parallelLinesPanel, null);
-		frame.getContentPane().setLayout(groupLayout);
 	}
+
 }
