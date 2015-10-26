@@ -7,6 +7,10 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 
 public class BlackDotsPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int rectangleWidth = 40;
 	private int rectangleHeight = 40;
 	private int barWidth = 10;
@@ -15,7 +19,48 @@ public class BlackDotsPanel extends JPanel {
 	private Color rectangleColor = new Color(0, 0, 0);
 	private Color dotColor = new Color(255, 255, 255);
 
+	public enum FieldName {
+		RECTANGLE_WIDTH, RECTANGLE_HEIGHT, BAR_WIDTH, BAR_HEIGHT, RECTANGLE_COLOR, BAR_COLOR, DOT_COLOR
+	}
+
 	public BlackDotsPanel() {
+	}
+
+	public void updateColor(FieldName fieldName, Color newColor) {
+		switch (fieldName) {
+		case RECTANGLE_COLOR:
+			rectangleColor = newColor;
+			break;
+		case BAR_COLOR:
+			barColor = newColor;
+			break;
+		case DOT_COLOR:
+			dotColor = newColor;
+			break;
+		default:
+			return;
+		}
+		repaint();
+	}
+
+	public void updateDimension(FieldName fieldName, int newDimension) {
+		switch (fieldName) {
+		case RECTANGLE_HEIGHT:
+			rectangleHeight = newDimension;
+			break;
+		case RECTANGLE_WIDTH:
+			rectangleWidth = newDimension;
+			break;
+		case BAR_HEIGHT:
+			barHeight = newDimension;
+			break;
+		case BAR_WIDTH:
+			barWidth = newDimension;
+			break;
+		default:
+			return;
+		}
+		repaint();
 	}
 
 	public Dimension getPreferredSize() {
