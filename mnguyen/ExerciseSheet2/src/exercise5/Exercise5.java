@@ -116,16 +116,19 @@ public class Exercise5 {
 	}
 
 	private void setNormValue() {
-		double result = 0.0d;
+		double normL3Left = 0.0d;
+		double normL3Right = 0.0d;
 		Color colorLeft = pictureLeftPanel.getBackground();
 		Color colorRight = pictureRightPanel.getBackground();
-		int redChange = colorLeft.getRed() - colorRight.getRed();
-		int greenChange = colorLeft.getGreen() - colorRight.getGreen();
-		int blueChange = colorLeft.getBlue() - colorRight.getBlue();
 
-		result = Math.sqrt(redChange * redChange + greenChange * greenChange + blueChange * blueChange);
+		normL3Left = Math.pow(
+				Math.pow(colorLeft.getRed(), 3) + Math.pow(colorLeft.getGreen(), 3) + Math.pow(colorLeft.getBlue(), 3),
+				(double) 1 / 3);
 
-		String resultString = String.format("%5.5f", result);
+		normL3Right = Math.pow(Math.pow(colorRight.getRed(), 3) + Math.pow(colorRight.getGreen(), 3)
+				+ Math.pow(colorRight.getBlue(), 3), (double) 1 / 3);
+
+		String resultString = String.format("%5.5f", Math.abs(normL3Left - normL3Right));
 		lblNormValue.setText(resultString);
 	}
 
