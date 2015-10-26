@@ -25,7 +25,7 @@ import javax.swing.SwingConstants;
 
 public class Exercise6 {
 	private JFrame frame;
-	private JPanel picturePanel;
+	private BlackDotsPanel blackDotsPicture;
 	private Color color = new Color(0, 0, 0);
 	private JPanel colorChosenPanel;
 	private JTextField textField;
@@ -74,10 +74,9 @@ public class Exercise6 {
 		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addComponent(tabbedPane,
 				GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE));
 
-		picturePanel = new JPanel();
-		picturePanel.setMaximumSize(new Dimension(300, 300));
-		picturePanel.setMinimumSize(new Dimension(300, 300));
-		picturePanel.setLayout(new CardLayout(0, 0));
+		blackDotsPicture = new BlackDotsPanel();
+		blackDotsPicture.setMinimumSize(new Dimension(300, 300));
+		blackDotsPicture.setLayout(new CardLayout(0, 0));
 
 		/* Initialize Black Dots Tab */
 		JPanel blackDotsPanel = new JPanel();
@@ -90,23 +89,22 @@ public class Exercise6 {
 				.setHorizontalGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_blackDotsPanel.createSequentialGroup().addGap(18)
 								.addGroup(gl_blackDotsPanel.createParallelGroup(Alignment.TRAILING)
-										.addComponent(chooseColorPanelBlackDots, GroupLayout.DEFAULT_SIZE, 212,
+										.addComponent(chooseColorPanelBlackDots, GroupLayout.DEFAULT_SIZE, 266,
 												Short.MAX_VALUE)
-										.addComponent(itemSizePanelBlackDots, GroupLayout.DEFAULT_SIZE,
-												GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-								.addGap(18)
-								.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, 354, GroupLayout.PREFERRED_SIZE)
-								.addGap(30)));
+								.addComponent(itemSizePanelBlackDots, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
+						.addGap(18).addComponent(blackDotsPicture, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.PREFERRED_SIZE).addGap(30)));
 		gl_blackDotsPanel.setVerticalGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_blackDotsPanel.createSequentialGroup().addContainerGap()
 						.addGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_blackDotsPanel.createSequentialGroup()
-										.addComponent(chooseColorPanelBlackDots, GroupLayout.PREFERRED_SIZE, 113,
-												GroupLayout.PREFERRED_SIZE)
-										.addGap(18).addComponent(itemSizePanelBlackDots, GroupLayout.PREFERRED_SIZE,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-						.addContainerGap(22, Short.MAX_VALUE)));
+								.addComponent(blackDotsPicture, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_blackDotsPanel.createSequentialGroup()
+								.addComponent(chooseColorPanelBlackDots, GroupLayout.PREFERRED_SIZE, 113,
+										GroupLayout.PREFERRED_SIZE)
+								.addGap(18).addComponent(itemSizePanelBlackDots, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap(39, Short.MAX_VALUE)));
 
 		blackDotsPanel.setLayout(gl_blackDotsPanel);
 
