@@ -20,11 +20,14 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import exercise6.ParallelLinesPicturePanel.ParallelLinesFieldName;
+
 public class ParallelLinesPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel chooseColorPanelParallelLines;
 	private JPanel itemSizePanelParallelLines;
+	private ParallelLinesPicturePanel parallelLinesPicture;
 	// private BlackDotsPicturePanel blackDotsPicture;
 	private Color color;
 
@@ -37,10 +40,9 @@ public class ParallelLinesPanel extends JPanel {
 		initializeColorPickerParallelLines();
 		initializeItemSizeParallelLines();
 
-		JPanel panel_2 = new JPanel();
-		panel_2.setMinimumSize(new Dimension(300, 300));
-		panel_2.setMaximumSize(new Dimension(300, 300));
-		panel_2.setLayout(new CardLayout(0, 0));
+		parallelLinesPicture = new ParallelLinesPicturePanel();
+		parallelLinesPicture.setMinimumSize(new Dimension(300, 300));
+		parallelLinesPicture.setLayout(new CardLayout(0, 0));
 
 		GroupLayout gl_parallelLinesPanel = new GroupLayout(this);
 		gl_parallelLinesPanel.setHorizontalGroup(gl_parallelLinesPanel.createParallelGroup(Alignment.LEADING)
@@ -50,7 +52,8 @@ public class ParallelLinesPanel extends JPanel {
 										GroupLayout.PREFERRED_SIZE)
 								.addComponent(itemSizePanelParallelLines, GroupLayout.PREFERRED_SIZE, 212,
 										GroupLayout.PREFERRED_SIZE))
-						.addGap(18).addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 354, GroupLayout.PREFERRED_SIZE)
+						.addGap(18)
+						.addComponent(parallelLinesPicture, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(30, Short.MAX_VALUE)));
 		gl_parallelLinesPanel.setVerticalGroup(gl_parallelLinesPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_parallelLinesPanel.createSequentialGroup().addContainerGap().addGroup(gl_parallelLinesPanel
@@ -60,7 +63,8 @@ public class ParallelLinesPanel extends JPanel {
 										GroupLayout.PREFERRED_SIZE)
 								.addGap(18).addComponent(itemSizePanelParallelLines, GroupLayout.PREFERRED_SIZE, 172,
 										GroupLayout.PREFERRED_SIZE))
-						.addComponent(panel_2, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE))
+						.addComponent(parallelLinesPicture, GroupLayout.PREFERRED_SIZE, 300,
+								GroupLayout.PREFERRED_SIZE))
 						.addContainerGap(22, Short.MAX_VALUE)));
 		this.setLayout(gl_parallelLinesPanel);
 	}
@@ -90,32 +94,32 @@ public class ParallelLinesPanel extends JPanel {
 		gbc_btnPickColor.gridx = 1;
 		gbc_btnPickColor.gridy = 1;
 
-		JRadioButton rdbtnRectangles = new JRadioButton("Rectangles");
-		GridBagConstraints gbc_rdbtnRectangles = new GridBagConstraints();
-		gbc_rdbtnRectangles.anchor = GridBagConstraints.WEST;
-		gbc_rdbtnRectangles.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtnRectangles.gridx = 0;
-		gbc_rdbtnRectangles.gridy = 0;
+		JRadioButton rdbtnFirstRectangles = new JRadioButton("First Rectangles");
+		GridBagConstraints gbc_rdbtnFirstRectangles = new GridBagConstraints();
+		gbc_rdbtnFirstRectangles.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnFirstRectangles.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnFirstRectangles.gridx = 0;
+		gbc_rdbtnFirstRectangles.gridy = 0;
 
-		JRadioButton rdbtnBars = new JRadioButton("Bars");
-		GridBagConstraints gbc_rdbtnBars = new GridBagConstraints();
-		gbc_rdbtnBars.anchor = GridBagConstraints.WEST;
-		gbc_rdbtnBars.insets = new Insets(0, 0, 5, 5);
-		gbc_rdbtnBars.gridx = 0;
-		gbc_rdbtnBars.gridy = 1;
+		JRadioButton rdbtnSecondRectangles = new JRadioButton("Second Rectangles");
+		GridBagConstraints gbc_rdbtnSecondRectangles = new GridBagConstraints();
+		gbc_rdbtnSecondRectangles.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnSecondRectangles.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnSecondRectangles.gridx = 0;
+		gbc_rdbtnSecondRectangles.gridy = 1;
 
-		JRadioButton radioButton_2 = new JRadioButton("Dots");
-		GridBagConstraints gbc_radioButton_2 = new GridBagConstraints();
-		gbc_radioButton_2.anchor = GridBagConstraints.WEST;
-		gbc_radioButton_2.insets = new Insets(0, 0, 0, 5);
-		gbc_radioButton_2.gridx = 0;
-		gbc_radioButton_2.gridy = 2;
+		JRadioButton rdbtnLines = new JRadioButton("Lines");
+		GridBagConstraints gbc_rdbtnLines = new GridBagConstraints();
+		gbc_rdbtnLines.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnLines.insets = new Insets(0, 0, 0, 5);
+		gbc_rdbtnLines.gridx = 0;
+		gbc_rdbtnLines.gridy = 2;
 
-		JButton button_1 = new JButton("Set Color");
-		GridBagConstraints gbc_button_1 = new GridBagConstraints();
-		gbc_button_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_button_1.gridx = 1;
-		gbc_button_1.gridy = 2;
+		JButton buttonSetColor = new JButton("Set Color");
+		GridBagConstraints gbc_buttonSetColor = new GridBagConstraints();
+		gbc_buttonSetColor.fill = GridBagConstraints.HORIZONTAL;
+		gbc_buttonSetColor.gridx = 1;
+		gbc_buttonSetColor.gridy = 2;
 
 		/* Link elements' actions */
 		JColorChooser tcc = new JColorChooser(chooseColorPanelParallelLines.getForeground());
@@ -126,14 +130,30 @@ public class ParallelLinesPanel extends JPanel {
 				colorChosenPanel.setBackground(color);
 			}
 		});
+		Exercise6.set3RadioButtonActions(rdbtnFirstRectangles, rdbtnSecondRectangles, rdbtnLines);
+
+		buttonSetColor.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ParallelLinesFieldName fieldName = ParallelLinesFieldName.UNKNOWN;
+				if (rdbtnFirstRectangles.isSelected()) {
+					fieldName = ParallelLinesFieldName.FIRST_RECTANGLE_COLOR;
+				} else if (rdbtnSecondRectangles.isSelected()) {
+					fieldName = ParallelLinesFieldName.SECOND_RECTANGLE_COLOR;
+				} else if (rdbtnLines.isSelected()) {
+					fieldName = ParallelLinesFieldName.LINE_COLOR;
+				}
+				parallelLinesPicture.updateColor(fieldName, color);
+			}
+		});
 
 		/* Add elements to panel */
 		chooseColorPanelParallelLines.add(colorChosenPanel, gbc_colorChosenPanel);
 		chooseColorPanelParallelLines.add(btnPickColor, gbc_btnPickColor);
-		chooseColorPanelParallelLines.add(rdbtnRectangles, gbc_rdbtnRectangles);
-		chooseColorPanelParallelLines.add(rdbtnBars, gbc_rdbtnBars);
-		chooseColorPanelParallelLines.add(radioButton_2, gbc_radioButton_2);
-		chooseColorPanelParallelLines.add(button_1, gbc_button_1);
+		chooseColorPanelParallelLines.add(rdbtnFirstRectangles, gbc_rdbtnFirstRectangles);
+		chooseColorPanelParallelLines.add(rdbtnSecondRectangles, gbc_rdbtnSecondRectangles);
+		chooseColorPanelParallelLines.add(rdbtnLines, gbc_rdbtnLines);
+		chooseColorPanelParallelLines.add(buttonSetColor, gbc_buttonSetColor);
 
 	}
 
@@ -149,40 +169,40 @@ public class ParallelLinesPanel extends JPanel {
 		itemSizePanelParallelLines.setLayout(gbl_itemSizePanelParallelLines);
 
 		/* Declare Elements */
-		JRadioButton radioButton_3 = new JRadioButton("Rect. Width");
-		GridBagConstraints gbc_radioButton_3 = new GridBagConstraints();
-		gbc_radioButton_3.anchor = GridBagConstraints.WEST;
-		gbc_radioButton_3.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButton_3.gridx = 0;
-		gbc_radioButton_3.gridy = 0;
+		JRadioButton radioButtonFirstWidth = new JRadioButton("First Width");
+		GridBagConstraints gbc_radioButtonFirstWidth = new GridBagConstraints();
+		gbc_radioButtonFirstWidth.anchor = GridBagConstraints.WEST;
+		gbc_radioButtonFirstWidth.insets = new Insets(0, 0, 5, 5);
+		gbc_radioButtonFirstWidth.gridx = 0;
+		gbc_radioButtonFirstWidth.gridy = 0;
 
-		JRadioButton radioButton_4 = new JRadioButton("Rect. Height");
-		GridBagConstraints gbc_radioButton_4 = new GridBagConstraints();
-		gbc_radioButton_4.anchor = GridBagConstraints.WEST;
-		gbc_radioButton_4.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButton_4.gridx = 0;
-		gbc_radioButton_4.gridy = 1;
+		JRadioButton radioButtonSecondWidth = new JRadioButton("Second Width");
+		GridBagConstraints gbc_radioButtonSecondWidth = new GridBagConstraints();
+		gbc_radioButtonSecondWidth.anchor = GridBagConstraints.WEST;
+		gbc_radioButtonSecondWidth.insets = new Insets(0, 0, 5, 5);
+		gbc_radioButtonSecondWidth.gridx = 0;
+		gbc_radioButtonSecondWidth.gridy = 1;
 
-		JRadioButton radioButton_5 = new JRadioButton("Bar Width");
-		GridBagConstraints gbc_radioButton_5 = new GridBagConstraints();
-		gbc_radioButton_5.anchor = GridBagConstraints.WEST;
-		gbc_radioButton_5.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButton_5.gridx = 0;
-		gbc_radioButton_5.gridy = 2;
+		JRadioButton radioButtonHeight = new JRadioButton("Height");
+		GridBagConstraints gbc_radioButtonHeight = new GridBagConstraints();
+		gbc_radioButtonHeight.anchor = GridBagConstraints.WEST;
+		gbc_radioButtonHeight.insets = new Insets(0, 0, 5, 5);
+		gbc_radioButtonHeight.gridx = 0;
+		gbc_radioButtonHeight.gridy = 2;
 
-		JRadioButton radioButton_6 = new JRadioButton("Bar Height");
-		GridBagConstraints gbc_radioButton_6 = new GridBagConstraints();
-		gbc_radioButton_6.anchor = GridBagConstraints.WEST;
-		gbc_radioButton_6.insets = new Insets(0, 0, 5, 5);
-		gbc_radioButton_6.gridx = 0;
-		gbc_radioButton_6.gridy = 3;
+		JRadioButton radioButtonOffset = new JRadioButton("Offset");
+		GridBagConstraints gbc_radioButtonOffset = new GridBagConstraints();
+		gbc_radioButtonOffset.anchor = GridBagConstraints.WEST;
+		gbc_radioButtonOffset.insets = new Insets(0, 0, 5, 5);
+		gbc_radioButtonOffset.gridx = 0;
+		gbc_radioButtonOffset.gridy = 3;
 
-		JButton button_2 = new JButton("Set Size");
-		GridBagConstraints gbc_button_2 = new GridBagConstraints();
-		gbc_button_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_button_2.insets = new Insets(0, 0, 5, 0);
-		gbc_button_2.gridx = 1;
-		gbc_button_2.gridy = 2;
+		JButton buttonSetSize = new JButton("Set Size");
+		GridBagConstraints gbcbuttonSetSize = new GridBagConstraints();
+		gbcbuttonSetSize.fill = GridBagConstraints.HORIZONTAL;
+		gbcbuttonSetSize.insets = new Insets(0, 0, 5, 0);
+		gbcbuttonSetSize.gridx = 1;
+		gbcbuttonSetSize.gridy = 2;
 
 		JSlider slider = new JSlider();
 		slider.setValue(40);
@@ -195,26 +215,45 @@ public class ParallelLinesPanel extends JPanel {
 		gbc_slider.gridx = 0;
 		gbc_slider.gridy = 4;
 
-		JTextField textField_1 = new JTextField();
-		textField_1.setText(Integer.toString(slider.getValue()));
-		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setColumns(10);
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_1.gridx = 1;
-		gbc_textField_1.gridy = 3;
+		JTextField textFieldSize = new JTextField();
+		textFieldSize.setText(Integer.toString(slider.getValue()));
+		textFieldSize.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldSize.setColumns(10);
+		GridBagConstraints gbc_textFieldSize = new GridBagConstraints();
+		gbc_textFieldSize.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldSize.insets = new Insets(0, 0, 5, 0);
+		gbc_textFieldSize.gridx = 1;
+		gbc_textFieldSize.gridy = 3;
 
 		/* Link elements' actions */
+		buttonSetSize.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ParallelLinesFieldName fieldName = ParallelLinesFieldName.UNKNOWN;
+				if (radioButtonFirstWidth.isSelected()) {
+					fieldName = ParallelLinesFieldName.FIRST_RECTANGLE_WIDTH;
+				} else if (radioButtonSecondWidth.isSelected()) {
+					fieldName = ParallelLinesFieldName.SECOND_RECTANGLE_WIDTH;
+				} else if (radioButtonHeight.isSelected()) {
+					fieldName = ParallelLinesFieldName.RECTANGLE_HEIGHT;
+				} else if (radioButtonOffset.isSelected()) {
+					fieldName = ParallelLinesFieldName.OFFSET;
+				}
+				parallelLinesPicture.updateDimension(fieldName, slider.getValue());
+			}
+		});
+		Exercise6.set4RadioButtonActions(radioButtonFirstWidth, radioButtonSecondWidth, radioButtonHeight,
+				radioButtonOffset);
+		Exercise6.setSliderTextFieldActions(slider, textFieldSize);
 
 		/* Add Elements to Panel */
-		itemSizePanelParallelLines.add(radioButton_3, gbc_radioButton_3);
-		itemSizePanelParallelLines.add(radioButton_4, gbc_radioButton_4);
-		itemSizePanelParallelLines.add(radioButton_5, gbc_radioButton_5);
-		itemSizePanelParallelLines.add(radioButton_6, gbc_radioButton_6);
-		itemSizePanelParallelLines.add(button_2, gbc_button_2);
+		itemSizePanelParallelLines.add(radioButtonFirstWidth, gbc_radioButtonFirstWidth);
+		itemSizePanelParallelLines.add(radioButtonSecondWidth, gbc_radioButtonSecondWidth);
+		itemSizePanelParallelLines.add(radioButtonHeight, gbc_radioButtonHeight);
+		itemSizePanelParallelLines.add(radioButtonOffset, gbc_radioButtonOffset);
+		itemSizePanelParallelLines.add(buttonSetSize, gbcbuttonSetSize);
 		itemSizePanelParallelLines.add(slider, gbc_slider);
-		itemSizePanelParallelLines.add(textField_1, gbc_textField_1);
+		itemSizePanelParallelLines.add(textFieldSize, gbc_textFieldSize);
 	}
 
 }

@@ -20,7 +20,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import exercise6.BlackDotsPicturePanel.FieldName;
+import exercise6.BlackDotsPicturePanel.BlackDotsFieldName;
 
 public class BlackDotsPanel extends JPanel {
 
@@ -138,13 +138,13 @@ public class BlackDotsPanel extends JPanel {
 		buttonSetColor.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FieldName fieldName = FieldName.UNKNOWN;
+				BlackDotsFieldName fieldName = BlackDotsFieldName.UNKNOWN;
 				if (rdbtnRectangles.isSelected()) {
-					fieldName = FieldName.RECTANGLE_COLOR;
+					fieldName = BlackDotsFieldName.RECTANGLE_COLOR;
 				} else if (rdbtnBars.isSelected()) {
-					fieldName = FieldName.BAR_COLOR;
+					fieldName = BlackDotsFieldName.BAR_COLOR;
 				} else if (rdbtnDots.isSelected()) {
-					fieldName = FieldName.DOT_COLOR;
+					fieldName = BlackDotsFieldName.DOT_COLOR;
 				}
 				blackDotsPicture.updateColor(fieldName, color);
 			}
@@ -235,15 +235,15 @@ public class BlackDotsPanel extends JPanel {
 		buttonSetSize.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				FieldName fieldName = FieldName.UNKNOWN;
+				BlackDotsFieldName fieldName = BlackDotsFieldName.UNKNOWN;
 				if (rdbtnRectangleWidth.isSelected()) {
-					fieldName = FieldName.RECTANGLE_WIDTH;
+					fieldName = BlackDotsFieldName.RECTANGLE_WIDTH;
 				} else if (rdbtnRectangleHeight.isSelected()) {
-					fieldName = FieldName.RECTANGLE_HEIGHT;
+					fieldName = BlackDotsFieldName.RECTANGLE_HEIGHT;
 				} else if (rdbtnBarWidth.isSelected()) {
-					fieldName = FieldName.BAR_WIDTH;
+					fieldName = BlackDotsFieldName.BAR_WIDTH;
 				} else if (rdbtnBarHeight.isSelected()) {
-					fieldName = FieldName.BAR_HEIGHT;
+					fieldName = BlackDotsFieldName.BAR_HEIGHT;
 				}
 				blackDotsPicture.updateDimension(fieldName, sliderSize.getValue());
 			}

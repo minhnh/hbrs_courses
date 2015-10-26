@@ -19,14 +19,14 @@ public class BlackDotsPicturePanel extends JPanel {
 	private Color rectangleColor = new Color(0, 0, 0);
 	private Color dotColor = new Color(255, 255, 255);
 
-	public enum FieldName {
+	public enum BlackDotsFieldName {
 		RECTANGLE_WIDTH, RECTANGLE_HEIGHT, BAR_WIDTH, BAR_HEIGHT, RECTANGLE_COLOR, BAR_COLOR, DOT_COLOR, UNKNOWN
 	}
 
 	public BlackDotsPicturePanel() {
 	}
 
-	public void updateColor(FieldName fieldName, Color newColor) {
+	public void updateColor(BlackDotsFieldName fieldName, Color newColor) {
 		switch (fieldName) {
 		case RECTANGLE_COLOR:
 			rectangleColor = newColor;
@@ -43,7 +43,7 @@ public class BlackDotsPicturePanel extends JPanel {
 		repaint();
 	}
 
-	public void updateDimension(FieldName fieldName, int newDimension) {
+	public void updateDimension(BlackDotsFieldName fieldName, int newDimension) {
 		switch (fieldName) {
 		case RECTANGLE_HEIGHT:
 			rectangleHeight = newDimension;
