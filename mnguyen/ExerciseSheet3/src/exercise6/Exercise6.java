@@ -18,11 +18,13 @@ import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JSlider;
 import javax.swing.JTabbedPane;
 
 public class Exercise6 {
 	private JFrame frame;
 	private JPanel chooseColorPanel;
+	private JPanel itemSizePanel;
 	private JPanel picturePanel;
 	private JPanel parallelLinesPanel;
 	private Color color = new Color(0, 0, 0);
@@ -56,7 +58,7 @@ public class Exercise6 {
 	 */
 	private void initialize() {
 		frame = new JFrame("AST WS 2015 - Exercise 6 (by Minh Nguyen)");
-		frame.setBounds(100, 100, 647, 492);
+		frame.setBounds(100, 100, 640, 420);
 		// frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -77,50 +79,40 @@ public class Exercise6 {
 		/* Initialize Color Picker Frame */
 		initializeColorPicker();
 
-		JPanel itemSizePanel = new JPanel();
+		/* Initialize Item Size Frame */
+		initializeItemSize();
 
 		GroupLayout gl_blackDotsPanel = new GroupLayout(blackDotsPanel);
 		gl_blackDotsPanel.setHorizontalGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_blackDotsPanel.createSequentialGroup().addGap(18)
-						.addGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_blackDotsPanel.createParallelGroup(Alignment.TRAILING)
 								.addComponent(itemSizePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE)
-								.addComponent(chooseColorPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE))
+								.addComponent(chooseColorPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+										GroupLayout.PREFERRED_SIZE))
 						.addGap(18)
 						.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, 354, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(30, Short.MAX_VALUE)));
 		gl_blackDotsPanel.setVerticalGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_blackDotsPanel.createSequentialGroup().addContainerGap().addGroup(gl_blackDotsPanel
-						.createParallelGroup(Alignment.LEADING)
-						.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_blackDotsPanel.createSequentialGroup()
-								.addComponent(chooseColorPanel, GroupLayout.PREFERRED_SIZE, 113,
-										GroupLayout.PREFERRED_SIZE)
-								.addGap(18).addComponent(itemSizePanel, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-						.addContainerGap(94, Short.MAX_VALUE)));
-		GridBagLayout gbl_itemSizePanel = new GridBagLayout();
-		gbl_itemSizePanel.columnWidths = new int[] { 100, 100, 0 };
-		gbl_itemSizePanel.rowHeights = new int[] { 0, 0 };
-		gbl_itemSizePanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
-		gbl_itemSizePanel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
-		itemSizePanel.setLayout(gbl_itemSizePanel);
+				.addGroup(gl_blackDotsPanel.createSequentialGroup().addContainerGap()
+						.addGroup(gl_blackDotsPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(picturePanel, GroupLayout.PREFERRED_SIZE, 320, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_blackDotsPanel.createSequentialGroup()
+										.addComponent(chooseColorPanel, GroupLayout.PREFERRED_SIZE, 113,
+												GroupLayout.PREFERRED_SIZE)
+										.addGap(18).addComponent(itemSizePanel, GroupLayout.PREFERRED_SIZE,
+												GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap(76, Short.MAX_VALUE)));
 
-		JRadioButton radioButton = new JRadioButton("Rectangles");
-		GridBagConstraints gbc_radioButton = new GridBagConstraints();
-		gbc_radioButton.insets = new Insets(0, 0, 0, 5);
-		gbc_radioButton.anchor = GridBagConstraints.WEST;
-		gbc_radioButton.gridx = 0;
-		gbc_radioButton.gridy = 0;
-		itemSizePanel.add(radioButton, gbc_radioButton);
-
-		JButton button = new JButton("Set Color");
-		GridBagConstraints gbc_button = new GridBagConstraints();
-		gbc_button.fill = GridBagConstraints.HORIZONTAL;
-		gbc_button.gridx = 1;
-		gbc_button.gridy = 0;
-		itemSizePanel.add(button, gbc_button);
+		JSlider slider = new JSlider();
+		slider.setValue(20);
+		slider.setMinimum(10);
+		slider.setPaintTicks(true);
+		GridBagConstraints gbc_slider = new GridBagConstraints();
+		gbc_slider.gridwidth = 2;
+		gbc_slider.gridx = 0;
+		gbc_slider.gridy = 4;
+		itemSizePanel.add(slider, gbc_slider);
 
 		blackDotsPanel.setLayout(gl_blackDotsPanel);
 
@@ -197,4 +189,57 @@ public class Exercise6 {
 		picturePanel.setLayout(new CardLayout(0, 0));
 	}
 
+	private void initializeItemSize() {
+
+		itemSizePanel = new JPanel();
+		itemSizePanel.setBorder(BorderFactory.createTitledBorder("Choose Item Size"));
+
+		GridBagLayout gbl_itemSizePanel = new GridBagLayout();
+		gbl_itemSizePanel.columnWidths = new int[] { 100, 100, 0 };
+		gbl_itemSizePanel.rowHeights = new int[] { 0, 30, 30, 30, 30, 0 };
+		gbl_itemSizePanel.columnWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
+		gbl_itemSizePanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		itemSizePanel.setLayout(gbl_itemSizePanel);
+
+		JRadioButton rdbtnRectangleWidth = new JRadioButton("Rect. Width");
+		GridBagConstraints gbc_rdbtnRectangleWidth = new GridBagConstraints();
+		gbc_rdbtnRectangleWidth.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnRectangleWidth.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnRectangleWidth.gridx = 0;
+		gbc_rdbtnRectangleWidth.gridy = 0;
+		itemSizePanel.add(rdbtnRectangleWidth, gbc_rdbtnRectangleWidth);
+
+		JRadioButton rdbtnRectangleHeight = new JRadioButton("Rect. Height");
+		GridBagConstraints gbc_rdbtnRectangleHeight = new GridBagConstraints();
+		gbc_rdbtnRectangleHeight.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnRectangleHeight.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnRectangleHeight.gridx = 0;
+		gbc_rdbtnRectangleHeight.gridy = 1;
+		itemSizePanel.add(rdbtnRectangleHeight, gbc_rdbtnRectangleHeight);
+
+		JRadioButton rdbtnBarWidth = new JRadioButton("Bar Width");
+		GridBagConstraints gbc_rdbtnBarWidth = new GridBagConstraints();
+		gbc_rdbtnBarWidth.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnBarWidth.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnBarWidth.gridx = 0;
+		gbc_rdbtnBarWidth.gridy = 2;
+		itemSizePanel.add(rdbtnBarWidth, gbc_rdbtnBarWidth);
+
+		JButton buttonSetSize = new JButton("Set Size");
+		GridBagConstraints gbc_buttonSetSize = new GridBagConstraints();
+		gbc_buttonSetSize.insets = new Insets(0, 0, 5, 0);
+		gbc_buttonSetSize.fill = GridBagConstraints.HORIZONTAL;
+		gbc_buttonSetSize.gridx = 1;
+		gbc_buttonSetSize.gridy = 2;
+		itemSizePanel.add(buttonSetSize, gbc_buttonSetSize);
+
+		JRadioButton rdbtnBarHeight = new JRadioButton("Bar Height");
+		GridBagConstraints gbc_rdbtnBarHeight = new GridBagConstraints();
+		gbc_rdbtnBarHeight.anchor = GridBagConstraints.WEST;
+		gbc_rdbtnBarHeight.insets = new Insets(0, 0, 5, 5);
+		gbc_rdbtnBarHeight.gridx = 0;
+		gbc_rdbtnBarHeight.gridy = 3;
+		itemSizePanel.add(rdbtnBarHeight, gbc_rdbtnBarHeight);
+
+	}
 }
