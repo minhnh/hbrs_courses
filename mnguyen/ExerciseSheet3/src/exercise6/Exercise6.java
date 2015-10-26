@@ -222,32 +222,7 @@ public class Exercise6 {
 			}
 		});
 
-		rdbtnRectangles.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				rdbtnRectangles.setSelected(true);
-				rdbtnBars.setSelected(false);
-				rdbtnDots.setSelected(false);
-			}
-		});
-
-		rdbtnBars.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				rdbtnBars.setSelected(true);
-				rdbtnRectangles.setSelected(false);
-				rdbtnDots.setSelected(false);
-			}
-		});
-
-		rdbtnDots.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				rdbtnDots.setSelected(true);
-				rdbtnBars.setSelected(false);
-				rdbtnRectangles.setSelected(false);
-			}
-		});
+		set3RadioButtonActions(rdbtnRectangles, rdbtnBars, rdbtnDots);
 
 		/* Add Elements to panel */
 		chooseColorPanelBlackDots.add(rdbtnRectangles, gbc_rdbtnRectangle);
@@ -277,6 +252,7 @@ public class Exercise6 {
 		gbc_rdbtnRectangleWidth.insets = new Insets(0, 0, 5, 5);
 		gbc_rdbtnRectangleWidth.gridx = 0;
 		gbc_rdbtnRectangleWidth.gridy = 0;
+		rdbtnRectangleWidth.setSelected(true);
 
 		JRadioButton rdbtnRectangleHeight = new JRadioButton("Rect. Height");
 		GridBagConstraints gbc_rdbtnRectangleHeight = new GridBagConstraints();
@@ -328,6 +304,7 @@ public class Exercise6 {
 		gbc_sliderSize.gridy = 4;
 
 		/* Link elements' actions */
+		set4RadioButtonActions(rdbtnRectangleWidth, rdbtnRectangleHeight, rdbtnBarWidth, rdbtnBarHeight);
 
 		/* Add Elements to Panel */
 		itemSizePanelBlackDots.add(rdbtnRectangleWidth, gbc_rdbtnRectangleWidth);
@@ -489,5 +466,72 @@ public class Exercise6 {
 		itemSizePanelParallelLines.add(button_2, gbc_button_2);
 		itemSizePanelParallelLines.add(textField_1, gbc_textField_1);
 		itemSizePanelParallelLines.add(slider, gbc_slider);
+	}
+
+	private void set3RadioButtonActions(JRadioButton button1, JRadioButton button2, JRadioButton button3) {
+		button1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				button1.setSelected(true);
+				button2.setSelected(false);
+				button3.setSelected(false);
+			}
+		});
+		button2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				button2.setSelected(true);
+				button1.setSelected(false);
+				button3.setSelected(false);
+			}
+		});
+		button3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				button3.setSelected(true);
+				button2.setSelected(false);
+				button1.setSelected(false);
+			}
+		});
+	}
+
+	private void set4RadioButtonActions(JRadioButton button1, JRadioButton button2, JRadioButton button3,
+			JRadioButton button4) {
+		button1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				button1.setSelected(true);
+				button2.setSelected(false);
+				button3.setSelected(false);
+				button4.setSelected(false);
+			}
+		});
+		button2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				button2.setSelected(true);
+				button1.setSelected(false);
+				button3.setSelected(false);
+				button4.setSelected(false);
+			}
+		});
+		button3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				button3.setSelected(true);
+				button2.setSelected(false);
+				button1.setSelected(false);
+				button4.setSelected(false);
+			}
+		});
+		button4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				button4.setSelected(true);
+				button1.setSelected(false);
+				button2.setSelected(false);
+				button3.setSelected(false);
+			}
+		});
 	}
 }
