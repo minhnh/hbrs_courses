@@ -47,25 +47,24 @@ public class ParallelLinesPanel extends JPanel {
 		GroupLayout gl_parallelLinesPanel = new GroupLayout(this);
 		gl_parallelLinesPanel.setHorizontalGroup(gl_parallelLinesPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_parallelLinesPanel.createSequentialGroup().addGap(18)
-						.addGroup(gl_parallelLinesPanel.createParallelGroup(Alignment.LEADING)
-								.addComponent(chooseColorPanelParallelLines, GroupLayout.PREFERRED_SIZE, 212,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(itemSizePanelParallelLines, GroupLayout.PREFERRED_SIZE, 212,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addComponent(parallelLinesPicture, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(30, Short.MAX_VALUE)));
+						.addGroup(gl_parallelLinesPanel.createParallelGroup(Alignment.TRAILING)
+								.addComponent(chooseColorPanelParallelLines, GroupLayout.DEFAULT_SIZE, 266,
+										Short.MAX_VALUE)
+						.addComponent(itemSizePanelParallelLines, GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
+						.addGap(18).addComponent(parallelLinesPicture, GroupLayout.PREFERRED_SIZE,
+								GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addGap(30)));
 		gl_parallelLinesPanel.setVerticalGroup(gl_parallelLinesPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_parallelLinesPanel.createSequentialGroup().addContainerGap().addGroup(gl_parallelLinesPanel
-						.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_parallelLinesPanel.createSequentialGroup().addContainerGap()
+						.addGroup(gl_parallelLinesPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(parallelLinesPicture, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_parallelLinesPanel.createSequentialGroup()
 								.addComponent(chooseColorPanelParallelLines, GroupLayout.PREFERRED_SIZE, 113,
 										GroupLayout.PREFERRED_SIZE)
-								.addGap(18).addComponent(itemSizePanelParallelLines, GroupLayout.PREFERRED_SIZE, 172,
-										GroupLayout.PREFERRED_SIZE))
-						.addComponent(parallelLinesPicture, GroupLayout.PREFERRED_SIZE, 300,
-								GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(22, Short.MAX_VALUE)));
+								.addGap(18).addComponent(itemSizePanelParallelLines, GroupLayout.PREFERRED_SIZE,
+										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+						.addContainerGap(39, Short.MAX_VALUE)));
 		this.setLayout(gl_parallelLinesPanel);
 	}
 
