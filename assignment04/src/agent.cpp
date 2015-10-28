@@ -20,23 +20,11 @@ Agent::~Agent()
 void Agent::run()
 {
     print_map();
-    int index = 0;
-
-    cout << "Please enter search method index: ";
-    cin >> index;
-    if ( index == 1) {
-        time_t start = time(NULL);
-        dfs();
-        cout    << "Search time (s):"
-                << std::difftime(std::time(NULL), start) << endl;
-    } else if (index == 2) {
-        time_t start = time(NULL);
-        dfs();
-        cout    << "Search time (s)        : "
-                << std::difftime(std::time(NULL), start) << endl;
-    } else {
-        cout << "Invalid search index"<< endl;
-    }
+	
+	time_t start = time(NULL);
+	dfs();
+	cout    << "Search time (s):"
+			<< std::difftime(std::time(NULL), start) << endl;
 }
 
 void Agent::print_map()
