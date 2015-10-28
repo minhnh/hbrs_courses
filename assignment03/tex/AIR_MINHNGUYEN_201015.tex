@@ -1,0 +1,51 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{titling}
+\usepackage{array}
+\usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+
+\setlength{\droptitle}{-7em}
+
+\title{Artificial Intelligence for Robots \\
+				- Homework 3 -}
+\author{Minh Nguyen}
+\date{Lecture date: 20 October 2015}
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+
+    % Question 1
+	\item A finite state space does not always lead to a finite search tree,
+    because if the search tree can expand to one of previously expanded state,
+    it can loop forever in these states. So a finite state space can have a
+    finite state tree if the state space doesn't allow revisiting previously
+    reached states, or if the search tree keeps track of and avoids previously
+    visited states.
+
+    % Question 2
+	\item Implementations of breadth-first and depth-first are included in the
+    src/ directory.
+
+	% Question 3
+	\item Performance comparison collected from running the program:\\\\
+        \begin{tabular}{*7c}
+        \toprule
+        Category        & \multicolumn{2}{c}{Map 1} & \multicolumn{2}{c}{Map 2} & \multicolumn{2}{c}{Map 3} \\
+                        & BFS & DFS                 & BFS & DFS                 & BFS & DFS                 \\
+        \midrule
+        Elapsed Time(s) & 5   & 3                   & 4   & 3                   & 19  & 18                  \\
+        Stored Nodes    & 1261& 674                 & 1076& 824                 & 2460& 1457                \\
+        Checked Nodes   & 5033& 3393                & 4277& 3525                & 9841& 9841                \\
+        \bottomrule
+        \end{tabular}
+
+\end{enumerate}
+
+%\bibliographystyle{plain}
+%\bibliography{AIR_MINHNGUYEN_201015}
+
+\end{document}
