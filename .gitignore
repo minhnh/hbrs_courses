@@ -4,3 +4,10 @@
 */build/cmake_install.cmake
 */build/bin
 *~
+# tex files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.pdf
