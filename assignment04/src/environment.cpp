@@ -82,7 +82,7 @@ int Environment::load_map(int map_index)
                 start_X = map.length() - (height * (width + 1));
                 start_Y = height;
             }
-            else if (c == '*')
+            else if (c >= 49 && c <= 57)
             {
                 number_of_dust++;
             }
