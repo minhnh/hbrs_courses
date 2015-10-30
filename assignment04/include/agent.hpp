@@ -9,14 +9,13 @@ class Agent
         ~Agent();
 
         void run();
-        int bfs();
         int dfs();
         void get_map_data(int,int,int,int,int);
 
 
     private:
 
-        void dfs_re(int x, int y, int * max_depth_p, int * dust_num);
+        void ids_re(int x, int y, int max_depth, char target);
         void print_map();
         std::string map;
         char get_value_at(int x, int y);

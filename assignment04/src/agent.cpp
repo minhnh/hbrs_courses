@@ -20,7 +20,7 @@ Agent::~Agent()
 void Agent::run()
 {
     print_map();
-	
+
 	time_t start = time(NULL);
 	dfs();
 	cout    << "Search time (s):"
@@ -41,11 +41,11 @@ int Agent::dfs()
     cout << "Depth first search";
 
     int number_of_dust = 0;
-    int max_depth = 0;
+    int max_depth = 5;
     dfs_checked_node = 0;
 
     /* Recursive call to start depth first search */
-    dfs_re(start_X, start_Y, &max_depth, &number_of_dust);
+    ids_re(start_X, start_Y, max_depth, '1');
 
     cout << "Number of dust         : " << number_of_dust << endl;
     cout << "Number of stored nodes : " << max_depth << endl;
@@ -54,30 +54,25 @@ int Agent::dfs()
     return number_of_dust;
 }
 
-/* Recursive depth first search
+/* Implementation of Iterative Deepening Search
  * @param max_depth: maximum recursive depth recorded
  */
-void Agent::dfs_re(int x, int y, int * max_depth, int * number_of_dust) {
-    static int call_num = 0;
+void Agent::ids_re(int x, int y, int max_depth, char target) {
+    static int cur_depth = 0;
     char value = get_value_at(x, y);
 
     dfs_checked_node ++;
 
     /* Calculate maximum recursive depth reached */
-    call_num++;
-    if (call_num > *max_depth) {
-        *max_depth = call_num;
-    }
-
-    /* Return if current node is an obstacle / visited node/ wall */
-    if (value == 0 || value == '=' || value == '|' || value == '-') {
-        call_num--;
+    cur_depth++;
+    if (cur_depth > max_depth) {
+        cur_depth--;
         return;
     }
 
-    /* Return if found all dusts */
-    if (*number_of_dust >= max_number_of_dust) {
-        call_num--;
+    /* Return if current node is an obstacle / visited node/ wall */
+    if (value != 's' && value != target && value != ' ') {
+        cur_depth--;
         return;
     }
 
@@ -88,21 +83,22 @@ void Agent::dfs_re(int x, int y, int * max_depth, int * number_of_dust) {
     print_map();
 
     /* Sleep timer for visibility */
-    //usleep(30000);
-    //set_value_at(x, y, value);
+    usleep(30000);
+    set_value_at(x, y, value);
 
     /* Found space or dust (if not starting position), make recursive
      * calls to adjacent cells */
-    if ( value == 's' || value == '*' || value == ' ' ) {
-        set_value_at(x, y, '-');
-        *number_of_dust += (value == '*') ? 1 : 0;
-        dfs_re(x - 1, y, max_depth, number_of_dust); // left
-        dfs_re(x + 1, y, max_depth, number_of_dust); // right
-        dfs_re(x, y + 1, max_depth, number_of_dust); // up
-        dfs_re(x, y - 1, max_depth, number_of_dust); // down
+    set_value_at(x, y, '-');
+    if (value == target) {
+        return;
     }
 
-    call_num--;
+    ids_re(x - 1, y, max_depth, target); // left
+    ids_re(x + 1, y, max_depth, target); // right
+    ids_re(x, y + 1, max_depth, target); // up
+    ids_re(x, y - 1, max_depth, target); // down
+
+    cur_depth--;
     return;
 }
 

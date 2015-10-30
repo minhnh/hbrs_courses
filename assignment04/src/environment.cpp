@@ -37,15 +37,15 @@ int Environment::load_map(int map_index)
     ifstream mapFile;
     if (map_index == 1)
     {
-        mapFile.open("bin/maps/map1.txt");
+        mapFile.open("maps/map1.txt");
     }
     else if (map_index == 2)
     {
-        mapFile.open("bin/maps/map2.txt");
+        mapFile.open("maps/map2.txt");
     }
     else if (map_index == 3)
     {
-        mapFile.open("bin/maps/map3.txt");
+        mapFile.open("maps/map3.txt");
     }
     else
     {
