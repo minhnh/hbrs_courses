@@ -62,6 +62,7 @@ int Agent::ids()
         /* If depth reached is less than depth limit */
         if (depth_reached < max_depth) {
             cout << "Could not find" << target << endl;
+            max_depth = 0;
             target++;
         }
         depth_reached = 0;
@@ -106,11 +107,12 @@ MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char tar
     /* Print current coordinates */
     cout << "\033[2;1H]"; //move Cursor to row 2 column 1
     printf("X:%4d Y:%4d\n", x, y);
+    printf("Depth Limit: %4d, current depth: %4d\n", max_depth, cur_depth);
     set_value_at(x, y, 's');
     print_map();
 
     /* Sleep timer for visibility */
-    //usleep(3000);
+    //usleep(200000);
 
     /* Found space or dust (if not starting position), make recursive
      * calls to adjacent cells */
@@ -127,12 +129,12 @@ MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char tar
         cur_depth--;
         return coordinates;
     }
-    coordinates = ids_re(x - 1, y, max_depth, depth_reached, target); // left
+    coordinates = ids_re(x, y + 1, max_depth, depth_reached, target); // up
     if (coordinates.is_valid()) {
         cur_depth--;
         return coordinates;
     }
-    coordinates = ids_re(x, y + 1, max_depth, depth_reached, target); // up
+    coordinates = ids_re(x - 1, y, max_depth, depth_reached, target); // left
     if (coordinates.is_valid()) {
         cur_depth--;
         return coordinates;
@@ -158,8 +160,8 @@ void Agent::ids_clear_map(int x, int y) {
     cur_depth++;
 
     ids_clear_map(x + 1, y);
-    ids_clear_map(x - 1, y);
     ids_clear_map(x, y + 1);
+    ids_clear_map(x - 1, y);
     ids_clear_map(x, y - 1);
 
     cur_depth--;
