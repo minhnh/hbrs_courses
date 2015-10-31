@@ -38,6 +38,7 @@ class MapCell
         void set_x(int);
         void set_y(int);
         void set_xy(int,int);
+        bool is_valid();
         int x;
         int y;
 };

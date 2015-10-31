@@ -152,3 +152,11 @@ void MapCell::set_xy(int X, int Y)
     x = X;
     y = Y;
 }
+
+bool MapCell::is_valid()
+{
+    if (x < 0 && y < 0) {
+        return false;
+    }
+    return true;
+}
