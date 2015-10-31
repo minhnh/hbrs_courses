@@ -7,6 +7,6 @@ This will create the makefile for you following the rules in the CMakeLists.txt 
 Once the cmake command is done you can now compile your program with the following command:		make
 
 
-The executable will be created inside the bin folder. Stay in the build folder and run the program with the following command:
+The executable will be created inside the bin folder. Go to bin folder and run the program with the following command:
 	
-	./bin/assignment04
+	./assignment04
