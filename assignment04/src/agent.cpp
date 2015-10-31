@@ -44,27 +44,32 @@ int Agent::ids()
     int number_of_dust = 0;
     int max_depth = 0;
     int depth_reached = 0;
+    char target = '1';
+    MapCell coordinates = MapCell(-1, -1);
 
     /* Recursive call to start depth first search */
-    // MapCell coordinates = ids_re(start_X, start_Y, 20, &depth_reached, '1');
-    // ids_clear_map(start_X, start_Y, depth_reached);
-    // print_map();
-    // depth_reached = 0;
-    while (true) {
-       MapCell coordinates = ids_re(start_X, start_Y, max_depth, &depth_reached, '1');
-       if (coordinates.is_valid()) break;
-       ids_clear_map(start_X, start_Y, depth_reached);
-       /* If depth reached is less than depth limit */
-       if (depth_reached < max_depth) {
-           break;
-       }
-       depth_reached = 0;
-       max_depth++;
+    while (target < max_number_of_dust + '0') {
+        coordinates = ids_re(start_X, start_Y, max_depth, &depth_reached, target);
+        if (coordinates.is_valid()) {
+            target++;
+            start_X = coordinates.x;
+            start_Y = coordinates.y;
+            //print_map();
+            //printf("Goal %c: X = %3d Y = %3d\n", target, coordinates.x, coordinates.y);
+        }
+        ids_clear_map(start_X, start_Y);
+        /* If depth reached is less than depth limit */
+        if (depth_reached < max_depth) {
+            cout << "Could not find" << target << endl;
+            target++;
+        }
+        depth_reached = 0;
+        max_depth++;
     }
 
     print_map();
 
-    cout << "Number of dust         : " << number_of_dust << endl;
+    printf( "Coordinates goal       : %3d %3d\n", coordinates.x, coordinates.y);
     cout << "Number of stored nodes : " << depth_reached << endl;
     cout << "Number of checked nodes: " << ids_checked_node << endl;
 
@@ -80,10 +85,7 @@ MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char tar
     char value;
 
     /* Calculate maximum recursive depth reached */
-    cur_depth++;
-    //printf("current depth: %3d\n", cur_depth);
     if (cur_depth > max_depth) {
-        cur_depth--;
         return coordinates;
     }
 
@@ -96,7 +98,6 @@ MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char tar
 
     /* Return if current node is an obstacle / visited node/ wall */
     if (value != 's' && value != target && value != ' ') {
-        cur_depth--;
         return coordinates;
     }
 
@@ -107,16 +108,17 @@ MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char tar
     print_map();
 
     /* Sleep timer for visibility */
-    usleep(20000);
+    usleep(3000);
 
     /* Found space or dust (if not starting position), make recursive
      * calls to adjacent cells */
     set_value_at(x, y, '-');
     if (value == target) {
         coordinates.set_xy(x, y);
-        cur_depth--;
         return coordinates;
     }
+
+    cur_depth++;
 
     coordinates = ids_re(x + 1, y, max_depth, depth_reached, target); // right
     if (coordinates.is_valid()) {
@@ -134,33 +136,29 @@ MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char tar
         return coordinates;
     }
     coordinates = ids_re(x, y - 1, max_depth, depth_reached, target); // down
+
     cur_depth--;
     return coordinates;
 }
 
-void Agent::ids_clear_map(int x, int y, int max_depth) {
+void Agent::ids_clear_map(int x, int y) {
     static int cur_depth = 0;
     char value;
-
-    cur_depth++;
-    if (cur_depth > max_depth) {
-        cur_depth--;
-        return;
-    }
 
     value = get_value_at(x, y);
 
     if (value != '-' && value != 's') {
-        cur_depth--;
         return;
     }
 
     if (value == '-') set_value_at(x, y, ' ');
 
-    ids_clear_map(x + 1, y, max_depth);
-    ids_clear_map(x - 1, y, max_depth);
-    ids_clear_map(x, y + 1, max_depth);
-    ids_clear_map(x, y - 1, max_depth);
+    cur_depth++;
+
+    ids_clear_map(x + 1, y);
+    ids_clear_map(x - 1, y);
+    ids_clear_map(x, y + 1);
+    ids_clear_map(x, y - 1);
 
     cur_depth--;
 }
