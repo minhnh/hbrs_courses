@@ -52,6 +52,7 @@ int Agent::ids()
     // depth_reached = 0;
     while (true) {
        MapCell coordinates = ids_re(start_X, start_Y, max_depth, &depth_reached, '1');
+       if (coordinates.is_valid()) break;
        ids_clear_map(start_X, start_Y, depth_reached);
        /* If depth reached is less than depth limit */
        if (depth_reached < max_depth) {
@@ -60,6 +61,8 @@ int Agent::ids()
        depth_reached = 0;
        max_depth++;
     }
+
+    print_map();
 
     cout << "Number of dust         : " << number_of_dust << endl;
     cout << "Number of stored nodes : " << depth_reached << endl;
@@ -74,7 +77,7 @@ int Agent::ids()
 MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char target) {
     static int cur_depth = 0;
     MapCell coordinates = MapCell(-1, -1);
-    char value = get_value_at(x, y);
+    char value;
 
     /* Calculate maximum recursive depth reached */
     cur_depth++;
@@ -83,6 +86,8 @@ MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char tar
         cur_depth--;
         return coordinates;
     }
+
+    value = get_value_at(x, y);
 
     /* Maximum depth reached by search algorithm */
     if (cur_depth > *depth_reached) {
@@ -128,7 +133,6 @@ MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char tar
         cur_depth--;
         return coordinates;
     }
-
     coordinates = ids_re(x, y - 1, max_depth, depth_reached, target); // down
     cur_depth--;
     return coordinates;
