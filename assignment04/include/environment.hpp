@@ -30,10 +30,11 @@ class Environment
 
 };
 
-class Point
+class MapCell
 {
     public:
-        Point(int X,int Y);
+        MapCell(int X, int Y);
+        ~MapCell();
         void set_x(int);
         void set_y(int);
         void set_xy(int,int);

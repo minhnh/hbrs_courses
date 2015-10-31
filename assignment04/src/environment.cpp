@@ -37,15 +37,15 @@ int Environment::load_map(int map_index)
     ifstream mapFile;
     if (map_index == 1)
     {
-        mapFile.open("maps/map1.txt");
+        mapFile.open("../maps/map1.txt");
     }
     else if (map_index == 2)
     {
-        mapFile.open("maps/map2.txt");
+        mapFile.open("../maps/map2.txt");
     }
     else if (map_index == 3)
     {
-        mapFile.open("maps/map3.txt");
+        mapFile.open("../maps/map3.txt");
     }
     else
     {
@@ -121,23 +121,33 @@ void Environment::initialize_map()
 
 }
 
-
 void Environment::print_map()
 {
     cout << map << endl;
 }
 
-void Point::set_x(int X)
+MapCell::MapCell(int X, int Y)
+{
+    MapCell::x = X;
+    MapCell::y = Y;
+}
+
+MapCell::~MapCell()
+{
+
+}
+
+void MapCell::set_x(int X)
 {
     x = X;
 }
 
-void Point::set_y(int Y)
+void MapCell::set_y(int Y)
 {
     y = Y;
 }
 
-void Point::set_xy(int X, int Y)
+void MapCell::set_xy(int X, int Y)
 {
     x = X;
     y = Y;
