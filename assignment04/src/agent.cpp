@@ -30,7 +30,7 @@ void Agent::run()
 
 void Agent::print_map()
 {
-   cout << map << endl;
+    cout << map << endl;
 }
 
 
@@ -42,13 +42,27 @@ int Agent::ids()
     cout << "Depth first search";
 
     int number_of_dust = 0;
-    int max_depth = 20;
+    int max_depth = 0;
+    int depth_reached = 0;
 
     /* Recursive call to start depth first search */
-    MapCell coordinates = ids_re(start_X, start_Y, max_depth, '1');
+    // MapCell coordinates = ids_re(start_X, start_Y, 20, &depth_reached, '1');
+    // ids_clear_map(start_X, start_Y, depth_reached);
+    // print_map();
+    // depth_reached = 0;
+    while (true) {
+       MapCell coordinates = ids_re(start_X, start_Y, max_depth, &depth_reached, '1');
+       ids_clear_map(start_X, start_Y, depth_reached);
+       /* If depth reached is less than depth limit */
+       if (depth_reached < max_depth) {
+           break;
+       }
+       depth_reached = 0;
+       max_depth++;
+    }
 
     cout << "Number of dust         : " << number_of_dust << endl;
-    cout << "Number of stored nodes : " << max_depth << endl;
+    cout << "Number of stored nodes : " << depth_reached << endl;
     cout << "Number of checked nodes: " << ids_checked_node << endl;
 
     return number_of_dust;
@@ -57,7 +71,7 @@ int Agent::ids()
 /* Implementation of Iterative Deepening Search
  * @param max_depth: maximum recursive depth recorded
  */
-MapCell Agent::ids_re(int x, int y, int max_depth, char target) {
+MapCell Agent::ids_re(int x, int y, int max_depth, int * depth_reached, char target) {
     static int cur_depth = 0;
     MapCell coordinates = MapCell(-1, -1);
     char value = get_value_at(x, y);
@@ -68,6 +82,11 @@ MapCell Agent::ids_re(int x, int y, int max_depth, char target) {
     if (cur_depth > max_depth) {
         cur_depth--;
         return coordinates;
+    }
+
+    /* Maximum depth reached by search algorithm */
+    if (cur_depth > *depth_reached) {
+        *depth_reached = cur_depth;
     }
 
     /* Return if current node is an obstacle / visited node/ wall */
@@ -83,7 +102,7 @@ MapCell Agent::ids_re(int x, int y, int max_depth, char target) {
     print_map();
 
     /* Sleep timer for visibility */
-    usleep(200000);
+    usleep(20000);
 
     /* Found space or dust (if not starting position), make recursive
      * calls to adjacent cells */
@@ -94,26 +113,52 @@ MapCell Agent::ids_re(int x, int y, int max_depth, char target) {
         return coordinates;
     }
 
-    coordinates = ids_re(x - 1, y, max_depth, target); // left
-    if (coordinates.x != -1 && coordinates.y != -1) {
+    coordinates = ids_re(x + 1, y, max_depth, depth_reached, target); // right
+    if (coordinates.is_valid()) {
         cur_depth--;
         return coordinates;
     }
-    //cout << "X: " << coordinates.x << "| Y: " << coordinates.y << endl;
-    coordinates = ids_re(x + 1, y, max_depth, target); // right
-    if (coordinates.x != -1 && coordinates.y != -1) {
+    coordinates = ids_re(x - 1, y, max_depth, depth_reached, target); // left
+    if (coordinates.is_valid()) {
         cur_depth--;
         return coordinates;
     }
-    coordinates = ids_re(x, y + 1, max_depth, target); // up
-    if (coordinates.x != -1 && coordinates.y != -1) {
+    coordinates = ids_re(x, y + 1, max_depth, depth_reached, target); // up
+    if (coordinates.is_valid()) {
         cur_depth--;
         return coordinates;
     }
 
-    coordinates = ids_re(x, y - 1, max_depth, target); // down
+    coordinates = ids_re(x, y - 1, max_depth, depth_reached, target); // down
     cur_depth--;
     return coordinates;
+}
+
+void Agent::ids_clear_map(int x, int y, int max_depth) {
+    static int cur_depth = 0;
+    char value;
+
+    cur_depth++;
+    if (cur_depth > max_depth) {
+        cur_depth--;
+        return;
+    }
+
+    value = get_value_at(x, y);
+
+    if (value != '-' && value != 's') {
+        cur_depth--;
+        return;
+    }
+
+    if (value == '-') set_value_at(x, y, ' ');
+
+    ids_clear_map(x + 1, y, max_depth);
+    ids_clear_map(x - 1, y, max_depth);
+    ids_clear_map(x, y + 1, max_depth);
+    ids_clear_map(x, y - 1, max_depth);
+
+    cur_depth--;
 }
 
 void Agent::get_map_data(int mapH, int mapW, int sX, int sY, int nd)
