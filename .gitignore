@@ -10,5 +10,6 @@
 *.blg
 *.log
 *.out
+*.dvi
 *.pdf
 *.gz
