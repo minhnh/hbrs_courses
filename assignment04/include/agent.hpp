@@ -15,7 +15,8 @@ class Agent
 
     private:
 
-        MapCell ids_re(int x, int y, int max_depth, int * depth_reached, char target);
+        MapCell ids_re(int x, int y, int max_depth, int * depth_reached,
+                            char target, bool print_map);
         void ids_clear_map(int x, int y);
         void print_map();
         std::string map;
