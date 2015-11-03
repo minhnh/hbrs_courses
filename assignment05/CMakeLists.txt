@@ -12,6 +12,7 @@ include_directories (
 
 add_executable( assignment05 
 		src/main.cpp
-		src/greedy_search.cpp)
+		src/greedy_search.cpp
+		src/state.cpp)
 
 #target_link_libraries(assignment05)

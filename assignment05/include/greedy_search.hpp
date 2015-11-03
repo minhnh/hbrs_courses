@@ -1,30 +1,29 @@
 #ifndef GREEDY_SEARCH_HPP
 #define GREEDY_SEARCH_HPP
+#include "state.hpp"
+
+enum Direction
+{
+    UP = 0,
+    DOWN = 1,
+    LEFT = 2,
+    RIGHT = 3
+};
+
 
 class Greedy_search
 {
     public:
         Greedy_search();
         void run();
+        void search_h1(int map[]);
+        void search_h2(int map[]);
+        State move(int map[], Direction);
+        bool compare_arrays(int a[], int b[]);
+        
+        int size_x;
+		int size_y;
     private:
 
 };
-
-class State
-{
-	public:
-		State(int Tiles[][]);
-		int map[][];
-		int map_size_x;
-		int map_size_y;
-		
-		int h1;
-		int h2;
-		
-		//Manhattan distance
-        int find_heuristics_1();
-        //Misplaced tiles
-        int find_heuristics_2();
-	private:
-}
 #endif
