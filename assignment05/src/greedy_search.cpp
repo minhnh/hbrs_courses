@@ -47,6 +47,7 @@ void Greedy_search::search_h1(int intput_map[])
 	
 	deque<State> search_list;	
 	deque<State> reached_state;
+	deque<State> solve_step;
 	
 	search_list.push_front(initial_state);
 	State past_state = initial_state;
@@ -59,6 +60,7 @@ void Greedy_search::search_h1(int intput_map[])
 		search_list.pop_front();
 		if (current_state.h1 == 0)
 		{
+			solve_step.push_front(current_state);
 			break;
 		}
 		if(current_state.can_move_up)
@@ -234,9 +236,17 @@ void Greedy_search::search_h1(int intput_map[])
 		}		
 	}
 	
-	for (int i = 0; i < reached_state.size(); i++)
+	for (int i = reached_state.size()-1; i >= 0; i--)
 	{
-		reached_state[i].print();
+		if (is_related(solve_step.front(),reached_state[i]))
+		{
+			solve_step.push_front(reached_state[i]);
+		}
+	}
+	
+	for (int i = 0; i < solve_step.size(); i++)
+	{
+		solve_step[i].print();
 	}
 	
 	cout<<"Expanded nodes:"<<expanded_node<<endl;
@@ -491,4 +501,41 @@ bool Greedy_search::compare_arrays(int a[], int b[])
 		}
 	}
 	return true;
+}
+
+bool Greedy_search::is_related(State a, State b)
+{
+	if (a.can_move_up)
+	{
+		if(b.map[a.zero_index - size_y] == 0)
+		{
+			return true;
+		}
+	}
+	
+	if (a.can_move_down)
+	{
+		if(b.map[a.zero_index + size_y] == 0)
+		{
+			return true;
+		}
+	}
+	
+	if (a.can_move_left)
+	{
+		if(b.map[a.zero_index - 1] == 0)
+		{
+			return true;
+		}
+	}
+	
+	if (a.can_move_right)
+	{
+		if(b.map[a.zero_index + 1] == 0)
+		{
+			return true;
+		}
+	}
+	return false;
+	
 }
