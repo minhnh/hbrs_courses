@@ -43,16 +43,14 @@ void Greedy_search::run()
 void Greedy_search::search_h1(int intput_map[])
 {
 	int expanded_node = 0;
-	bool correct_step = false;
 	State initial_state(intput_map,size_x,size_y);
 	
 	deque<State> search_list;	
 	deque<State> reached_state;
 	deque<State> solve_step;
 	
-	search_list.push_front(initial_state);
-	State past_state = initial_state;
-	
+	search_list.push_front(initial_state);	
+	initial_state.depth = 0;
 	
 	while (search_list.size() > 0)
 	{
@@ -68,6 +66,8 @@ void Greedy_search::search_h1(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,UP);
+			next_state.depth = current_state.depth + 1; 
+			next_state.last_move = 0;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
 			{
@@ -82,7 +82,6 @@ void Greedy_search::search_h1(int intput_map[])
 				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
-					correct_step = true;
 				}
 				else if (next_state.h1 > search_list.back().h1)
 				{
@@ -112,6 +111,8 @@ void Greedy_search::search_h1(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,DOWN);
+			next_state.depth = current_state.depth + 1; 
+			next_state.last_move = 1;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
 			{
@@ -126,7 +127,6 @@ void Greedy_search::search_h1(int intput_map[])
 				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
-					correct_step = true;
 				}
 				else if (next_state.h1 > search_list.back().h1)
 				{
@@ -156,6 +156,8 @@ void Greedy_search::search_h1(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,LEFT);
+			next_state.depth = current_state.depth + 1; 
+			next_state.last_move = 2;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
 			{
@@ -170,7 +172,6 @@ void Greedy_search::search_h1(int intput_map[])
 				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
-					correct_step = true;
 				}
 				else if (next_state.h1 > search_list.back().h1)
 				{
@@ -200,6 +201,8 @@ void Greedy_search::search_h1(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,RIGHT);
+			next_state.depth = current_state.depth + 1; 
+			next_state.last_move = 3;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
 			{
@@ -214,7 +217,6 @@ void Greedy_search::search_h1(int intput_map[])
 				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
-					correct_step = true;
 				}
 				else if (next_state.h1 > search_list.back().h1)
 				{
@@ -239,14 +241,21 @@ void Greedy_search::search_h1(int intput_map[])
 				}
 			}
 		}		
-	
-		if (correct_step)
+	}
+		
+	while(solve_step.front().depth > 0)
+	{
+		State last_state = move(solve_step.front().map,
+									revert_direction(solve_step.front().last_move));
+		for (int i = 0; i < reached_state.size(); i++)
 		{
-			solve_step.push_front(current_state);
+			if (compare_arrays(last_state.map,reached_state[i].map))
+			{
+				solve_step.push_front(reached_state[i]);
+				i == reached_state.size();
+			}
 		}
 	}
-	
-	
 	
 	for (int i = 0; i < solve_step.size(); i++)
 	{
@@ -259,16 +268,14 @@ void Greedy_search::search_h1(int intput_map[])
 void Greedy_search::search_h2(int intput_map[])
 {
 	int expanded_node = 0;
-	bool correct_step = false;
 	State initial_state(intput_map,size_x,size_y);
 	
 	deque<State> search_list;	
 	deque<State> reached_state;
 	deque<State> solve_step;
 	
-	search_list.push_front(initial_state);
-	State past_state = initial_state;
-	
+	search_list.push_front(initial_state);	
+	initial_state.depth = 0;
 	
 	while (search_list.size() > 0)
 	{
@@ -277,13 +284,15 @@ void Greedy_search::search_h2(int intput_map[])
 		search_list.pop_front();
 		if (current_state.h2 == 0)
 		{
-		   	solve_step.push_front(current_state);
+			solve_step.push_front(current_state);
 			break;
 		}
 		if(current_state.can_move_up)
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,UP);
+			next_state.depth = current_state.depth + 1; 
+			next_state.last_move = 0;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
 			{
@@ -298,7 +307,6 @@ void Greedy_search::search_h2(int intput_map[])
 				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
-					correct_step = true;
 				}
 				else if (next_state.h2 > search_list.back().h2)
 				{
@@ -328,6 +336,8 @@ void Greedy_search::search_h2(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,DOWN);
+			next_state.depth = current_state.depth + 1; 
+			next_state.last_move = 1;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
 			{
@@ -342,7 +352,6 @@ void Greedy_search::search_h2(int intput_map[])
 				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
-					correct_step = true;
 				}
 				else if (next_state.h2 > search_list.back().h2)
 				{
@@ -372,6 +381,8 @@ void Greedy_search::search_h2(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,LEFT);
+			next_state.depth = current_state.depth + 1; 
+			next_state.last_move = 2;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
 			{
@@ -386,7 +397,6 @@ void Greedy_search::search_h2(int intput_map[])
 				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
-					correct_step = true;
 				}
 				else if (next_state.h2 > search_list.back().h2)
 				{
@@ -416,6 +426,8 @@ void Greedy_search::search_h2(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,RIGHT);
+			next_state.depth = current_state.depth + 1; 
+			next_state.last_move = 3;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
 			{
@@ -430,7 +442,6 @@ void Greedy_search::search_h2(int intput_map[])
 				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
-					correct_step = true;
 				}
 				else if (next_state.h2 > search_list.back().h2)
 				{
@@ -454,11 +465,21 @@ void Greedy_search::search_h2(int intput_map[])
 					}
 				}
 			}
-		}
-		if (correct_step)
-		{
-			solve_step.push_front(current_state);
 		}		
+	}
+		
+	while(solve_step.front().depth > 0)
+	{
+		State last_state = move(solve_step.front().map,
+									revert_direction(solve_step.front().last_move));
+		for (int i = 0; i < reached_state.size(); i++)
+		{
+			if (compare_arrays(last_state.map,reached_state[i].map))
+			{
+				solve_step.push_front(reached_state[i]);
+				i == reached_state.size();
+			}
+		}
 	}
 	
 	for (int i = 0; i < solve_step.size(); i++)
@@ -519,54 +540,23 @@ bool Greedy_search::compare_arrays(int a[], int b[])
 	return true;
 }
 
-bool Greedy_search::is_related(State a, State b)
+Direction Greedy_search::revert_direction(int d)
 {
-    bool correct_zero = false;
-	int correct_tiles = 0;
-	if (a.can_move_up)
+	if (d == 0)
 	{
-		if(b.map[a.zero_index - size_y] == 0)
-		{
-			correct_zero = true;
-		}
+		return DOWN;
 	}
-	
-	if (a.can_move_down)
+	else if (d == 1)
 	{
-		if(b.map[a.zero_index + size_y] == 0)
-		{
-			correct_zero = true;
-		}
+		return UP;
 	}
-	
-	if (a.can_move_left)
+	else if (d == 2)
 	{
-		if(b.map[a.zero_index - 1] == 0)
-		{
-			correct_zero = true;
-		}
+		return RIGHT;
 	}
-	
-	if (a.can_move_right)
+	else if (d == 3)
 	{
-		if(b.map[a.zero_index + 1] == 0)
-		{
-			correct_zero = true;
-		}
+		return LEFT;
 	}
-	
-	for (int i = 0; i < size_x*size_y; i++)
-	{
-	    if (a.map[i] == b.map[i])
-	    {
-	        correct_tiles++;
-	    }
-	}
-	
-	if (correct_tiles == 7 and correct_zero)
-	{
-	   return true;
-	}
-	
-	return false;
+	return UP;
 }

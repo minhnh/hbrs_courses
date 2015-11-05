@@ -20,7 +20,7 @@ class Greedy_search
         void search_h2(int map[]);
         State move(int map[], Direction);
         bool compare_arrays(int a[], int b[]);
-        bool is_related(State a, State b);
+        Direction revert_direction(int d);
         
         int size_x;
 		int size_y;

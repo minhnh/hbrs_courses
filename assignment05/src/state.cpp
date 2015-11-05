@@ -20,6 +20,7 @@ State::State(int Tiles[], int size_x, int size_y)
 	
 	h1 = find_heuristics_1();
 	h2 = find_heuristics_2();
+	depth = 0;
 	
 	check_expandability();
 }

@@ -1,6 +1,5 @@
 #ifndef STATE_HPP
 #define STATE_HPP
-
 class State
 {
 	public:
@@ -12,10 +11,12 @@ class State
 		int h1;
 		int h2;
 		int zero_index;
+		int depth;
 		bool can_move_up;
 		bool can_move_down;
 		bool can_move_left;
 		bool can_move_right;
+		int last_move;
 		
 		void check_expandability();
 		//Manhattan distance
