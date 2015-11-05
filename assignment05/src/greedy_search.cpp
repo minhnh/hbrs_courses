@@ -43,6 +43,7 @@ void Greedy_search::run()
 void Greedy_search::search_h1(int intput_map[])
 {
 	int expanded_node = 0;
+	bool correct_step = false;
 	State initial_state(intput_map,size_x,size_y);
 	
 	deque<State> search_list;	
@@ -81,6 +82,7 @@ void Greedy_search::search_h1(int intput_map[])
 				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
+					correct_step = true;
 				}
 				else if (next_state.h1 > search_list.back().h1)
 				{
@@ -124,6 +126,7 @@ void Greedy_search::search_h1(int intput_map[])
 				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
+					correct_step = true;
 				}
 				else if (next_state.h1 > search_list.back().h1)
 				{
@@ -167,6 +170,7 @@ void Greedy_search::search_h1(int intput_map[])
 				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
+					correct_step = true;
 				}
 				else if (next_state.h1 > search_list.back().h1)
 				{
@@ -210,6 +214,7 @@ void Greedy_search::search_h1(int intput_map[])
 				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
+					correct_step = true;
 				}
 				else if (next_state.h1 > search_list.back().h1)
 				{
@@ -234,15 +239,14 @@ void Greedy_search::search_h1(int intput_map[])
 				}
 			}
 		}		
-	}
 	
-	for (int i = reached_state.size()-1; i >= 0; i--)
-	{
-		if (is_related(solve_step.front(),reached_state[i]))
+		if (correct_step)
 		{
-			solve_step.push_front(reached_state[i]);
+			solve_step.push_front(current_state);
 		}
 	}
+	
+	
 	
 	for (int i = 0; i < solve_step.size(); i++)
 	{
@@ -255,6 +259,7 @@ void Greedy_search::search_h1(int intput_map[])
 void Greedy_search::search_h2(int intput_map[])
 {
 	int expanded_node = 0;
+	bool correct_step = false;
 	State initial_state(intput_map,size_x,size_y);
 	
 	deque<State> search_list;	
@@ -293,6 +298,7 @@ void Greedy_search::search_h2(int intput_map[])
 				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
+					correct_step = true;
 				}
 				else if (next_state.h2 > search_list.back().h2)
 				{
@@ -336,6 +342,7 @@ void Greedy_search::search_h2(int intput_map[])
 				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
+					correct_step = true;
 				}
 				else if (next_state.h2 > search_list.back().h2)
 				{
@@ -379,6 +386,7 @@ void Greedy_search::search_h2(int intput_map[])
 				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
+					correct_step = true;
 				}
 				else if (next_state.h2 > search_list.back().h2)
 				{
@@ -422,6 +430,7 @@ void Greedy_search::search_h2(int intput_map[])
 				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
 				{
 					search_list.push_front(next_state);
+					correct_step = true;
 				}
 				else if (next_state.h2 > search_list.back().h2)
 				{
@@ -445,15 +454,11 @@ void Greedy_search::search_h2(int intput_map[])
 					}
 				}
 			}
-		}		
-	}
-	
-	for (int i = reached_state.size()-1; i >= 0; i--)
-	{
-		if (is_related(solve_step.front(),reached_state[i]))
-		{
-			solve_step.push_front(reached_state[i]);
 		}
+		if (correct_step)
+		{
+			solve_step.push_front(current_state);
+		}		
 	}
 	
 	for (int i = 0; i < solve_step.size(); i++)
