@@ -32,15 +32,15 @@
     % Question 1
 	\item Definitions
 	\begin{description}[style=nextline]
-        \item [Uniform Cost Search] A search strategy that always expand the node
+        \item [Uniform cost search] A search strategy that always expand the node
             with the lowest path cost on the fringe.
-        \item [Depth-First Search] A search strategy that always expand the deepest
+        \item [Depth-first search] A search strategy that always expand the deepest
             nodes, if the nodes are organized into a tree structure.
-        \item [Limited Depth-First Search] A search strategy which performs a depth
+        \item [Limited depth-first search] A search strategy which performs a depth
             first search until reaching a specific depth limit.
-        \item [Iterative Deepening-Search] A limited depth-first search with
+        \item [Iterative deepening search] A limited depth-first search with
             an increasing depth limits.
-        \item [Informed Search] A search strategy which utilizes provided
+        \item [Informed search] A search strategy which utilizes provided
             information which cannot be generated systematically from within the
             search algorithm (i.e. path cost, node depth).
         \item [Greedy search] A best first search strategy which uses heuristic
@@ -58,11 +58,34 @@
 	\item Heuristic Function is a function which estimates the cost from a
     specific node from the goal node.
 
+    \pagebreak
     % Question 3
     \item Implementation of the greedy search can be found in the ``\texttt{src/}'' directory.
         \begin{itemize}
-            \item Compare performance of the two heuristics
-            \item Consistency
+            \item The performance depends on the initial map, though Manhattan
+            distance heuristic performs better in general.
+            Performance comparison in expanded nodes:
+
+                \begin{tabular}{ccc}
+                \toprule
+                Configuration               & Manhattan distance    & Misplaced tiles   \\
+                \toprule
+                $\left[\begin{array}{ccc}
+                1 & 4 & 8 \\
+                3 & 6 & 2 \\
+                0 & 5 & 7
+                \end{array}\right]$         & 344                   & 292               \\
+                $\left[\begin{array}{ccc}
+                1 & 2 & 3 \\
+                4 & 5 & 6 \\
+                7 & 8 & 0
+                \end{array}\right]$         & 342                   & 500               \\
+                \bottomrule
+                \end{tabular}
+
+            \item As can be seen in the printed heuristics both heuristic functions
+            are inconsistent. The heuristics generally decrease but sometimes
+            increase from initial state to goal state.
         \end{itemize}
 
     \end{enumerate}
