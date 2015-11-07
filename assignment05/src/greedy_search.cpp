@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include "greedy_search.hpp"
 #include "state.hpp"
 #include <deque>
@@ -9,28 +9,28 @@ using namespace std;
 
 Greedy_search::Greedy_search()
 {
-	
+
 }
 
 void Greedy_search::run()
 {
 	size_x = 3;
 	size_y = 3;
-	int tiles[] = {1,  4,  8, 
-				   3,  6,  2, 
+	int tiles[] = {1,  4,  8,
+				   3,  6,  2,
 				   0,  5,  7};
-				   
+
 	int index = 0;
 
     cout << "Please choose heuristics: "<<endl;
     cout << "(1) Manhattan distance"<<endl;
     cout << "(2) Misplaced tiles"<<endl;
     cin >> index;
-    if ( index == 1) 
+    if ( index == 1)
     {
 		search_h1(tiles);
-    } 
-    else if (index == 2) 
+    }
+    else if (index == 2)
     {
 		search_h2(tiles);
     } else {
@@ -44,14 +44,14 @@ void Greedy_search::search_h1(int intput_map[])
 {
 	int expanded_node = 0;
 	State initial_state(intput_map,size_x,size_y);
-	
-	deque<State> search_list;	
+
+	deque<State> search_list;
 	deque<State> reached_state;
 	deque<State> solve_step;
-	
-	search_list.push_front(initial_state);	
+
+	search_list.push_front(initial_state);
 	initial_state.depth = 0;
-	
+
 	while (search_list.size() > 0)
 	{
 		State current_state =  search_list.front();
@@ -66,7 +66,7 @@ void Greedy_search::search_h1(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,UP);
-			next_state.depth = current_state.depth + 1; 
+			next_state.depth = current_state.depth + 1;
 			next_state.last_move = 0;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
@@ -106,12 +106,12 @@ void Greedy_search::search_h1(int intput_map[])
 				}
 			}
 		}
-		
+
 		if(current_state.can_move_down)
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,DOWN);
-			next_state.depth = current_state.depth + 1; 
+			next_state.depth = current_state.depth + 1;
 			next_state.last_move = 1;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
@@ -156,7 +156,7 @@ void Greedy_search::search_h1(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,LEFT);
-			next_state.depth = current_state.depth + 1; 
+			next_state.depth = current_state.depth + 1;
 			next_state.last_move = 2;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
@@ -196,12 +196,12 @@ void Greedy_search::search_h1(int intput_map[])
 				}
 			}
 		}
-		
+
 		if(current_state.can_move_right)
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,RIGHT);
-			next_state.depth = current_state.depth + 1; 
+			next_state.depth = current_state.depth + 1;
 			next_state.last_move = 3;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
@@ -240,9 +240,9 @@ void Greedy_search::search_h1(int intput_map[])
 					}
 				}
 			}
-		}		
+		}
 	}
-		
+
 	while(solve_step.front().depth > 0)
 	{
 		State last_state = move(solve_step.front().map,
@@ -256,12 +256,13 @@ void Greedy_search::search_h1(int intput_map[])
 			}
 		}
 	}
-	
+
 	for (int i = 0; i < solve_step.size(); i++)
 	{
 		solve_step[i].print();
+		cout << "Manhattan distance: " << solve_step[i].h1 << endl;
 	}
-	
+
 	cout<<"Expanded nodes:"<<expanded_node<<endl;
 }
 
@@ -269,14 +270,14 @@ void Greedy_search::search_h2(int intput_map[])
 {
 	int expanded_node = 0;
 	State initial_state(intput_map,size_x,size_y);
-	
-	deque<State> search_list;	
+
+	deque<State> search_list;
 	deque<State> reached_state;
 	deque<State> solve_step;
-	
-	search_list.push_front(initial_state);	
+
+	search_list.push_front(initial_state);
 	initial_state.depth = 0;
-	
+
 	while (search_list.size() > 0)
 	{
 		State current_state =  search_list.front();
@@ -291,7 +292,7 @@ void Greedy_search::search_h2(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,UP);
-			next_state.depth = current_state.depth + 1; 
+			next_state.depth = current_state.depth + 1;
 			next_state.last_move = 0;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
@@ -331,12 +332,12 @@ void Greedy_search::search_h2(int intput_map[])
 				}
 			}
 		}
-		
+
 		if(current_state.can_move_down)
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,DOWN);
-			next_state.depth = current_state.depth + 1; 
+			next_state.depth = current_state.depth + 1;
 			next_state.last_move = 1;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
@@ -381,7 +382,7 @@ void Greedy_search::search_h2(int intput_map[])
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,LEFT);
-			next_state.depth = current_state.depth + 1; 
+			next_state.depth = current_state.depth + 1;
 			next_state.last_move = 2;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
@@ -421,12 +422,12 @@ void Greedy_search::search_h2(int intput_map[])
 				}
 			}
 		}
-		
+
 		if(current_state.can_move_right)
 		{
 			expanded_node++;
 			State next_state = move(current_state.map,RIGHT);
-			next_state.depth = current_state.depth + 1; 
+			next_state.depth = current_state.depth + 1;
 			next_state.last_move = 3;
 			bool state_reached = false;
 			for (int i = 0; i < reached_state.size();i++)
@@ -465,9 +466,9 @@ void Greedy_search::search_h2(int intput_map[])
 					}
 				}
 			}
-		}		
+		}
 	}
-		
+
 	while(solve_step.front().depth > 0)
 	{
 		State last_state = move(solve_step.front().map,
@@ -481,12 +482,13 @@ void Greedy_search::search_h2(int intput_map[])
 			}
 		}
 	}
-	
+
 	for (int i = 0; i < solve_step.size(); i++)
 	{
 		solve_step[i].print();
+		cout << "Misplaced tiles: " << solve_step[i].h2 << endl;
 	}
-	
+
 	cout<<"Expanded nodes:"<<expanded_node<<endl;
 }
 
@@ -524,7 +526,7 @@ State Greedy_search::move(int current_map[], Direction d)
 		map[zero_index + 1] = 0;
 	}
 	State next_state(map, size_x, size_y);
-	
+
 	return next_state;
 }
 
