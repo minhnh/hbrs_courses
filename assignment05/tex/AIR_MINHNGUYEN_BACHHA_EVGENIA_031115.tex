@@ -40,12 +40,13 @@
             function and the accumulated path cost as the evaluation function.
         \item [Iterative deepening A* search] Iterative deepening A* performs
             contour-limited A* search with increasing contour sizes. The contour
-            size limits the expanded nodes to ones whose results of evaluation
-            function are less than the contour size.
+            size is the upper limit of the expanded nodes' evaluation function
+            results.
     \end{description}
 
     % Question 2
-	\item Heuristic Function.
+	\item Heuristic Function is a function which estimates the cost from a
+    specific node from the goal node.
 
     % Question 3
     \item Implementation of the greedy search can be found in the ``\texttt{src/}'' directory.
