@@ -6,11 +6,21 @@
 \setlength{\heavyrulewidth}{1.5pt}
 \setlength{\abovetopsep}{4pt}
 
-\setlength{\droptitle}{-7em}
+\usepackage[margin=1in]{geometry}
+
+% Must be after geometry
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AIR Homework 5}
+\lhead{M. Nguyen, B. Ha \& E. Ovchinnikova}
+\cfoot{\thepage}
+
+\setlength{\droptitle}{-5em}
 
 \title{Artificial Intelligence for Robots \\
 				- Homework 5 -}
-\author{Minh Nguyen \& Bach Ha \& Evgenia Ovchinnikova}
+\author{Minh Nguyen, Bach Ha \& Evgenia Ovchinnikova}
 \date{Lecture date: 03 November 2015}
 
 \begin{document}
@@ -50,6 +60,10 @@
 
     % Question 3
     \item Implementation of the greedy search can be found in the ``\texttt{src/}'' directory.
+        \begin{itemize}
+            \item Compare performance of the two heuristics
+            \item Consistency
+        \end{itemize}
 
     \end{enumerate}
 
