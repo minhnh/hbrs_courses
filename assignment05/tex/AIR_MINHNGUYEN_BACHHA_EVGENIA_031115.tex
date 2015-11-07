@@ -22,15 +22,26 @@
     % Question 1
 	\item Definitions
 	\begin{description}[style=nextline]
-        \item [Uniform Cost Search] Definition
-        \item [Depth-First Search] Definition
-        \item [Limited Depth-First Search] Definition
-        \item [Iterative Deepening-Search] Definition
-        \item [Informed Search] Definition
-        \item [Greedy search] Definition
+        \item [Uniform Cost Search] A search strategy that always expand the node
+            with the lowest path cost on the fringe.
+        \item [Depth-First Search] A search strategy that always expand the deepest
+            nodes, if the nodes are organized into a tree structure.
+        \item [Limited Depth-First Search] A search strategy which performs a depth
+            first search until reaching a specific depth limit.
+        \item [Iterative Deepening-Search] A limited depth-first search with
+            an increasing depth limits.
+        \item [Informed Search] A search strategy which utilizes provided
+            information which cannot be generated systematically from within the
+            search algorithm (i.e. path cost, node depth).
+        \item [Greedy search] A best first search strategy which uses heuristic
+            function(s) to decide which node to be expanded next.
         \item [A* search]
-            Definition of A* search is
-        \item [Iterative A* search] Definition
+            A best first search that uses the sum of an admissible heuristic
+            function and the accumulated path cost as the evaluation function.
+        \item [Iterative deepening A* search] Iterative deepening A* performs
+            contour-limited A* search with increasing contour sizes. The contour
+            size limits the expanded nodes to ones whose results of evaluation
+            function are less than the contour size.
     \end{description}
 
     % Question 2
