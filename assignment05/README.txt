@@ -9,4 +9,4 @@ Once the cmake command is done you can now compile your program with the followi
 
 The executable will be created inside the bin folder. Stay in the build folder and run the program with the following command:
 	
-	./bin/assignmet03
+	./bin/assignment05
