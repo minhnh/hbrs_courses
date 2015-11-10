@@ -8,6 +8,7 @@ class State
 		int map_size_x;
 		int map_size_y;
 		
+		int h;
 		int h1;
 		int h2;
 		int zero_index;

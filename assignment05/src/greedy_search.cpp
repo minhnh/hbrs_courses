@@ -28,19 +28,17 @@ void Greedy_search::run()
     cin >> index;
     if ( index == 1) 
     {
-		search_h1(tiles);
+		search(tiles,1);
     } 
     else if (index == 2) 
     {
-		search_h2(tiles);
+		search(tiles,2);
     } else {
         cout << "Invalid heuristics index"<< endl;
     }
-
-
 }
 
-void Greedy_search::search_h1(int intput_map[])
+void Greedy_search::search(int intput_map[], int heuristic_id)
 {
 	int expanded_node = 0;
 	State initial_state(intput_map,size_x,size_y);
@@ -57,7 +55,7 @@ void Greedy_search::search_h1(int intput_map[])
 		State current_state =  search_list.front();
 		reached_state.push_back(current_state);
 		search_list.pop_front();
-		if (current_state.h1 == 0)
+		if (current_state.h == 0)
 		{
 			solve_step.push_front(current_state);
 			break;
@@ -65,181 +63,25 @@ void Greedy_search::search_h1(int intput_map[])
 		if(current_state.can_move_up)
 		{
 			expanded_node++;
-			State next_state = move(current_state.map,UP);
-			next_state.depth = current_state.depth + 1; 
-			next_state.last_move = 0;
-			bool state_reached = false;
-			for (int i = 0; i < reached_state.size();i++)
-			{
-				if (compare_arrays(next_state.map,reached_state[i].map))
-				{
-					state_reached = true;
-					break;
-				}
-			}
-			if (!state_reached)
-			{
-				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
-				{
-					search_list.push_front(next_state);
-				}
-				else if (next_state.h1 > search_list.back().h1)
-				{
-					search_list.push_back(next_state);
-				}
-				else
-				{
-					search_list.push_front(next_state);
-					for (int i = 0; i+1 < search_list.size(); i++)
-					{
-						if (search_list[i].h1 > search_list[i+1].h1)
-						{
-							State temp = search_list[i];
-							search_list[i] = search_list[i+1];
-							search_list[i+1] = temp;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
+			insert_to_list(heuristic_id, current_state, UP, search_list, reached_state);
 		}
 		
 		if(current_state.can_move_down)
 		{
 			expanded_node++;
-			State next_state = move(current_state.map,DOWN);
-			next_state.depth = current_state.depth + 1; 
-			next_state.last_move = 1;
-			bool state_reached = false;
-			for (int i = 0; i < reached_state.size();i++)
-			{
-				if (compare_arrays(next_state.map,reached_state[i].map))
-				{
-					state_reached = true;
-					break;
-				}
-			}
-			if (!state_reached)
-			{
-				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
-				{
-					search_list.push_front(next_state);
-				}
-				else if (next_state.h1 > search_list.back().h1)
-				{
-					search_list.push_back(next_state);
-				}
-				else
-				{
-					search_list.push_front(next_state);
-					for (int i = 0; i+1 < search_list.size(); i++)
-					{
-						if (search_list[i].h1 > search_list[i+1].h1)
-						{
-							State temp = search_list[i];
-							search_list[i] = search_list[i+1];
-							search_list[i+1] = temp;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
+			insert_to_list(heuristic_id, current_state, DOWN, search_list, reached_state);
 		}
 
 		if(current_state.can_move_left)
 		{
 			expanded_node++;
-			State next_state = move(current_state.map,LEFT);
-			next_state.depth = current_state.depth + 1; 
-			next_state.last_move = 2;
-			bool state_reached = false;
-			for (int i = 0; i < reached_state.size();i++)
-			{
-				if (compare_arrays(next_state.map,reached_state[i].map))
-				{
-					state_reached = true;
-					break;
-				}
-			}
-			if (!state_reached)
-			{
-				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
-				{
-					search_list.push_front(next_state);
-				}
-				else if (next_state.h1 > search_list.back().h1)
-				{
-					search_list.push_back(next_state);
-				}
-				else
-				{
-					search_list.push_front(next_state);
-					for (int i = 0; i+1 < search_list.size(); i++)
-					{
-						if (search_list[i].h1 > search_list[i+1].h1)
-						{
-							State temp = search_list[i];
-							search_list[i] = search_list[i+1];
-							search_list[i+1] = temp;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
+			insert_to_list(heuristic_id, current_state, LEFT, search_list, reached_state);
 		}
 		
 		if(current_state.can_move_right)
 		{
 			expanded_node++;
-			State next_state = move(current_state.map,RIGHT);
-			next_state.depth = current_state.depth + 1; 
-			next_state.last_move = 3;
-			bool state_reached = false;
-			for (int i = 0; i < reached_state.size();i++)
-			{
-				if (compare_arrays(next_state.map,reached_state[i].map))
-				{
-					state_reached = true;
-					break;
-				}
-			}
-			if (!state_reached)
-			{
-				if (next_state.h1 < search_list.front().h1 or search_list.size() == 0)
-				{
-					search_list.push_front(next_state);
-				}
-				else if (next_state.h1 > search_list.back().h1)
-				{
-					search_list.push_back(next_state);
-				}
-				else
-				{
-					search_list.push_front(next_state);
-					for (int i = 0; i+1 < search_list.size(); i++)
-					{
-						if (search_list[i].h1 > search_list[i+1].h1)
-						{
-							State temp = search_list[i];
-							search_list[i] = search_list[i+1];
-							search_list[i+1] = temp;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
+			insert_to_list(heuristic_id, current_state, RIGHT, search_list, reached_state);
 		}		
 	}
 		
@@ -261,235 +103,65 @@ void Greedy_search::search_h1(int intput_map[])
 	{
 		solve_step[i].print();
 	}
-	
+
+	cout<<"Steps taken:"<<solve_step.size()<<endl;	
 	cout<<"Expanded nodes:"<<expanded_node<<endl;
 }
 
-void Greedy_search::search_h2(int intput_map[])
+void Greedy_search::insert_to_list(int heuristic_id, State &current_state, Direction d, std::deque<State> &search_list, std::deque<State> &reached_state)
 {
-	int expanded_node = 0;
-	State initial_state(intput_map,size_x,size_y);
-	
-	deque<State> search_list;	
-	deque<State> reached_state;
-	deque<State> solve_step;
-	
-	search_list.push_front(initial_state);	
-	initial_state.depth = 0;
-	
-	while (search_list.size() > 0)
+	State next_state = move(current_state.map,d);
+
+	if (heuristic_id == 1)
 	{
-		State current_state =  search_list.front();
-		reached_state.push_back(current_state);
-		search_list.pop_front();
-		if (current_state.h2 == 0)
+		current_state.h = current_state.h1;
+		next_state.h = next_state.h1;
+	}
+	else if (heuristic_id == 2)
+	{
+		current_state.h = current_state.h2;
+		next_state.h = next_state.h2;
+	}
+	next_state.depth = current_state.depth + 1; 
+	next_state.last_move = (int)d;
+	bool state_reached = false;
+	for (int i = 0; i < reached_state.size();i++)
+	{
+		if (compare_arrays(next_state.map,reached_state[i].map))
 		{
-			solve_step.push_front(current_state);
+			state_reached = true;
 			break;
 		}
-		if(current_state.can_move_up)
-		{
-			expanded_node++;
-			State next_state = move(current_state.map,UP);
-			next_state.depth = current_state.depth + 1; 
-			next_state.last_move = 0;
-			bool state_reached = false;
-			for (int i = 0; i < reached_state.size();i++)
-			{
-				if (compare_arrays(next_state.map,reached_state[i].map))
-				{
-					state_reached = true;
-					break;
-				}
-			}
-			if (!state_reached)
-			{
-				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
-				{
-					search_list.push_front(next_state);
-				}
-				else if (next_state.h2 > search_list.back().h2)
-				{
-					search_list.push_back(next_state);
-				}
-				else
-				{
-					search_list.push_front(next_state);
-					for (int i = 0; i+1 < search_list.size(); i++)
-					{
-						if (search_list[i].h2 > search_list[i+1].h2)
-						{
-							State temp = search_list[i];
-							search_list[i] = search_list[i+1];
-							search_list[i+1] = temp;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
-		}
-		
-		if(current_state.can_move_down)
-		{
-			expanded_node++;
-			State next_state = move(current_state.map,DOWN);
-			next_state.depth = current_state.depth + 1; 
-			next_state.last_move = 1;
-			bool state_reached = false;
-			for (int i = 0; i < reached_state.size();i++)
-			{
-				if (compare_arrays(next_state.map,reached_state[i].map))
-				{
-					state_reached = true;
-					break;
-				}
-			}
-			if (!state_reached)
-			{
-				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
-				{
-					search_list.push_front(next_state);
-				}
-				else if (next_state.h2 > search_list.back().h2)
-				{
-					search_list.push_back(next_state);
-				}
-				else
-				{
-					search_list.push_front(next_state);
-					for (int i = 0; i+1 < search_list.size(); i++)
-					{
-						if (search_list[i].h2 > search_list[i+1].h2)
-						{
-							State temp = search_list[i];
-							search_list[i] = search_list[i+1];
-							search_list[i+1] = temp;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		if(current_state.can_move_left)
-		{
-			expanded_node++;
-			State next_state = move(current_state.map,LEFT);
-			next_state.depth = current_state.depth + 1; 
-			next_state.last_move = 2;
-			bool state_reached = false;
-			for (int i = 0; i < reached_state.size();i++)
-			{
-				if (compare_arrays(next_state.map,reached_state[i].map))
-				{
-					state_reached = true;
-					break;
-				}
-			}
-			if (!state_reached)
-			{
-				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
-				{
-					search_list.push_front(next_state);
-				}
-				else if (next_state.h2 > search_list.back().h2)
-				{
-					search_list.push_back(next_state);
-				}
-				else
-				{
-					search_list.push_front(next_state);
-					for (int i = 0; i+1 < search_list.size(); i++)
-					{
-						if (search_list[i].h2 > search_list[i+1].h2)
-						{
-							State temp = search_list[i];
-							search_list[i] = search_list[i+1];
-							search_list[i+1] = temp;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
-		}
-		
-		if(current_state.can_move_right)
-		{
-			expanded_node++;
-			State next_state = move(current_state.map,RIGHT);
-			next_state.depth = current_state.depth + 1; 
-			next_state.last_move = 3;
-			bool state_reached = false;
-			for (int i = 0; i < reached_state.size();i++)
-			{
-				if (compare_arrays(next_state.map,reached_state[i].map))
-				{
-					state_reached = true;
-					break;
-				}
-			}
-			if (!state_reached)
-			{
-				if (next_state.h2 < search_list.front().h2 or search_list.size() == 0)
-				{
-					search_list.push_front(next_state);
-				}
-				else if (next_state.h2 > search_list.back().h2)
-				{
-					search_list.push_back(next_state);
-				}
-				else
-				{
-					search_list.push_front(next_state);
-					for (int i = 0; i+1 < search_list.size(); i++)
-					{
-						if (search_list[i].h2 > search_list[i+1].h2)
-						{
-							State temp = search_list[i];
-							search_list[i] = search_list[i+1];
-							search_list[i+1] = temp;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
-		}		
 	}
-		
-	while(solve_step.front().depth > 0)
+	if (!state_reached)
 	{
-		State last_state = move(solve_step.front().map,
-									revert_direction(solve_step.front().last_move));
-		for (int i = 0; i < reached_state.size(); i++)
+		if (next_state.h < search_list.front().h or search_list.size() == 0)
 		{
-			if (compare_arrays(last_state.map,reached_state[i].map))
+			search_list.push_front(next_state);
+		}
+		else if (next_state.h > search_list.back().h)
+		{
+			search_list.push_back(next_state);
+		}
+		else
+		{
+			search_list.push_front(next_state);
+			for (int i = 0; i+1 < search_list.size(); i++)
 			{
-				solve_step.push_front(reached_state[i]);
-				i == reached_state.size();
+				if (search_list[i].h > search_list[i+1].h)
+				{
+					State temp = search_list[i];
+					search_list[i] = search_list[i+1];
+					search_list[i+1] = temp;
+				}
+				else
+				{
+					break;
+				}
 			}
 		}
 	}
-	
-	for (int i = 0; i < solve_step.size(); i++)
-	{
-		solve_step[i].print();
-	}
-	
-	cout<<"Expanded nodes:"<<expanded_node<<endl;
 }
-
 
 State Greedy_search::move(int current_map[], Direction d)
 {

@@ -18,6 +18,7 @@ State::State(int Tiles[], int size_x, int size_y)
 	map_size_x = size_x;
 	map_size_y = size_y;
 	
+	h = 1;
 	h1 = find_heuristics_1();
 	h2 = find_heuristics_2();
 	depth = 0;
@@ -110,14 +111,26 @@ int State::find_heuristics_2()
 
 void State::print()
 {
-	cout<<"-----"<<endl;
+	cout<<endl;
 	for (int y = 0; y < map_size_y; y++)
 	{
 		for (int x = 0; x < map_size_x; x++)
 		{
-			printf("%d ",get_value_at(x,y));
+			int value = get_value_at(x,y);
+			if (value == 0)
+			{
+				cout << " ";
+			}
+			else
+			{
+				cout << value;		
+			}
+			if (x < 2)
+			{
+				cout << "|";
+			}
 		}
-		printf("\n");
+		cout << endl;
 	}
 }
 
