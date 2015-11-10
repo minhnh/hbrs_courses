@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include <stdlib.h> 
+#include <stdlib.h>
 #include "greedy_search.hpp"
 #include "state.hpp"
 #include <deque>
@@ -9,31 +9,33 @@ using namespace std;
 
 Greedy_search::Greedy_search()
 {
-	
+
 }
 
 void Greedy_search::run()
 {
 	size_x = 3;
 	size_y = 3;
-	int tiles[] = {1,  4,  8, 
-				   3,  6,  2, 
+	int tiles[] = {1,  4,  8,
+				   3,  6,  2,
 				   0,  5,  7};
-				   
+
 	int index = 0;
 
     cout << "Please choose heuristics: "<<endl;
     cout << "(1) Manhattan distance"<<endl;
     cout << "(2) Misplaced tiles"<<endl;
     cin >> index;
-    if ( index == 1) 
+    if ( index == 1)
     {
 		search(tiles,1);
     } 
     else if (index == 2) 
     {
 		search(tiles,2);
-    } else {
+    } 
+    else 
+    {
         cout << "Invalid heuristics index"<< endl;
     }
 }
@@ -42,14 +44,14 @@ void Greedy_search::search(int intput_map[], int heuristic_id)
 {
 	int expanded_node = 0;
 	State initial_state(intput_map,size_x,size_y);
-	
-	deque<State> search_list;	
+
+	deque<State> search_list;
 	deque<State> reached_state;
 	deque<State> solve_step;
-	
-	search_list.push_front(initial_state);	
+
+	search_list.push_front(initial_state);
 	initial_state.depth = 0;
-	
+
 	while (search_list.size() > 0)
 	{
 		State current_state =  search_list.front();
@@ -65,7 +67,7 @@ void Greedy_search::search(int intput_map[], int heuristic_id)
 			expanded_node++;
 			insert_to_list(heuristic_id, current_state, UP, search_list, reached_state);
 		}
-		
+
 		if(current_state.can_move_down)
 		{
 			expanded_node++;
@@ -77,14 +79,14 @@ void Greedy_search::search(int intput_map[], int heuristic_id)
 			expanded_node++;
 			insert_to_list(heuristic_id, current_state, LEFT, search_list, reached_state);
 		}
-		
+
 		if(current_state.can_move_right)
 		{
 			expanded_node++;
 			insert_to_list(heuristic_id, current_state, RIGHT, search_list, reached_state);
 		}		
 	}
-		
+
 	while(solve_step.front().depth > 0)
 	{
 		State last_state = move(solve_step.front().map,
@@ -98,7 +100,7 @@ void Greedy_search::search(int intput_map[], int heuristic_id)
 			}
 		}
 	}
-	
+
 	for (int i = 0; i < solve_step.size(); i++)
 	{
 		solve_step[i].print();
@@ -196,7 +198,7 @@ State Greedy_search::move(int current_map[], Direction d)
 		map[zero_index + 1] = 0;
 	}
 	State next_state(map, size_x, size_y);
-	
+
 	return next_state;
 }
 
