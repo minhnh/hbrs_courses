@@ -16,13 +16,14 @@ class Greedy_search
 {
     public:
         Greedy_search();
+        ~Greedy_search();
         void run();
         void search(int map[], int heuristic_id);
         State move(int map[], Direction);
         bool compare_arrays(int a[], int b[]);
         Direction revert_direction(int d);
         void insert_to_list(int heuristic_id, State &current_state, Direction d, std::deque<State> &search_list, std::deque<State> &reached_state);
-      
+
         int size_x;
 		int size_y;
     private:
