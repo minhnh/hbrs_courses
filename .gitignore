@@ -27,6 +27,10 @@ docs/
 .clang_complete
 .project
 .cproject
+# Sublime
+*~
+# emacs autosave
+\#*#
 
 # MacOS files
 .DS_Store
@@ -34,7 +38,15 @@ docs/
 .LSOverride
 Icon
 
+# tex files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.dvi
+*.pdf
+*.gz
+
 CATKIN_IGNORE
 
-# emacs autosave
-\#*#
