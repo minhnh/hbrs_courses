@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project( Assignment05 )
+project( Assignment06 )
 
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -10,9 +10,9 @@ include_directories (
     include
 )
 
-add_executable( assignment05 
+add_executable( assignment06
 		src/main.cpp
 		src/greedy_search.cpp
 		src/state.cpp)
 
-#target_link_libraries(assignment05)
+#target_link_libraries(assignment06)
