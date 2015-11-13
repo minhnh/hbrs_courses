@@ -7,9 +7,9 @@
 
 using namespace std;
 
-Search::Search()
+Search::Search(Strategy strategy)
 {
-
+    this->strategy = strategy;
 }
 Search::~Search()
 {
@@ -24,27 +24,10 @@ void Search::run()
                    3,  6,  2,
                    0,  5,  7};
 
-    int index = 0;
-
-    cout << "Please choose heuristics: "<<endl;
-    cout << "(1) Manhattan distance"<<endl;
-    cout << "(2) Misplaced tiles"<<endl;
-    cin >> index;
-    if ( index == 1)
-    {
-        search(tiles,1);
-    }
-    else if (index == 2)
-    {
-        search(tiles,2);
-    }
-    else
-    {
-        cout << "Invalid heuristics index"<< endl;
-    }
+    search(tiles);
 }
 
-void Search::search(int intput_map[], int heuristic_id)
+void Search::search(int intput_map[])
 {
     int expanded_node = 0;
     State initial_state(intput_map,size_x,size_y);
@@ -69,25 +52,25 @@ void Search::search(int intput_map[], int heuristic_id)
         if(current_state.can_move_up)
         {
             expanded_node++;
-            insert_to_list(heuristic_id, current_state, UP, search_list, reached_state);
+            insert_to_list(current_state, UP, search_list, reached_state);
         }
 
         if(current_state.can_move_down)
         {
             expanded_node++;
-            insert_to_list(heuristic_id, current_state, DOWN, search_list, reached_state);
+            insert_to_list(current_state, DOWN, search_list, reached_state);
         }
 
         if(current_state.can_move_left)
         {
             expanded_node++;
-            insert_to_list(heuristic_id, current_state, LEFT, search_list, reached_state);
+            insert_to_list(current_state, LEFT, search_list, reached_state);
         }
 
         if(current_state.can_move_right)
         {
             expanded_node++;
-            insert_to_list(heuristic_id, current_state, RIGHT, search_list, reached_state);
+            insert_to_list(current_state, RIGHT, search_list, reached_state);
         }
     }
 
@@ -114,16 +97,16 @@ void Search::search(int intput_map[], int heuristic_id)
     cout<<"Expanded nodes:"<<expanded_node<<endl;
 }
 
-void Search::insert_to_list(int heuristic_id, State &current_state, Direction d, std::deque<State> &search_list, std::deque<State> &reached_state)
+void Search::insert_to_list(State &current_state, Direction d, std::deque<State> &search_list, std::deque<State> &reached_state)
 {
     State next_state = move(current_state.map,d);
 
-    if (heuristic_id == 1)
+    if (this->strategy == GREEDY_MANHATTAN)
     {
         current_state.h = current_state.h1;
         next_state.h = next_state.h1;
     }
-    else if (heuristic_id == 2)
+    else if (this->strategy == GREEDY_MISPLACED)
     {
         current_state.h = current_state.h2;
         next_state.h = next_state.h2;
