@@ -1,22 +1,22 @@
 #include <fstream>
 #include <iostream>
 #include <stdlib.h>
-#include "greedy_search.hpp"
+#include "search.hpp"
 #include "state.hpp"
 #include <deque>
 
 using namespace std;
 
-Greedy_search::Greedy_search()
+Search::Search()
 {
 
 }
-Greedy_search::~Greedy_search()
+Search::~Search()
 {
 
 }
 
-void Greedy_search::run()
+void Search::run()
 {
     size_x = 3;
     size_y = 3;
@@ -44,7 +44,7 @@ void Greedy_search::run()
     }
 }
 
-void Greedy_search::search(int intput_map[], int heuristic_id)
+void Search::search(int intput_map[], int heuristic_id)
 {
     int expanded_node = 0;
     State initial_state(intput_map,size_x,size_y);
@@ -114,7 +114,7 @@ void Greedy_search::search(int intput_map[], int heuristic_id)
     cout<<"Expanded nodes:"<<expanded_node<<endl;
 }
 
-void Greedy_search::insert_to_list(int heuristic_id, State &current_state, Direction d, std::deque<State> &search_list, std::deque<State> &reached_state)
+void Search::insert_to_list(int heuristic_id, State &current_state, Direction d, std::deque<State> &search_list, std::deque<State> &reached_state)
 {
     State next_state = move(current_state.map,d);
 
@@ -169,7 +169,7 @@ void Greedy_search::insert_to_list(int heuristic_id, State &current_state, Direc
     }
 }
 
-State Greedy_search::move(int current_map[], Direction d)
+State Search::move(int current_map[], Direction d)
 {
     int map[size_x * size_y];
     int zero_index = 0;
@@ -206,7 +206,7 @@ State Greedy_search::move(int current_map[], Direction d)
     return next_state;
 }
 
-bool Greedy_search::compare_arrays(int a[], int b[])
+bool Search::compare_arrays(int a[], int b[])
 {
     for (int i = 0; i < sizeof(a); i++)
     {
@@ -218,7 +218,7 @@ bool Greedy_search::compare_arrays(int a[], int b[])
     return true;
 }
 
-Direction Greedy_search::revert_direction(int d)
+Direction Search::revert_direction(int d)
 {
     if (d == 0)
     {

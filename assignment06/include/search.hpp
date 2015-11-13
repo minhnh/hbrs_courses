@@ -1,5 +1,5 @@
-#ifndef GREEDY_SEARCH_HPP
-#define GREEDY_SEARCH_HPP
+#ifndef SEARCH_HPP
+#define SEARCH_HPP
 #include <deque>
 #include "state.hpp"
 
@@ -11,12 +11,11 @@ enum Direction
     RIGHT = 3
 };
 
-
-class Greedy_search
+class Search
 {
     public:
-        Greedy_search();
-        ~Greedy_search();
+        Search();
+        ~Search();
         void run();
         void search(int map[], int heuristic_id);
         State move(int map[], Direction);
