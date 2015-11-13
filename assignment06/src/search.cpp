@@ -28,6 +28,7 @@ void Search::run()
     search(tiles);
 }
 
+
 void Search::search(int intput_map[])
 {
     int expanded_node = 0;
@@ -37,8 +38,8 @@ void Search::search(int intput_map[])
     deque<State> reached_state;
     deque<State> solve_step;
 
-    search_list.push_front(initial_state);
     initial_state.depth = 0;
+    search_list.push_front(initial_state);
 
     while (search_list.size() > 0)
     {
@@ -74,11 +75,12 @@ void Search::search(int intput_map[])
 
     while(solve_step.front().depth > 0)
     {
-        State last_state = move(solve_step.front().map,
-                                revert_direction(solve_step.front().last_move));
+        int last_state_map[size_x * size_y];
+        move(solve_step.front().map, last_state_map,
+                                    revert_direction(solve_step.front().last_move));
         for (int i = 0; i < reached_state.size(); i++)
         {
-            if (compare_arrays(last_state.map,reached_state[i].map))
+            if (compare_arrays(last_state_map, reached_state[i].map))
             {
                 solve_step.push_front(reached_state[i]);
                 i == reached_state.size();
@@ -99,10 +101,12 @@ void Search::insert_to_list(State &current_state, Direction d,
                                 deque<State> &search_list,
                                 deque<State> &reached_state)
 {
-    State next_state = move(current_state.map,d);
+    int map[size_x * size_y];
+    move(current_state.map, map, d);
+    State next_state(map, size_x, size_y, this->heuristics);
 
     next_state.depth = current_state.depth + 1;
-    next_state.last_move = (int)d;
+    next_state.last_move = d;
     for (int i = 0; i < reached_state.size();i++)
     {
         if (compare_arrays(next_state.map, reached_state[i].map))
@@ -137,9 +141,8 @@ void Search::insert_to_list(State &current_state, Direction d,
     }
 }
 
-State Search::move(int current_map[], Direction d)
+void Search::move(int current_map[], int map[], Direction d)
 {
-    int map[size_x * size_y];
     int zero_index = 0;
     for (int i = 0; i < size_x * size_y; i++)
     {
@@ -169,9 +172,6 @@ State Search::move(int current_map[], Direction d)
         map[zero_index] = map[zero_index + 1];
         map[zero_index + 1] = 0;
     }
-    State next_state(map, size_x, size_y, this->heuristics);
-
-    return next_state;
 }
 
 bool Search::compare_arrays(int a[], int b[])
@@ -186,7 +186,7 @@ bool Search::compare_arrays(int a[], int b[])
     return true;
 }
 
-Direction Search::revert_direction(int d)
+Direction Search::revert_direction(Direction d)
 {
     if (d == 0)
     {

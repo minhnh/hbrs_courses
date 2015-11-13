@@ -1,7 +1,6 @@
 #include <fstream>
 #include <iostream>
 #include <stdlib.h>
-#include <climits>
 #include "state.hpp"
 
 using namespace std;
@@ -20,7 +19,7 @@ State::State(int Tiles[], int size_x, int size_y, Heuristics heuristics)
     map_size_y = size_y;
 
     f = INT_MAX;
-    h = INT_MAX;
+    depth = INT_MAX;
 
     switch (heuristics)
     {
@@ -31,11 +30,11 @@ State::State(int Tiles[], int size_x, int size_y, Heuristics heuristics)
             h = find_heuristics_2();
             break;
         default:
+            h = INT_MAX;
             break;
     }
-    depth = 0;
 
-    check_expandability();
+    set_expandability();
 }
 
 State::~State()
@@ -43,7 +42,7 @@ State::~State()
 
 }
 
-void State::check_expandability()
+void State::set_expandability()
 {
     if (zero_index > map_size_y)
     {
