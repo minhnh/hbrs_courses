@@ -13,16 +13,14 @@ enum Direction
 
 enum Strategy
 {
-    GREEDY_MANHATTAN = 0,
-    GREEDY_MISPLACED,
-    A_STAR_MANHATTAN,
-    A_STAR_MISPLACED
+    GREEDY = 0,
+    ASTAR
 };
 
 class Search
 {
     public:
-        Search(Strategy);
+        Search(Strategy, Heuristics);
         ~Search();
         void run();
         void search(int map[]);
@@ -35,5 +33,6 @@ class Search
 		int size_y;
     private:
         Strategy strategy;
+        Heuristics heuristics;
 };
 #endif

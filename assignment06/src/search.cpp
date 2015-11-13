@@ -7,9 +7,10 @@
 
 using namespace std;
 
-Search::Search(Strategy strategy)
+Search::Search(Strategy strategy, Heuristics h)
 {
     this->strategy = strategy;
+    this->heuristics = h;
 }
 Search::~Search()
 {
@@ -30,7 +31,7 @@ void Search::run()
 void Search::search(int intput_map[])
 {
     int expanded_node = 0;
-    State initial_state(intput_map,size_x,size_y);
+    State initial_state(intput_map, size_x,size_y, this->heuristics);
 
     deque<State> search_list;
     deque<State> reached_state;
@@ -100,16 +101,6 @@ void Search::insert_to_list(State &current_state, Direction d,
 {
     State next_state = move(current_state.map,d);
 
-    if (this->strategy == GREEDY_MANHATTAN)
-    {
-        current_state.h = current_state.h1;
-        next_state.h = next_state.h1;
-    }
-    else if (this->strategy == GREEDY_MISPLACED)
-    {
-        current_state.h = current_state.h2;
-        next_state.h = next_state.h2;
-    }
     next_state.depth = current_state.depth + 1;
     next_state.last_move = (int)d;
     for (int i = 0; i < reached_state.size();i++)
@@ -178,7 +169,7 @@ State Search::move(int current_map[], Direction d)
         map[zero_index] = map[zero_index + 1];
         map[zero_index + 1] = 0;
     }
-    State next_state(map, size_x, size_y);
+    State next_state(map, size_x, size_y, this->heuristics);
 
     return next_state;
 }

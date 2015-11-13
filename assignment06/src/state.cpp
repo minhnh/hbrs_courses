@@ -1,11 +1,12 @@
 #include <fstream>
 #include <iostream>
 #include <stdlib.h>
+#include <climits>
 #include "state.hpp"
 
 using namespace std;
 
-State::State(int Tiles[], int size_x, int size_y)
+State::State(int Tiles[], int size_x, int size_y, Heuristics heuristics)
 {
     for (int i = 0; i < size_x * size_y; i++)
     {
@@ -18,9 +19,20 @@ State::State(int Tiles[], int size_x, int size_y)
     map_size_x = size_x;
     map_size_y = size_y;
 
-    h = 1;
-    h1 = find_heuristics_1();
-    h2 = find_heuristics_2();
+    f = INT_MAX;
+    h = INT_MAX;
+
+    switch (heuristics)
+    {
+        case MANHATTAN:
+            h = find_heuristics_1();
+            break;
+        case MISPLACED:
+            h = find_heuristics_2();
+            break;
+        default:
+            break;
+    }
     depth = 0;
 
     check_expandability();
