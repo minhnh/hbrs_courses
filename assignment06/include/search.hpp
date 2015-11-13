@@ -26,7 +26,7 @@ class Search
         ~Search();
         void run();
         void search(int map[]);
-        State move(int map[], Direction);
+        State move(int [], Direction);
         bool compare_arrays(int a[], int b[]);
         Direction revert_direction(int d);
         void insert_to_list(State &current_state, Direction d, std::deque<State> &search_list, std::deque<State> &reached_state);

@@ -54,19 +54,16 @@ void Search::search(int intput_map[])
             expanded_node++;
             insert_to_list(current_state, UP, search_list, reached_state);
         }
-
         if(current_state.can_move_down)
         {
             expanded_node++;
             insert_to_list(current_state, DOWN, search_list, reached_state);
         }
-
         if(current_state.can_move_left)
         {
             expanded_node++;
             insert_to_list(current_state, LEFT, search_list, reached_state);
         }
-
         if(current_state.can_move_right)
         {
             expanded_node++;
@@ -77,7 +74,7 @@ void Search::search(int intput_map[])
     while(solve_step.front().depth > 0)
     {
         State last_state = move(solve_step.front().map,
-                                    revert_direction(solve_step.front().last_move));
+                                revert_direction(solve_step.front().last_move));
         for (int i = 0; i < reached_state.size(); i++)
         {
             if (compare_arrays(last_state.map,reached_state[i].map))
@@ -97,7 +94,9 @@ void Search::search(int intput_map[])
     cout<<"Expanded nodes:"<<expanded_node<<endl;
 }
 
-void Search::insert_to_list(State &current_state, Direction d, std::deque<State> &search_list, std::deque<State> &reached_state)
+void Search::insert_to_list(State &current_state, Direction d,
+                                deque<State> &search_list,
+                                deque<State> &reached_state)
 {
     State next_state = move(current_state.map,d);
 
@@ -113,40 +112,35 @@ void Search::insert_to_list(State &current_state, Direction d, std::deque<State>
     }
     next_state.depth = current_state.depth + 1;
     next_state.last_move = (int)d;
-    bool state_reached = false;
     for (int i = 0; i < reached_state.size();i++)
     {
-        if (compare_arrays(next_state.map,reached_state[i].map))
+        if (compare_arrays(next_state.map, reached_state[i].map))
         {
-            state_reached = true;
-            break;
+            return;
         }
     }
-    if (!state_reached)
+    if (next_state.h < search_list.front().h or search_list.size() == 0)
     {
-        if (next_state.h < search_list.front().h or search_list.size() == 0)
+        search_list.push_front(next_state);
+    }
+    else if (next_state.h > search_list.back().h)
+    {
+        search_list.push_back(next_state);
+    }
+    else
+    {
+        search_list.push_front(next_state);
+        for (int i = 0; i+1 < search_list.size(); i++)
         {
-            search_list.push_front(next_state);
-        }
-        else if (next_state.h > search_list.back().h)
-        {
-            search_list.push_back(next_state);
-        }
-        else
-        {
-            search_list.push_front(next_state);
-            for (int i = 0; i+1 < search_list.size(); i++)
+            if (search_list[i].h > search_list[i+1].h)
             {
-                if (search_list[i].h > search_list[i+1].h)
-                {
-                    State temp = search_list[i];
-                    search_list[i] = search_list[i+1];
-                    search_list[i+1] = temp;
-                }
-                else
-                {
-                    break;
-                }
+                State temp = search_list[i];
+                search_list[i] = search_list[i+1];
+                search_list[i+1] = temp;
+            }
+            else
+            {
+                break;
             }
         }
     }
