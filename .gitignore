@@ -45,7 +45,6 @@ Icon
 *.log
 *.out
 *.dvi
-*.pdf
 *.gz
 
 CATKIN_IGNORE
