@@ -1,7 +1,10 @@
 #include <iostream>
 #include <fstream>
+#include <chrono>
 #include "search.hpp"
+
 using namespace std;
+using ms = chrono::milliseconds;
 
 int main(int arc, char* argv[])
 {
@@ -39,29 +42,35 @@ int main(int arc, char* argv[])
     {
         s = ASTAR;
     }
-    
     else if (input == 3)
-	{
-		s = ASTARITER;
-	}
-    
+    {
+        s = ASTARITER;
+    }
     else
     {
         cout << "Invalid input"<< endl;
         return -1;
     }
     Search solver(s, h);
-    
+
     // Adding iterations. Till the solution is reached.
+    auto start = chrono::steady_clock::now();
+
     if (s == ASTARITER) {
-    	for(int i = 0; solver.found_solution != true ; i++){
-    	    	solver.depth = i;
-    	    	solver.run();
-    	    }
+        for(int i = 0; solver.found_solution != true ; i++){
+                solver.depth = i;
+                solver.run();
+            }
     }
     else {
-    	solver.run();
+        solver.run();
     }
-    
+
+    auto end = chrono::steady_clock::now();
+
+    auto diff = end - start;
+
+    cout<<"Elapsed time is: "<< chrono::duration_cast<ms>(diff).count()<<" ms"<<endl;
+
     return 0;
 }
