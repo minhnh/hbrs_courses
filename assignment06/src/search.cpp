@@ -65,8 +65,10 @@ void Search::best_first_search(int intput_map[])
 
     while (fringe.size() > 0)
     {
+        // Pop current state from fringe and push it to closed
         State current_state =  fringe.front();
         fringe.pop_front();
+        closed.push_back(current_state);
         // Goal check
         if (current_state.h == 0)
         {
@@ -94,8 +96,6 @@ void Search::best_first_search(int intput_map[])
             expanded_node++;
             add_next_state(current_state, RIGHT, fringe, closed);
         }
-        // Push current state to closed
-        closed.push_back(current_state);
     }
 
     // Backtracking solution steps
