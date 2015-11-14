@@ -43,9 +43,7 @@ void Search::best_first_search(int intput_map[])
     deque<State> fringe;
     deque<State> closed;
     deque<State> solve_step;
-    deque<State> goals;
     int expanded_node = 0;
-    bool potential_goal_found = false;
 
     // Setup initial state
     State initial_state(intput_map, size_x,size_y, this->heuristics);
@@ -62,26 +60,8 @@ void Search::best_first_search(int intput_map[])
         // Goal check
         if (current_state.h == 0)
         {
-            potential_goal_found = true;
-            if (goals.size() == 0)
-            {
-                goals.push_front(current_state);
-            }
-            else if (current_state.f < goals.front().f)
-            {
-                goals.push_front(current_state);
-            }
-            goals.front().print();
-
-            if (is_optimal_goal(goals.front(), fringe))
-            {
-                solve_step.push_front(goals.front());
-                break;
-            }
-            else
-            {
-                continue;
-            }
+            solve_step.push_front(current_state);
+            break;
         }
 
         // Expand states
@@ -104,28 +84,6 @@ void Search::best_first_search(int intput_map[])
         {
             expanded_node++;
             add_next_state(current_state, RIGHT, fringe, closed);
-        }
-
-        if (potential_goal_found)
-        {
-            if (is_optimal_goal(goals.front(), fringe))
-            {
-                solve_step.push_front(goals.front());
-                break;
-            }
-            else
-            {
-                int smallest = 0;
-                for (int i = 0; i < fringe.size(); i++)
-                {
-                    if (fringe[smallest].f > fringe[i].f)
-                    {
-                        smallest = i;
-                    }
-                }
-                cout << fringe[smallest].f <<endl;
-                continue;
-            }
         }
     }
 
@@ -272,18 +230,6 @@ bool Search::compare_arrays(int a[], int b[])
     for (int i = 0; i < sizeof(a); i++)
     {
         if (a[i] != b[i])
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool Search::is_optimal_goal(State &potential_goal, deque<State> &fringe)
-{
-    for (int i = 0; i < fringe.size(); i++)
-    {
-        if  (potential_goal.f > fringe[i].f)
         {
             return false;
         }
