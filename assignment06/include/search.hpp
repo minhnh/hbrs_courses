@@ -21,11 +21,11 @@ class Search
     private:
         Strategy strategy;
         Heuristics heuristics;
-        void search(int map[]);
+        void best_first_search(int map[]);
         void move(int [], int [], Direction);
         bool compare_arrays(int a[], int b[]);
         Direction revert_direction(Direction d);
-        void insert_to_list(State &, Direction, std::deque<State> &,
+        void add_next_state(State &, Direction, std::deque<State> &,
                                                 std::deque<State> &);
 
         void evaluate_next_state(State &, State &, Direction);
