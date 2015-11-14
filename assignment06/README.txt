@@ -10,3 +10,5 @@ Once the cmake command is done you can now compile your program with the followi
 The executable will be created inside the bin folder. Stay in the build folder and run the program with the following command:
 
 	./bin/assignment06
+
+Note: Execution time for A* with misplaced tiles took 744180 ms (12.4 minutes)

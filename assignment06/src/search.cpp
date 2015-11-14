@@ -57,7 +57,7 @@ void Search::best_first_search(int intput_map[])
         State current_state =  fringe.front();
         fringe.pop_front();
         closed.push_back(current_state);
-        // Goal check
+        // Goal check. Optimality is ensured since fringe is sorted.
         if (current_state.h == 0)
         {
             solve_step.push_front(current_state);
