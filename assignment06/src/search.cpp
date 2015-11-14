@@ -28,28 +28,6 @@ void Search::run()
     best_first_search(tiles);
 }
 
-void Search::evaluate_next_state(State & current_state, State & next_state, Direction d)
-{
-    next_state.depth = current_state.depth + 1;
-    next_state.last_move = d;
-    next_state.last_state = &current_state;
-    //cout << "current_state.f: " << current_state.f <<
-    //        ", current_state.h: " << current_state.h << endl;
-    switch (this->strategy) {
-        case ASTAR:
-            next_state.f = next_state.h + next_state.depth;
-            break;
-        case GREEDY:
-            next_state.f = next_state.h;
-            break;
-        default:
-            next_state.f = INT_MAX;
-            break;
-    }
-    //next_state.print();
-}
-
-
 void Search::best_first_search(int intput_map[])
 {
     deque<State> fringe;
@@ -174,6 +152,27 @@ void Search::add_next_state(State &current_state, Direction d,
             }
         }
     }
+}
+
+void Search::evaluate_next_state(State & current_state, State & next_state, Direction d)
+{
+    next_state.depth = current_state.depth + 1;
+    next_state.last_move = d;
+    next_state.last_state = &current_state;
+    //cout << "current_state.f: " << current_state.f <<
+    //        ", current_state.h: " << current_state.h << endl;
+    switch (this->strategy) {
+        case ASTAR:
+            next_state.f = next_state.h + next_state.depth;
+            break;
+        case GREEDY:
+            next_state.f = next_state.h;
+            break;
+        default:
+            next_state.f = INT_MAX;
+            break;
+    }
+    //next_state.print();
 }
 
 void Search::move(int current_map[], int map[], Direction d)
