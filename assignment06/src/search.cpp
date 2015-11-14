@@ -13,6 +13,7 @@ Search::Search(Strategy strategy, Heuristics h)
 {
     this->strategy = strategy;
     this->heuristics = h;
+    this->found_solution = false;
 }
 Search::~Search()
 {
@@ -57,6 +58,12 @@ void Search::best_first_search(int intput_map[])
         State current_state =  fringe.front();
         fringe.pop_front();
         closed.push_back(current_state);
+        //cout << current_state.depth << " " << depth<< endl;  
+        
+        // Every time we go to a certain depth, that grows by one each run
+        if((current_state.depth >= depth)&&(strategy == ASTARITER)){
+        	break;
+        }
         // Goal check. Optimality is ensured since fringe is sorted.
         if (current_state.h == 0)
         {
@@ -99,6 +106,8 @@ void Search::best_first_search(int intput_map[])
             {
                 solve_step.push_front(closed[i]);
                 i == closed.size();
+
+                found_solution = true;
             }
         }
     }
@@ -180,6 +189,10 @@ void Search::evaluate_next_state(State & current_state, State & next_state, Dire
     //        ", current_state.h: " << current_state.h << endl;
     switch (this->strategy) {
         case ASTAR:
+            next_state.f = next_state.h + next_state.depth;
+            break;
+        case ASTARITER:
+        	// the fringe is the same that we have for A*
             next_state.f = next_state.h + next_state.depth;
             break;
         case GREEDY:

@@ -6,7 +6,8 @@
 enum Strategy
 {
     GREEDY = 0,
-    ASTAR
+    ASTAR,
+    ASTARITER
 };
 
 class Search
@@ -18,6 +19,8 @@ class Search
 
         int size_x;
         int size_y;
+        int depth;
+        bool found_solution;
     private:
         Strategy strategy;
         Heuristics heuristics;

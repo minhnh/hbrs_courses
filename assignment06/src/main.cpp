@@ -29,6 +29,7 @@ int main(int arc, char* argv[])
     cout << "Please choose search strategy: "<<endl;
     cout << "(1) Greedy"<<endl;
     cout << "(2) A*"<<endl;
+    cout << "(3) A* iterative"<<endl;
     cin >> input;
     if ( input == 1)
     {
@@ -38,13 +39,29 @@ int main(int arc, char* argv[])
     {
         s = ASTAR;
     }
+    
+    else if (input == 3)
+	{
+		s = ASTARITER;
+	}
+    
     else
     {
         cout << "Invalid input"<< endl;
         return -1;
     }
     Search solver(s, h);
-    solver.run();
-
+    
+    // Adding iterations. Till the solution is reached.
+    if (s == ASTARITER) {
+    	for(int i = 0; solver.found_solution != true ; i++){
+    	    	solver.depth = i;
+    	    	solver.run();
+    	    }
+    }
+    else {
+    	solver.run();
+    }
+    
     return 0;
 }
