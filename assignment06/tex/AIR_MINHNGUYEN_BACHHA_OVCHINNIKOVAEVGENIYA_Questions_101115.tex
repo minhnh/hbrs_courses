@@ -68,14 +68,44 @@
 
 \section{Question}
 
+Describe Hill-climbing algorithm.\\
+
+Hill climbing is an optimization that belongs to local search. Hill climbing is an iterative algorithm that starts in a random local solution and then tries to find a better solution by gradually changing a elements of the solution one by one. If the next local solution is better, the gradually change moves further until no new improvements can be found.\\
+
+It can easily be modified for problems where we require minimization instead of maximization.\\
+
+This algorithm is useful to consider state space landscape.\\
+
+Completeness: "If finitely many local maxima, then $\lim_{restarts \to \infty}$ P (complete) = 1" (from the lecture).
+
+\section{Question}
+
+Name the properties of simulated annealing.\\
+
+
+1. If the 'temperature' (T) is fixed, probability of $x$ condition is following:\\
+
+
+$p(x) = \alpha e^{E(x)/kT}$ (Boltzman distribution)\\
+
+2. For small T the ratio between x and x* is the following:\\
+
+
+$p(x^*)/p(x) = e^{E(x^*)/kT}/e^{E(x)/kT} = e^{(E(x^*)-E(x))/kT}$\\
+
+
+3. So, if the 'temperature' decreases sufficiently slowly, $Pr[reach x^*] \rightarrow 1$\\
+
+That is why (because of slow decrease of the 'temperature', the algorithm is called 'annealing'.
 
 
 \section{Question}
 
+Briefly describe local beam search algorithm.\\
 
 
-\section{Question}
+Beam search is a heuristic search algorithm that expands the most promising node while searching a graph. For creating a search tree it uses BFS. Basically it is an optimization of BFS that reduces its memory requirements.  It starts with a certain number of randomly generated states. The searchers of the algorithm joining the searcher that has found a good state.\\
 
-
+Local beam search is a close analogy to natural selection.
 
 \end{document}
