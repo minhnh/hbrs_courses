@@ -28,23 +28,44 @@ void Search::run()
     search(tiles);
 }
 
+void Search::evaluate_next_state(State & current_state, State & next_state, Direction d)
+{
+    next_state.depth = current_state.depth + 1;
+    next_state.last_move = d;
+    next_state.last_state = &current_state;
+    //cout << "current_state.f: " << current_state.f <<
+    //        ", current_state.h: " << current_state.h << endl;
+    switch (this->strategy) {
+        case ASTAR:
+            next_state.f = next_state.h + next_state.depth;
+            break;
+        case GREEDY:
+            next_state.f = next_state.h;
+            break;
+        default:
+            next_state.f = INT_MAX;
+            break;
+    }
+    //next_state.print();
+}
+
 
 void Search::search(int intput_map[])
 {
-    int expanded_node = 0;
-    State initial_state(intput_map, size_x,size_y, this->heuristics);
-
     deque<State> search_list;
     deque<State> reached_state;
     deque<State> solve_step;
 
+    int expanded_node = 0;
+    State initial_state(intput_map, size_x,size_y, this->heuristics);
+    initial_state.f = initial_state.h;
     initial_state.depth = 0;
+
     search_list.push_front(initial_state);
 
     while (search_list.size() > 0)
     {
         State current_state =  search_list.front();
-        reached_state.push_back(current_state);
         search_list.pop_front();
         if (current_state.h == 0)
         {
@@ -71,6 +92,7 @@ void Search::search(int intput_map[])
             expanded_node++;
             insert_to_list(current_state, RIGHT, search_list, reached_state);
         }
+        reached_state.push_back(current_state);
     }
 
     while(solve_step.front().depth > 0)
@@ -104,9 +126,8 @@ void Search::insert_to_list(State &current_state, Direction d,
     int map[size_x * size_y];
     move(current_state.map, map, d);
     State next_state(map, size_x, size_y, this->heuristics);
+    evaluate_next_state(current_state, next_state, d);
 
-    next_state.depth = current_state.depth + 1;
-    next_state.last_move = d;
     for (int i = 0; i < reached_state.size();i++)
     {
         if (compare_arrays(next_state.map, reached_state[i].map))
@@ -114,11 +135,11 @@ void Search::insert_to_list(State &current_state, Direction d,
             return;
         }
     }
-    if (next_state.h < search_list.front().h or search_list.size() == 0)
+    if (next_state.f < search_list.front().f or search_list.size() == 0)
     {
         search_list.push_front(next_state);
     }
-    else if (next_state.h > search_list.back().h)
+    else if (next_state.f > search_list.back().f)
     {
         search_list.push_back(next_state);
     }
@@ -127,7 +148,7 @@ void Search::insert_to_list(State &current_state, Direction d,
         search_list.push_front(next_state);
         for (int i = 0; i+1 < search_list.size(); i++)
         {
-            if (search_list[i].h > search_list[i+1].h)
+            if (search_list[i].f > search_list[i+1].f)
             {
                 State temp = search_list[i];
                 search_list[i] = search_list[i+1];

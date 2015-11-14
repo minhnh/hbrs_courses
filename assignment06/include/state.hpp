@@ -34,6 +34,7 @@ class State
         int depth;
         int zero_index;
         Direction last_move;
+        State * last_state;
 
         int get_value_at(int x, int y);
         int get_index(int x, int y);

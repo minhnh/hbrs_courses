@@ -17,7 +17,7 @@ class Search
         void run();
 
         int size_x;
-		int size_y;
+        int size_y;
     private:
         Strategy strategy;
         Heuristics heuristics;
@@ -28,5 +28,6 @@ class Search
         void insert_to_list(State &, Direction, std::deque<State> &,
                                                 std::deque<State> &);
 
+        void evaluate_next_state(State &, State &, Direction);
 };
 #endif

@@ -148,6 +148,7 @@ void State::print()
         }
         cout << endl;
     }
+    cout << "f = "<< f << ", h = "<< h << endl;
 }
 
 int State::get_value_at(int x, int y)
