@@ -135,6 +135,16 @@ void Search::insert_to_list(State &current_state, Direction d,
             return;
         }
     }
+    // Check in fringe
+    for (int i = 0; i < search_list.size();i++)
+    {
+        if (compare_arrays(next_state.map, search_list[i].map))
+        {
+            if (next_state.depth < search_list[i].depth)
+                search_list[i] = next_state;
+            return;
+        }
+    }
     if (next_state.f < search_list.front().f or search_list.size() == 0)
     {
         search_list.push_front(next_state);
