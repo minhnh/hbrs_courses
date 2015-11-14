@@ -145,11 +145,7 @@ void Search::insert_to_list(State &current_state, Direction d,
             return;
         }
     }
-    if (next_state.f < search_list.front().f or search_list.size() == 0)
-    {
-        search_list.push_front(next_state);
-    }
-    else if (next_state.f > search_list.back().f)
+    if (next_state.f > search_list.back().f)
     {
         search_list.push_back(next_state);
     }
