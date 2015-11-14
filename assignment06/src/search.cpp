@@ -1,11 +1,13 @@
 #include <fstream>
 #include <iostream>
 #include <stdlib.h>
+#include <deque>
+#include <chrono>
 #include "search.hpp"
 #include "state.hpp"
-#include <deque>
 
 using namespace std;
+using ms = chrono::milliseconds;
 
 Search::Search(Strategy strategy, Heuristics h)
 {
@@ -25,7 +27,15 @@ void Search::run()
                    3,  6,  2,
                    0,  5,  7};
 
+    auto start = chrono::steady_clock::now();
+
     best_first_search(tiles);
+
+    auto end = chrono::steady_clock::now();
+
+    auto diff = end - start;
+
+    cout<<"Elapsed time is: "<< chrono::duration_cast<ms>(diff).count()<<" ms"<<endl;
 }
 
 void Search::best_first_search(int intput_map[])
@@ -42,7 +52,7 @@ void Search::best_first_search(int intput_map[])
     initial_state.f = initial_state.h;
     initial_state.depth = 0;
     fringe.push_front(initial_state);
-	
+
     while (fringe.size() > 0)
     {
         // Pop current state from fringe and push it to closed
@@ -52,28 +62,28 @@ void Search::best_first_search(int intput_map[])
         // Goal check
         if (current_state.h == 0)
         {
-			potential_goal_found = true;
-			if (goals.size() == 0)
-			{
-				goals.push_front(current_state);
-			}
-			else if (current_state.f < goals.front().f)
-			{
-				goals.push_front(current_state);
-			}
-			goals.front().print();
-			
-			if (is_optimal_goal(goals.front(), fringe))
-			{
-				solve_step.push_front(goals.front());
-				break;
-			}
+            potential_goal_found = true;
+            if (goals.size() == 0)
+            {
+                goals.push_front(current_state);
+            }
+            else if (current_state.f < goals.front().f)
+            {
+                goals.push_front(current_state);
+            }
+            goals.front().print();
+
+            if (is_optimal_goal(goals.front(), fringe))
+            {
+                solve_step.push_front(goals.front());
+                break;
+            }
             else
             {
-				continue;
-			}
+                continue;
+            }
         }
-        
+
         // Expand states
         if(current_state.can_move_up)
         {
@@ -95,28 +105,28 @@ void Search::best_first_search(int intput_map[])
             expanded_node++;
             add_next_state(current_state, RIGHT, fringe, closed);
         }
-        
+
         if (potential_goal_found)
         {
-			if (is_optimal_goal(goals.front(), fringe))
-			{
-				solve_step.push_front(goals.front());
-				break;
-			}
+            if (is_optimal_goal(goals.front(), fringe))
+            {
+                solve_step.push_front(goals.front());
+                break;
+            }
             else
             {
-				int smallest = 0;
-				for (int i = 0; i < fringe.size(); i++)
-				{
-					if (fringe[smallest].f > fringe[i].f)
-					{
-						smallest = i;
-					}
-				}
-				cout << fringe[smallest].f <<endl;
-				continue;
-			}
-		}
+                int smallest = 0;
+                for (int i = 0; i < fringe.size(); i++)
+                {
+                    if (fringe[smallest].f > fringe[i].f)
+                    {
+                        smallest = i;
+                    }
+                }
+                cout << fringe[smallest].f <<endl;
+                continue;
+            }
+        }
     }
 
     // Backtracking solution steps
@@ -160,23 +170,23 @@ void Search::add_next_state(State &current_state, Direction d,
             next_state.f >= closed[i].f)
         {
             return;
-        }	
+        }
     }
     // Check in fringe for same state. If a same state in fringe has bigger
-    // depth, remove that state from fringe. The next state would be 
+    // depth, remove that state from fringe. The next state would be
     // added to the fringe in sorted order. Return if same state found.
     for (int i = 0; i < fringe.size();i++)
     {
         if (compare_arrays(next_state.map, fringe[i].map))
         {
             if (next_state.depth < fringe[i].depth)
-            {    
-				fringe.erase(fringe.begin() + i);
-            }   
+            {
+                fringe.erase(fringe.begin() + i);
+            }
             else
             {
-			    return;	
-			}
+                return;
+            }
         }
     }
     // Add state to fringe in increasing order
@@ -271,14 +281,14 @@ bool Search::compare_arrays(int a[], int b[])
 
 bool Search::is_optimal_goal(State &potential_goal, deque<State> &fringe)
 {
-	for (int i = 0; i < fringe.size(); i++)
-	{
-		if  (potential_goal.f > fringe[i].f)
-		{
-			return false;
-		}
-	}
-	return true;
+    for (int i = 0; i < fringe.size(); i++)
+    {
+        if  (potential_goal.f > fringe[i].f)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 Direction Search::revert_direction(Direction d)

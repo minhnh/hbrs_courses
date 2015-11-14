@@ -15,4 +15,7 @@ add_executable( assignment06
 		src/search.cpp
 		src/state.cpp)
 
+# Add for chrono support
+add_definitions(-std=c++11)
+
 #target_link_libraries(assignment06)
