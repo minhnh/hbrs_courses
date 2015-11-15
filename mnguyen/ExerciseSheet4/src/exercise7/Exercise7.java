@@ -4,7 +4,7 @@ public class Exercise7 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		SampleSet<SamplePose2D> test = new SampleSet<>();
+		SampleSet<SamplePose2D> test = new SampleSet<>(new SamplePose2D.SampleGeneratorClass());
 
 	}
 
