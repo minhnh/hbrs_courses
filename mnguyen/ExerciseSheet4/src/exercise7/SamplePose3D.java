@@ -1,6 +1,9 @@
 package exercise7;
 
+import java.util.Random;
+
 public class SamplePose3D {
+
 	static final float X_MAX = 200.0f;
 	static final float X_MIN = -200.0f;
 	static final float Y_MAX = 200.0f;
@@ -25,15 +28,25 @@ public class SamplePose3D {
 	private float gamma;
 	private float w;
 
+	public SamplePose3D(float x, float y, float z, float alpha, float beta, float gamma, float w) {
+		this.x = checkValue(x, X_MIN, X_MAX);
+		this.y = checkValue(y, Y_MIN, Y_MAX);
+		this.z = checkValue(z, Z_MIN, Z_MAX);
+		this.alpha = checkValue(alpha, ALPHA_MIN, ALPHA_MAX);
+		this.beta = checkValue(beta, BETA_MIN, BETA_MAX);
+		this.gamma = checkValue(gamma, GAMMA_MIN, GAMMA_MAX);
+		this.w = w;
+	}
+
 	// static inner class for SampleGenerator<T> implementation
 	public static class SampleGeneratorClass implements SampleGenerator<SamplePose3D> {
 		@Override
-		public SamplePose3D createUniformSample(int sampleCount) {
+		public SamplePose3D createUniformSample(int sampleCount, Random r) {
 			return null;
 		}
 
 		@Override
-		public SamplePose3D createGaussianSample(int sampleCount) {
+		public SamplePose3D createGaussianSample(int sampleCount, Random r) {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -45,14 +58,28 @@ public class SamplePose3D {
 		}
 	}
 
-	public SamplePose3D(float x, float y, float z, float alpha, float beta, float gamma, float w) {
-		this.x = checkValue(x, X_MIN, X_MAX);
-		this.y = checkValue(y, Y_MIN, Y_MAX);
-		this.z = checkValue(z, Z_MIN, Z_MAX);
-		this.alpha = checkValue(alpha, ALPHA_MIN, ALPHA_MAX);
-		this.beta = checkValue(beta, BETA_MIN, BETA_MAX);
-		this.gamma = checkValue(gamma, GAMMA_MIN, GAMMA_MAX);
-		this.w = w;
+	public void recalculateWeight(SamplePose3D actualPose) {
+		float gaussianX = (float) calculateGaussian(this.getX(), actualPose.getX(), SamplePose3D.sigmaLinear);
+		float gaussianY = (float) calculateGaussian(this.getY(), actualPose.getY(), SamplePose3D.sigmaLinear);
+		float gaussianZ = (float) calculateGaussian(this.getY(), actualPose.getY(), SamplePose3D.sigmaLinear);
+		float gaussianAlpha = (float) calculateGaussian(this.getAlpha(), actualPose.getAlpha(),
+				SamplePose3D.sigmaAngular);
+		float gaussianBeta = (float) calculateGaussian(this.getBeta(), actualPose.getBeta(), SamplePose3D.sigmaAngular);
+		float gaussianGamma = (float) calculateGaussian(this.getGamma(), actualPose.getGamma(),
+				SamplePose3D.sigmaAngular);
+		this.setWeight(gaussianX * gaussianY * gaussianZ * gaussianAlpha * gaussianBeta * gaussianGamma);
+	}
+
+	public double calculateGaussian(double currentValue, double actualValue, double deviation) {
+		return (1 / SamplePose2D.sigmaLinear / Math.sqrt(2 * Math.PI))
+				* Math.exp(-Math.pow((currentValue - actualValue), 2) / 2 / Math.pow(deviation, 2));
+	}
+
+	@Override
+	public String toString() {
+		return Float.toString(this.getX()) + "," + Float.toString(this.getY()) + "," + Float.toString(this.getZ()) + ","
+				+ Float.toString(this.getAlpha()) + "," + Float.toString(this.getBeta()) + ","
+				+ Float.toString(this.getGamma()) + "," + Float.toString(this.getWeight());
 	}
 
 	public void setWeight(float w) {

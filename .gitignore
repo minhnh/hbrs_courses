@@ -4,3 +4,5 @@
 .recommenders/
 bin/
 test/
+META-INF/
+samples/
