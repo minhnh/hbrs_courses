@@ -13,7 +13,7 @@ public class SampleSet<T extends SamplePose3D> {
 
 	public void generateUniform(int count) {
 		for (int i = 0; i < count; i++) {
-			samples.add(this.generator.createUniformSample());
+			samples.add(this.generator.createUniformSample(count));
 		}
 	}
 
