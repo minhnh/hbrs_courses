@@ -76,6 +76,7 @@ class BugBrain:
         else:
             self._direction = -1
 
+
     def follow_wall(self, x, y, theta):
         """
         This function is called when the state machine enters the wallfollower
