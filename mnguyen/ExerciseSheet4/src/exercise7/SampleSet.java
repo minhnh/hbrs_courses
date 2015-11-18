@@ -9,10 +9,25 @@ public class SampleSet<T extends SamplePose3D> {
 	static final String newLine = System.getProperty("line.separator");
 	ArrayList<T> samples;
 	private SampleGenerator<T> generator;
+	private T actualPose = null;
 
 	public SampleSet(SampleGenerator<T> generator) {
 		this.samples = new ArrayList<>();
 		this.generator = generator;
+	}
+
+	public void createActualPose() {
+		Random r = new Random(System.currentTimeMillis());
+		actualPose = this.generator.createGaussianSample(samples.size(), r);
+		recalculateWeight();
+	}
+
+	private void recalculateWeight() {
+		if (actualPose == null)
+			return;
+		for (T sample : samples) {
+			sample.recalculateWeight(actualPose);
+		}
 	}
 
 	public void generateUniformSet(int sampleCount) {
@@ -63,6 +78,12 @@ public class SampleSet<T extends SamplePose3D> {
 		try {
 			FileWriter f = new FileWriter(fileName);
 
+			if (actualPose == null) {
+				T dummyPose = this.generator.createGaussianSample(0, null);
+				f.write(dummyPose.toString() + newLine);
+			} else {
+				f.write(actualPose.toString() + newLine);
+			}
 			for (T sample : this.samples) {
 				f.write(sample.toString() + newLine);
 			}

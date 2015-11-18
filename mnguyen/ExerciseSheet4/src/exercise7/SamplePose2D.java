@@ -18,6 +18,8 @@ public class SamplePose2D extends SamplePose3D {
 	public static class SampleGeneratorClass implements SampleGenerator<SamplePose2D> {
 		@Override
 		public SamplePose2D createUniformSample(int sampleCount, Random r) {
+			if (sampleCount == 0)
+				return new SamplePose2D(0, 0, 0, 0);
 			SamplePose2D sample;
 			float w = 1.0f / sampleCount;
 			do {
@@ -32,6 +34,8 @@ public class SamplePose2D extends SamplePose3D {
 
 		@Override
 		public SamplePose2D createGaussianSample(int sampleCount, Random r) {
+			if (sampleCount == 0)
+				return new SamplePose2D(0, 0, 0, 0);
 			SamplePose2D sample;
 			float w = 1.0f / sampleCount;
 			do {

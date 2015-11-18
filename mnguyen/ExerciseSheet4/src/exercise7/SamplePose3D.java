@@ -46,6 +46,8 @@ public class SamplePose3D {
 	public static class SampleGeneratorClass implements SampleGenerator<SamplePose3D> {
 		@Override
 		public SamplePose3D createUniformSample(int sampleCount, Random r) {
+			if (sampleCount == 0)
+				return new SamplePose3D(0, 0, 0, 0, 0, 0, 0);
 			SamplePose3D sample;
 			float w = 1.0f / sampleCount;
 			do {
@@ -64,6 +66,8 @@ public class SamplePose3D {
 
 		@Override
 		public SamplePose3D createGaussianSample(int sampleCount, Random r) {
+			if (sampleCount == 0)
+				return new SamplePose3D(0, 0, 0, 0, 0, 0, 0);
 			SamplePose3D sample;
 			float w = 1.0f / sampleCount;
 			do {
@@ -101,8 +105,8 @@ public class SamplePose3D {
 	}
 
 	public double calculateGaussian(double currentValue, double actualValue, double deviation) {
-		return (1 / SamplePose2D.sigmaLinear / Math.sqrt(2 * Math.PI))
-				* Math.exp(-Math.pow((currentValue - actualValue), 2) / 2 / Math.pow(deviation, 2));
+		return (1.0d / SamplePose2D.sigmaLinear / Math.sqrt(2 * Math.PI))
+				* Math.exp(-Math.pow((currentValue - actualValue), 2.0d) / (2.0d * Math.pow(deviation, 2)));
 	}
 
 	@Override
