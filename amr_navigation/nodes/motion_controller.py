@@ -130,9 +130,9 @@ class MotionControllerNode:
                 if not self._move_to_server.is_active():
                     # Exit if the goal was aborted
                     return
+                #are there any preempted requests?
                 if self._move_to_server.is_preempt_requested():
-                    # Process pending preemption requests
-                    rospy.loginfo('Action preemption requested.')
+                    rospy.loginfo('found a preempted request, ')
                     if (    self._move_to_server.is_new_goal_available() and
                             self._set_new_goal(self._move_to_server.accept_new_goal())
                        ):
