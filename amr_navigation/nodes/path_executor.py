@@ -25,14 +25,14 @@ class PathExecutor:
         rospy.init_node(NODE)
 
         # subscribers & servers
-        self.path_server = SimpleActionServer('/path_executor/execute_path', ExecutePathAction, self.handle_path, False)
+        self.path_server = SimpleActionServer('/path_executor/execute_path', ExecutePathAction, self.handle_path, auto_start=False)
         self.path_server.start()
 
         # publishers & clients
         self.visualization_publisher = rospy.Publisher('/path_executor/current_path', Path)
 
         # get parameters from launch file
-        self.use_obstacle_avoidance = rospy.get_param('use_obstacle_avoidance', False)
+        self.use_obstacle_avoidance = rospy.get_param('~use_obstacle_avoidance')
         if self.use_obstacle_avoidance == False:
             self.goal_client = SimpleActionClient('/motion_controller/move_to', MoveToAction)
         else:
@@ -67,10 +67,8 @@ class PathExecutor:
             if self.path_server.is_preempt_requested():
                 rospy.loginfo('aborting... preempt requested')
                 self.path_server.set_aborted(self.executePathResult, 'aborting... preempt requested')
-
                 # clean up
                 self.goal_client.cancel_all_goals()
-
                 # say goodbye!
                 self.path_server.set_preempted()
                 break
@@ -80,7 +78,8 @@ class PathExecutor:
 
                 moveto_goal = MoveToGoal()
                 moveto_goal.target_pose = self.executePathGoal.path.poses[self.goal_index]
-                self.goal_client.send_goal(moveto_goal, done_cb=self.handle_goal)
+                self.goal_client.send_goal(moveto_goal, done_cb=self.handle_goal, feedback_cb=self.handle_goal_preempt)
+                self.goal_client.wait_for_result()
             else:
                 rospy.loginfo('covered_all_path')
                 if(self.reached_all_nodes == True):
@@ -104,14 +103,21 @@ class PathExecutor:
             self.executePathResult.visited.append(True)
             feedback.reached = True
         else:
+            rospy.loginfo('Print result')
+            rospy.loginfo(result)
+            rospy.loginfo(state)
             self.executePathResult.visited.append(False)
             feedback.reached = False
             self.reached_all_nodes = False # global flag to highlight that at least one node was not reachable
 
-
         self.path_server.publish_feedback(feedback)
 
         self.goal_index = self.goal_index + 1
+
+    def handle_goal_preempt(self, state):
+        if self.path_server.is_preempt_requested():
+            rospy.loginfo("Preemption detected from execute_path. Cancelling goal heading...")
+            self.goal_client.cancel_all_goals()
 
 
 
