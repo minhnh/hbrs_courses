@@ -24,8 +24,9 @@ class PathExecutor:
         # create a node
         rospy.init_node(NODE)
 
-        # subscribers & servers
-        self.path_server = SimpleActionServer('/path_executor/execute_path', ExecutePathAction, self.handle_path, auto_start=False)
+        # Action server to receive goals
+        self.path_server = SimpleActionServer('/path_executor/execute_path', ExecutePathAction,
+                                              self.handle_path, auto_start=False)
         self.path_server.start()
 
         # publishers & clients
@@ -48,16 +49,19 @@ class PathExecutor:
 
         rospy.loginfo('__init__ end')
 
+
     def handle_path(self, paramExecutePathGoal):
-        rospy.loginfo('handle_goal')
-        rospy.loginfo('paramExecutePathGoal size')
-        rospy.loginfo(len(paramExecutePathGoal.path.poses))
+        '''
+        Action server callback to handle following path in succession
+        '''
+        rospy.loginfo('handle_path')
 
         self.goal_index = 0
         self.executePathGoal = paramExecutePathGoal
         self.executePathResult = ExecutePathResult()
 
-        self.visualization_publisher.publish(self.executePathGoal.path)
+        if self.executePathGoal is not None:
+            self.visualization_publisher.publish(self.executePathGoal.path)
 
         rate = rospy.Rate(10.0)
         while not rospy.is_shutdown():
@@ -65,25 +69,29 @@ class PathExecutor:
                 return
 
             if self.path_server.is_preempt_requested():
-                rospy.loginfo('aborting... preempt requested')
-                #self.path_server.set_aborted(self.executePathResult, 'aborting... preempt requested')
-                # clean up
+                rospy.loginfo('preempt requested...')
+                # Stop bug2
                 self.goal_client.cancel_goal()
-                # say goodbye!
+                # Stop path_server
                 self.path_server.set_preempted()
-                break
+                return
 
             if self.goal_index < len(self.executePathGoal.path.poses):
                 moveto_goal = MoveToGoal()
                 moveto_goal.target_pose = self.executePathGoal.path.poses[self.goal_index]
-                self.goal_client.send_goal(moveto_goal, done_cb=self.handle_goal, feedback_cb=self.handle_goal_preempt)
-                self.goal_client.wait_for_result()
+                self.goal_client.send_goal(moveto_goal, done_cb=self.handle_goal,
+                                           feedback_cb=self.handle_goal_preempt)
+                while self.goal_client.get_result() is None:
+                    if self.path_server.is_preempt_requested():
+                        self.goal_client.cancel_goal()
             else:
                 rospy.loginfo('covered_all_path')
                 if(self.reached_all_nodes == True):
-                    self.path_server.set_succeeded(self.executePathResult, 'succeeded... covered_all_path and reached_all_nodes')
+                    self.path_server.set_succeeded(self.executePathResult,
+                                                   'succeeded... covered_all_path and reached_all_nodes')
                 else:
-                    self.path_server.set_succeeded(self.executePathResult, 'failed... covered_all_path BUT couldnt reach all nodes')
+                    self.path_server.set_succeeded(self.executePathResult,
+                                                   'failed... covered_all_path BUT couldn\'t reach all nodes')
                 return
 
             rate.sleep()
@@ -91,7 +99,10 @@ class PathExecutor:
 
 
     def handle_goal(self, state, result):
-
+        '''
+        Handle goal events (succeeded, preempted, aborted, unreachable, ...)
+        Send feedback message
+        '''
         feedback = ExecutePathFeedback()
         feedback.pose = self.executePathGoal.path.poses[self.goal_index]
 
@@ -109,11 +120,13 @@ class PathExecutor:
 
         self.goal_index = self.goal_index + 1
 
-    def handle_goal_preempt(self, state):
-        if self.path_server.is_preempt_requested():
-            rospy.loginfo("Preemption detected from execute_path. Cancelling goal heading...")
-            self.goal_client.cancel_goal()
 
+    def handle_goal_preempt(self, state):
+        '''
+        Callback for goal_client to check for preemption from path_server
+        '''
+        if self.path_server.is_preempt_requested():
+            self.goal_client.cancel_goal()
 
 
 if __name__ == '__main__':
