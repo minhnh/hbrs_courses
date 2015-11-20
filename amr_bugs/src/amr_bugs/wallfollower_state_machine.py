@@ -46,11 +46,13 @@ _Z_ANGULAR = 2
 
 def search(ud):
     '''
-    Go forward until front of robot reaches clearance
+    Go toward closest wall
     '''
-    if ud.front_distance < ud.clearance:
+    if ud.min_all < ud.clearance:
         return 'wall_approached'
-    ud.velocity = (ud.max_forward_velocity, 0, 0)
+    x_vel = ud.max_forward_velocity * cos(ud.sonar_pose[ud.min_all_index][_Z_ANGULAR])
+    y_vel = ud.max_forward_velocity * sin(ud.sonar_pose[ud.min_all_index][_Z_ANGULAR])
+    ud.velocity = (x_vel, y_vel, 0)
 
 
 def align_angular_only(ud):
@@ -58,10 +60,7 @@ def align_angular_only(ud):
     Spin until at a reasonable angle with the wall
     '''
     if (ud.side_mean <= (ud.youbot_length - ud.youbot_width) / 2 + ud.clearance):
-        if ud.front_distance <= ud.clearance:
-            return 'concave_detected'
-        else:
-            return 'aligned'
+        return 'aligned'
     ud.velocity = (0, 0, ud.default_rotational_speed)
 
 
@@ -118,11 +117,18 @@ def set_ranges(self, ranges):
     Its argument is a list of Range messages as received by a sonar callback.
     For left hand side wallfollowing, the sensor values are mirrored (sides are swapped).
     """
+    range_values = []
+    for value in ranges:
+        range_values.append(value.range)
     # Adjust for sonar's pose
-    front_distance_2 = ranges[2].range*cos(self.userdata.sonar_pose[2][_Z_ANGULAR])
-    front_distance_3 = ranges[3].range*cos(self.userdata.sonar_pose[3][_Z_ANGULAR])
-    front_distance_4 = ranges[4].range*cos(self.userdata.sonar_pose[4][_Z_ANGULAR])
-    front_distance_5 = ranges[5].range*cos(self.userdata.sonar_pose[5][_Z_ANGULAR])
+    front_distance_2 = range_values[2] * cos(self.userdata.sonar_pose[2][_Z_ANGULAR])
+    front_distance_3 = range_values[3] * cos(self.userdata.sonar_pose[3][_Z_ANGULAR])
+    front_distance_4 = range_values[4] * cos(self.userdata.sonar_pose[4][_Z_ANGULAR])
+    front_distance_5 = range_values[5] * cos(self.userdata.sonar_pose[5][_Z_ANGULAR])
+    # Store min of all sonars for search state
+    self.userdata.min_all = min(range_values)
+    self.userdata.min_all_index = min(xrange(len(range_values)),
+                                      key=range_values.__getitem__)
     # Store min front distace to avoid problems with doors
     self.userdata.front_distance = min(front_distance_3, front_distance_4,
                                        front_distance_2, front_distance_5)
@@ -135,15 +141,15 @@ def set_ranges(self, ranges):
     else:
         self.userdata.in_corner = False
 
-    self.userdata.side_front_sonar = ranges[self.userdata.sonar_side_front_index].range
-    self.userdata.side_back_sonar = ranges[self.userdata.sonar_side_back_index].range
+    self.userdata.side_front_sonar = range_values[self.userdata.sonar_side_front_index]
+    self.userdata.side_back_sonar = range_values[self.userdata.sonar_side_back_index]
     self.userdata.side_mean = (self.userdata.side_front_sonar + self.userdata.side_back_sonar) / 2
     # Store min side distance to avoid problems at sharp convexes
     side_min = min(self.userdata.side_front_sonar, self.userdata.side_back_sonar)
     # Store front sonar at 3 angles of the turning side
-    self.userdata.sonar_10 = ranges[self.userdata.sonar_10_index].range
-    self.userdata.sonar_30 = ranges[self.userdata.sonar_30_index].range
-    self.userdata.sonar_50 = ranges[self.userdata.sonar_50_index].range
+    self.userdata.sonar_10 = range_values[self.userdata.sonar_10_index]
+    self.userdata.sonar_30 = range_values[self.userdata.sonar_30_index]
+    self.userdata.sonar_50 = range_values[self.userdata.sonar_50_index]
     # Convex condition is when sonar at 50 degrees is farther from the wall than
     # side sonar
     if self.userdata.sonar_50 * sin(radians(50)) > side_min + self.userdata.clearance:
@@ -241,6 +247,9 @@ def construct():
     sm.userdata.sonar_10 = 0
     sm.userdata.sonar_30 = 0
     sm.userdata.sonar_50 = 0
+    # Min of all sonar for searching state
+    sm.userdata.min_all = 0
+    sm.userdata.min_all_index = 0
     # Indices of sonar readings dependent on mode
     sm.userdata.sonar_10_index = 4
     sm.userdata.sonar_30_index = 5
@@ -259,7 +268,10 @@ def construct():
                                                 input_keys=['in_corner',
                                                             'front_distance',
                                                             'clearance',
-                                                            'max_forward_velocity'],
+                                                            'max_forward_velocity',
+                                                            'min_all',
+                                                            'min_all_index',
+                                                            'sonar_pose'],
                                                 output_keys=['velocity'],
                                                 outcomes=['wall_approached']),
                                transitions={'wall_approached' : 'ALIGN_ANGULAR_ONLY'})
