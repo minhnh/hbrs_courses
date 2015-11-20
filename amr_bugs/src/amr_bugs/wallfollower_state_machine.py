@@ -326,6 +326,7 @@ def construct():
                                                 input_keys=['convex_detected',
                                                             'default_rotational_speed',
                                                             'max_forward_velocity',
+                                                            'clearance',
                                                             'min_all'],
                                                 output_keys=['velocity'],
                                                 outcomes=['convex_passed',
