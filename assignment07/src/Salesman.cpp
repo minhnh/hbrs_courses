@@ -64,6 +64,14 @@ float distance (City city1, City city2) {
 	return sqrt(pow((city1.getXCoord() - city2.getXCoord()),2) + pow((city1.getYCoord() - city2.getYCoord()),2));
 }
 
+float fullDist (vector<City> cities){
+	float dist = distance(cities[0], cities[cities.size() - 1]);
+	for (vector<int>::size_type i = 0; i < (cities.size() - 1); i++){
+		dist += distance(cities[i], cities[i + 1]);
+	}
+	return dist;
+}
+
 int main() {
 	vector<City> cities = readFile("ten_cities.txt");
 	for (vector<int>::size_type i = 0; i != cities.size(); i++){
@@ -73,6 +81,6 @@ int main() {
 	for (vector<int>::size_type i = 0; i != cities.size(); i++){
 			cout << cities[i].getName() << " " << cities[i].getXCoord() << " " << cities[i].getYCoord() << endl;
 	}
-	cout << distance(cities[0], cities[6]) << endl;
+	cout << fullDist(cities) << endl;
 	return 0;
 }
