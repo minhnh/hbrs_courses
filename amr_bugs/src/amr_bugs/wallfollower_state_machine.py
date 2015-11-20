@@ -59,6 +59,8 @@ def align_angular_only(ud):
     '''
     Spin until at a reasonable angle with the wall
     '''
+    if ud.min_all > 2 * ud.clearance:
+        return 'lost'
     if (ud.side_mean <= (ud.youbot_length - ud.youbot_width) / 2 + ud.clearance):
         return 'aligned'
     ud.velocity = (0, 0, ud.default_rotational_speed)
@@ -68,6 +70,8 @@ def align_forward(ud):
     '''
     Move forward while keeping distance to the wall
     '''
+    if ud.min_all > 2 * ud.clearance:
+        return 'lost'
     if ud.in_corner or ud.front_distance <= ud.clearance:
         return 'concave_detected'
 
@@ -92,6 +96,8 @@ def convex(ud):
     '''
     Rotate until out of convex
     '''
+    if ud.min_all > 2 * ud.clearance:
+        return 'lost'
     if not ud.convex_detected:
         return 'convex_passed'
     ud.velocity = (ud.max_forward_velocity, 0, -ud.default_rotational_speed)
@@ -101,6 +107,8 @@ def concave(ud):
     '''
     Rotate until out of concave
     '''
+    if ud.min_all > 2 * ud.clearance:
+        return 'lost'
     if ud.convex_detected:
         return 'convex_detected'
 
@@ -284,12 +292,15 @@ def construct():
                                                             'front_distance',
                                                             'side_mean',
                                                             'clearance',
-                                                            'default_rotational_speed'],
+                                                            'default_rotational_speed',
+                                                            'min_all'],
                                                 output_keys=['velocity'],
                                                 outcomes=['aligned',
-                                                          'concave_detected']),
+                                                          'concave_detected',
+                                                          'lost']),
                                transitions={'aligned' : 'ALIGN_FORWARD',
-                                            'concave_detected' : 'CONCAVE'})
+                                            'concave_detected' : 'CONCAVE',
+                                            'lost' : 'SEARCH'})
         smach.StateMachine.add('ALIGN_FORWARD',
                                PreemptableState(align_forward,
                                                 input_keys=['side_back_sonar',
@@ -301,20 +312,26 @@ def construct():
                                                             'default_rotational_speed',
                                                             'max_forward_velocity',
                                                             'front_distance',
-                                                            'clearance'],
+                                                            'clearance',
+                                                            'min_all'],
                                                 output_keys=['velocity'],
                                                 outcomes=['convex_detected',
-                                                          'concave_detected']),
+                                                          'concave_detected',
+                                                          'lost']),
                                transitions={'convex_detected' : 'CONVEX',
-                                            'concave_detected': 'CONCAVE'})
+                                            'concave_detected': 'CONCAVE',
+                                            'lost' : 'SEARCH'})
         smach.StateMachine.add('CONVEX',
                                PreemptableState(convex,
                                                 input_keys=['convex_detected',
                                                             'default_rotational_speed',
-                                                            'max_forward_velocity'],
+                                                            'max_forward_velocity',
+                                                            'min_all'],
                                                 output_keys=['velocity'],
-                                                outcomes=['convex_passed']),
-                               transitions={'convex_passed': 'ALIGN_FORWARD'})
+                                                outcomes=['convex_passed',
+                                                          'lost']),
+                               transitions={'convex_passed': 'ALIGN_FORWARD',
+                                            'lost' : 'SEARCH'})
         smach.StateMachine.add('CONCAVE',
                                PreemptableState(concave,
                                                 input_keys=['in_corner',
@@ -325,10 +342,13 @@ def construct():
                                                             'sonar_10',
                                                             'sonar_30',
                                                             'sonar_50',
-                                                            'side_mean'],
+                                                            'side_mean',
+                                                            'min_all'],
                                                 output_keys=['velocity'],
                                                 outcomes=['concave_passed',
-                                                          'convex_detected']),
+                                                          'convex_detected',
+                                                          'lost']),
                                transitions={'concave_passed' : 'ALIGN_FORWARD',
-                                            'convex_detected' : 'CONVEX'})
+                                            'convex_detected' : 'CONVEX',
+                                            'lost' : 'SEARCH'})
     return sm
