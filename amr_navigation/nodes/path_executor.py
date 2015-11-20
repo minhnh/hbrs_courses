@@ -34,11 +34,11 @@ class PathExecutor:
 
         # get parameters from launch file
         self.use_obstacle_avoidance = rospy.get_param('~use_obstacle_avoidance')
+        # action server based on use_obstacle_avoidance
         if self.use_obstacle_avoidance == False:
             self.goal_client = SimpleActionClient('/motion_controller/move_to', MoveToAction)
         else:
             self.goal_client = SimpleActionClient('/bug2/move_to', MoveToAction)
-
 
         self.goal_client.wait_for_server()
 
@@ -46,9 +46,6 @@ class PathExecutor:
         self.goal_index = 0
         self.executePathGoal = None
         self.executePathResult = ExecutePathResult()
-
-        rospy.loginfo('__init__ end')
-
 
     def handle_path(self, paramExecutePathGoal):
         '''
@@ -69,7 +66,7 @@ class PathExecutor:
                 return
 
             if self.path_server.is_preempt_requested():
-                rospy.loginfo('preempt requested...')
+                rospy.loginfo('Preempt requested...')
                 # Stop bug2
                 self.goal_client.cancel_goal()
                 # Stop path_server
@@ -81,17 +78,14 @@ class PathExecutor:
                 moveto_goal.target_pose = self.executePathGoal.path.poses[self.goal_index]
                 self.goal_client.send_goal(moveto_goal, done_cb=self.handle_goal,
                                            feedback_cb=self.handle_goal_preempt)
+                # Wait for result
                 while self.goal_client.get_result() is None:
                     if self.path_server.is_preempt_requested():
                         self.goal_client.cancel_goal()
             else:
-                rospy.loginfo('covered_all_path')
-                if(self.reached_all_nodes == True):
-                    self.path_server.set_succeeded(self.executePathResult,
-                                                   'succeeded... covered_all_path and reached_all_nodes')
-                else:
-                    self.path_server.set_succeeded(self.executePathResult,
-                                                   'failed... covered_all_path BUT couldn\'t reach all nodes')
+                rospy.loginfo('Done processing goals')
+                self.goal_client.cancel_goal()
+                self.path_server.set_succeeded(self.executePathResult, 'Done processing goals')
                 return
 
             rate.sleep()
@@ -109,12 +103,23 @@ class PathExecutor:
         # state is GoalStatus message as shown here:
         # http://docs.ros.org/diamondback/api/actionlib_msgs/html/msg/GoalStatus.html
         if state == GoalStatus.SUCCEEDED:
+            rospy.loginfo("Succeeded finding goal %d", self.goal_index + 1)
             self.executePathResult.visited.append(True)
             feedback.reached = True
         else:
+            rospy.loginfo("Failed finding goal %d", self.goal_index + 1)
             self.executePathResult.visited.append(False)
             feedback.reached = False
-            self.reached_all_nodes = False # global flag to highlight that at least one node was not reachable
+
+            if not self.executePathGoal.skip_unreachable:
+                rospy.loginfo('Failed finding goal %d, not skipping...', self.goal_index + 1)
+                # Stop bug2
+                self.goal_client.cancel_goal()
+                # Stop path_server
+                self.path_server.set_succeeded(self.executePathResult,
+                                             'Unreachable goal in path. Done processing goals.')
+                #self.path_server.set_preempted()
+                #return
 
         self.path_server.publish_feedback(feedback)
 
