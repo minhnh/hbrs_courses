@@ -1,0 +1,83 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{titling}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\graphicspath{{.}}
+
+\usepackage[margin=1in]{geometry}
+
+% Must be after geometry
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AIR Homework 7}
+\lhead{M. Nguyen, B. Ha \& E. Ovchinnikova}
+\cfoot{\thepage}
+
+\setlength{\droptitle}{-5em}
+
+\title{Artificial Intelligence for Robots \\
+				- Homework 7 -}
+\author{Minh Nguyen, Bach Ha \& Evgenia Ovchinnikova}
+\date{Lecture date: 17 November 2015}
+
+\begin{document}
+
+\maketitle
+
+    \begin{enumerate}
+
+    % Question 1
+    \item Local search general question and answer:
+    	\begin{description}
+  		\item[What are local search algorithms?] \hfill \\
+  			Local search are search algorithms that operate using a single current node and usually move only to neighbors of that node. Local search are often used for problems, in which the path lead the the goal does not matter.
+  			
+  		\item[What are the advantages of local search?] \hfill \\
+  			Local search requires very little memory, as it usually only retain the current node. Another advantage is that, it can find a solution (not necessarily optimal) in large or infinite state spaces for which systematic algorithms are not suitable due to time or space complexity.
+  			
+  		\item[When do we try to find the global minimum?] \hfill \\
+  			For local search, the state-space landscape is taken into the consideration. The "location" is defined by the state and the "elevation" is defined by the heuristic cost function or objective function. If the problem is using heuristic cost, it is obvious that the search algorithm should be trying to limit the cost, or to put it in another way: finding the global minimum.
+
+  		\item[When do we try to find the global maximum?] \hfill \\
+			On the other hand, if the elevation corresponds to an objective function, which we would want to maximize, our objective would be finding the global maximum.
+			
+		\item[What is the characteristic of a complete local search algorithm?]	\hfill \\	
+			A complete local search algorithm would always finds a goal, if one exists.	
+
+		\item[What is the characteristic of  an optimal algorithm?]		\hfill \\
+			An optimal algorithm always finds the global maximum or global minimum.
+			
+		\item[What is the a landscape?]\hfill \\
+			A state-space landscape consists of two characteristics: the "Location", which is defined by the state, and the "Elevation", which is defined by the heuristic cost function or objective function.
+			
+		\item[What is Hill Climbing?]\hfill \\
+			Hill climbing is a search algorithm, in which the it continuously move, on one direction, to the neighbor node with higher value (or lower in down-hill case) until it reaches a "Peak", where there are no neighbor with higher value. 	
+		
+		\pagebreak
+		\item[What is the problem of Hill Climbing?]\hfill \\  
+			Hill climbing easily gets stuck in the following situation:
+			\begin{itemize}
+				\item Local maxima: The hill climbing search would stop at a local maxima and cannot proceed to the goal state.
+				\item Ridges: Series of local maxima that is difficult for the search to navigate.
+				\item Plateaux: Hill climbing search would usually get lost on these flat area of the state-space landscape.
+			\end{itemize}
+		
+		\item[What drives the success of Hill Climbing?]\hfill \\ 
+			That is trying the hill-climbing again and again with different starting "locations" (states).
+			
+		\item[What is Simulated Annealing?] \hfill \\
+			For example, an up-hill problem. Similar to the Hill-climbing search, when the neighbor has higher value, the search would always move to that neighbor. However, unlike hill-climbing, which immediately reject any neighbor with lower value, the Simulated annealing would has a chance of still accepting and moving to that lower value neighbor. That chance is high at the start but it deceases exponentially with the "badness" of the move and it also decreases as the "temperature" T goes down.
+			
+		\item[What is the condition that enables Simulated Annealing to find]         
+		\textbf{the optimal solution?}\hfill\\
+			Simulated Annealing would find the optimal solution if the schedule lowers T slowly enough.
+		\end{description}
+    \end{enumerate}
+    
+
+\end{document}
