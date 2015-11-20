@@ -61,7 +61,7 @@ def align_angular_only(ud):
     '''
     if ud.min_all > 2 * ud.clearance:
         return 'lost'
-    if (ud.side_mean <= (ud.youbot_length - ud.youbot_width) / 2 + ud.clearance):
+    if (ud.side_mean <= (ud.youbot_diag - ud.youbot_width) / 2 + ud.clearance):
         return 'aligned'
     ud.velocity = (0, 0, ud.default_rotational_speed)
 
@@ -287,8 +287,8 @@ def construct():
                                PreemptableState(align_angular_only,
                                                 input_keys=['side_front_sonar',
                                                             'side_back_sonar',
-                                                            'youbot_length',
                                                             'youbot_width',
+                                                            'youbot_diag',
                                                             'front_distance',
                                                             'side_mean',
                                                             'clearance',
