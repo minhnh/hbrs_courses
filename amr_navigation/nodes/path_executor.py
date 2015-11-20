@@ -66,16 +66,14 @@ class PathExecutor:
 
             if self.path_server.is_preempt_requested():
                 rospy.loginfo('aborting... preempt requested')
-                self.path_server.set_aborted(self.executePathResult, 'aborting... preempt requested')
+                #self.path_server.set_aborted(self.executePathResult, 'aborting... preempt requested')
                 # clean up
-                self.goal_client.cancel_all_goals()
+                self.goal_client.cancel_goal()
                 # say goodbye!
                 self.path_server.set_preempted()
                 break
 
             if self.goal_index < len(self.executePathGoal.path.poses):
-                rospy.loginfo('working on goal: ' + str(self.goal_index))
-
                 moveto_goal = MoveToGoal()
                 moveto_goal.target_pose = self.executePathGoal.path.poses[self.goal_index]
                 self.goal_client.send_goal(moveto_goal, done_cb=self.handle_goal, feedback_cb=self.handle_goal_preempt)
@@ -103,9 +101,6 @@ class PathExecutor:
             self.executePathResult.visited.append(True)
             feedback.reached = True
         else:
-            rospy.loginfo('Print result')
-            rospy.loginfo(result)
-            rospy.loginfo(state)
             self.executePathResult.visited.append(False)
             feedback.reached = False
             self.reached_all_nodes = False # global flag to highlight that at least one node was not reachable
@@ -117,7 +112,7 @@ class PathExecutor:
     def handle_goal_preempt(self, state):
         if self.path_server.is_preempt_requested():
             rospy.loginfo("Preemption detected from execute_path. Cancelling goal heading...")
-            self.goal_client.cancel_all_goals()
+            self.goal_client.cancel_goal()
 
 
 
