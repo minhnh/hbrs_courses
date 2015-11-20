@@ -3,8 +3,10 @@
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{enumitem}
+\usepackage{graphicx}
 \setlength{\heavyrulewidth}{1.5pt}
 \setlength{\abovetopsep}{4pt}
+\graphicspath{{.}}
 
 \usepackage[margin=1in]{geometry}
 
@@ -30,7 +32,9 @@
     \begin{enumerate}
 
     % Question 1
-    \item Answer for question 1 is in the file "Uninformed and informed search.pdf"
+    \item Mind map for uninformed and informed search algorithms:
+    
+    \includegraphics[scale=0.4]{Uninformedandinformedsearch.png} 
     
     % Question 2
     \item Explaination for statements:\vspace{0.5cm}\\
@@ -62,6 +66,34 @@
 		\item Behaviours of A* with a consistent heuristic: A* will expand the node with the lowest f(n) until the optimal goal with value of f($G_{optimal}$) is found. In case of a suboptimal goal with value of f($G_{sub}$) is found, A* would expand other nodes with value f(n) $<$ f($G_{sub}$).
 	\end{itemize}
 	
+	% Question 4
+    
+    \item Implementation of the greedy, A* and iterative A* algorithms for "Manhattan distance" and "Misplaced tiles" cases can be found in the “src/” directory. In Table 1 we compare their perfomance.
+    
+\begin{table}[h!]
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+      & Greedy search & A* & Iterative A*  \\ \hline
+    Manhattan & \begin{tabular}[c]{@{}l@{}} Steps taken:67\\
+Expanded nodes:342\\
+Elapsed time is: 5 ms
+  \end{tabular}   & \begin{tabular}[c]{@{}l@{}}  Steps taken:31\\
+Expanded nodes:8249\\
+Elapsed time is: 2186 ms  \end{tabular}  &  \begin{tabular}[c]{@{}l@{}} Steps taken:31\\ Expanded nodes:8249\\ 
+Elapsed time is: 15355 ms  \end{tabular}   \\ \hline
+    Misplaced tiles & \begin{tabular}[c]{@{}l@{}}  Steps taken:65\\
+Expanded nodes:286\\
+Elapsed time is: 4 ms
+  \end{tabular} & \begin{tabular}[c]{@{}l@{}} Steps taken:31\\
+Expanded nodes:149036\\
+Elapsed time is: 785728 ms  \end{tabular} & \begin{tabular}[c]{@{}l@{}} Takes too much time. \end{tabular}\\ \hline
+   
+    \end{tabular}
+\end{table}	
+	
     \end{enumerate}
+     
+
+    
 
 \end{document}

@@ -2,12 +2,10 @@
 #include <iostream>
 #include <stdlib.h>
 #include <deque>
-#include <chrono>
 #include "search.hpp"
 #include "state.hpp"
 
 using namespace std;
-using ms = chrono::milliseconds;
 
 Search::Search(Strategy strategy, Heuristics h)
 {
@@ -28,15 +26,8 @@ void Search::run()
                    3,  6,  2,
                    0,  5,  7};
 
-    auto start = chrono::steady_clock::now();
-
     best_first_search(tiles);
 
-    auto end = chrono::steady_clock::now();
-
-    auto diff = end - start;
-
-    cout<<"Elapsed time is: "<< chrono::duration_cast<ms>(diff).count()<<" ms"<<endl;
 }
 
 void Search::best_first_search(int intput_map[])
@@ -58,11 +49,13 @@ void Search::best_first_search(int intput_map[])
         State current_state =  fringe.front();
         fringe.pop_front();
         closed.push_back(current_state);
-        //cout << current_state.depth << " " << depth<< endl;  
-        
+        //cout << current_state.depth << " " << depth<< endl;
+
         // Every time we go to a certain depth, that grows by one each run
         if((current_state.depth >= depth)&&(strategy == ASTARITER)){
-        	break;
+            cout << "Break at depth: " << depth<< endl;
+            cout << "Expanded " << expanded_node << " nodes" << endl;
+            break;
         }
         // Goal check. Optimality is ensured since fringe is sorted.
         if (current_state.h == 0)
@@ -116,8 +109,10 @@ void Search::best_first_search(int intput_map[])
     {
         solve_step[i].print();
     }
-    cout<<"Steps taken:"<<solve_step.size()<<endl;
-    cout<<"Expanded nodes:"<<expanded_node<<endl;
+    if (found_solution) {
+        cout<<"Steps taken:"<<solve_step.size()<<endl;
+        cout<<"Expanded nodes:"<<expanded_node<<endl;
+    }
 }
 
 void Search::add_next_state(State &current_state, Direction d,
@@ -192,7 +187,7 @@ void Search::evaluate_next_state(State & current_state, State & next_state, Dire
             next_state.f = next_state.h + next_state.depth;
             break;
         case ASTARITER:
-        	// the fringe is the same that we have for A*
+            // the fringe is the same that we have for A*
             next_state.f = next_state.h + next_state.depth;
             break;
         case GREEDY:
