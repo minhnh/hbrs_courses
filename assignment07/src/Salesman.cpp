@@ -13,6 +13,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include "City.h"
+#include <algorithm>
+#include <ctime>
+#include <cstdlib>
 
 using namespace std;
 
@@ -52,7 +55,7 @@ vector<City> readFile(const char* fileName) {
 	return cities;
 }
 
-vector<City> swap (vector<City> cities, int i, int j) {
+vector<City> swap(vector<City> cities, int i, int j) {
 	//deep copy
 	City temp(cities[i]);
 	cities[i] = City(cities[j]);
@@ -60,27 +63,67 @@ vector<City> swap (vector<City> cities, int i, int j) {
 	return cities;
 }
 
-float distance (City city1, City city2) {
-	return sqrt(pow((city1.getXCoord() - city2.getXCoord()),2) + pow((city1.getYCoord() - city2.getYCoord()),2));
+float distance(City city1, City city2) {
+	return sqrt(
+			pow((city1.getXCoord() - city2.getXCoord()), 2)
+					+ pow((city1.getYCoord() - city2.getYCoord()), 2));
 }
 
-float fullDist (vector<City> cities){
+float fullDist(vector<City> cities) {
 	float dist = distance(cities[0], cities[cities.size() - 1]);
-	for (vector<int>::size_type i = 0; i < (cities.size() - 1); i++){
+	for (vector<int>::size_type i = 0; i < (cities.size() - 1); i++) {
 		dist += distance(cities[i], cities[i + 1]);
 	}
 	return dist;
 }
 
+vector<City> hillClimb(vector<City> cities_in) {
+	vector<City> cities(cities_in);
+	for (vector<City>::size_type i = 0; i != cities.size(); i++) {
+
+		for (vector<City>::size_type j = 0; j != cities.size(); j++) {
+
+			float distInit = fullDist(cities);
+
+			if (i != j) {
+				cities = swap(cities, i, j);
+			}
+
+			float distChanged = fullDist(cities);
+
+			if (distChanged > distInit) {
+				cities = swap(cities, i, j);
+			} else {
+				//cout << distChanged << endl;
+			}
+		}
+	}
+	return cities;
+}
+
 int main() {
 	vector<City> cities = readFile("ten_cities.txt");
-	for (vector<int>::size_type i = 0; i != cities.size(); i++){
-		cout << cities[i].getName() << " " << cities[i].getXCoord() << " " << cities[i].getYCoord() << endl;
+	srand(unsigned(time(0)));
+	random_shuffle(cities.begin(), cities.end());
+
+	for (vector<int>::size_type i = 0; i != cities.size(); i++) {
+		//cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
+		//		<< cities[i].getYCoord() << endl;
 	}
 	cities = swap(cities, 0, 1);
-	for (vector<int>::size_type i = 0; i != cities.size(); i++){
-			cout << cities[i].getName() << " " << cities[i].getXCoord() << " " << cities[i].getYCoord() << endl;
-	}
-	cout << fullDist(cities) << endl;
+	cout << "Initial list of cities" << endl;
+	//for (vector<int>::size_type i = 0; i != cities.size(); i++) {
+		//cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
+			//	<< cities[i].getYCoord() << endl;
+	//}
+	cout << endl << "Distance before " << fullDist(cities) << endl;
+	cities = hillClimb(cities);
+
+	cout << endl << "Optimal list of cities" << endl;
+	//for (vector<int>::size_type i = 0; i != cities.size(); i++) {
+		//cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
+				//<< cities[i].getYCoord() << endl;
+	//}
+	cout << endl << "Distance after " << fullDist(cities) << endl;
 	return 0;
 }
