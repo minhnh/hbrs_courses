@@ -11,4 +11,4 @@ The executable will be created inside the bin folder. Stay in the build folder a
 
 	./bin/assignment07
 
-Note: Execution time for A* with misplaced tiles took 744180 ms (12.4 minutes)
+Note: Before running the program put all needed text files (cities.txt, ten_cities.txt) into bin folder.

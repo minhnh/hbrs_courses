@@ -106,24 +106,21 @@ int main() {
 	srand(unsigned(time(0)));
 	random_shuffle(cities.begin(), cities.end());
 
-	for (vector<int>::size_type i = 0; i != cities.size(); i++) {
-		//cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
-		//		<< cities[i].getYCoord() << endl;
-	}
+
 	cities = swap(cities, 0, 1);
 	cout << "Initial list of cities" << endl;
-	//for (vector<int>::size_type i = 0; i != cities.size(); i++) {
-		//cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
-			//	<< cities[i].getYCoord() << endl;
-	//}
+	for (vector<int>::size_type i = 0; i != cities.size(); i++) {
+		cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
+			<< cities[i].getYCoord() << endl;
+	}
 	cout << endl << "Distance before " << fullDist(cities) << endl;
 	cities = hillClimb(cities);
 
 	cout << endl << "Optimal list of cities" << endl;
-	//for (vector<int>::size_type i = 0; i != cities.size(); i++) {
-		//cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
-				//<< cities[i].getYCoord() << endl;
-	//}
+	for (vector<int>::size_type i = 0; i != cities.size(); i++) {
+		cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
+				<< cities[i].getYCoord() << endl;
+	}
 	cout << endl << "Distance after " << fullDist(cities) << endl;
 	return 0;
 }
