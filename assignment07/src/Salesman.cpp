@@ -103,10 +103,9 @@ vector<City> hillClimb(vector<City> cities_in) {
 
 int main() {
 	vector<City> cities = readFile("ten_cities.txt");
+	clock_t startTime = clock();
 	srand(unsigned(time(0)));
 	random_shuffle(cities.begin(), cities.end());
-
-
 	cities = swap(cities, 0, 1);
 	cout << "Initial list of cities" << endl;
 	for (vector<int>::size_type i = 0; i != cities.size(); i++) {
@@ -115,12 +114,14 @@ int main() {
 	}
 	cout << endl << "Distance before " << fullDist(cities) << endl;
 	cities = hillClimb(cities);
-
 	cout << endl << "Optimal list of cities" << endl;
 	for (vector<int>::size_type i = 0; i != cities.size(); i++) {
 		cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
 				<< cities[i].getYCoord() << endl;
 	}
 	cout << endl << "Distance after " << fullDist(cities) << endl;
+	// some code here
+	// to compute its execution duration in runtime
+	cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
 	return 0;
 }
