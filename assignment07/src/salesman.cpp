@@ -65,6 +65,25 @@ vector<City> Salesman::swap(vector<City> cities, int i, int j) {
     return cities;
 }
 
+bool Salesman::should_swap(vector<City> cities, int i, int j) {
+    int front_i = (i > 0) ? i - 1 : cities.size() - 1;
+    int front_j = (j > 0) ? j - 1 : cities.size() - 1;
+    int back_i = (i < cities.size() - 1) ? i + 1 : 0;
+    int back_j = (j < cities.size() - 1) ? j + 1 : 0;
+    float before_swap = distance(cities[front_i], cities[i]) +
+                        distance(cities[i], cities[back_i]) +
+                        distance(cities[front_j], cities[j]) +
+                        distance(cities[j], cities[back_j]);
+    float after_swap  = distance(cities[front_i], cities[j]) +
+                        distance(cities[j], cities[back_i]) +
+                        distance(cities[front_j], cities[i]) +
+                        distance(cities[i], cities[back_j]);
+    if (after_swap < before_swap)
+        return true;
+    else
+        return false;
+}
+
 float Salesman::distance(City city1, City city2) {
     return sqrt(
             pow((city1.getXCoord() - city2.getXCoord()), 2)
@@ -73,7 +92,7 @@ float Salesman::distance(City city1, City city2) {
 
 float Salesman::fullDist(vector<City> cities) {
     float dist = distance(cities[0], cities[cities.size() - 1]);
-    for (vector<int>::size_type i = 0; i < (cities.size() - 1); i++) {
+    for (int i = 0; i < (cities.size() - 1); i++) {
         dist += distance(cities[i], cities[i + 1]);
     }
     return dist;
@@ -84,6 +103,11 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
     for (int i = 0; i < cities.size(); i++) {
 
         for (int j = 0; j < cities.size(); j++) {
+
+            if (should_swap(cities, i, j))
+                cout << "True" << endl;
+            else
+                cout << "False" << endl;
 
             float distInit = fullDist(cities);
 
@@ -98,6 +122,8 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
             } else {
                 //cout << distChanged << endl;
             }
+            cout << distChanged - distInit << endl;
+            cout << "i: " << i << " j: " << j << endl;
         }
     }
     return cities;
