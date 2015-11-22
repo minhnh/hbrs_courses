@@ -57,12 +57,11 @@ vector<City> Salesman::readFile(ifstream & in_file) {
     return cities;
 }
 
-vector<City> Salesman::swap(vector<City> cities, int i, int j) {
+void Salesman::swap(vector<City> & cities, int i, int j) {
     //deep copy
     City temp(cities[i]);
     cities[i] = City(cities[j]);
     cities[j] = City(temp);
-    return cities;
 }
 
 bool Salesman::should_swap(vector<City> cities, int i, int j) {
@@ -101,11 +100,9 @@ float Salesman::fullDist(vector<City> cities) {
 vector<City> Salesman::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
     for (int i = 0; i < cities.size(); i++) {
-
         for (int j = 0; j < cities.size(); j++) {
-
             if (i != j && should_swap(cities, i, j)) {
-                cities = swap(cities, i, j);
+                swap(cities, i, j);
             }
         }
     }
