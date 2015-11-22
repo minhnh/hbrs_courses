@@ -37,24 +37,21 @@ int main(int argc, char* argv[]) {
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
 
+    //TODO: Only calculate the cities around the swapping
+    //TODO: check swapping from http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
+    //TODO: should keep the starting city unchanged
     //TODO: Reduce prints for running with full cities.txt
     //TODO: Move this to salesman.cpp into a random_restart_hill_climb() function
     //TODO: Save initial list of cities as a variable
-    srand(unsigned(time(0)));
     float cur_full_dist = salesman.fullDist(cities);
     float nxt_full_dist = 0.0f;
     while (true) {
+        srand(unsigned(time(0)));
         random_shuffle(cities.begin(), cities.end());
-        cout << "Initial list of cities" << endl;
-
-        salesman.print_cities(cities);
 
         cout << endl << "Distance before " << salesman.fullDist(cities) << endl;
         cities = salesman.hillClimb(cities);
         nxt_full_dist = salesman.fullDist(cities);
-        cout << endl << "List after hillClimb" << endl;
-
-        salesman.print_cities(cities);
 
         cout << endl << "Distance after " << nxt_full_dist << endl << endl;
         if (nxt_full_dist >= cur_full_dist)
