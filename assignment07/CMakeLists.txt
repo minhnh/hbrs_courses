@@ -11,7 +11,8 @@ include_directories (
 )
 
 add_executable( assignment07
-		src/Salesman.cpp)
+		src/Salesman.cpp
+        src/city.cpp)
 
 # Add for chrono support
 add_definitions(-std=c++11)
