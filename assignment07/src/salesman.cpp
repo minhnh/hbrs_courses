@@ -58,6 +58,28 @@ vector<City> Salesman::readFile(ifstream & in_file) {
     return cities;
 }
 
+void Salesman::print_cities(vector<City> cities) {
+    for (int i = 0; i < cities.size(); i++) {
+        cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
+                << cities[i].getYCoord() << endl;
+    }
+}
+
+float Salesman::distance(City city1, City city2) {
+    return sqrt(
+            pow((city1.getXCoord() - city2.getXCoord()), 2)
+                    + pow((city1.getYCoord() - city2.getYCoord()), 2));
+}
+
+float Salesman::fullDist(vector<City> cities) {
+    float dist = distance(cities[0], cities[cities.size() - 1]);
+    for (int i = 0; i < (cities.size() - 1); i++) {
+        dist += distance(cities[i], cities[i + 1]);
+    }
+    return dist;
+}
+
+/* Calculate distance around 2 cities to see if a swap should be done */
 bool Salesman::should_swap(vector<City> cities, int i, int j) {
     int front_i = (i > 0) ? i - 1 : cities.size() - 1;
     int front_j = (j > 0) ? j - 1 : cities.size() - 1;
@@ -77,24 +99,12 @@ bool Salesman::should_swap(vector<City> cities, int i, int j) {
         return false;
 }
 
-float Salesman::distance(City city1, City city2) {
-    return sqrt(
-            pow((city1.getXCoord() - city2.getXCoord()), 2)
-                    + pow((city1.getYCoord() - city2.getYCoord()), 2));
-}
-
-float Salesman::fullDist(vector<City> cities) {
-    float dist = distance(cities[0], cities[cities.size() - 1]);
-    for (int i = 0; i < (cities.size() - 1); i++) {
-        dist += distance(cities[i], cities[i + 1]);
-    }
-    return dist;
-}
-
+/* Implement Hill Climbing algorithm */
 vector<City> Salesman::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
     for (int i = 0; i < cities.size(); i++) {
         for (int j = 0; j < cities.size(); j++) {
+            // swap only if not same city and should_swap() returns true
             if (i != j && should_swap(cities, i, j)) {
                 swap(cities[i], cities[j]);
             }
@@ -132,11 +142,4 @@ void Salesman::random_restart_hill_climb() {
         hill_climb_cnt++;
     }
     cout << "Best full distance found: " << best_full_distance << endl;
-}
-
-void Salesman::print_cities(vector<City> cities) {
-    for (int i = 0; i < cities.size(); i++) {
-        cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
-                << cities[i].getYCoord() << endl;
-    }
 }
