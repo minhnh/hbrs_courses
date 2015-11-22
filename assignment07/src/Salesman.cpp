@@ -19,6 +19,8 @@
 
 using namespace std;
 
+#define CITIES_FILE "ten_cities.txt"
+
 vector<City> readFile(const char* fileName) {
 
     ifstream inFile(fileName);
@@ -101,8 +103,15 @@ vector<City> hillClimb(vector<City> cities_in) {
     return cities;
 }
 
-int main() {
-    vector<City> cities = readFile("ten_cities.txt");
+int main(int argc, char* argv[]) {
+    vector<City> cities;
+    if (argc == 1) {
+        cities = readFile(CITIES_FILE);
+    }
+    else
+    {
+        cities = readFile(argv[1]);
+    }
     clock_t startTime = clock();
     srand(unsigned(time(0)));
     random_shuffle(cities.begin(), cities.end());
