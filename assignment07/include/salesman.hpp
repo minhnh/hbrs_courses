@@ -9,12 +9,12 @@ using namespace std;
 
 class Salesman {
     private:
-
+        vector<City> cities;
     public:
-        Salesman();
+        Salesman(ifstream & in_file);
         ~Salesman();
         vector<City> hillClimb(vector<City> cities_in);
-        void random_restart_hill_climb(vector<City> cities);
+        void random_restart_hill_climb();
         float fullDist(vector<City> cities);
         float distance(City city1, City city2);
         vector<City> swap(vector<City> cities, int i, int j);

@@ -7,9 +7,7 @@
 using ms = chrono::milliseconds;
 
 int main(int argc, char* argv[]) {
-    vector<City> cities;
     const char* file_name;
-    Salesman salesman = Salesman();
 
     // Extract file name from argument if exist, otherwise use default file
     // name
@@ -23,20 +21,17 @@ int main(int argc, char* argv[]) {
 
     // Try to open file
     ifstream in_file(file_name);
-    if (in_file)
-    {
-        cities = salesman.readFile(in_file);
-    }
-    else
+    if (!in_file)
     {
         cout << "Can't open default file, no file argument given" << endl;
         return -1;
     }
+    Salesman salesman = Salesman(in_file);
 
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
 
-    salesman.random_restart_hill_climb(cities);
+    salesman.random_restart_hill_climb();
 
     // some code here
     // to compute its execution duration in runtime

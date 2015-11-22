@@ -12,9 +12,9 @@
 #include <algorithm>
 #include "salesman.hpp"
 
-Salesman::Salesman()
+Salesman::Salesman(ifstream & in_file)
 {
-
+    cities = readFile(in_file);
 }
 
 Salesman::~Salesman()
@@ -81,9 +81,9 @@ float Salesman::fullDist(vector<City> cities) {
 
 vector<City> Salesman::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
-    for (vector<City>::size_type i = 0; i != cities.size(); i++) {
+    for (int i = 0; i < cities.size(); i++) {
 
-        for (vector<City>::size_type j = 0; j != cities.size(); j++) {
+        for (int j = 0; j < cities.size(); j++) {
 
             float distInit = fullDist(cities);
 
@@ -103,7 +103,7 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
     return cities;
 }
 
-void Salesman::random_restart_hill_climb(vector<City> cities) {
+void Salesman::random_restart_hill_climb() {
 
     //TODO: Only calculate the cities around the swapping
     //TODO: check swapping from http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
