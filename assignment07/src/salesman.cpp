@@ -15,6 +15,7 @@
 Salesman::Salesman(ifstream & in_file)
 {
     cities = readFile(in_file);
+    best_full_distance = fullDist(cities);
 }
 
 Salesman::~Salesman()
@@ -111,32 +112,33 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
 
 void Salesman::random_restart_hill_climb() {
 
-    //TODO: Only calculate the cities around the swapping
     //TODO: check swapping from http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
-    //TODO: should keep the starting city unchanged
     //TODO: Reduce prints for running with full cities.txt
-    //TODO: Save initial list of cities as a variable
-    float cur_full_dist = fullDist(cities);
     float nxt_full_dist = 0.0f;
+    int hill_climb_cnt = 1;
     while (true) {
         srand(unsigned(time(0)));
         random_shuffle(cities.begin(), cities.end());
 
-        cout << endl << "Distance before " << fullDist(cities) << endl;
         cities = hillClimb(cities);
+
         nxt_full_dist = fullDist(cities);
 
-        cout << endl << "Distance after " << nxt_full_dist << endl << endl;
-        if (nxt_full_dist >= cur_full_dist)
+        cout << "Distance after hill climb " << hill_climb_cnt << ": " <<
+                nxt_full_dist << endl << endl;
+
+        if (nxt_full_dist >= best_full_distance)
         {
             cout << "Reached local maximum of random restart." << endl;
             break;
         }
         else
         {
-            cur_full_dist = nxt_full_dist;
+            best_full_distance = nxt_full_dist;
         }
+        hill_climb_cnt++;
     }
+    cout << "Best full distance found: " << best_full_distance << endl;
 }
 
 void Salesman::print_cities(vector<City> cities) {

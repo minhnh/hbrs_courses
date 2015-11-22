@@ -10,6 +10,7 @@ using namespace std;
 class Salesman {
     private:
         vector<City> cities;
+        float best_full_distance;
 
         vector<City> hillClimb(vector<City> cities_in);
         float fullDist(vector<City> cities);
