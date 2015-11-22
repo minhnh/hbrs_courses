@@ -5,7 +5,7 @@
 // Copyright   : all rights reserved
 // Description : Hello World in C++, Ansi-style
 //============================================================================
-
+#include <iostream>
 #include <stdlib.h>
 #include <math.h>
 #include <cstdlib>
@@ -100,4 +100,11 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
         }
     }
     return cities;
+}
+
+void Salesman::print_cities(vector<City> cities) {
+    for (int i = 0; i < cities.size(); i++) {
+        cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
+                << cities[i].getYCoord() << endl;
+    }
 }

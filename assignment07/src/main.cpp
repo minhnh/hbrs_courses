@@ -1,9 +1,11 @@
 #include <iostream>
-#include <ctime>
+#include <chrono>
 #include <algorithm>
 #include "salesman.hpp"
 
 #define CITIES_FILE "ten_cities.txt"
+
+using ms = chrono::milliseconds;
 
 int main(int argc, char* argv[]) {
     vector<City> cities;
@@ -32,25 +34,28 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    clock_t startTime = clock();
+    // Adding iterations. Till the solution is reached.
+    auto start = chrono::steady_clock::now();
+
+    //TODO: Reduce prints for running with full cities.txt
+    //TODO: Move this to salesman.cpp into a random_restart_hill_climb() function
+    //TODO: Save initial list of cities as a variable
     srand(unsigned(time(0)));
     float cur_full_dist = salesman.fullDist(cities);
     float nxt_full_dist = 0.0f;
     while (true) {
         random_shuffle(cities.begin(), cities.end());
         cout << "Initial list of cities" << endl;
-        for (vector<int>::size_type i = 0; i != cities.size(); i++) {
-            cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
-                << cities[i].getYCoord() << endl;
-        }
+
+        salesman.print_cities(cities);
+
         cout << endl << "Distance before " << salesman.fullDist(cities) << endl;
         cities = salesman.hillClimb(cities);
         nxt_full_dist = salesman.fullDist(cities);
         cout << endl << "List after hillClimb" << endl;
-        for (vector<int>::size_type i = 0; i != cities.size(); i++) {
-            cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
-                    << cities[i].getYCoord() << endl;
-        }
+
+        salesman.print_cities(cities);
+
         cout << endl << "Distance after " << nxt_full_dist << endl << endl;
         if (nxt_full_dist >= cur_full_dist)
         {
@@ -64,6 +69,10 @@ int main(int argc, char* argv[]) {
     }
     // some code here
     // to compute its execution duration in runtime
-    cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
+    auto end = chrono::steady_clock::now();
+
+    auto diff = end - start;
+
+    cout<<"Elapsed time is: "<< chrono::duration_cast<ms>(diff).count()<<" ms"<<endl;
     return 0;
 }

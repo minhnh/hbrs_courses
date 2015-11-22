@@ -18,6 +18,7 @@ class Salesman {
         float distance(City city1, City city2);
         vector<City> swap(vector<City> cities, int i, int j);
         vector<City> readFile(ifstream & in_file);
+        void print_cities(vector<City>);
 };
 
 #endif // SALESMAN_H_
