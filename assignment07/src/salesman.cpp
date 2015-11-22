@@ -21,9 +21,8 @@ using namespace std;
 
 #define CITIES_FILE "ten_cities.txt"
 
-vector<City> readFile(const char* fileName) {
+vector<City> readFile(ifstream & in_file) {
 
-    ifstream inFile(fileName);
     string fileLine;
     string delimiter(",");
     vector<string> token;
@@ -32,7 +31,7 @@ vector<City> readFile(const char* fileName) {
     float x, y;
     int number = -1;
 
-    while (getline(inFile, fileLine)) {
+    while (getline(in_file, fileLine)) {
         number++;
         size_t pos = fileLine.find(delimiter);
         do {
@@ -105,13 +104,25 @@ vector<City> hillClimb(vector<City> cities_in) {
 
 int main(int argc, char* argv[]) {
     vector<City> cities;
+    const char* file_name;
     if (argc == 1) {
-        cities = readFile(CITIES_FILE);
+        file_name = CITIES_FILE;
     }
     else
     {
-        cities = readFile(argv[1]);
+        file_name = argv[1];
     }
+    ifstream in_file(file_name);
+    if (in_file)
+    {
+        cities = readFile(in_file);
+    }
+    else
+    {
+        cout << "Can't open default file, no file argument given" << endl;
+        return -1;
+    }
+
     clock_t startTime = clock();
     srand(unsigned(time(0)));
     random_shuffle(cities.begin(), cities.end());
