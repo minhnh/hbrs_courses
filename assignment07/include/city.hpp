@@ -20,12 +20,13 @@ class City {
 
     public:
         City(string name, float xCoord, float yCoord);
+        City(const City & city);
         ~City();
-        const string& getName();
+        const string& getName() const;
         void setName(const string& name);
-        double getXCoord();
+        double getXCoord() const;
         void setXCoord(float coord);
-        double getYCoord();
+        double getYCoord() const;
         void setYCoord(float coord);
 };
 
