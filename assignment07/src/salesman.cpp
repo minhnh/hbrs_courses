@@ -6,22 +6,22 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
 #include <stdlib.h>
 #include <math.h>
-#include <algorithm>
-#include <ctime>
 #include <cstdlib>
-#include "city.hpp"
+#include "salesman.hpp"
 
-using namespace std;
+Salesman::Salesman()
+{
 
-#define CITIES_FILE "ten_cities.txt"
+}
 
-vector<City> readFile(ifstream & in_file) {
+Salesman::~Salesman()
+{
+
+}
+
+vector<City> Salesman::readFile(ifstream & in_file) {
 
     string fileLine;
     string delimiter(",");
@@ -56,7 +56,7 @@ vector<City> readFile(ifstream & in_file) {
     return cities;
 }
 
-vector<City> swap(vector<City> cities, int i, int j) {
+vector<City> Salesman::swap(vector<City> cities, int i, int j) {
     //deep copy
     City temp(cities[i]);
     cities[i] = City(cities[j]);
@@ -64,13 +64,13 @@ vector<City> swap(vector<City> cities, int i, int j) {
     return cities;
 }
 
-float distance(City city1, City city2) {
+float Salesman::distance(City city1, City city2) {
     return sqrt(
             pow((city1.getXCoord() - city2.getXCoord()), 2)
                     + pow((city1.getYCoord() - city2.getYCoord()), 2));
 }
 
-float fullDist(vector<City> cities) {
+float Salesman::fullDist(vector<City> cities) {
     float dist = distance(cities[0], cities[cities.size() - 1]);
     for (vector<int>::size_type i = 0; i < (cities.size() - 1); i++) {
         dist += distance(cities[i], cities[i + 1]);
@@ -78,7 +78,7 @@ float fullDist(vector<City> cities) {
     return dist;
 }
 
-vector<City> hillClimb(vector<City> cities_in) {
+vector<City> Salesman::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
     for (vector<City>::size_type i = 0; i != cities.size(); i++) {
 
@@ -100,48 +100,4 @@ vector<City> hillClimb(vector<City> cities_in) {
         }
     }
     return cities;
-}
-
-int main(int argc, char* argv[]) {
-    vector<City> cities;
-    const char* file_name;
-    if (argc == 1) {
-        file_name = CITIES_FILE;
-    }
-    else
-    {
-        file_name = argv[1];
-    }
-    ifstream in_file(file_name);
-    if (in_file)
-    {
-        cities = readFile(in_file);
-    }
-    else
-    {
-        cout << "Can't open default file, no file argument given" << endl;
-        return -1;
-    }
-
-    clock_t startTime = clock();
-    srand(unsigned(time(0)));
-    random_shuffle(cities.begin(), cities.end());
-    cities = swap(cities, 0, 1);
-    cout << "Initial list of cities" << endl;
-    for (vector<int>::size_type i = 0; i != cities.size(); i++) {
-        cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
-            << cities[i].getYCoord() << endl;
-    }
-    cout << endl << "Distance before " << fullDist(cities) << endl;
-    cities = hillClimb(cities);
-    cout << endl << "Optimal list of cities" << endl;
-    for (vector<int>::size_type i = 0; i != cities.size(); i++) {
-        cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
-                << cities[i].getYCoord() << endl;
-    }
-    cout << endl << "Distance after " << fullDist(cities) << endl;
-    // some code here
-    // to compute its execution duration in runtime
-    cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
-    return 0;
 }

@@ -1,6 +1,5 @@
 #include "city.hpp"
 
-
 City::City (string name, float xCoord, float yCoord) {
     this->setName(name);
     this->setXCoord(xCoord);
