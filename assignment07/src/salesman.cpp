@@ -58,13 +58,6 @@ vector<City> Salesman::readFile(ifstream & in_file) {
     return cities;
 }
 
-void Salesman::swap(vector<City> & cities, int i, int j) {
-    //deep copy
-    City temp(cities[i]);
-    cities[i] = City(cities[j]);
-    cities[j] = City(temp);
-}
-
 bool Salesman::should_swap(vector<City> cities, int i, int j) {
     int front_i = (i > 0) ? i - 1 : cities.size() - 1;
     int front_j = (j > 0) ? j - 1 : cities.size() - 1;
@@ -103,7 +96,7 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
     for (int i = 0; i < cities.size(); i++) {
         for (int j = 0; j < cities.size(); j++) {
             if (i != j && should_swap(cities, i, j)) {
-                swap(cities, i, j);
+                swap(cities[i], cities[j]);
             }
         }
     }
@@ -112,8 +105,8 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
 
 void Salesman::random_restart_hill_climb() {
 
-    //TODO: check swapping from http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
-    //TODO: Reduce prints for running with full cities.txt
+    cout <<  "Initial distance: " << best_full_distance << endl << endl;
+
     float nxt_full_dist = 0.0f;
     int hill_climb_cnt = 1;
     while (true) {
