@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <cstdlib>
+#include <algorithm>
 #include "salesman.hpp"
 
 Salesman::Salesman()
@@ -100,6 +101,36 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
         }
     }
     return cities;
+}
+
+void Salesman::random_restart_hill_climb(vector<City> cities) {
+
+    //TODO: Only calculate the cities around the swapping
+    //TODO: check swapping from http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
+    //TODO: should keep the starting city unchanged
+    //TODO: Reduce prints for running with full cities.txt
+    //TODO: Save initial list of cities as a variable
+    float cur_full_dist = fullDist(cities);
+    float nxt_full_dist = 0.0f;
+    while (true) {
+        srand(unsigned(time(0)));
+        random_shuffle(cities.begin(), cities.end());
+
+        cout << endl << "Distance before " << fullDist(cities) << endl;
+        cities = hillClimb(cities);
+        nxt_full_dist = fullDist(cities);
+
+        cout << endl << "Distance after " << nxt_full_dist << endl << endl;
+        if (nxt_full_dist >= cur_full_dist)
+        {
+            cout << "Reached local maximum of random restart." << endl;
+            break;
+        }
+        else
+        {
+            cur_full_dist = nxt_full_dist;
+        }
+    }
 }
 
 void Salesman::print_cities(vector<City> cities) {

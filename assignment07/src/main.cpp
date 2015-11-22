@@ -1,6 +1,5 @@
 #include <iostream>
 #include <chrono>
-#include <algorithm>
 #include "salesman.hpp"
 
 #define CITIES_FILE "ten_cities.txt"
@@ -37,33 +36,8 @@ int main(int argc, char* argv[]) {
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
 
-    //TODO: Only calculate the cities around the swapping
-    //TODO: check swapping from http://stackoverflow.com/questions/6224830/c-trying-to-swap-values-in-a-vector
-    //TODO: should keep the starting city unchanged
-    //TODO: Reduce prints for running with full cities.txt
-    //TODO: Move this to salesman.cpp into a random_restart_hill_climb() function
-    //TODO: Save initial list of cities as a variable
-    float cur_full_dist = salesman.fullDist(cities);
-    float nxt_full_dist = 0.0f;
-    while (true) {
-        srand(unsigned(time(0)));
-        random_shuffle(cities.begin(), cities.end());
+    salesman.random_restart_hill_climb(cities);
 
-        cout << endl << "Distance before " << salesman.fullDist(cities) << endl;
-        cities = salesman.hillClimb(cities);
-        nxt_full_dist = salesman.fullDist(cities);
-
-        cout << endl << "Distance after " << nxt_full_dist << endl << endl;
-        if (nxt_full_dist >= cur_full_dist)
-        {
-            cout << "Reached local maximum of random restart." << endl;
-            break;
-        }
-        else
-        {
-            cur_full_dist = nxt_full_dist;
-        }
-    }
     // some code here
     // to compute its execution duration in runtime
     auto end = chrono::steady_clock::now();
