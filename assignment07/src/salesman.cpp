@@ -104,26 +104,9 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
 
         for (int j = 0; j < cities.size(); j++) {
 
-            if (should_swap(cities, i, j))
-                cout << "True" << endl;
-            else
-                cout << "False" << endl;
-
-            float distInit = fullDist(cities);
-
-            if (i != j) {
+            if (i != j && should_swap(cities, i, j)) {
                 cities = swap(cities, i, j);
             }
-
-            float distChanged = fullDist(cities);
-
-            if (distChanged > distInit) {
-                cities = swap(cities, i, j);
-            } else {
-                //cout << distChanged << endl;
-            }
-            cout << distChanged - distInit << endl;
-            cout << "i: " << i << " j: " << j << endl;
         }
     }
     return cities;
