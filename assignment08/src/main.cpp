@@ -8,6 +8,7 @@ using ms = chrono::milliseconds;
 
 int main(int argc, char* argv[]) {
     const char* file_name;
+    double duration = 0.0;
 
     // Extract file name from argument if exist, otherwise use default file
     // name
@@ -31,7 +32,8 @@ int main(int argc, char* argv[]) {
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
 
-    salesman.simulated_annealing(1);
+	duration = 1;
+    salesman.simulated_annealing(duration);
 
     // some code here
     // to compute its execution duration in runtime

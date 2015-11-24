@@ -207,10 +207,8 @@ void Salesman::simulated_annealing(double minute)
 			//Distance of next node is lower than the current node
 			swap(cities[i], cities[j]);
 			full_dist = full_dist - delta_E;
-			cout << "Current distance: " << full_dist 
-				 << "d: "<< delta_E
-				 << " true distance: " <<fullDist(cities)
-				 <<" - Remaning time" << T << "s" <<endl;
+			printf("Distance: %8.2f - True d: %8.2f - Delta: %7.2f - Time: %.2f s \n", 
+							full_dist, fullDist(cities), delta_E, T);
 		}
 		else
 		{
@@ -222,10 +220,8 @@ void Salesman::simulated_annealing(double minute)
 			{
 				swap(cities[i], cities[j]);
 				full_dist = full_dist - delta_E;
-				cout << "Current distance: " << full_dist 
-					 << "d: "<< delta_E
-					 << "true distance: " <<fullDist(cities)
-					 <<" - Remaning time" << T << "s" <<endl;
+			printf("Distance: %8.2f - True d: %8.2f - Delta: %7.2f - Time: %.2f s \n", 
+							full_dist, fullDist(cities), delta_E, T);
 
 			}
 		}
