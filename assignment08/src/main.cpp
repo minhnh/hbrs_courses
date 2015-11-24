@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
 
-    salesman.random_restart_hill_climb();
+    salesman.simulated_annealing(1);
 
     // some code here
     // to compute its execution duration in runtime

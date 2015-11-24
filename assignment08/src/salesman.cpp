@@ -10,6 +10,7 @@
 #include <math.h>
 #include <cstdlib>
 #include <algorithm>
+#include <chrono>
 #include "salesman.hpp"
 
 Salesman::Salesman(ifstream & in_file)
@@ -99,6 +100,26 @@ bool Salesman::should_swap(vector<City> cities, int i, int j) {
         return false;
 }
 
+/* Calculate distance around 2 cities and return the value difference*/
+float Salesman::compare_successor_node_value(vector<City> cities, int i, int j) {
+    int front_i = (i > 0) ? i - 1 : cities.size() - 1;
+    int front_j = (j > 0) ? j - 1 : cities.size() - 1;
+    int back_i = (i < cities.size() - 1) ? i + 1 : 0;
+    int back_j = (j < cities.size() - 1) ? j + 1 : 0;
+    float before_swap = distance(cities[front_i], cities[i]) +
+                        distance(cities[i], cities[back_i]) +
+                        distance(cities[front_j], cities[j]) +
+                        distance(cities[j], cities[back_j]);
+                                                    		
+    float after_swap  = distance(cities[front_i], cities[j]) +
+                        distance(cities[j], cities[back_i]) +
+                        distance(cities[front_j], cities[i]) +
+                        distance(cities[i], cities[back_j]);
+    //The smaller the distance, the higher the value of a node
+    //The returned value is the delta_E in the pseudo code
+	return before_swap - after_swap;
+}
+
 /* Implement Hill Climbing algorithm */
 vector<City> Salesman::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
@@ -142,4 +163,72 @@ void Salesman::random_restart_hill_climb() {
         hill_climb_cnt++;
     }
     cout << "Best full distance found: " << best_full_distance << endl;
+}
+
+void Salesman::simulated_annealing(double minute)
+{
+	srand (time(NULL));
+	
+	float full_dist = fullDist(cities);
+	float chance = 0.0;
+	float delta_E = 0.0;
+	int i = 0;
+	int j = 0;
+	double dice = 0.0;
+	
+	//Timing variables 
+	//Duration is in second
+	float duration = minute * 60;
+	float T = 1;	
+	auto start = chrono::steady_clock::now();
+	auto now = chrono::steady_clock::now();
+	auto diff = now - start; 
+	
+	while(T > 0)
+	{	
+		//Select a random successor node
+		do
+		{
+			i = rand() % cities.size();
+			j = rand() % cities.size();
+		}
+		while (i == j);
+		
+		//Compare value of the current node and the next node
+		//Shorter distance means higher delta_E
+		delta_E = compare_successor_node_value(cities, i, j);
+
+		//Get amount of time left.
+		now = chrono::steady_clock::now();
+		T = duration - chrono::duration_cast<chrono::seconds>(now - start).count();
+		 
+		if (delta_E > 0)
+		{
+			//Distance of next node is lower than the current node
+			swap(cities[i], cities[j]);
+			full_dist = full_dist - delta_E;
+			cout << "Current distance: " << full_dist 
+				 << "d: "<< delta_E
+				 << " true distance: " <<fullDist(cities)
+				 <<" - Remaning time" << T << "s" <<endl;
+		}
+		else
+		{
+			//When the Value of next node is worse than current node
+			//Role a dice and decide.
+			chance = exp(delta_E / T); 	   //Value from 0 to 1
+			dice = double(rand()%100)/100; //Value from 0 to 1
+			if (dice < chance)
+			{
+				swap(cities[i], cities[j]);
+				full_dist = full_dist - delta_E;
+				cout << "Current distance: " << full_dist 
+					 << "d: "<< delta_E
+					 << "true distance: " <<fullDist(cities)
+					 <<" - Remaning time" << T << "s" <<endl;
+
+			}
+		}
+	}
+	
 }
