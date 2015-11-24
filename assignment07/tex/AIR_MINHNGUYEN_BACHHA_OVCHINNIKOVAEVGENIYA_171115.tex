@@ -80,7 +80,20 @@
 		
 	% Question 2
 	
-	2. Algorithm minimizes the full distance between all cities on the list. Each step it swaps two cities from the list and checks if the distance decreased or not. If the distance decreased, the swap would be kept. This algorithm performes quite well for short lists of the cities (around 200 and less), but takes a lot of time for long lists.  For example, for a list of 150 cities it decreases the distance from 12138.5 to 3406.34 and it takes 2.06148 seconds; and for the list of ten cities it decreases the distance from 823.816 to 521.936 and it takes 0.001487 seconds. For 300 cities it takes 16.8467 seconds, while the distance changes from 27125.8 to 5879.85. For 754 cities it would take too much time.
+	2. Algorithm minimizes the full distance between all cities on the list. Each step it swaps two cities from the list and checks if the distance decreased or not. If the distance decreased, the swap would be kept. This algorithm performes quite well for short lists of the cities, but takes a lot of time for long lists. After several hill-climbing with initial distance 71102.5  we obtained following results: 
+	\begin{itemize}
+	\item Distance after hill climb 1: 7082.21
+
+	\item Distance after hill climb 2: 4401.56
+
+	\item Distance after hill climb 3: 4253.19
+
+\item Distance after hill climb 4: 5794.08
+
+One climb iteration takes around 20-25 second. 
+	\end{itemize}
+	
+
 	
     \end{enumerate}
     
