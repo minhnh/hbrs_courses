@@ -51,7 +51,16 @@
             constraint applies to at most two variables). In a constraint graph,
             each node represents a variable, and each edge represents a constraint.
         \item \emph{What are discrete variables and how are they divided?}
+            Discrete variables are variables whose values are from a discrete
+            domain. Discrete variables can be of finite where variables can have
+            be assigned all possible values of the domain, or infinite domains
+            like integers. Infinite domains require a constraint language, and
+            can be linear or non-linear.
         \item \emph{What is preference?}
+            As opposed to an absolute constraint, a constraint by preference does
+            not fail a state upon violation, but only state which state is
+            preferable. Preferences are usually represented by setting a cost
+            for each variable assignment.
         \item \emph{What is a successor function?}
         \item \emph{What is constraint propagation?}
         \item \emph{What is arc-consistency?}
