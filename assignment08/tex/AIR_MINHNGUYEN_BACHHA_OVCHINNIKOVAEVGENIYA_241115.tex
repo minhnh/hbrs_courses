@@ -34,14 +34,22 @@
 
     \begin{itemize}
         \item \emph{What is a solution for a constraint satisfaction problem?}\\
-            A solution for a constraint satisfaction problem is a state in which
-            all variables are assigned and no constraint is violated.
+            A solution for a constraint satisfaction problem (CSP) is a state in
+            which all variables are assigned and no constraint is violated.
         \item \emph{What are the components of a constraint satisfaction problem?}\\
             A constraint satisfaction problem consists of the variables, the
-            domain of these variables, and a set of constraints that the values
-            assigned to the variables must conform.
-        \item \emph{What is a constraint and how is it represented?}
-        \item \emph{What is a constraint graph?}
+            domain of these variables, and a set of constraints on these variables.
+        \item \emph{What is a constraint and how is it represented?}\\
+            A constraint specifies the conditions variables must conform to be a
+            solution. A constraint can concern value of a single variable (unary)
+            or values of a group of variables. A constraint can be absolute or
+            by preference. A constraint operated on a discrete, finite domain
+            can be represented by enumerating all possible values or combination
+            of values.
+        \item \emph{What is a constraint graph?}\\
+            A constraint graph is a map representation of a binary CSP (where a
+            constraint applies to at most two variables). In a constraint graph,
+            each node represents a variable, and each edge represents a constraint.
         \item \emph{What are discrete variables and how are they divided?}
         \item \emph{What is preference?}
         \item \emph{What is a successor function?}
