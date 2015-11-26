@@ -4,6 +4,7 @@
 \usepackage{booktabs}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \setlength{\heavyrulewidth}{1.5pt}
 \setlength{\abovetopsep}{4pt}
 \graphicspath{{.}}
@@ -12,7 +13,7 @@
 
 % Must be after geometry
 \usepackage{fancyhdr}
-\pagestyle{f    ancy}
+\pagestyle{fancy}
 \fancyhf{}
 \rhead{AIR Homework 8}
 \lhead{M. Nguyen, B. Ha \& E. Ovchinnikova}
@@ -35,7 +36,7 @@
         \item \emph{What is a solution for a constraint satisfaction problem?}\\
             A solution for a constraint satisfaction problem is a state in which
             all variables are assigned and no constraint is violated.
-        \item \emph{What are the components of a constraint satisfaction problem?}
+        \item \emph{What are the components of a constraint satisfaction problem?}\\
             A constraint satisfaction problem consists of the variables, the
             domain of these variables, and a set of constraints that the values
             assigned to the variables must conform.
@@ -51,6 +52,19 @@
 
 \section{Sudoku puzzle}
 
+\begin{itemize}
+    \item Variables: all unknown cells in the 9-by-9 puzzle
+
+	\item Domain: $\{1-9\}$
+
+    \item Constraints
+    \begin{itemize}
+        \item No same value on a row
+        \item No same value in a column
+        \item The puzzle is divided into 9 cell groups, each of size 3-by-3. The
+        third constraint is no same value in any of these groups.
+    \end{itemize}
+\end{itemize}
 
 \section{Simulated Annealing Implementation}
 
