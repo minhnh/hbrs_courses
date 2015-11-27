@@ -50,21 +50,34 @@
             A constraint graph is a map representation of a binary CSP (where a
             constraint applies to at most two variables). In a constraint graph,
             each node represents a variable, and each edge represents a constraint.
-        \item \emph{What are discrete variables and how are they divided?}
+        \item \emph{What are discrete variables and how are they divided?}\\
             Discrete variables are variables whose values are from a discrete
             domain. Discrete variables can be of finite where variables can have
             be assigned all possible values of the domain, or infinite domains
             like integers. Infinite domains require a constraint language, and
             can be linear or non-linear.
-        \item \emph{What is preference?}
+        \item \emph{What is preference?}\\
             As opposed to an absolute constraint, a constraint by preference does
             not fail a state upon violation, but only state which state is
             preferable. Preferences are usually represented by setting a cost
             for each variable assignment.
-        \item \emph{What is a successor function?}
-        \item \emph{What is constraint propagation?}
-        \item \emph{What is arc-consistency?}
-        \item \emph{What is Backtracking Search?}
+        \item \emph{What is a successor function?}\\
+            A successor function assigns a value to an unassigned variable and
+            check if the assignment violates any constraints.
+        \item \emph{What is constraint propagation?}\\
+            Constraint propagation checks for constraint satisfaction locally
+            after each variable assignment.
+        \item \emph{What is arc-consistency?}\\
+            An arc from X -> Y represents the dependence of Y on the value of X
+            to satisfy the constraints between the two variables. X -> Y is
+            consistent iff for all values of X, there's at least one allowed
+            value for Y.
+        \item \emph{What is Backtracking Search?}\\
+            Backtracking search is a search algorithm for CSP's which uses depth
+            first search to find a solution, but backtracks away from a subtree
+            if a violation of the constraints is caused by the variable assignment
+            spawning that subtree. The test for violation is done before the
+            successor generation step.
     \end{itemize}
 
 \section{Sudoku puzzle}
