@@ -51,6 +51,7 @@ class SonarMap:
             m_size_x (float) : initial size of the map in x direction (meters).
             m_size_y (float) : initial size of the map in y direction (meters).
         """
+        self.Range_min = 0.1
         self._resolution = resolution
         self._c_size_x = int(round(m_size_x/resolution+2))|1
         self._c_size_y = int(round(m_size_y/resolution+2))|1
@@ -156,7 +157,12 @@ class SonarMap:
         #============================== YOUR CODE HERE ==============================
         #Instructions: compute the distance probability function for the "probably
         #              empty" region.
-        return 0.0
+
+        if (delta > self.Range_min) and  (delta < sensed_distance - uncertainty):
+            probability = 1 - ((delta - self.Range_min)/(sensed_distance - uncertainty - self.Range_min))**2
+            return probability
+        else:
+            return 0.0
 
     
     def _er_occ(self, sensed_distance, delta, uncertainty):
@@ -187,7 +193,12 @@ class SonarMap:
         #============================== YOUR CODE HERE ==============================
         #Instructions: compute the distance probability function for the "probably
         #              occupied" region.
-        return 0.0
+
+        if sensed_distance -uncertainty < delta < sensed_distance + uncertainty:
+            probability = 1 - ((delta - sensed_distance)/uncertainty)**2
+            return probability
+        else:
+            return 0.0
     
     
     def _ea(self, sonar_fov, theta):
@@ -213,7 +224,12 @@ class SonarMap:
         #============================== YOUR CODE HERE ==============================
         #Instructions: compute the angular probability function (it is same for both
         #              the "probably empty" and the "probably occupied" region.
-        return 0.0
+
+        if (theta > -sonar_fov/2) and (theta < sonar_fov/2):
+            probability = 1 - (2*theta/sonar_fov)**2
+            return probability
+        else:
+            return 0.0
     
     
     def _convert_to_map(self, c_pos):
