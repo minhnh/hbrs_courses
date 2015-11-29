@@ -65,15 +65,33 @@
 %	PROBLEM 1
 %----------------------------------------------------------------------------------------
 
-\section{Question?}
+\section{Formulate the Minimax Theorem}
+
+Original formulation: every finite, zero-sum, two-person game has optimal mixed strategies. Later was extended to more complex cases of games and other problems, those require making decisions in uncertainty.\\
+
+G - two-person finite zero-sum game with players Max and Min, s*, t* - Min's and Max's strategies correspondingly, $V_G$- G's minimax value:
+\begin{itemize}
+\item If Min uses t* , Max's expected utility is $\le$ $V_G$ , i.e., $max_s U (s, t*) = V_G$
+\item If Max uses s* , Max's expected utility is $\ge$ $V_G$ , i.e., $min_s U (s*, t) = V_G$
+\end{itemize}
 
 
 
-\section{Question?}
 
+\section{How to construct a pure strategy for Max?}
 
+\begin{itemize}
+\item At each node where it's Max's move, choose one branch
+\item At each node where it's Min's move, include all branches
+\end{itemize}
 
-\section{Question?}
+\section{Name the properties of alpha-beta algorithm}
 
+\begin{itemize}
+\item Pruning does not affect final result
+\item Good move ordering improves effectiveness of pruning
+\item With "perfect ordering" time complexity = $O(b^{m/2})$
+\item A simple example of the value of reasoning about which computations are relevant (a form of metareasoning)
+\end{itemize}
 
 \end{document}
