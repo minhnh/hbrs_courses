@@ -170,6 +170,7 @@ void Salesman::simulated_annealing(double minute)
 	srand (time(NULL));
 	
 	float full_dist = fullDist(cities);
+	float shortest_dist = 17000;
 	float chance = 0.0;
 	float delta_E = 0.0;
 	int i = 0;
@@ -208,9 +209,9 @@ void Salesman::simulated_annealing(double minute)
 		{
 			//Distance of next node is lower than the current node
 			swap(cities[i], cities[j]);
-			full_dist = full_dist - delta_E;
-			printf("Distance: %8.2f - True d: %8.2f - Delta: %7.2f - Time left: %.2f s \n", 
-							full_dist, fullDist(cities), delta_E, duration - T);
+			full_dist = fullDist(cities);
+			printf("Distance: %8.2f - Time left: %.2f s \n", 
+							full_dist, duration - T);
 		}
 		else
 		{
@@ -221,11 +222,18 @@ void Salesman::simulated_annealing(double minute)
 			if (dice < chance)
 			{
 				swap(cities[i], cities[j]);
-				full_dist = full_dist - delta_E;
-			printf("Distance: %8.2f - True d: %8.2f - Delta: %7.2f - Time left: %.2f s \n", 
-							full_dist, fullDist(cities), delta_E, duration - T);
+				full_dist = fullDist(cities);
+			printf("Distance: %8.2f - Time left: %.2f s \n", 
+							full_dist, duration - T);
 			}
 		}
+		
+		if (full_dist < shortest_dist)
+		{
+			shortest_dist = full_dist;
+		}
 	}
+	printf("Shortest distance: %8.2f - Time: %.2f s \n", 
+							shortest_dist, duration);
 	
 }
