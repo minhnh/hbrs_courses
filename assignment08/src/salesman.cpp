@@ -170,6 +170,7 @@ void Salesman::simulated_annealing(double minute)
 	srand (time(NULL));
 	
 	float full_dist = fullDist(cities);
+	float shortest_dist = 17000;
 	float chance = 0.0;
 	float delta_E = 0.0;
 	int i = 0;
@@ -180,11 +181,13 @@ void Salesman::simulated_annealing(double minute)
 	//Duration is in second
 	float duration = minute * 60;
 	float T = 1;	
+	float T_old = 1;
+	float scheduler = 0.0;
 	auto start = chrono::steady_clock::now();
 	auto now = chrono::steady_clock::now();
 	auto diff = now - start; 
 	
-	while(T > 0)
+	while(duration - T > 0)
 	{	
 		//Select a random successor node
 		do
@@ -200,31 +203,44 @@ void Salesman::simulated_annealing(double minute)
 
 		//Get amount of time left.
 		now = chrono::steady_clock::now();
-		T = duration - chrono::duration_cast<chrono::seconds>(now - start).count();
+		T = chrono::duration_cast<chrono::seconds>(now - start).count();
+		scheduler = (10 * pow(0.9, T));
 		 
 		if (delta_E > 0)
 		{
 			//Distance of next node is lower than the current node
 			swap(cities[i], cities[j]);
-			full_dist = full_dist - delta_E;
-			printf("Distance: %8.2f - True d: %8.2f - Delta: %7.2f - Time: %.2f s \n", 
-							full_dist, fullDist(cities), delta_E, T);
+			full_dist = fullDist(cities);
 		}
 		else
 		{
 			//When the Value of next node is worse than current node
 			//Role a dice and decide.
-			chance = exp(delta_E / T); 	   //Value from 0 to 1
-			dice = double(rand()%100)/100; //Value from 0 to 1
+			chance = exp(delta_E / scheduler); 	   //Value from 0 to 1
+			dice = double(rand()/RAND_MAX); //Value from 0 to 1
 			if (dice < chance)
 			{
 				swap(cities[i], cities[j]);
-				full_dist = full_dist - delta_E;
-			printf("Distance: %8.2f - True d: %8.2f - Delta: %7.2f - Time: %.2f s \n", 
-							full_dist, fullDist(cities), delta_E, T);
-
+				full_dist = fullDist(cities);
 			}
 		}
+		
+		
+		//Result is only printed once per second.
+		if (T_old != T)
+		{
+			printf("Distance: %8.2f - Time left: %.2f s \n", 
+							full_dist, duration - T);
+		}
+		T_old = T;
+		
+		
+		if (full_dist < shortest_dist)
+		{
+			shortest_dist = full_dist;
+		}
 	}
+	printf("Shortest distance: %8.2f - Time: %.2f s \n", 
+							shortest_dist, duration);
 	
 }

@@ -12,12 +12,19 @@ int main(int argc, char* argv[]) {
 
     // Extract file name from argument if exist, otherwise use default file
     // name
-    if (argc == 1) {
+    if (argc == 1) 
+    {
         file_name = CITIES_FILE;
+    }
+    else if (argc == 2)
+    {
+        file_name = argv[1];
+        duration = 1;
     }
     else
     {
         file_name = argv[1];
+        duration = std::stod(argv[2]);
     }
 
     // Try to open file
@@ -32,7 +39,6 @@ int main(int argc, char* argv[]) {
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
 
-	duration = 1;
     salesman.simulated_annealing(duration);
 
     // some code here

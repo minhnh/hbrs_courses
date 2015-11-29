@@ -9,6 +9,6 @@ Once the cmake command is done you can now compile your program with the followi
 
 The executable will be created inside the bin folder. Stay in the build folder and run the program with the following command:
 
-	./bin/assignment08
+	./bin/assignment08 <city_file> <duration in minute>
 
 Note: Before running the program put all needed text files (cities.txt, ten_cities.txt) into bin folder.
