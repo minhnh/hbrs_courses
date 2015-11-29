@@ -1,0 +1,102 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{titling}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\graphicspath{{.}}
+
+\usepackage[margin=1in]{geometry}
+
+% Must be after geometry
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AIR Homework 8}
+\lhead{M. Nguyen, B. Ha \& E. Ovchinnikova}
+\cfoot{\thepage}
+
+\setlength{\droptitle}{-5em}
+
+\title{Artificial Intelligence for Robots \\
+				- Homework 8 -}
+\author{Minh Nguyen, Bach Ha \& Evgenia Ovchinnikova}
+\date{Lecture date: 24 November 2015}
+
+\begin{document}
+
+\maketitle
+
+\section{Theoretical questions}
+
+    \begin{itemize}
+        \item \emph{What is a solution for a constraint satisfaction problem?}\\
+            A solution for a constraint satisfaction problem (CSP) is a state in
+            which all variables are assigned and no constraint is violated.
+        \item \emph{What are the components of a constraint satisfaction problem?}\\
+            A constraint satisfaction problem consists of the variables, the
+            domain of these variables, and a set of constraints on these variables.
+        \item \emph{What is a constraint and how is it represented?}\\
+            A constraint specifies the conditions variables must conform to be a
+            solution. A constraint can concern value of a single variable (unary)
+            or values of a group of variables. A constraint can be absolute or
+            by preference. A constraint operated on a discrete, finite domain
+            can be represented by enumerating all possible values or combination
+            of values.
+        \item \emph{What is a constraint graph?}\\
+            A constraint graph is a map representation of a binary CSP (where a
+            constraint applies to at most two variables). In a constraint graph,
+            each node represents a variable, and each edge represents a constraint.
+        \item \emph{What are discrete variables and how are they divided?}\\
+            Discrete variables are variables whose values are from a discrete
+            domain. Discrete variables can be of finite where variables can have
+            be assigned all possible values of the domain, or infinite domains
+            like integers. Infinite domains require a constraint language, and
+            can be linear or non-linear.
+        \item \emph{What is preference?}\\
+            As opposed to an absolute constraint, a constraint by preference does
+            not fail a state upon violation, but only state which state is
+            preferable. Preferences are usually represented by setting a cost
+            for each variable assignment.
+        \item \emph{What is a successor function?}\\
+            A successor function assigns a value to an unassigned variable and
+            check if the assignment violates any constraints.
+        \item \emph{What is constraint propagation?}\\
+            Constraint propagation checks for constraint satisfaction locally
+            after each variable assignment.
+        \item \emph{What is arc-consistency?}\\
+            An arc from X -> Y represents the dependence of Y on the value of X
+            to satisfy the constraints between the two variables. X -> Y is
+            consistent iff for all values of X, there's at least one allowed
+            value for Y.
+        \item \emph{What is Backtracking Search?}\\
+            Backtracking search is a search algorithm for CSP's which uses depth
+            first search to find a solution, but backtracks away from a subtree
+            if a violation of the constraints is caused by the variable assignment
+            spawning that subtree. The test for violation is done before the
+            successor generation step.
+    \end{itemize}
+
+\section{Sudoku puzzle}
+
+\begin{itemize}
+    \item Variables: all unknown cells in the 9-by-9 puzzle
+
+	\item Domain: $\{1-9\}$
+
+    \item Constraints
+    \begin{itemize}
+        \item No same value on a row
+        \item No same value in a column
+        \item The puzzle is divided into 9 cell groups, each of size 3-by-3. The
+        third constraint is no same value in any of these groups.
+    \end{itemize}
+\end{itemize}
+
+\section{Simulated Annealing Implementation}
+
+
+\end{document}

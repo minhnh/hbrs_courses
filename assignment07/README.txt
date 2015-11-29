@@ -9,6 +9,7 @@ Once the cmake command is done you can now compile your program with the followi
 
 The executable will be created inside the bin folder. Stay in the build folder and run the program with the following command:
 
-	./bin/assignment07
+        bin/assignment07 <path_to_file>
+i.e:    bin/assignment07 bin/cities.txt
 
-Note: Before running the program put all needed text files (cities.txt, ten_cities.txt) into bin folder.
+If no input file given will look for ten_cities.txt in the same folder the program is run from.
