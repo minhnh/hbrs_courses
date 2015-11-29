@@ -181,6 +181,7 @@ void Salesman::simulated_annealing(double minute)
 	//Duration is in second
 	float duration = minute * 60;
 	float T = 1;	
+	float T_old = 1;
 	float scheduler = 0.0;
 	auto start = chrono::steady_clock::now();
 	auto now = chrono::steady_clock::now();
@@ -210,8 +211,6 @@ void Salesman::simulated_annealing(double minute)
 			//Distance of next node is lower than the current node
 			swap(cities[i], cities[j]);
 			full_dist = fullDist(cities);
-			printf("Distance: %8.2f - Time left: %.2f s \n", 
-							full_dist, duration - T);
 		}
 		else
 		{
@@ -223,10 +222,18 @@ void Salesman::simulated_annealing(double minute)
 			{
 				swap(cities[i], cities[j]);
 				full_dist = fullDist(cities);
-			printf("Distance: %8.2f - Time left: %.2f s \n", 
-							full_dist, duration - T);
 			}
 		}
+		
+		
+		//Result is only printed once per second.
+		if (T_old != T)
+		{
+			printf("Distance: %8.2f - Time left: %.2f s \n", 
+							full_dist, duration - T);
+		}
+		T_old = T;
+		
 		
 		if (full_dist < shortest_dist)
 		{
