@@ -52,11 +52,11 @@
 \normalfont \normalsize 
 \textsc{Bonn-Rhein-Sieg University of Applied Sciences \\Department of Computer Science} \\ [10pt] % Your university, school and/or department name(s)
 \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\LARGE Artificial Intelligence for Robotics - Assignment 07 Questions \\ % The assignment title
+\LARGE Artificial Intelligence for Robotics - Assignment 08 Questions \\ % The assignment title
 \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
 }
 \author{Minh Nguyen, Bach Ha \& Evgeniya Ovchinnikova} % Your name
-\date{Lecture date: 17 November 2015}
+\date{Lecture date: 24 November 2015}
 \begin{document}
 
 \maketitle % Print the title
@@ -65,21 +65,33 @@
 %	PROBLEM 1
 %----------------------------------------------------------------------------------------
 
-\section{How is a constraint satisfaction problem (CSP) different from a general search problem?}
+\section{Formulate the Minimax Theorem}
 
-A CSP is defined by a set of variables and its goal is defined by a set of constraints on the values of these variables \cite{Russell96AI}. A CSP consequently focuses not on what a goal ``is'', but on what it ``cannot be.'' This definition allow a CSP to describe problems where no clear goal can be formulated or the number of goals too large, such as in the scheduling problem.
+Original formulation: every finite, zero-sum, two-person game has optimal mixed strategies. Later was extended to more complex cases of games and other problems, those require making decisions in uncertainty.\\
+
+G - two-person finite zero-sum game with players Max and Min, s*, t* - Min's and Max's strategies correspondingly, $V_G$- G's minimax value:
+\begin{itemize}
+\item If Min uses t* , Max's expected utility is $\le$ $V_G$ , i.e., $max_s U (s, t*) = V_G$
+\item If Max uses s* , Max's expected utility is $\ge$ $V_G$ , i.e., $min_s U (s*, t) = V_G$
+\end{itemize}
 
 
-\section{Is arc consistency algorithm guaranteed to find a result? Why or why not?}
-
-No, because it is not a search algorithm. It only eliminates the forward paths that will result in a violation of constraints. The paths that do not fail need to be tried for failure.
 
 
-\section{Explain the worst case and the time complexity of arc consistency algorithm}
+\section{How to construct a pure strategy for Max?}
 
-With $n$ variables there are $n^2$ possible arcs. With $d$ possible values for each variable, each arc has $d^2$ possible value pair to check. Since if a value is removed, all arcs associated with that variable need to be checked again, the total complexity is $n^2d^3$
+\begin{itemize}
+\item At each node where it's Max's move, choose one branch
+\item At each node where it's Min's move, include all branches
+\end{itemize}
 
-\bibliographystyle{plain}
-\bibliography{AIR_MINHNGUYEN_171115}
+\section{Name the properties of alpha-beta algorithm}
+
+\begin{itemize}
+\item Pruning does not affect final result
+\item Good move ordering improves effectiveness of pruning
+\item With "perfect ordering" time complexity = $O(b^{m/2})$
+\item A simple example of the value of reasoning about which computations are relevant (a form of metareasoning)
+\end{itemize}
 
 \end{document}
