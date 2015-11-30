@@ -103,4 +103,28 @@ public class TilerRobot {
 	    }
 	}
     }
+
+    public int getBlackTilesInRow(int rowNum) {
+	int tileCount = 0;
+	for (int i = 0; i < floor[0].length; i++) {
+	    if (floor[rowNum][i] == BLACK) {
+		tileCount++;
+	    }
+	}
+	return tileCount;
+    }
+
+    public int getBlackTilesInColumn(int ColumnNum) {
+	int tileCount = 0;
+	for (int i = 0; i < floor.length; i++) {
+	    if (floor[i][ColumnNum] == BLACK) {
+		tileCount++;
+	    }
+	}
+	return tileCount;
+    }
+
+    public boolean[][] getFloor() {
+	return floor;
+    }
 }
