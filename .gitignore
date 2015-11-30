@@ -2,8 +2,10 @@
 .classpath
 .project
 .recommenders/
+.settings/
 bin/
 test/
 META-INF/
 samples/
 images/
+*.ser
