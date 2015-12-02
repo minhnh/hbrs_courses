@@ -109,7 +109,7 @@ class SonarMap:
             #Do stuff
             # cell is a tuple (c_x, c_y)
             pass
-
+9
         Reading/Setting cells of the map (MapStore):
 
         occ_val = self._map_occupied.get(*cell)         # cell = (c_x, c_y)
@@ -127,7 +127,91 @@ class SonarMap:
 
         //============================================================================
         """
-        pass
+
+        """
+        The main steps in the paper which are implemented below are:
+        1. Identifying the free and occupied cells
+        2. Superposition or additon of these cells into map 
+        3. Thresholding
+        please follow this to understand the arcane code implemented below (understood the big picture but not sure about few details)
+        https://www.frc.ri.cmu.edu/~hpm/project.archive/robot.papers/1985/al2.html"""
+
+
+        normalized_sum = 0
+
+        # The below code would store the cells of entire cone within the map
+        x = (m_sonar_x > self._m_min_x) and (m_sonar_x < self._m_size_x)
+        y = (m_sonar_y > self._m_min_y) and (m_sonar_y < self._m_size_y)
+        if (x == True and y == True):
+            cellsOfSonar = self._convert_to_cell((m_sonar_x,m_sonar_y))
+            cellsInConeLength = registerd_range / self._resolution
+            completeCone = MapStoreCone(cellsOfSonar[0],cellsOfSonar[1],sonar_theta,field_of_view,cellsInConeLength)
+
+        #looping through the cells  
+        for cell in completeCone:
+            if (self._map_combined.is_in_x_range(cell[0]) and self._map_combined.is_in_y_range(cell[1])):
+                cellInMap = self._convert_to_map(cell)
+                #theta be the angle between the main axis of the beam and SP and we are calculating this theta here
+                cellInMap_P = (cellInMap[0] - m_sonar_x, cellInMap[1] - m_sonar_y)
+                cellInMap_theta = math.atan2(cellInMap_P[1],cellInMap_P[0])# this would give angle between main axis and sonar beam
+                theta = self.angular_distance(sonar_theta,cellInMap_theta)
+                #clamp data which is out of range
+                if theta > field_of_view / 2.0:
+                    theta = self.clamp(theta, -field_of_view/2.0, field_of_view/2.0)
+
+                #calculating delta(delta be the distance from P to S where S is sonar position and P be any point is volume swept in by the sonar beam)
+                delta = self.euclidian_distance(cellInMap, (m_sonar_x, m_sonar_y))
+
+                #Representing the empty areas
+                totalfree_probability = self._er_free(registerd_range, delta, uncertainty) * self._ea(field_of_view, theta)
+                lastFree = self._map_free.get(cell[0], cell[1])
+                current_free_probability = totalfree_probability
+                nextFree = lastFree + current_free_probability - lastFree * current_free_probability
+                if not (nextFree >=0 and nextFree <=1):
+                    #next free not in the range so clamp nextFree
+                    nextFree = self.clamp(nextFree, 0, 1)
+                self._map_free.set(cell[0], cell[1], nextFree)
+
+                #Representing the occupied areas 
+                totalocc_probability = self._er_occ(registerd_range, delta, uncertainty) * self._ea(field_of_view, theta)
+                current_occ_probability = totalocc_probability
+                temp = current_occ_probability * (1 - current_free_probability)
+                normalized_sum = normalized_sum + temp
+                self._map_occupied.set(cell[0], cell[1], temp)
+
+        # The next occupied areas musst be set when sonar has a reading < maxvalue and normalized_sum > 0
+        if registerd_range < max_range and normalized_sum > 0:
+            for cell in completeCone:
+                # check if cell is in mapping area
+                if (self._map_combined.is_in_x_range(cell[0]) and self._map_combined.is_in_y_range(cell[1])):
+                    #These are cells which are occupied
+                    previosulyOccupied = self._map_occupied.get(cell[0], cell[1])
+                    normalized = self._map_occupied.get(cell[0], cell[1])
+                    normalized = normalized / normalized_sum
+                    if not (normalized >=0 and normalized <=1):
+                        continue
+                    next_occ = previosulyOccupied + normalized - previosulyOccupied * normalized
+                    self._map_occupied.set(cell[0], cell[1], next_occ)
+
+
+        # update combined map
+        for cell in completeCone:
+            # check if cell is in mapping area
+            if (self._map_combined.is_in_x_range(cell[0])
+                and self._map_combined.is_in_y_range(cell[1])):
+
+                # Thresholding
+                occupied_cells = self._map_occupied.get(cell[0], cell[1])
+                free = self._map_free.get(cell[0], cell[1])
+                if occupied_cells > free:
+                    self._map_combined.set(cell[0], cell[1], occupied_cells)
+                else:
+                    self._map_combined.set(cell[0], cell[1], -free)
+
+
+
+
+        #pass
     
     
     def _er_free(self, sensed_distance, delta, uncertainty):
