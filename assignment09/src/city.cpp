@@ -1,17 +1,16 @@
 #include "city.hpp"
 
 
-City::City (string name, float xCoord, float yCoord) {
-    this->setName(name);
-    this->setXCoord(xCoord);
-    this->setYCoord(yCoord);
+City::City (float x, float y, float deadline) {
+    this->setX(x);
+    this->setY(y);
 }
 
 City::City(const City & city)
 {
     this->setName(city.getName());
-    this->setXCoord(city.getXCoord());
-    this->setYCoord(city.getYCoord());
+    this->setX(city.getX());
+    this->setY(city.getY());
 }
 
 City::~City()
@@ -27,18 +26,18 @@ void City::setName(const string& name) {
     this->name = name;
 }
 
-double City::getXCoord() const {
-    return xCoord;
+double City::getX() const {
+    return x;
 }
 
-void City::setXCoord(float coord) {
-    xCoord = coord;
+void City::setX(float coord) {
+    x = coord;
 }
 
-double City::getYCoord() const {
-    return yCoord;
+double City::getY() const {
+    return y;
 }
 
-void City::setYCoord(float coord) {
-    yCoord = coord;
+void City::setY(float coord) {
+    y = coord;
 }

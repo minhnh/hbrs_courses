@@ -15,19 +15,20 @@ using namespace std;
 class City {
     private:
         string name;
-        float xCoord;
-        float yCoord;
+        float x;
+        float y;
+        float deadline;
 
     public:
-        City(string name, float xCoord, float yCoord);
+        City(float x, float y, float deadline);
         City(const City & city);
         ~City();
         const string& getName() const;
         void setName(const string& name);
-        double getXCoord() const;
-        void setXCoord(float coord);
-        double getYCoord() const;
-        void setYCoord(float coord);
+        double getX() const;
+        void setX(float coord);
+        double getY() const;
+        void setY(float coord);
 };
 
 #endif /* _ASSIGNMENT09_CITY_H_ */

@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
 
-    dfs_backtrack.simulated_annealing(duration);
+    dfs_backtrack.dfs_backtrack();
 
     // some code here
     // to compute its execution duration in runtime
