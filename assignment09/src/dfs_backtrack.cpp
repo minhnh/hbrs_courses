@@ -15,9 +15,10 @@
 #include <chrono>
 #include "dfs_backtrack.hpp"
 
-DFSBacktrack::DFSBacktrack(ifstream & in_file)
+DFSBacktrack::DFSBacktrack(ifstream & in_file, int order_option)
 {
-    cities = readFile(in_file);
+    this->cities = readFile(in_file);
+    this->order_option = order_option;
 }
 
 DFSBacktrack::~DFSBacktrack()

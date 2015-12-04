@@ -29,6 +29,8 @@ int main(int argc, char* argv[]) {
 
     // Argument check
     if (argc < 2) {
+        usage();
+        cout << "Using default file and order option" << endl;
         file_name = CITIES_FILE;
     } else {
         // Get file name
@@ -54,7 +56,7 @@ int main(int argc, char* argv[]) {
         cout << "Can't open file" << endl;
         return -1;
     }
-    DFSBacktrack dfs_backtrack = DFSBacktrack(in_file);
+    DFSBacktrack dfs_backtrack = DFSBacktrack(in_file, order_option);
 
     // Close file instance
     in_file.close();
