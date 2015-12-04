@@ -62,7 +62,7 @@ vector<City> DFSBacktrack::readFile(ifstream & in_file) {
 
 void DFSBacktrack::print_cities(vector<City> cities) {
     for (int i = 0; i < cities.size(); i++) {
-        cout << cities[i].getName() << " " << cities[i].getX() << " "
+        cout << "City " << i + 1 << ": " << cities[i].getX() << " "
                 << cities[i].getY() << endl;
     }
 }

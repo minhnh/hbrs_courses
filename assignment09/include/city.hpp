@@ -21,14 +21,10 @@ class City {
 
     public:
         City(float x, float y, float deadline);
-        City(const City & city);
         ~City();
-        const string& getName() const;
-        void setName(const string& name);
-        double getX() const;
-        void setX(float coord);
-        double getY() const;
-        void setY(float coord);
+        float getDeadline();
+        float getX();
+        float getY();
 };
 
 #endif /* _ASSIGNMENT09_CITY_H_ */

@@ -2,15 +2,9 @@
 
 
 City::City (float x, float y, float deadline) {
-    this->setX(x);
-    this->setY(y);
-}
-
-City::City(const City & city)
-{
-    this->setName(city.getName());
-    this->setX(city.getX());
-    this->setY(city.getY());
+    this->x = x;
+    this->y = y;
+    this->deadline = deadline;
 }
 
 City::~City()
@@ -18,26 +12,14 @@ City::~City()
 
 }
 
-const string& City::getName() const {
-    return name;
-}
-
-void City::setName(const string& name) {
-    this->name = name;
-}
-
-double City::getX() const {
+float City::getX() {
     return x;
 }
 
-void City::setX(float coord) {
-    x = coord;
-}
-
-double City::getY() const {
+float City::getY() {
     return y;
 }
 
-void City::setY(float coord) {
-    y = coord;
+float City::getDeadline() {
+    return deadline;
 }
