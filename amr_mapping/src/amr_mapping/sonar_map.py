@@ -52,6 +52,7 @@ class SonarMap:
             m_size_y (float) : initial size of the map in y direction (meters).
         """
         self.Range_min = 0.1
+        self.Range_max = 4
         self._resolution = resolution
         self._c_size_x = int(round(m_size_x/resolution+2))|1
         self._c_size_y = int(round(m_size_y/resolution+2))|1
@@ -180,9 +181,10 @@ class SonarMap:
                                             * self._ea(field_of_view, theta)
                 temp = current_occ_probability * (1 - current_free_probability)
                 normalized_sum = normalized_sum + temp
-                self._map_occupied.set(cell[0], cell[1], temp)
+                if registerd_range < max_range:
+                    self._map_occupied.set(cell[0], cell[1], temp)
 
-        # The next occupied areas musst be set when sonar has a reading < maxvalue and normalized_sum > 0
+        # The next occupied areas must be set when sonar has a reading < maxvalue and normalized_sum > 0
         if registerd_range < max_range and normalized_sum > 0:
             for cell in completeCone:
                 # check if cell is in mapping area
