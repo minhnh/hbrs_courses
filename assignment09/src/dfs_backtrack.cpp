@@ -31,8 +31,7 @@ vector<City> DFSBacktrack::readFile(ifstream & in_file) {
     string delimiter(" ");
     vector<string> token;
     vector<City> cities;
-    string cityName;
-    float x, y;
+    float x, y, deadline;
     int number = -1;
 
     while (getline(in_file, fileLine)) {
@@ -48,10 +47,10 @@ vector<City> DFSBacktrack::readFile(ifstream & in_file) {
         token.push_back(fileLine);
 
         if (number != 0) {
-            cityName = token[0];
-            x = atof(token[1].c_str());
-            y = atof(token[2].c_str());
-            City newCity(x, y, 0);
+            x = atof(token[0].c_str());
+            y = atof(token[1].c_str());
+            deadline = atof(token[2].c_str());
+            City newCity(x, y, deadline);
             cities.push_back(newCity);
             //cout << cityName << " " << x << " " << y << " " << number << endl;
         }
