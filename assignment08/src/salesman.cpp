@@ -204,7 +204,7 @@ void Salesman::simulated_annealing(double minute)
 		//Get amount of time left.
 		now = chrono::steady_clock::now();
 		T = chrono::duration_cast<chrono::seconds>(now - start).count();
-		scheduler = (10 * pow(0.9, T));
+		scheduler = (10 * pow(0.8, T));
 		 
 		if (delta_E > 0)
 		{
