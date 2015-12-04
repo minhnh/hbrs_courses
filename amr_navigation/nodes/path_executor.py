@@ -33,7 +33,7 @@ class PathExecutor:
         self.visualization_publisher = rospy.Publisher('/path_executor/current_path', Path)
 
         # get parameters from launch file
-        self.use_obstacle_avoidance = rospy.get_param('~use_obstacle_avoidance')
+        self.use_obstacle_avoidance = rospy.get_param('~use_obstacle_avoidance', True)
         # action server based on use_obstacle_avoidance
         if self.use_obstacle_avoidance == False:
             self.goal_client = SimpleActionClient('/motion_controller/move_to', MoveToAction)
