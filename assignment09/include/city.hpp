@@ -5,8 +5,8 @@
  *      Author: elhe
  */
 
-#ifndef CITY_H_
-#define CITY_H_
+#ifndef _ASSIGNMENT09_CITY_H_
+#define _ASSIGNMENT09_CITY_H_
 
 #include <string>
 
@@ -30,4 +30,4 @@ class City {
         void setYCoord(float coord);
 };
 
-#endif /* CITY_H_ */
+#endif /* _ASSIGNMENT09_CITY_H_ */

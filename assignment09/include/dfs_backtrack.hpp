@@ -1,5 +1,5 @@
-#ifndef SALESMAN_H_
-#define SALESMAN_H_
+#ifndef _ASSIGNMENT09_DFS_BACKTRACK_H_
+#define _ASSIGNMENT09_DFS_BACKTRACK_H_
 
 #include <vector>
 #include <fstream>
@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class Salesman {
+class DFSBacktrack {
     private:
         vector<City> cities;
         float best_full_distance;
@@ -21,11 +21,11 @@ class Salesman {
         vector<City> readFile(ifstream & in_file);
 
     public:
-        Salesman(ifstream & in_file);
-        ~Salesman();
+        DFSBacktrack(ifstream & in_file);
+        ~DFSBacktrack();
         void random_restart_hill_climb();
         void simulated_annealing(double);
         void print_cities(vector<City>);
 };
 
-#endif // SALESMAN_H_
+#endif // _ASSIGNMENT09_DFS_BACKTRACK_H_

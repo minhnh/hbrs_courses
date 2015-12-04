@@ -34,12 +34,12 @@ int main(int argc, char* argv[]) {
         cout << "Can't open default file, no file argument given" << endl;
         return -1;
     }
-    Salesman salesman = Salesman(in_file);
+    DFSBacktrack dfs_backtrack = DFSBacktrack(in_file);
 
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
 
-    salesman.simulated_annealing(duration);
+    dfs_backtrack.simulated_annealing(duration);
 
     // some code here
     // to compute its execution duration in runtime

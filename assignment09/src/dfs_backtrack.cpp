@@ -1,10 +1,12 @@
-//============================================================================
-// Name        : Salesman.cpp
-// Author      : Evgeniya
-// Version     :
-// Copyright   : all rights reserved
-// Description : Hello World in C++, Ansi-style
-//============================================================================
+/*
+ *  Name        :   dfs_backtrack.cpp
+ *  Author      :   Evgenya
+ *  Version     :
+ *  Copyright   :   all rights reserved
+ *  Description :   Implement backtracking depth first search to solve a time
+ *                  constrained city traveling problem.
+ *  Modified    :   2015/12/04 by Minh Nguyen
+ */
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
@@ -13,18 +15,18 @@
 #include <chrono>
 #include "dfs_backtrack.hpp"
 
-Salesman::Salesman(ifstream & in_file)
+DFSBacktrack::DFSBacktrack(ifstream & in_file)
 {
     cities = readFile(in_file);
     best_full_distance = fullDist(cities);
 }
 
-Salesman::~Salesman()
+DFSBacktrack::~DFSBacktrack()
 {
 
 }
 
-vector<City> Salesman::readFile(ifstream & in_file) {
+vector<City> DFSBacktrack::readFile(ifstream & in_file) {
 
     string fileLine;
     string delimiter(",");
@@ -59,20 +61,20 @@ vector<City> Salesman::readFile(ifstream & in_file) {
     return cities;
 }
 
-void Salesman::print_cities(vector<City> cities) {
+void DFSBacktrack::print_cities(vector<City> cities) {
     for (int i = 0; i < cities.size(); i++) {
         cout << cities[i].getName() << " " << cities[i].getXCoord() << " "
                 << cities[i].getYCoord() << endl;
     }
 }
 
-float Salesman::distance(City city1, City city2) {
+float DFSBacktrack::distance(City city1, City city2) {
     return sqrt(
             pow((city1.getXCoord() - city2.getXCoord()), 2)
                     + pow((city1.getYCoord() - city2.getYCoord()), 2));
 }
 
-float Salesman::fullDist(vector<City> cities) {
+float DFSBacktrack::fullDist(vector<City> cities) {
     float dist = distance(cities[0], cities[cities.size() - 1]);
     for (int i = 0; i < (cities.size() - 1); i++) {
         dist += distance(cities[i], cities[i + 1]);
@@ -81,7 +83,7 @@ float Salesman::fullDist(vector<City> cities) {
 }
 
 /* Calculate distance around 2 cities to see if a swap should be done */
-bool Salesman::should_swap(vector<City> cities, int i, int j) {
+bool DFSBacktrack::should_swap(vector<City> cities, int i, int j) {
     int front_i = (i > 0) ? i - 1 : cities.size() - 1;
     int front_j = (j > 0) ? j - 1 : cities.size() - 1;
     int back_i = (i < cities.size() - 1) ? i + 1 : 0;
@@ -101,7 +103,7 @@ bool Salesman::should_swap(vector<City> cities, int i, int j) {
 }
 
 /* Calculate distance around 2 cities and return the value difference*/
-float Salesman::compare_successor_node_value(vector<City> cities, int i, int j) {
+float DFSBacktrack::compare_successor_node_value(vector<City> cities, int i, int j) {
     int front_i = (i > 0) ? i - 1 : cities.size() - 1;
     int front_j = (j > 0) ? j - 1 : cities.size() - 1;
     int back_i = (i < cities.size() - 1) ? i + 1 : 0;
@@ -121,7 +123,7 @@ float Salesman::compare_successor_node_value(vector<City> cities, int i, int j) 
 }
 
 /* Implement Hill Climbing algorithm */
-vector<City> Salesman::hillClimb(vector<City> cities_in) {
+vector<City> DFSBacktrack::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
     for (int i = 0; i < cities.size(); i++) {
         for (int j = 0; j < cities.size(); j++) {
@@ -134,7 +136,7 @@ vector<City> Salesman::hillClimb(vector<City> cities_in) {
     return cities;
 }
 
-void Salesman::random_restart_hill_climb() {
+void DFSBacktrack::random_restart_hill_climb() {
 
     cout <<  "Initial distance: " << best_full_distance << endl << endl;
 
@@ -165,7 +167,7 @@ void Salesman::random_restart_hill_climb() {
     cout << "Best full distance found: " << best_full_distance << endl;
 }
 
-void Salesman::simulated_annealing(double minute)
+void DFSBacktrack::simulated_annealing(double minute)
 {
 	srand (time(NULL));
 
