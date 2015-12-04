@@ -1,6 +1,6 @@
 #include <iostream>
 #include <chrono>
-#include "salesman.hpp"
+#include "dfs_backtrack.hpp"
 
 #define CITIES_FILE "ten_cities.txt"
 
@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
     // Extract file name from argument if exist, otherwise use default file
     // name
-    if (argc == 1) 
+    if (argc == 1)
     {
         file_name = CITIES_FILE;
     }
