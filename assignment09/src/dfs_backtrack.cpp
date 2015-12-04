@@ -28,7 +28,7 @@ DFSBacktrack::~DFSBacktrack()
 vector<City> DFSBacktrack::readFile(ifstream & in_file) {
 
     string fileLine;
-    string delimiter(",");
+    string delimiter(" ");
     vector<string> token;
     vector<City> cities;
     string cityName;

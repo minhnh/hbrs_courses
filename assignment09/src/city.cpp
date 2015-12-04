@@ -7,9 +7,7 @@ City::City (float x, float y, float deadline) {
     this->deadline = deadline;
 }
 
-City::~City()
-{
-
+City::~City() {
 }
 
 float City::getX() {

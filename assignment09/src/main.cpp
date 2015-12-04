@@ -2,39 +2,62 @@
 #include <chrono>
 #include "dfs_backtrack.hpp"
 
-#define CITIES_FILE "ten_cities.txt"
+#define CITIES_FILE "scenarios/scenario1.txt"
 
 using ms = chrono::milliseconds;
 
+namespace {
+    void usage() {
+        cout << "Usage: ./assignment09 <scenario_path> <order_option>" << endl;
+        cout << "       ./assignment09 <order_option>" << endl;
+        cout << "       ./assignment09" << endl << endl;
+        cout << "   order_option    -   Order of locations when beginning search" << endl;
+        cout << "                       (default to 1):" << endl;
+        cout << "                       1   - Line number" << endl;
+        cout << "                       2   - Euclidean distance" << endl;
+        cout << "                       3   - Time to deadline" << endl;
+        cout << "   scenario_path   -   Path to scenario file" << endl;
+        cout << "                       (default to scenarios/scenario1.txt):"
+            << endl << endl;
+    }
+}
+
 int main(int argc, char* argv[]) {
     const char* file_name;
-    double duration = 0.0;
+    // Default order is line number
+    int order_option = 1;
 
-    // Extract file name from argument if exist, otherwise use default file
-    // name
-    if (argc == 1)
-    {
+    // Argument check
+    if (argc < 2) {
         file_name = CITIES_FILE;
-    }
-    else if (argc == 2)
-    {
+    } else {
+        // Get file name
         file_name = argv[1];
-        duration = 1;
-    }
-    else
-    {
-        file_name = argv[1];
-        duration = std::stod(argv[2]);
+        // Check for order_option argument
+        if (argc == 3)
+        {
+            order_option = stoi(argv[2]);
+        }
+        else
+        {
+            cout << "Too many arguments" << endl << endl;
+            // Usage message
+            usage();
+            return 2;
+        }
     }
 
     // Try to open file
     ifstream in_file(file_name);
     if (!in_file)
     {
-        cout << "Can't open default file, no file argument given" << endl;
+        cout << "Can't open file" << endl;
         return -1;
     }
     DFSBacktrack dfs_backtrack = DFSBacktrack(in_file);
+
+    // Close file instance
+    in_file.close();
 
     // Adding iterations. Till the solution is reached.
     auto start = chrono::steady_clock::now();
