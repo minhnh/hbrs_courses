@@ -25,28 +25,29 @@ namespace {
 int main(int argc, char* argv[]) {
     const char* file_name;
     // Default order is line number
-    int order_option = 1;
+    int order_option;
 
     // Argument check
-    if (argc < 2) {
-        usage();
-        cout << "Using default file and order option" << endl << endl;
-        file_name = CITIES_FILE;
-    } else {
-        // Get file name
-        file_name = argv[1];
-        // Check for order_option argument
-        if (argc == 3)
-        {
+    switch (argc) {
+        case 1:
+            usage();
+            cout << "Using default file and order option" << endl << endl;
+            file_name = CITIES_FILE;
+            order_option = 1;
+            break;
+        case 2:
+            file_name = CITIES_FILE;
+            order_option = stoi(argv[1]);
+            break;
+        case 3:
+            file_name = argv[1];
             order_option = stoi(argv[2]);
-        }
-        else
-        {
+            break;
+        default:
             cout << "Too many arguments" << endl << endl;
             // Usage message
             usage();
             return 2;
-        }
     }
 
     // Try to open file

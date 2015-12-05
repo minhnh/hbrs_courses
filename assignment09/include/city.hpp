@@ -15,6 +15,7 @@ class City {
         float x;
         float y;
         float deadline;
+        float dist_from_start;
 
     public:
         City(float x, float y, float deadline);
@@ -22,6 +23,8 @@ class City {
         float getDeadline();
         float getX();
         float getY();
+        void set_dist_from_start(float);
+        float get_dist_from_start();
 };
 
 #endif /* _ASSIGNMENT09_CITY_H_ */
