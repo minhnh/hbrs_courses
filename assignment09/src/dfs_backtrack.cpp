@@ -50,7 +50,7 @@ void DFSBacktrack::readFile(ifstream & in_file) {
         fileLine.erase(0, pos + delimiter.length());
         // Add starting location to list
         City newCity(x, y, 0);
-        newCity.set_dist_from_start(0);
+        newCity.setDistFromStart(0);
         cities.push_back(newCity);
     } else {
         cout << "Empty file" << endl;
@@ -75,7 +75,7 @@ void DFSBacktrack::readFile(ifstream & in_file) {
             float deadline = atof(token[2].c_str());
             City newCity(x, y, deadline);
             // Distance from starting position for sorting
-            newCity.set_dist_from_start(distance(newCity, cities[0]));
+            newCity.setDistFromStart(distance(newCity, cities[0]));
             cities.push_back(newCity);
         }
         token.clear();
@@ -97,38 +97,42 @@ float DFSBacktrack::distance(City city1, City city2) {
 }
 
 void DFSBacktrack::sort() {
-    int i;
-    bool restart;
-    switch (this->order_option) {
-        case ORDER_LINENUM:
-            return;
-            break;
-        case ORDER_EUCLIDEAN:
-            // Bubble sort with euclidean distance
-            i = cities.size() - 1;
-            restart = false;
-            while (true) {
-                if (cities[i - 1].get_dist_from_start()
-                    > cities[i].get_dist_from_start()) {
-                    swap(cities[i - 1], cities[i]);
-                    restart = true;
-                }
-                i--;
-                if (i == 1) {
-                    if (restart) {
-                        restart = false;
-                        i = cities.size() - 1;
-                    }
-                    else {
-                        break;
-                    }
-                }
+    // The list is already ordered by line numbers
+    if (this->order_option == ORDER_LINENUM)
+        return;
+
+    // Sort list with bubble sort. Initialize i to end of list
+    int i = cities.size() - 1;
+    bool restart = false;
+    float compare_val_cur, compare_val_prev;
+    while (true) {
+        // Pick value based on order_option
+        if (this->order_option == ORDER_EUCLIDEAN) {
+            compare_val_cur = cities[i].getDistFromStart();
+            compare_val_prev = cities[i - 1].getDistFromStart();
+        } else {
+            compare_val_cur = cities[i].getDeadline();
+            compare_val_prev = cities[i - 1].getDeadline();
+        }
+
+        // swap adjacent members if previous > current
+        if (compare_val_prev > compare_val_cur) {
+            swap(cities[i - 1], cities[i]);
+            restart = true;
+        }
+
+        i--;
+
+        // restart until no swap was done in the previous step
+        if (i == 1) {
+            if (restart) {
+                restart = false;
+                i = cities.size() - 1;
             }
-            break;
-        case ORDER_DEADLINE:
-            break;
-        default:
-            exit(3);
+            else {
+                break;
+            }
+        }
     }
 }
 

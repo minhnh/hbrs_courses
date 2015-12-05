@@ -23,8 +23,8 @@ class City {
         float getDeadline();
         float getX();
         float getY();
-        void set_dist_from_start(float);
-        float get_dist_from_start();
+        void setDistFromStart(float);
+        float getDistFromStart();
 };
 
 #endif /* _ASSIGNMENT09_CITY_H_ */
