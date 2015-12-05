@@ -10,8 +10,6 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
-#include <cstdlib>
-#include <algorithm>
 #include <chrono>
 #include "dfs_backtrack.hpp"
 

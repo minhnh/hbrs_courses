@@ -8,13 +8,10 @@
 #ifndef _ASSIGNMENT09_CITY_H_
 #define _ASSIGNMENT09_CITY_H_
 
-#include <string>
-
 using namespace std;
 
 class City {
     private:
-        string name;
         float x;
         float y;
         float deadline;

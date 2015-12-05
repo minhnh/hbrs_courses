@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
     // Argument check
     if (argc < 2) {
         usage();
-        cout << "Using default file and order option" << endl;
+        cout << "Using default file and order option" << endl << endl;
         file_name = CITIES_FILE;
     } else {
         // Get file name
