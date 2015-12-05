@@ -17,7 +17,7 @@
 
 DFSBacktrack::DFSBacktrack(ifstream & in_file, int order_option)
 {
-    this->cities = readFile(in_file);
+    readFile(in_file);
     this->order_option = order_option;
 }
 
@@ -26,23 +26,41 @@ DFSBacktrack::~DFSBacktrack()
 
 }
 
-vector<City> DFSBacktrack::readFile(ifstream & in_file) {
+void DFSBacktrack::readFile(ifstream & in_file) {
 
     string fileLine;
     string delimiter(" ");
     vector<string> token;
-    vector<City> cities;
     float x, y, deadline;
     int number = -1;
+    int pos;
 
+    // Read initial position
+    if (getline(in_file, fileLine)) {
+        // Read initial x
+        pos = fileLine.find(delimiter);
+        x = atof(fileLine.substr(0, pos).c_str());
+        fileLine.erase(0, pos + delimiter.length());
+        // Read initial y
+        pos = fileLine.find(delimiter);
+        y = atof(fileLine.substr(0, pos).c_str());
+        fileLine.erase(0, pos + delimiter.length());
+        // Add starting location to list
+        City newCity(x, y, 0);
+        cities.push_back(newCity);
+    } else {
+        cout << "Empty file" << endl;
+        exit(3);
+    }
+
+    // Read rest of file
     while (getline(in_file, fileLine)) {
         number++;
-        size_t pos = fileLine.find(delimiter);
+        pos = fileLine.find(delimiter);
         do {
             token.push_back(fileLine.substr(0, pos));
             fileLine.erase(0, pos + delimiter.length());
             pos = fileLine.find(delimiter);
-
         } while (pos != string::npos);
 
         token.push_back(fileLine);
@@ -57,13 +75,12 @@ vector<City> DFSBacktrack::readFile(ifstream & in_file) {
         }
         token.clear();
     }
-    return cities;
 }
 
-void DFSBacktrack::print_cities(vector<City> cities) {
+void DFSBacktrack::print_cities() {
     for (int i = 0; i < cities.size(); i++) {
         cout << "City " << i + 1 << ": " << cities[i].getX() << " "
-                << cities[i].getY() << endl;
+                << cities[i].getY() << " " << cities[i].getDeadline() << endl;
     }
 }
 
@@ -74,5 +91,6 @@ float DFSBacktrack::distance(City city1, City city2) {
 }
 
 void DFSBacktrack::dfs_backtrack() {
+    print_cities();
     return;
 }

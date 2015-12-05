@@ -15,13 +15,13 @@ class DFSBacktrack {
         vector<City> hillClimb(vector<City> cities_in);
         vector<City> randomNextSuccessor(vector<City> cities_in);
         float distance(City city1, City city2);
-        vector<City> readFile(ifstream & in_file);
+        void readFile(ifstream & in_file);
 
     public:
         DFSBacktrack(ifstream & in_file, int order_option);
         ~DFSBacktrack();
         void dfs_backtrack();
-        void print_cities(vector<City>);
+        void print_cities();
 };
 
 #endif // _ASSIGNMENT09_DFS_BACKTRACK_H_
