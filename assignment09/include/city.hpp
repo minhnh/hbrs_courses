@@ -16,6 +16,7 @@ class City {
         float y;
         float deadline;
         float dist_from_start;
+        float arrival_time = -1.0f;
 
     public:
         City(float x, float y, float deadline);
@@ -25,6 +26,7 @@ class City {
         float getY();
         void setDistFromStart(float);
         float getDistFromStart();
+        void setArrivalTime(float);
         void print();
 };
 

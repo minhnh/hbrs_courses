@@ -31,6 +31,14 @@ float City::getDistFromStart() {
     return this->dist_from_start;
 }
 
+void City::setArrivalTime(float arrival_time) {
+    this->arrival_time = arrival_time;
+}
+
 void City::print() {
-    printf( "X: %10f, Y: %10f, deadline: %10f\n", x, y, deadline);
+    printf( "X: %10f, Y: %10f, deadline: %10f", x, y, deadline);
+    if (arrival_time < 0)
+        printf("\n");
+    else
+        printf( ", arrival: %10f\n", arrival_time);
 }
