@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "city.hpp"
 
 
@@ -28,4 +29,8 @@ void City::setDistFromStart(float dist_from_start) {
 
 float City::getDistFromStart() {
     return this->dist_from_start;
+}
+
+void City::print() {
+    printf( "X: %10f, Y: %10f, deadline: %10f\n", x, y, deadline);
 }

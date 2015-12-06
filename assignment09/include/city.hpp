@@ -25,6 +25,7 @@ class City {
         float getY();
         void setDistFromStart(float);
         float getDistFromStart();
+        void print();
 };
 
 #endif /* _ASSIGNMENT09_CITY_H_ */
