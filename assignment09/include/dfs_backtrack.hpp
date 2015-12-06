@@ -13,18 +13,21 @@ using namespace std;
 
 class DFSBacktrack {
     private:
+        // 1 distance unit per time unit
+        const int VELOCITY = 1;
         // variables
         vector<City> cities;
         int order_option;
         // functions
-        vector<City> hillClimb(vector<City> cities_in);
-        vector<City> randomNextSuccessor(vector<City> cities_in);
-        float distance(City city1, City city2);
-        void readFile(ifstream & in_file);
+        vector<City> hillClimb(vector<City>);
+        vector<City> randomNextSuccessor(vector<City>);
+        float distance(City, City);
+        void readFile(ifstream &);
         void sort();
+        bool dfs_backtrack_re(vector<int> &assignment, vector<int> &domain, float &elapsed_time);
 
     public:
-        DFSBacktrack(ifstream & in_file, int order_option);
+        DFSBacktrack(ifstream &, int);
         ~DFSBacktrack();
         void dfs_backtrack();
         void print_cities();

@@ -10,6 +10,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 #include "dfs_backtrack.hpp"
 
 DFSBacktrack::DFSBacktrack(ifstream & in_file, int order_option)
@@ -84,9 +85,8 @@ void DFSBacktrack::readFile(ifstream & in_file) {
 
 void DFSBacktrack::print_cities() {
     for (int i = 0; i < cities.size(); i++) {
-        cout << "City " << i + 1 << ": "
-            << cities[i].getX() << " " << cities[i].getY() << " "
-            << cities[i].getDeadline() << endl;
+        cout << "City " << i + 1 << ": ";
+        cities[i].print();
     }
 }
 
@@ -136,6 +136,41 @@ void DFSBacktrack::sort() {
     }
 }
 
+bool DFSBacktrack::dfs_backtrack_re(vector<int> &assignment,
+        vector<int> &index_domain, float &elapsed_time) {
+
+    /* Based on algorithm on page 13 slide chapter05.pdf */
+    // Update arrival time of last city
+    cities[assignment.back()].setArrivalTime(elapsed_time);
+    // If all variables are assigned, return true
+    if (assignment.size() == cities.size())
+        return true;
+    // variable = last element of assignment
+    // iterate over possible values in index_domain
+    for (vector<int>::iterator index = index_domain.begin();
+            index != index_domain.end();
+            ++index) {
+        float dist = distance(cities[assignment.back()], cities[*index]);
+        float arrival_time = elapsed_time + dist / VELOCITY;
+        // Check constraint
+        if (arrival_time < cities[*index].getDeadline()) {
+            assignment.push_back(*index);
+            index_domain.erase(index);
+            // Recursive call to next assignment
+            bool result = dfs_backtrack_re(assignment, index_domain, arrival_time);
+            // Check result
+            if (result) {
+                return result;
+            }
+            // Remove value from assignment and add back to index_domain
+            int index_value = assignment.back();
+            assignment.pop_back();
+            index_domain.insert(index, index_value);
+        }
+    }
+    return false;
+}
+
 void DFSBacktrack::dfs_backtrack() {
 
     if (cities.size() < 2) {
@@ -145,6 +180,35 @@ void DFSBacktrack::dfs_backtrack() {
 
     sort();
 
+    // Print starting sorted list
+    cout << "Sorted city list:" << endl << endl;
     print_cities();
+    cout << endl;
+
+    // Setup initial assignment and domain
+    vector<int> assignment;
+    assignment.push_back(0);
+
+    vector<int> index_domain;
+    for (int i = 1; i < cities.size(); i++) {
+        index_domain.push_back(i);
+
+    }
+    float elapsed_time = cities[0].getDeadline();
+
+    // Call recursive function
+    bool result = dfs_backtrack_re(assignment, index_domain, elapsed_time);
+
+    // Print solution if found
+    if (result) {
+        cout << "Solution: " << endl << endl;
+        for (int i = 0; i < assignment.size(); i++) {
+            printf("City %2d: ", assignment[i] + 1);
+            cities[assignment[i]].print();
+        }
+    } else {
+        cout << "Could not find a solution" << endl;
+    }
+
     return;
 }
