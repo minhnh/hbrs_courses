@@ -142,7 +142,7 @@ class SonarMap:
         y = (m_sonar_y > self._m_min_y) and (m_sonar_y < self._m_size_y)
         if (x == True and y == True):
             cellsOfSonar = self._convert_to_cell((m_sonar_x,m_sonar_y))
-            cellsInConeLength = registerd_range / self._resolution
+            cellsInConeLength = (registerd_range + uncertainty) / self._resolution
             completeCone = MapStoreCone(cellsOfSonar[0], cellsOfSonar[1],
                                         sonar_theta, field_of_view,
                                         cellsInConeLength)
