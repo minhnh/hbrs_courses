@@ -4,9 +4,9 @@ import java.util.Random;
 
 interface SampleGenerator<T extends SamplePose3D> {
 
-	T createUniformSample(int sampleCount, Random r);
+    T createUniformSample(int sampleCount, Random r);
 
-	T createGaussianSample(int sampleCount, Random r);
+    T createGaussianSample(int sampleCount, Random r, T meanSample);
 
-	boolean isInMap(T sample);
+    boolean isInMap(T sample);
 }
