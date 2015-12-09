@@ -40,7 +40,6 @@ class SonarMap:
     arguments and internal/local variables.
     """
 
-
     def __init__(self, resolution, m_size_x, m_size_y):
         """
         This constructor creates a map of given dimensions.
@@ -64,7 +63,6 @@ class SonarMap:
         self._map_combined = MapStore(self._c_size_x, self._c_size_y)
         self._map_free = MapStore(self._c_size_x, self._c_size_y)
         self._map_occupied = MapStore(self._c_size_x, self._c_size_y)
-
 
     def add_scan(self, m_sonar_x, m_sonar_y, sonar_theta, field_of_view,
                  max_range, registerd_range, uncertainty):
@@ -304,7 +302,6 @@ class SonarMap:
         """
         Converts cell coordinates to metric coordinates. Examples:
         m_pos = convert_to_map(c_pos)       #c_pos = (c_x, c_y)
-
         returns tuple (m_x, m_y) or None if cell coordinates out of bounds
         """
         c_x, c_y = c_pos
@@ -319,7 +316,6 @@ class SonarMap:
         """
         Converts metric coordinates cell coordinates. Examples:
         c_pos = convert_to_map(m_pos)       #m_pos = (m_x, m_y)
-
         returns tuple (c_x, c_y) or None if cell coordinates out of bounds
         """
         m_x, m_y = m_pos
