@@ -20,7 +20,7 @@ class PoseLikelihoodServerNode:
     This is a port of the AMR Python PoseLikelihoodServerNode
     """
     def __init__(self):
-        
+
         rospy.init_node(NODE)
         # Wait until SwitchRanger service (and hence stage node) becomes available.
         rospy.loginfo('Waiting for the /switch_ranger service to be advertised...');
@@ -39,11 +39,35 @@ class PoseLikelihoodServerNode:
 
             http://wiki.ros.org/ROS/Tutorials/WritingServiceClient(python)
         """
+        self._pose_likelihood_server = rospy.Service(
+                                            '/pose_likelihood_server/get_pose_likelihood',
+                                            GetMultiplePoseLikelihood,
+                                            self._pose_likelihood_callback)
+
+        #TODO: check queue_size
+        self._scan_front_subscriber = rospy.Subscriber('/scan_front',
+                                                       LaserScan,
+                                                       self._scan_front_callback,
+                                                       queue_size=5)
+
+        self._nearest_occupied_client = rospy.ServiceProxy(
+                                            '/occupancy_query_server/get_nearest_occupied_point_on_beam',
+                                            GetNearestOccupiedPointOnBeam)
 
         self._tf = tf.TransformListener()
 
         rospy.loginfo('Started [pose_likelihood_server] node.')
 
+        pass
+
+
+    def _pose_likelihood_callback(self, req):
+        """  """
+        response = GetMultiplePoseLikelihoodResponse()
+        # calculate response
+        return response
+
+    def _scan_front_callback(self, msg):
         pass
 
     """
@@ -60,11 +84,11 @@ class PoseLikelihoodServerNode:
     Hint: refer to the sources of the previous assignments or to the ROS
           tutorials to see examples of how to create servers, clients, and
           subscribers.
-    
+
     Hint: in the laser callback it is enough to just store the incoming laser
           readings in a class member variable so that they could be accessed
           later while processing a service request.
-  
+
     Hint: the GetNearestOccupiedPointOnBeam service may return arbitrary large
           distance, do not forget to clamp it to [0..max_range] interval.
 
@@ -85,7 +109,7 @@ class PoseLikelihoodServerNode:
     http://mirror.umd.edu/roswiki/doc/diamondback/api/tf/html/python/tf_python.html
     """
 
-      
+
 if __name__ == '__main__':
     w = PoseLikelihoodServerNode()
     rospy.spin()
