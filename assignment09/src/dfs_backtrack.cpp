@@ -192,8 +192,8 @@ void DFSBacktrack::dfs_backtrack() {
     vector<int> index_domain;
     for (int i = 1; i < cities.size(); i++) {
         index_domain.push_back(i);
-
     }
+
     float elapsed_time = cities[0].getDeadline();
 
     // Call recursive function
