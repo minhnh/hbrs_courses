@@ -1,0 +1,71 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{titling}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\graphicspath{{.}}
+
+\usepackage[margin=1in]{geometry}
+
+% Must be after geometry
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AIR Homework 9}
+\lhead{M. Nguyen, B. Ha \& E. Ovchinnikova}
+\cfoot{\thepage}
+
+\setlength{\droptitle}{-5em}
+
+\title{Artificial Intelligence for Robots \\
+				- Homework 9 -}
+\author{Minh Nguyen, Bach Ha \& Evgenia Ovchinnikova}
+\date{Lecture date: 1 December 2015}
+
+\begin{document}
+
+\maketitle
+
+\section{Theoretical questions}
+    \begin{itemize}
+        \item \emph{What is a strategy?}\\
+            A strategy is a set of rules that specifies an agent's action in every possible situation.
+        \item \emph{What is the goal of Max agent?}\\
+        	The goal of Max agent is to maximize the Max’s expected utility.
+        \item \emph{What is the goal of Min agent?}\\
+        	The goal of Min agent is to minimize the Max’s expected utility.
+        \item \emph{What is the Minimax Theorem?}\\
+        	Minimax theorem is about a two-person finite zero-sum game G. The two players are Min and Max.
+        		There are two strategies s* and t* and the game G's minimax value: $V_G$.
+        	\begin{itemize}
+        		\item If Min uses t*, Max's expected utility would be smaller or equal to $V_G$.
+        		\item If Max uses s*, Max's expected utility would be greater or equal to $V_G$.
+			\end{itemize}      
+		\item \emph{How do we construct an strategy for Max?}\\
+			At the node, where it is Max's turn, chooses one branch. At the node, where it is Min's turn, 
+			takes all branchs into consideration.
+		\item \emph{How do we construct an strategy for Min?}\\
+			At the node, where it is Min's turn, chooses one branch. At the node, where it is Max's turn, 
+			takes all branchs into consideration.	
+		\item \emph{How do we find the best strategy?}\\
+			Brute-force algorithm, Minimax algorithm or alpha-beta pruning algorithm can be used to find the
+			best strategy.
+		\item \emph{How does the Minimax algorithm work?}\\		      
+			Agents decide action using the minimax value of the node. In minimax algorithm, the minimax value of a node
+			is calculated from the its branch. When it is Max's turn, the minimax value of a node is the highest minimax 
+			value of its branchs. During Min's turn, the minimax value of a node is the smallest minimax value of its branchs.
+		\item \emph{Is the Minimax algorithm affordable for chess? Why?}\\
+			No. Because the branching factor ($b \approx 35$) and max-depth ($b \approx 100$) of chess are too high, 
+			there would be around $35^{100}$ nodes, thus the search would take an unaffordable amount of time.
+		\item \emph{What is alpha-beta pruning?}\\
+			Alpha-beta pruning means stop computing the value of branchs in which, the value is worse
+			than the current best founded value.
+		\item \emph{Is the alpha-beta pruning affordable for chess? Why?}\\
+			No. Because even with the best move ordering, the time complexity is still $35^{50}$.
+    \end{itemize}
+
+\end{document}
