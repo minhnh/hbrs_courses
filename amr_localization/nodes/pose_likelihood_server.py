@@ -138,7 +138,7 @@ class PoseLikelihoodServerNode:
         '''
         if len(scanner_ranges) != len(map_ranges):
             rospy.logerr("Length mismatch between laser ranges and map distances")
-        weight = 1.0
+        weight = []
         for i in range(len(scanner_ranges)):
             # eliminate large ranges from map_ranges
             map_range = map_ranges[i]
@@ -147,10 +147,10 @@ class PoseLikelihoodServerNode:
             if map_range < self._scan_range_min:
                 map_range = self._scan_range_min
             difference = scanner_ranges[i] - map_range
-            if difference < 2 * self._scan_sigma:
-                weight = weight * (math.exp(-(difference)**2 / (2 * self._scan_sigma**2)))
-        #rospy.loginfo("weight %f", weight)
-        return weight
+            #if difference < 2 * self._scan_sigma:
+            weight.append(math.exp(-(difference)**2 / (2 * self._scan_sigma**2)))
+
+        return np.mean(weight)
 
 
     def _cal_scan_poses_world_frame(self):
@@ -172,22 +172,6 @@ class PoseLikelihoodServerNode:
 
     def _scan_front_callback(self, scan_msg):
         ''' Record laser scan data '''
-        '''
-        LaserScan message content:
-            std_msgs/Header header
-              uint32 seq
-              time stamp
-              string frame_id
-            float32 angle_min
-            float32 angle_max
-            float32 angle_increment
-            float32 time_increment
-            float32 scan_time
-            float32 range_min
-            float32 range_max
-            float32[] ranges
-            float32[] intensities
-        '''
         #TODO Normalize ranges?
         self._scan_range_max = scan_msg.range_max
         self._scan_range_min = scan_msg.range_min
