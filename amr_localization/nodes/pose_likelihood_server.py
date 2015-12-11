@@ -33,14 +33,14 @@ class PoseLikelihoodServerNode:
             rospy.logerror("Service call failed: %s"%e)
 
         # Laser scanner variables
-        self._ranges = None
-        self._range_max = None
-        self._range_min = None
-        self._angle_increment = None
-        self._laser_sigma = 0.7
+        self._scan_ranges = None
+        self._scan_range_max = None
+        self._scan_range_min = None
+        self._scan_angle_increment = None
+        self._scan_sigma = 0.7
+        self._scan_poses_world_frame = []
         # transformation from robot frame to laser scanner frame
         self._tf_matrix_robot_to_scan = None
-        self._scan_poses_world_frame = []
         # frame ids
         self._scan_front_header = None
         self._world_frame_id = None
@@ -103,12 +103,12 @@ class PoseLikelihoodServerNode:
         response = []
         for pose in multi_pose_srv.poses:
             # calculate response
-            response.append(self._calculate_single_likelihood(pose))
+            response.append(self._calculate_single_pose_likelihood(pose))
 
         return GetMultiplePoseLikelihoodResponse(response)
 
 
-    def _calculate_single_likelihood(self, pose):
+    def _calculate_single_pose_likelihood(self, pose):
         ''' Run here instead of _init_ to have access to _scan_front_header'''
         # get world frame id
         if self._world_frame_id is None:
@@ -124,8 +124,25 @@ class PoseLikelihoodServerNode:
         req.beams = self._scan_poses_world_frame
         req.threshold = 1
         response = self._get_nearest_occupied_client(req)
-        rospy.loginfo(len(response.distances))
-        return 0.5
+        return self._cal_likelihood(self._scan_ranges, response.distances)
+
+
+    def _cal_likelihood(self, scanner_ranges, map_ranges):
+        '''
+        Calculate likelihood from comparing occupied points from map
+        and laser ranges
+        '''
+        if len(scanner_ranges) != len(map_ranges):
+            rospy.logerr("Length mismatch between laser ranges and map distances")
+        weight = 1.0
+        for i in range(len(scanner_ranges)):
+            # eliminate large ranges from map_ranges
+            map_range = map_ranges[i]
+            if map_range > self._scan_range_max:
+                map_range = self._scan_range_max
+            weight = weight * (math.exp(-(scanner_ranges[i] - map_range)**2 / (2 * self._scan_sigma**2)))
+        #rospy.loginfo("weight %f", weight)
+        return weight
 
 
     def _cal_scan_poses_world_frame(self):
@@ -138,13 +155,14 @@ class PoseLikelihoodServerNode:
                                          self._world_frame_id,
                                          self._scan_front_header.frame_id,
                                          time)
+            #TODO: store robot to scanner transform to reduce transformation calculation
             yaw = tf.transformations.euler_from_quaternion(quaternion)[2]
             x, y, yaw = position[0], position[1], yaw
-            for i in range(len(self._ranges)):
+            for i in range(len(self._scan_ranges)):
                 beam = Pose2D()
                 beam.x = x
                 beam.y = y
-                beam.theta = yaw + i * self._angle_increment
+                beam.theta = yaw + i * self._scan_angle_increment
                 # Keep beam length to 12
                 if len(self._scan_poses_world_frame) < i + 1:
                     self._scan_poses_world_frame.append(beam)
@@ -174,10 +192,10 @@ class PoseLikelihoodServerNode:
             float32[] intensities
         '''
         #TODO Normalize ranges?
-        self._range_max = scan_msg.range_max
-        self._range_min = scan_msg.range_min
-        self._angle_increment = scan_msg.angle_increment
-        self._ranges = scan_msg.ranges
+        self._scan_range_max = scan_msg.range_max
+        self._scan_range_min = scan_msg.range_min
+        self._scan_angle_increment = scan_msg.angle_increment
+        self._scan_ranges = scan_msg.ranges
         if self._scan_front_header is None:
             self._scan_front_header = scan_msg.header
 
