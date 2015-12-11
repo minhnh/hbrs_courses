@@ -32,6 +32,11 @@ class PoseLikelihoodServerNode:
         except rospy.ServiceException, e:
             rospy.logerror("Service call failed: %s"%e)
 
+        # Variables
+        self._ranges = None
+        self._range_max = None
+        self._range_min = None
+
         """
             Expose GetMultiplePoseLikelihood Service here,
             subscribe for /scan_front,
@@ -50,24 +55,65 @@ class PoseLikelihoodServerNode:
                                                        self._scan_front_callback,
                                                        queue_size=5)
 
-        self._nearest_occupied_client = rospy.ServiceProxy(
-                                            '/occupancy_query_server/get_nearest_occupied_point_on_beam',
-                                            GetNearestOccupiedPointOnBeam)
+        try:
+            self._nearest_occupied_client = rospy.ServiceProxy(
+                                                '/occupancy_query_server/get_nearest_occupied_point_on_beam',
+                                                GetNearestOccupiedPointOnBeam)
+        except rospy.ServiceException, e:
+            rospy.logerr("Service call to get_nearest_occupied_point_on_beam failed: %s", e)
 
         self._tf = tf.TransformListener()
 
         rospy.loginfo('Started [pose_likelihood_server] node.')
 
-        pass
+
+    def _pose_likelihood_callback(self, multi_pose_msg):
+        """ return likelihood for a cell group """
+        '''
+        multiple pose likelihood message
+            # Robot pose to test
+            geometry_msgs/PoseStamped[] poses
+            ---
+            # Likelihood of the pose (in the 0 to 1 range)
+            float32[] likelihoods
+        '''
+        rospy.loginfo("x: %f, y: %f, w: %f",
+                      multi_pose_msg.poses[0].pose.orientation.x,
+                      multi_pose_msg.poses[0].pose.orientation.y,
+                      multi_pose_msg.poses[0].pose.orientation.w)
+
+        response = []
+        for pose in multi_pose_msg.poses:
+            # calculate response
+            response.append(self._calculate_single_likelihood(pose))
+
+        return GetMultiplePoseLikelihoodResponse(response)
 
 
-    def _pose_likelihood_callback(self, req):
-        """  """
-        response = GetMultiplePoseLikelihoodResponse()
-        # calculate response
-        return response
+    def _calculate_single_likelihood(self, pose):
+        return 0.5
 
-    def _scan_front_callback(self, msg):
+
+    def _scan_front_callback(self, scan_msg):
+        ''' Record laser scan data '''
+        '''
+        LaserScan message content:
+            std_msgs/Header header
+              uint32 seq
+              time stamp
+              string frame_id
+            float32 angle_min
+            float32 angle_max
+            float32 angle_increment
+            float32 time_increment
+            float32 scan_time
+            float32 range_min
+            float32 range_max
+            float32[] ranges
+            float32[] intensities
+        '''
+        #TODO Normalize ranges?
+        self._ranges = scan_msg.ranges
         pass
 
     """
