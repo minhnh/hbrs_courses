@@ -20,6 +20,7 @@ class PoseLikelihoodServerNode:
     This is a port of the AMR Python PoseLikelihoodServerNode
     """
     ROBOT_FRAME_ID = '/base_link'
+    ALLOWED_MISMATCH_NUM = 4
     def __init__(self):
 
         rospy.init_node(NODE)
@@ -138,7 +139,8 @@ class PoseLikelihoodServerNode:
         '''
         if len(scanner_ranges) != len(map_ranges):
             rospy.logerr("Length mismatch between laser ranges and map distances")
-        weight = []
+        weight = 1.0
+        mismatch_count = 0
         for i in range(len(scanner_ranges)):
             # eliminate large ranges from map_ranges
             map_range = map_ranges[i]
@@ -147,10 +149,14 @@ class PoseLikelihoodServerNode:
             if map_range < self._scan_range_min:
                 map_range = self._scan_range_min
             difference = scanner_ranges[i] - map_range
-            #if difference < 2 * self._scan_sigma:
-            weight.append(math.exp(-(difference)**2 / (2 * self._scan_sigma**2)))
-
-        return np.mean(weight)
+            if difference < 2 * self._scan_sigma:
+                weight = weight * (math.exp(-(difference)**2 / (2 * self._scan_sigma**2)))
+            else:
+                mismatch_count = mismatch_count + 1
+            # limit number of mismatches
+            if mismatch_count > self.ALLOWED_MISMATCH_NUM:
+                return 0.0
+        return weight
 
 
     def _cal_scan_poses_world_frame(self):
