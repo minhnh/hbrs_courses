@@ -140,7 +140,11 @@ class PoseLikelihoodServerNode:
             map_range = map_ranges[i]
             if map_range > self._scan_range_max:
                 map_range = self._scan_range_max
-            weight = weight * (math.exp(-(scanner_ranges[i] - map_range)**2 / (2 * self._scan_sigma**2)))
+            if map_range < self._scan_range_min:
+                map_range = self._scan_range_min
+            difference = scanner_ranges[i] - map_range
+            if difference < 2 * self._scan_sigma:
+                weight = weight * (math.exp(-(difference)**2 / (2 * self._scan_sigma**2)))
         #rospy.loginfo("weight %f", weight)
         return weight
 
@@ -157,17 +161,20 @@ class PoseLikelihoodServerNode:
                                          time)
             #TODO: store robot to scanner transform to reduce transformation calculation
             yaw = tf.transformations.euler_from_quaternion(quaternion)[2]
-            x, y, yaw = position[0], position[1], yaw
             for i in range(len(self._scan_ranges)):
                 beam = Pose2D()
-                beam.x = x
-                beam.y = y
+                beam.x = position[0]
+                beam.y = position[1]
                 beam.theta = yaw + i * self._scan_angle_increment
+                # adjust large angles
+                if beam.theta > math.pi * 2:
+                    beam.theta = beam.theta - math.pi * 2
                 # Keep beam length to 12
                 if len(self._scan_poses_world_frame) < i + 1:
                     self._scan_poses_world_frame.append(beam)
                 else:
                     self._scan_poses_world_frame[i] = beam
+            #rospy.loginfo("x: %f, y: %f" ,beam.x, beam.y)
             #self._tf_matrix_robot_to_scan = tf.TransformerROS.fromTranslationRotation(position, quaternion)
         except tf.Exception, e:
             rospy.logerr("Error calculating transform: %s", e)
@@ -198,6 +205,7 @@ class PoseLikelihoodServerNode:
         self._scan_ranges = scan_msg.ranges
         if self._scan_front_header is None:
             self._scan_front_header = scan_msg.header
+
 
     """
     ============================== YOUR CODE HERE ==============================
