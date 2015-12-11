@@ -19,6 +19,7 @@ class PoseLikelihoodServerNode:
     """
     This is a port of the AMR Python PoseLikelihoodServerNode
     """
+    ROBOT_FRAME_ID = '/base_link'
     def __init__(self):
 
         rospy.init_node(NODE)
@@ -41,6 +42,8 @@ class PoseLikelihoodServerNode:
         self._scan_poses_world_frame = []
         # transformation from robot frame to laser scanner frame
         self._tf_matrix_robot_to_scan = None
+        # yaw of front laser scan in robot frame
+        self._scan_front_yaw_robot_frame = None
         # frame ids
         self._scan_front_header = None
         self._world_frame_id = None
@@ -77,49 +80,50 @@ class PoseLikelihoodServerNode:
 
     def _pose_likelihood_callback(self, multi_pose_srv):
         """ return likelihood for a cell group """
-        '''
-        multiple pose likelihood srv
-            # Robot pose to test
-            geometry_msgs/PoseStamped[] poses
-            ---
-            # Likelihood of the pose (in the 0 to 1 range)
-            float32[] likelihoods
-        PoseStamped message:
-            std_msgs/Header header
-              uint32 seq
-              time stamp
-              string frame_id
-            geometry_msgs/Pose pose
-              geometry_msgs/Point position
-                float64 x
-                float64 y
-                float64 z
-              geometry_msgs/Quaternion orientation
-                float64 x
-                float64 y
-                float64 z
-                float64 w
-        '''
         response = []
-        for pose in multi_pose_srv.poses:
+        for pose_stamped_msg in multi_pose_srv.poses:
             # calculate response
-            response.append(self._calculate_single_pose_likelihood(pose))
+            response.append(self._calculate_single_pose_likelihood(pose_stamped_msg))
 
         return GetMultiplePoseLikelihoodResponse(response)
 
 
-    def _calculate_single_pose_likelihood(self, pose):
+    def _calculate_single_pose_likelihood(self, pose_stamped_msg):
         ''' Run here instead of _init_ to have access to _scan_front_header'''
         # get world frame id
         if self._world_frame_id is None:
-            self._world_frame_id = pose.header.frame_id
-        # get tf matrix from robot to laser scanner
-        self._cal_scan_poses_world_frame()
+            self._world_frame_id = pose_stamped_msg.header.frame_id
+        # tf matrix from world fram to robot
+        translation = (pose_stamped_msg.pose.position.x,
+                       pose_stamped_msg.pose.position.y,
+                       pose_stamped_msg.pose.position.z)
+        orientation = (pose_stamped_msg.pose.orientation.x,
+                       pose_stamped_msg.pose.orientation.y,
+                       pose_stamped_msg.pose.orientation.z,
+                       pose_stamped_msg.pose.orientation.w)
+        tf_matrix_world_to_robot = tf.TransformerROS().fromTranslationRotation(translation, orientation)
+        robot_yaw = tf.transformations.euler_from_quaternion(orientation)[2]
+        # get tf matrix from robot to laser scanner if not calculated
+        if self._tf_matrix_robot_to_scan is None:
+            self._cal_scan_poses_world_frame()
         # Calculate robot to world frame tf matrix
-        #tf_matrix_world_to_robot = tf.TransformerROS().transformPose(
-        #                                                    self._world_frame_id,
-        #                                                    pose.pose.orientation)
-        #tf_matrix_world_to_scan = np.dot(tf_matrix_world_to_robot, self._tf_matrix_robot_to_scan)
+        tf_matrix_world_to_scan = np.dot(tf_matrix_world_to_robot, self._tf_matrix_robot_to_scan)
+
+        for i in range(len(self._scan_ranges)):
+            beam = Pose2D()
+            position = np.dot(tf_matrix_world_to_scan, np.array([0, 0, 0, 1]))
+            beam.x = position[0]
+            beam.y = position[1]
+            beam.theta = robot_yaw + self._scan_front_yaw_robot_frame + i * self._scan_angle_increment
+            # adjust large angles
+            if beam.theta > math.pi * 2:
+                beam.theta = beam.theta - math.pi * 2
+            # Keep beam length to 12
+            if len(self._scan_poses_world_frame) < i + 1:
+                self._scan_poses_world_frame.append(beam)
+            else:
+                self._scan_poses_world_frame[i] = beam
+
         req = GetNearestOccupiedPointOnBeamRequest()
         req.beams = self._scan_poses_world_frame
         req.threshold = 1
@@ -154,28 +158,14 @@ class PoseLikelihoodServerNode:
         Calculate transform from world frame to laser scanner frame
         '''
         try:
-            time = self._tf.getLatestCommonTime(self._world_frame_id, self._scan_front_header.frame_id)
+            time = self._tf.getLatestCommonTime(self.ROBOT_FRAME_ID, self._scan_front_header.frame_id)
             position, quaternion = self._tf.lookupTransform(
-                                         self._world_frame_id,
+                                         self.ROBOT_FRAME_ID,
                                          self._scan_front_header.frame_id,
                                          time)
-            #TODO: store robot to scanner transform to reduce transformation calculation
-            yaw = tf.transformations.euler_from_quaternion(quaternion)[2]
-            for i in range(len(self._scan_ranges)):
-                beam = Pose2D()
-                beam.x = position[0]
-                beam.y = position[1]
-                beam.theta = yaw + i * self._scan_angle_increment
-                # adjust large angles
-                if beam.theta > math.pi * 2:
-                    beam.theta = beam.theta - math.pi * 2
-                # Keep beam length to 12
-                if len(self._scan_poses_world_frame) < i + 1:
-                    self._scan_poses_world_frame.append(beam)
-                else:
-                    self._scan_poses_world_frame[i] = beam
-            #rospy.loginfo("x: %f, y: %f" ,beam.x, beam.y)
-            #self._tf_matrix_robot_to_scan = tf.TransformerROS.fromTranslationRotation(position, quaternion)
+            self._tf_matrix_robot_to_scan = tf.TransformerROS().fromTranslationRotation(position, quaternion)
+            self._scan_front_yaw_robot_frame = tf.transformations.euler_from_quaternion(quaternion)[2]
+
         except tf.Exception, e:
             rospy.logerr("Error calculating transform: %s", e)
 
