@@ -36,6 +36,10 @@ class PoseLikelihoodServerNode:
         self._ranges = None
         self._range_max = None
         self._range_min = None
+        self._angle_increment = None
+        self._laser_sigma = 0.7
+        # transforms for each beam
+        self._transforms = None
 
         """
             Expose GetMultiplePoseLikelihood Service here,
@@ -56,7 +60,7 @@ class PoseLikelihoodServerNode:
                                                        queue_size=5)
 
         try:
-            self._nearest_occupied_client = rospy.ServiceProxy(
+            self._get_nearest_occupied_client = rospy.ServiceProxy(
                                                 '/occupancy_query_server/get_nearest_occupied_point_on_beam',
                                                 GetNearestOccupiedPointOnBeam)
         except rospy.ServiceException, e:
@@ -77,11 +81,6 @@ class PoseLikelihoodServerNode:
             # Likelihood of the pose (in the 0 to 1 range)
             float32[] likelihoods
         '''
-        rospy.loginfo("x: %f, y: %f, w: %f",
-                      multi_pose_msg.poses[0].pose.orientation.x,
-                      multi_pose_msg.poses[0].pose.orientation.y,
-                      multi_pose_msg.poses[0].pose.orientation.w)
-
         response = []
         for pose in multi_pose_msg.poses:
             # calculate response
@@ -91,7 +90,18 @@ class PoseLikelihoodServerNode:
 
 
     def _calculate_single_likelihood(self, pose):
+        # Run here instead of _init_ to have access to _laser_front_frame_id
+        self._calculate_transforms()
         return 0.5
+
+
+    def _calculate_transforms(self):
+        if self._transforms is not None:
+            # No need to be calculated every time
+            return
+        else:
+            # calculate transform here
+            pass
 
 
     def _scan_front_callback(self, scan_msg):
@@ -113,8 +123,11 @@ class PoseLikelihoodServerNode:
             float32[] intensities
         '''
         #TODO Normalize ranges?
+        self._range_max = scan_msg.range_max
+        self._range_min = scan_msg.range_min
+        self._angle_increment = scan_msg.angle_increment
         self._ranges = scan_msg.ranges
-        pass
+        self._laser_front_frame_id = scan_msg.header.frame_id
 
     """
     ============================== YOUR CODE HERE ==============================
