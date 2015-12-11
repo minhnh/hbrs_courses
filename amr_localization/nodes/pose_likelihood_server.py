@@ -41,6 +41,7 @@ class PoseLikelihoodServerNode:
         self._scan_angle_increment = None
         self._scan_sigma = 0.7
         self._scan_poses_world_frame = []
+        self._scan_angle_min = None
         # transformation from robot frame to laser scanner frame
         self._tf_matrix_robot_to_scan = None
         # yaw of front laser scan in robot frame
@@ -115,7 +116,9 @@ class PoseLikelihoodServerNode:
             position = np.dot(tf_matrix_world_to_scan, np.array([0, 0, 0, 1]))
             beam.x = position[0]
             beam.y = position[1]
-            beam.theta = robot_yaw + self._scan_front_yaw_robot_frame + i * self._scan_angle_increment
+            beam.theta = (robot_yaw + self._scan_front_yaw_robot_frame
+                                    + self._scan_angle_min
+                                    + i * self._scan_angle_increment)
             # adjust large angles
             if beam.theta > math.pi * 2:
                 beam.theta = beam.theta - math.pi * 2
@@ -141,6 +144,9 @@ class PoseLikelihoodServerNode:
             rospy.logerr("Length mismatch between laser ranges and map distances")
         weight = 1.0
         mismatch_count = 0
+        # the sum of all the weight would cause most of the map to be red,
+        # the average creates gradients redder toward the robot location,
+        # but doesn't represent the mismatches case very well
         for i in range(len(scanner_ranges)):
             # eliminate large ranges from map_ranges
             map_range = map_ranges[i]
@@ -178,13 +184,14 @@ class PoseLikelihoodServerNode:
 
     def _scan_front_callback(self, scan_msg):
         ''' Record laser scan data '''
-        #TODO Normalize ranges?
         self._scan_range_max = scan_msg.range_max
         self._scan_range_min = scan_msg.range_min
         self._scan_angle_increment = scan_msg.angle_increment
         self._scan_ranges = scan_msg.ranges
         if self._scan_front_header is None:
             self._scan_front_header = scan_msg.header
+        if self._scan_angle_min is None:
+            self._scan_angle_min = scan_msg.angle_min
 
 
     """
