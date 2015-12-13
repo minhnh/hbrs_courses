@@ -33,7 +33,7 @@
 
 \usepackage{fancyhdr} % Custom headers and footers
 \fancyhead[L]{M. Nguyen, B. Ha \& E. Ovchinnikova} % No page header - if you want one, create it in the same way as the footers below
-\fancyhead[R]{AIR - Assignment 08 Questions}
+\fancyhead[R]{AIR - Assignment 10 Questions}
 \fancyfoot[L]{} % Empty left footer
 \fancyfoot[C]{\thepage} % Page numbering for right footer
 \renewcommand{\headrulewidth}{0pt} % Remove header underlines
@@ -52,11 +52,11 @@
 \normalfont \normalsize 
 \textsc{Bonn-Rhein-Sieg University of Applied Sciences \\Department of Computer Science} \\ [10pt] % Your university, school and/or department name(s)
 \horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\LARGE Artificial Intelligence for Robotics - Assignment 09 Questions \\ % The assignment title
+\LARGE Artificial Intelligence for Robotics - Assignment 10 Questions \\ % The assignment title
 \horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
 }
 \author{Minh Nguyen, Bach Ha \& Evgeniya Ovchinnikova} % Your name
-\date{Lecture date: 01 December 2015}
+\date{Lecture date: 08 December 2015}
 \begin{document}
 
 \maketitle % Print the title
@@ -67,11 +67,41 @@
 
 \section{Question}
 
+What is an atomic sentence?\\
+
+An atomic sentence (AS) is a declarative sentence, that can not be broken into some other simple sentences and can be either True or False.\\
+
+AS = predicate($term_1 , . . . , term_n$) or $term_1 = term_2$
+
 
 \section{Question}
 
+How can one create a complex sentence?\\
 
-\section{Question 1}
+Complex sentence could be created from atomic or simple sentences by using connectives:
 
+\begin{itemize}
+\item $	\neg S$
+\item $	S_1 \wedge S_2$
+\item $S_1 \vee S_2$
+\item $S_1 \Rightarrow S_2$
+\item $S_1 \Leftrightarrow S_2$
+\end{itemize}
+
+
+\section{Question}
+
+What is a model in first order logic?\\
+
+It is defined as before: M is a model of a sentence $\alpha$ if $\alpha$ is true in M.
+A model is a pair M = (D, I), where D is a domain and I is an interpretation. \\
+
+D contains 1 or more objects (elements of D-domain) and relations between them.\\
+I specifies the following references:
+\begin{itemize}
+\item constant symbols $	\rightarrow$ objects in the domain
+\item predicate symbols $	\rightarrow$ relations over objects in the domain
+\item function symbols $	\rightarrow$ functional relations over objects in the domain
+\end{itemize}
 
 \end{document}
