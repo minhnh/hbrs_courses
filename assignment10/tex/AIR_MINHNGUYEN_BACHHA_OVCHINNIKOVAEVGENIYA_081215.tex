@@ -15,57 +15,77 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{AIR Homework 9}
+\rhead{AIR Homework 10}
 \lhead{M. Nguyen, B. Ha \& E. Ovchinnikova}
 \cfoot{\thepage}
 
 \setlength{\droptitle}{-5em}
 
 \title{Artificial Intelligence for Robots \\
-				- Homework 9 -}
+				- Homework 10 -}
 \author{Minh Nguyen, Bach Ha \& Evgenia Ovchinnikova}
-\date{Lecture date: 1 December 2015}
+\date{Lecture date: 8 December 2015}
 
 \begin{document}
 
 \maketitle
 
 \section{Theoretical questions}
-    \begin{itemize}
-        \item \emph{What is a strategy?}\\
-            A strategy is a set of rules that specifies an agent's action in every possible situation.
-        \item \emph{What is the goal of Max agent?}\\
-        	The goal of Max agent is to maximize the Max’s expected utility.
-        \item \emph{What is the goal of Min agent?}\\
-        	The goal of Min agent is to minimize the Max’s expected utility.
-        \item \emph{What is the Minimax Theorem?}\\
-        	Minimax theorem is about a two-person finite zero-sum game G. The two players are Min and Max.
-        		There are two strategies s* and t* and the game G's minimax value: $V_G$.
-        	\begin{itemize}
-        		\item If Min uses t*, Max's expected utility would be smaller or equal to $V_G$.
-        		\item If Max uses s*, Max's expected utility would be greater or equal to $V_G$.
-			\end{itemize}      
-		\item \emph{How do we construct an strategy for Max?}\\
-			At the node, where it is Max's turn, chooses one branch. At the node, where it is Min's turn, 
-			takes all branchs into consideration.
-		\item \emph{How do we construct an strategy for Min?}\\
-			At the node, where it is Min's turn, chooses one branch. At the node, where it is Max's turn, 
-			takes all branchs into consideration.	
-		\item \emph{How do we find the best strategy?}\\
-			Brute-force algorithm, Minimax algorithm or alpha-beta pruning algorithm can be used to find the
-			best strategy.
-		\item \emph{How does the Minimax algorithm work?}\\		      
-			Agents decide action using the minimax value of the node. In minimax algorithm, the minimax value of a node
-			is calculated from the its branch. When it is Max's turn, the minimax value of a node is the highest minimax 
-			value of its branchs. During Min's turn, the minimax value of a node is the smallest minimax value of its branchs.
-		\item \emph{Is the Minimax algorithm affordable for chess? Why?}\\
-			No. Because the branching factor ($b \approx 35$) and max-depth ($b \approx 100$) of chess are too high, 
-			there would be around $35^{100}$ nodes, thus the search would take an unaffordable amount of time.
-		\item \emph{What is alpha-beta pruning?}\\
-			Alpha-beta pruning means stop computing the value of branchs in which, the value is worse
-			than the current best founded value.
-		\item \emph{Is the alpha-beta pruning affordable for chess? Why?}\\
-			No. Because even with the best move ordering, the time complexity is still $35^{50}$.
-    \end{itemize}
+   
+\subsection{What is a Knowledge-Based Agent (KBA)}
+
+Knowledge-Based Agent (KBA)is an agent, that keeps track of the world in an internal state, that KBA regularly updates. The agent must include a knowledge base (set of sentences in a formal language) and a system of inference. KBA should be capable of the following:
+
+\begin{itemize}
+\item Having a knowledge about the world, in which it is acting
+\item Representing states, actions, etc.
+\item Assimilating new percepts
+\item Updating internal state, that represents the world
+\item Deducing hidden properties of the world
+\item Reasoning about the appropriate course of actions
+\end{itemize}
+
+
+\subsection{What is Knowledge Base (KB)?}
+
+Knowledge Base (KB) is a collection of sentences in a formal language.
+
+\subsection{What are the two operations that an KBA can perform?}
+
+KBA can perform the following operations:
+
+\begin{itemize}
+\item KBA can form a representation of the world, in which it is acting
+\item KBA can create a new representation of the world by using a system of inference and then use this new representation to decide what to do next
+\end{itemize}
+
+
+\subsection{What is the characteristic of logical reasoning?}
+Logical reasoning is a process of making conclusion by thinking in a logical way.
+The main characteristics of logical reasoning are its persuasiveness and conclusiveness.
+
+\subsection{What is syntax ?}
+
+Syntax is a set of the rules that governs the structure of the sentences in the language.
+
+\subsection{When can we say that m is a model of sentence $\alpha$ ?}
+
+Model is a formally structured world where the evaluation of the truth is possible, i.e. to
+each symbol of the world a (True/False) value is assigned. So, if a certain knowledge base contains k symbols, 2k models are possible.\\
+So, m is a model of sentence $\alpha$ if $\alpha$ is true in m.
+
+\subsection{What is entailment ?}
+
+Entailment is a semantic-based relationship between sentences (syntax). It means that one thing follows from the other, i.e. knowledge base entails a sentence (S) if and only if the sentence is True and all worlds where the knowledge base is True: KB $|$= S.
+
+\subsection{What is inference ?}
+
+An algorithm of inference allows to derive a sentence (S) from the knowledge base (KB) by a certain procedure (i):  $KB |=_i S$ . If the algorithms derives only the sentences, those are entailed by the knowledge base, i is a sound. i is complete if the following requirement is met: whenever KB $|$= S, $KB |=_i S$ as well.
+
+
+\subsection{What is the difference between entailment and inference?}
+
+It could be explained with a following example: if knowledge base is considered as a haystack, S could be considered as a needle. Then entailment is this needle and inference is an algorithm of finding it.
+
 
 \end{document}
