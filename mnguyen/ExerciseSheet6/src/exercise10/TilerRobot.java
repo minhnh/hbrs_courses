@@ -112,6 +112,16 @@ public class TilerRobot {
 	}
     }
 
+    public void removeBlackRectangle(BlackRectangle rect) {
+	// TODO: check if rectangle is in floor before removing
+	for (int i = rect.getTopRow(); i < rect.getTopRow() + rect.getHeight(); i++) {
+	    for (int j = rect.getLeftMostColumn(); j < rect.getLeftMostColumn()
+		    + rect.getWidth(); j++) {
+		setTileColor(i, j, WHITE);
+	    }
+	}
+    }
+
     public int getBlackTilesInRow(int rowNum) {
 	int tileCount = 0;
 	for (int i = 0; i < floor[0].length; i++) {

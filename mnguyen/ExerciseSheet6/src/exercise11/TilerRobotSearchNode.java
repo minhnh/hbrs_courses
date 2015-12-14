@@ -4,9 +4,9 @@ import exercise10.BlackRectangle;
 import exercise10.TilerRobot;
 
 public class TilerRobotSearchNode {
-    public TilerRobot tileInstance;
     public int rowConstraints[];
     public int columnConstraints[];
+    private TilerRobot tileInstance;
 
     public TilerRobotSearchNode() {
 	tileInstance = new TilerRobot();
@@ -82,6 +82,10 @@ public class TilerRobotSearchNode {
 	} else {
 	    return false;
 	}
+    }
+
+    public void removeRectangle(BlackRectangle rect) {
+	tileInstance.removeBlackRectangle(rect);
     }
 
     public void printFloor() {

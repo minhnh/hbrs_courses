@@ -14,6 +14,8 @@ public class Exercise12 {
 	if (!tilerSearch.setRectangle(new BlackRectangle(1, 1, 4, 4)))
 	    System.out.println("Can't set rectangle");
 	tilerSearch.printFloor();
+	tilerSearch.removeRectangle(new BlackRectangle(1, 1, 4, 4));
+	tilerSearch.printFloor();
     }
 
 }
