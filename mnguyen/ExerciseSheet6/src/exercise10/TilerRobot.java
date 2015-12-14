@@ -3,9 +3,9 @@ package exercise10;
 public class TilerRobot {
     public static final boolean BLACK = false;
     public static final boolean WHITE = true;
+    public static final int MIN_RECTANGLE_SIZE = 2;
     private final int DEFAULT_SIZE = 10;
     private final int MAX_SIZE = 1000000;
-    private final int MIN_RECTANGLE_SIZE = 2;
     private boolean floor[][];
 
     public TilerRobot() {

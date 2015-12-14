@@ -1,5 +1,6 @@
 package exercise11;
 
+import exercise10.BlackRectangle;
 import exercise10.TilerRobot;
 
 public class TilerRobotSearchNode {
@@ -37,7 +38,7 @@ public class TilerRobotSearchNode {
 	}
     }
 
-    public boolean rowColumnConstraintSatisfied() {
+    public boolean rowColumnConstraintsSatisfied() {
 	for (int i = 0; i < tileInstance.getFloorHeight(); i++) {
 	    if (tileInstance.getBlackTilesInRow(i) != rowConstraints[i])
 		return false;
@@ -49,9 +50,27 @@ public class TilerRobotSearchNode {
 	return true;
     }
 
-    public boolean rectangleBlockConstraintSatisfied() {
-	// boolean floor[][] = tileInstance.getFloor();
-	return false;
+    public boolean checkConstraintOneRectangle(BlackRectangle rect) {
+	/*
+	 * Number of remaining black tiles in each row and column must be enough
+	 * to form a minimum size rectangle
+	 */
+	// Check columns
+	for (int i = rect.getLeftMostColumn(); i < rect.getLeftMostColumn()
+		+ rect.getWidth(); i++) {
+	    if (columnConstraints[i] - rect.getHeight()
+		    - tileInstance.getBlackTilesInColumn(i) < TilerRobot.MIN_RECTANGLE_SIZE) {
+		return false;
+	    }
+	}
+	// Check rows
+	for (int i = rect.getTopRow(); i < rect.getTopRow() + rect.getHeight(); i++) {
+	    if (rowConstraints[i] - rect.getWidth()
+		    - tileInstance.getBlackTilesInRow(i) < TilerRobot.MIN_RECTANGLE_SIZE) {
+		return false;
+	    }
+	}
+	return true;
     }
 
     public void printFloor() {
