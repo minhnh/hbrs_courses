@@ -30,50 +30,56 @@ public class TilerRobot {
 	}
     }
 
-    public void setTileColor(int m, int n, boolean color) {
+    private void setTileColor(int m, int n, boolean color) {
 	if (m > floor.length || n > floor[0].length || m < 0 || n < 0)
 	    return;
 	floor[m][n] = color;
     }
 
-    private boolean isDimensionValid(int topRow, int leftMostColumn, int height, int width) {
-	if (height < MIN_RECTANGLE_SIZE || width < MIN_RECTANGLE_SIZE)
+    public boolean getTileColor(int m, int n) {
+	return floor[m][n];
+    }
+
+    private boolean isDimensionValid(BlackRectangle rect) {
+	if (rect.getHeight() < MIN_RECTANGLE_SIZE || rect.getWidth() < MIN_RECTANGLE_SIZE)
 	    return false;
-	if ((topRow + height > floor.length) || (leftMostColumn + width > floor[0].length))
+	if ((rect.getTopRow() + rect.getHeight() > floor.length)
+		|| (rect.getLeftMostColumn() + rect.getWidth() > floor[0].length))
 	    return false;
-	if (topRow < 0 || leftMostColumn < 0)
+	if (rect.getTopRow() < 0 || rect.getLeftMostColumn() < 0)
 	    return false;
 	return true;
     }
 
-    private boolean isNotTouchingOtherBlocks(
-	    int topRow, int leftMostColumn, int height, int width) {
-	if (!isDimensionValid(topRow, leftMostColumn, height, width))
+    private boolean isNotTouchingOtherBlocks(BlackRectangle rect) {
+	if (!isDimensionValid(rect))
 	    return false;
 	// Check upper and lower rows
-	for (int i = leftMostColumn - 1; i < leftMostColumn + width + 1; i++) {
-	    if (floor[topRow - 1][i] == BLACK)
+	for (int i = rect.getLeftMostColumn() - 1; i < rect.getLeftMostColumn() + rect.getWidth()
+		+ 1; i++) {
+	    if (floor[rect.getTopRow() - 1][i] == BLACK)
 		return false;
-	    if (floor[topRow + height][i] == BLACK)
+	    if (floor[rect.getTopRow() + rect.getHeight()][i] == BLACK)
 		return false;
 	}
 	// Check left and right columns
-	for (int i = topRow; i < topRow + height; i++) {
-	    if (floor[i][leftMostColumn - 1] == BLACK)
+	for (int i = rect.getTopRow(); i < rect.getTopRow() + rect.getHeight(); i++) {
+	    if (floor[i][rect.getLeftMostColumn() - 1] == BLACK)
 		return false;
-	    if (floor[i][leftMostColumn + width] == BLACK)
+	    if (floor[i][rect.getLeftMostColumn() + rect.getWidth()] == BLACK)
 		return false;
 	}
 	return true;
     }
 
     public boolean isValidBlackBlock(
-	    int topRow, int leftMostColumn, int height, int width) {
-	if (!isNotTouchingOtherBlocks(topRow, leftMostColumn, height, width))
+	    BlackRectangle rect) {
+	if (!isNotTouchingOtherBlocks(rect))
 	    return false;
 	// Check inside rectangle if there's a white tile
-	for (int i = leftMostColumn; i < leftMostColumn + width; i++) {
-	    for (int j = topRow; j < topRow + height; j++) {
+	for (int i = rect.getLeftMostColumn(); i < rect.getLeftMostColumn()
+		+ rect.getWidth(); i++) {
+	    for (int j = rect.getTopRow(); j < rect.getTopRow() + rect.getHeight(); j++) {
 		if (floor[j][i] == WHITE)
 		    return false;
 	    }
@@ -81,12 +87,13 @@ public class TilerRobot {
 	return true;
     }
 
-    public boolean canSetBlackBlock(int topRow, int leftMostColumn, int height, int width) {
-	if (!isNotTouchingOtherBlocks(topRow, leftMostColumn, height, width))
+    public boolean canSetBlackBlock(BlackRectangle rect) {
+	if (!isNotTouchingOtherBlocks(rect))
 	    return false;
 	// Check inside rectangle if a tile is already black
-	for (int i = topRow; i < topRow + height; i++) {
-	    for (int j = leftMostColumn; j < leftMostColumn + width; j++) {
+	for (int i = rect.getTopRow(); i < rect.getTopRow() + rect.getHeight(); i++) {
+	    for (int j = rect.getLeftMostColumn(); j < rect.getLeftMostColumn()
+		    + rect.getWidth(); j++) {
 		if (floor[i][j] == BLACK)
 		    return false;
 	    }
@@ -94,10 +101,11 @@ public class TilerRobot {
 	return true;
     }
 
-    public void setBlackBlock(int topRow, int leftMostColumn, int height, int width) {
-	if (canSetBlackBlock(topRow, leftMostColumn, height, width)) {
-	    for (int i = topRow; i < topRow + height; i++) {
-		for (int j = leftMostColumn; j < leftMostColumn + width; j++) {
+    public void setBlackBlock(BlackRectangle rect) {
+	if (canSetBlackBlock(rect)) {
+	    for (int i = rect.getTopRow(); i < rect.getTopRow() + rect.getHeight(); i++) {
+		for (int j = rect.getLeftMostColumn(); j < rect.getLeftMostColumn()
+			+ rect.getWidth(); j++) {
 		    setTileColor(i, j, BLACK);
 		}
 	    }
