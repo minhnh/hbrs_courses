@@ -20,7 +20,7 @@ State::~State()
 /* Ultility criteria:
  * 2 Points line:                           10 points
  * 3 Points line:                           50 points
- * 4 Points line:                           1000 points
+ * 4 Points line:                           5000 points
  * Blocked 2 point line:                    -8 points
  * Blocked 3 point line:                    -48 points
  * Line with open end:                      5 points (for each open)
@@ -42,7 +42,7 @@ void State::calculate_ultility()
             cell = get_value_at(m,n);
             if (cell == X || cell == O)
             {
-                points = 0;
+                points = 1;
                 //Check all neighbour cell
                 for (int i = -1; i <= 1 ; i++)
                 {
@@ -56,7 +56,6 @@ void State::calculate_ultility()
                             if (neighbour_cell == cell &&
                                 get_value_at(m - i,n - j) != cell)
                             {
-								
                                 //Check own line
                                 line_length = 2;
                                 while (get_value_at(m + line_length*i, n + line_length*j) == neighbour_cell)
@@ -99,7 +98,7 @@ void State::calculate_ultility()
                                 else if (line_length > 3)
                                 {
                                     is_terminal = true;
-                                    points += 1000;
+                                    points += 5000;
                                 }
                             }
                             //Neighbour is oppenent's cell
