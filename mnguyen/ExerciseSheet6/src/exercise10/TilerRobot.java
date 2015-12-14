@@ -1,8 +1,8 @@
 package exercise10;
 
 public class TilerRobot {
-    static final boolean BLACK = false;
-    static final boolean WHITE = true;
+    public static final boolean BLACK = false;
+    public static final boolean WHITE = true;
     private final int DEFAULT_SIZE = 10;
     private final int MAX_SIZE = 1000000;
     private final int MIN_RECTANGLE_SIZE = 2;
@@ -126,5 +126,13 @@ public class TilerRobot {
 
     public boolean[][] getFloor() {
 	return floor;
+    }
+
+    public int getFloorHeight() {
+	return floor.length;
+    }
+
+    public int getFloorWidth() {
+	return floor[0].length;
     }
 }
