@@ -77,6 +77,12 @@ void Game::decide_move(bool is_human, int symbol, vector<int> &map)
 
 void Game::human_move(int symbol, vector<int> &map)
 {
+    State state(current_map, size_x, size_y);
+    state.get_ultility();
+    if (state.is_terminal_state()) {
+        is_finished = true;
+        return;
+    }
     int x = 0;
     int y = 0;
     cout << "Choose your move: X Y :";
