@@ -16,9 +16,15 @@ int main(int argc, char* argv[]) {
             new Game(6, 7, number_of_human, mode);
             break;
         case 3:
-            std::cout << "1-human mode, alpha-beta" << std::endl << std::endl;
+            std::cout << "1-human mode";
             number_of_human = std::stoi(argv[1]);
-            mode = std::stoi(argv[1]);
+            mode = std::stoi(argv[2]);
+            if (mode == ALPHA_BETA) {
+                std::cout <<  ", alpha-beta" << std::endl;
+            }
+            else if (mode == MINIMAX) {
+                std::cout <<  ", minimax" << std::endl;
+            }
             new Game(6, 7, number_of_human, mode);
             break;
         default:
