@@ -104,10 +104,11 @@ Game::Operator Game::decision_minimax(State & state)
     for (int x = 0; x < size_x; x++) {
         for (int y = 0; y < size_y; y++) {
             if (state.get_value_at(x, y) == EMPTY) {
-                struct Operator op;
+                int depth = 0;
+                Operator op;
                 op.x = x;
                 op.y = y;
-                op.utility = value_minimax(state, x, y);
+                op.utility = value_minimax(state, x, y, depth);
                 operators.push_back(op);
             }
         }
@@ -120,9 +121,12 @@ Game::Operator Game::decision_minimax(State & state)
     }
 }
 
-int Game::value_minimax(State & state, int x, int y)
+int Game::value_minimax(State & state, int x, int y, int & cur_depth)
 {
     if (state.is_terminal_state())
+        return state.get_ultility();
+    cur_depth++;
+    if (cur_depth > MAX_DEPTH)
         return state.get_ultility();
 }
 
