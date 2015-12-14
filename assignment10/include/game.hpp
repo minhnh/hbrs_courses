@@ -1,6 +1,7 @@
 #ifndef _ASSIGNMENT10_GAME_H_
 #define _ASSIGNMENT10_GAME_H_
 #include <vector>
+#include "state.hpp"
 
 class Game
 {
@@ -11,11 +12,12 @@ class Game
         bool player1;
         bool player2;
         std::vector<int> current_map;
+
         void decide_move(bool Player, int symbol, std::vector<int> &map);
         void human_move(int symbol, std::vector<int> &map);
         void computer_move(int symbol, std::vector<int> &map);
-        void decision_alpha_beta();
-        void decision_minimax();
+        void decision_alpha_beta(State & state);
+        void decision_minimax(State & state);
 
     public:
         Game(int x, int y, int number_of_human_player);

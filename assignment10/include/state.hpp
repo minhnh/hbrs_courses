@@ -15,13 +15,15 @@ class State
         std::vector<int> map;
         int ultility;
         int minimax_value;
+        bool is_terminal;
 
         int get_value_at(int x, int y);
 
     public:
-        State(std::vector<int>, int x, int y);
+        State(std::vector<int>, int, int);
         ~State();
         void calculate_ultility();
+        bool is_terminal_state();
         int get_ultility();
         int get_minimax();
         void set_minimax(int value);

@@ -4,12 +4,13 @@
 #include "state.hpp"
 
 
-State::State (std::vector<int> input_map, int x, int y)
+State::State(std::vector<int> input_map, int x, int y)
 {
     size_x = x;
     size_y = y;
     map = input_map;
     ultility = 0;
+    is_terminal = false;
 }
 
 State::~State()
@@ -34,6 +35,8 @@ void State::calculate_ultility()
     int cell = EMPTY;
     int neighbour_cell = EMPTY;
     int line_length = 0;
+    if (is_terminal)
+        return;
     for (int m = 0; m < size_x; m++)
     {
         for (int n = 0; n < size_y; n++)
@@ -96,6 +99,7 @@ void State::calculate_ultility()
                                 }
                                 else if (line_length > 3)
                                 {
+                                    is_terminal = true;
                                     points += 1000;
                                 }
                             }
@@ -138,6 +142,10 @@ void State::calculate_ultility()
         }
     }
     ultility = Max - Min;
+}
+
+bool State::is_terminal_state() {
+    return is_terminal;
 }
 
 int State::get_ultility()

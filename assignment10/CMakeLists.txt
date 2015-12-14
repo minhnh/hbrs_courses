@@ -18,4 +18,4 @@ add_executable( assignment10
 # Add for chrono support
 add_definitions(-std=c++11)
 
-#target_link_libraries(assignment09)
+#target_link_libraries(assignment10)

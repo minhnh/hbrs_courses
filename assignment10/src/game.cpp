@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <iostream>
 #include "game.hpp"
-#include "state.hpp"
 
 
 Game::Game(int x, int y, int number_of_human_player)
@@ -76,16 +75,19 @@ void Game::human_move(int symbol, std::vector<int> &map)
 void Game::computer_move(int symbol, std::vector<int> &map)
 {
 
+    State state(current_map, size_x, size_y);
+
 }
 
-void Game::decision_alpha_beta()
+void Game::decision_alpha_beta(State & state)
 {
 
 }
 
-void Game::decision_minimax()
+void Game::decision_minimax(State & state)
 {
-
+    if (state.is_terminal_state())
+        return;
 }
 
 int Game::set_value_at(int x, int y, int Symbol, std::vector<int> &map)
