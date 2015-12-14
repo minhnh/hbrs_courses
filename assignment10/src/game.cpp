@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 #include "game.hpp"
 
 using namespace std;
@@ -41,9 +42,9 @@ Game::Game(int x, int y, int number_of_human_player, int mode)
 
     while (!is_finished)
     {
-        decide_move(player1,X,current_map);
+        decide_move(player1, X, current_map);
         print_map(current_map);
-        decide_move(player2,O,current_map);
+        decide_move(player2, O, current_map);
         print_map(current_map);
     }
 }
@@ -83,6 +84,11 @@ void Game::human_move(int symbol, vector<int> &map)
 void Game::computer_move(int symbol, vector<int> &map)
 {
     State state(current_map, size_x, size_y);
+    state.get_ultility();
+    if (state.is_terminal_state()) {
+        is_finished = true;
+        return;
+    }
     if (mode == MINIMAX) {
         Operator op = decision_minimax(state, symbol);
         set_value_at(op.x, op.y, symbol, map);
@@ -90,13 +96,45 @@ void Game::computer_move(int symbol, vector<int> &map)
     else if (mode == ALPHA_BETA) {
         Operator op = decision_alpha_beta(state, symbol);
         set_value_at(op.x, op.y, symbol, map);
+        cout << op.x << endl;
+        cout << op.y << endl;
     }
 }
 
 Game::Operator Game::decision_alpha_beta(State & state, int symbol)
 {
-    cout<<"Not implemented"<<endl;
-    exit(0);
+    vector<Operator> operators;
+    for (int x = 0; x < size_x; x++) {
+        for (int y = 0; y < size_y; y++) {
+            if (state.get_value_at(x, y) == EMPTY) {
+                int depth = 0;
+                Operator op;
+                op.x = x;
+                op.y = y;
+                state.set_value_at(x, y, symbol);
+                op.utility = value_alpha_beta(state, symbol);
+                state.set_value_at(x, y, EMPTY);
+                operators.push_back(op);
+            }
+        }
+    }
+    int max_utility = -1;
+    Operator max_op;
+    for (vector<Operator>::iterator it = operators.begin() ; it != operators.end(); ++it) {
+        if (abs(it->utility) > max_utility) {
+            max_op = *it;
+            max_utility = abs(it->utility);
+        }
+    }
+    return max_op;
+}
+
+int Game::value_alpha_beta(State & state, int symbol)
+{
+    // terminal check
+    if (state.is_terminal_state())
+        return state.get_ultility();
+    return 0;
 }
 
 Game::Operator Game::decision_minimax(State & state, int symbol)
@@ -109,22 +147,25 @@ Game::Operator Game::decision_minimax(State & state, int symbol)
                 Operator op;
                 op.x = x;
                 op.y = y;
-                op.utility = value_minimax(state, x, y, depth, symbol);
+                state.set_value_at(x, y, symbol);
+                op.utility = value_minimax(state, symbol, depth);
+                state.set_value_at(x, y, EMPTY);
                 operators.push_back(op);
             }
         }
     }
-    int max_utility = 0;
+    int max_utility = -1;
     Operator max_op;
     for (vector<Operator>::iterator it = operators.begin() ; it != operators.end(); ++it) {
         if (abs(it->utility) > max_utility) {
             max_op = *it;
-            max_utility = it->utility;
+            max_utility = abs(it->utility);
         }
     }
+    return max_op;
 }
 
-int Game::value_minimax(State & state, int x, int y, int symbol, int & cur_depth)
+int Game::value_minimax(State & state, int symbol, int & cur_depth)
 {
     // terminal check
     if (state.is_terminal_state())
@@ -134,6 +175,42 @@ int Game::value_minimax(State & state, int x, int y, int symbol, int & cur_depth
     if (cur_depth > MAX_DEPTH)
         return state.get_ultility();
 
+    if (symbol == X) {  // MAX turn
+        // generate successor states
+        vector<int> utilities;
+        for (int i = 0; i < size_x; i++) {
+            for (int j = 0; j < size_y; j++) {
+                if (state.get_value_at(i, j) == EMPTY) {
+                    // execute move
+                    state.set_value_at(i, j, X);
+                    // recursive call
+                    utilities.push_back(value_minimax(state, O, cur_depth));
+                    // clear move
+                    state.set_value_at(i, j, EMPTY);
+                }
+            }
+        }
+        // Return max of the utilities collected
+        return *(max_element(utilities.begin(), utilities.end()));
+    }
+    else {              // MIN turn
+        // generate successor states
+        vector<int> utilities;
+        for (int i = 0; i < size_x; i++) {
+            for (int j = 0; j < size_y; j++) {
+                if (state.get_value_at(i, j) == EMPTY) {
+                    // execute move
+                    state.set_value_at(i, j, O);
+                    // recursive call
+                    utilities.push_back(value_minimax(state, X, cur_depth));
+                    // clear move
+                    state.set_value_at(i, j, EMPTY);
+                }
+            }
+        }
+        // Return max of the utilities collected
+        return *(min_element(utilities.begin(), utilities.end()));
+    }
 }
 
 int Game::set_value_at(int x, int y, int Symbol, vector<int> &map)

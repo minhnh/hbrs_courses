@@ -173,6 +173,14 @@ int State::get_value_at(int x, int y)
     return map[x + y*size_x];
 }
 
+void State::set_value_at(int x, int y, int Symbol)
+{
+    if (x >= 0 && y >= 0 && x < size_x && y < size_y)
+    {
+        map[x + y*size_x] = Symbol;
+    }
+}
+
 std::vector<int> State::get_map()
 {
     return map;
@@ -196,9 +204,10 @@ void State::print_map()
             }
             else if (symbol == O)
             {
-                std::cout << "|Y";
+                std::cout << "|O";
             }
         }
         std::cout << "|\n";
     }
+    std::cout<<std::endl;
 }

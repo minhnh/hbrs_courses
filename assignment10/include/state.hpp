@@ -21,6 +21,7 @@ class State
         State(std::vector<int>, int, int);
         ~State();
         int get_value_at(int x, int y);
+        void set_value_at(int x, int y, int symbol);
         void calculate_ultility();
         bool is_terminal_state();
         int get_ultility();
