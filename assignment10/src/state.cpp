@@ -48,7 +48,7 @@ void State::calculate_ultility()
                 {
                     for (int j = -1; j <= 1; j++)
                     {
-                        if (i != 0 && j != 0)
+                        if (!(i == 0 && j == 0))
                         {
                             neighbour_cell = get_value_at(m + i,n + j);
                             //Neighbour is owned cell and the current cell
@@ -56,6 +56,7 @@ void State::calculate_ultility()
                             if (neighbour_cell == cell &&
                                 get_value_at(m - i,n - j) != cell)
                             {
+								
                                 //Check own line
                                 line_length = 2;
                                 while (get_value_at(m + line_length*i, n + line_length*j) == neighbour_cell)
@@ -126,11 +127,10 @@ void State::calculate_ultility()
                         }
                     }
                 }
-
                 //Add points to Max or Min
                 if (cell == X)
                 {
-                    Max = Max + points;
+                    Max = Max + points; 
                 }
                 else
                 {

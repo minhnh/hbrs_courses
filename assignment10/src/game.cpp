@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <climits>
 #include "game.hpp"
+#include "state.hpp"
 
 using namespace std;
 
@@ -45,8 +46,15 @@ Game::Game(int x, int y, int number_of_human_player, int mode)
     {
         decide_move(player1, X, current_map);
         print_map(current_map);
+        State a = State(current_map, size_x, size_y);
+        a.calculate_ultility();
+        cout << a.get_ultility() << endl;
+        
         decide_move(player2, O, current_map);
         print_map(current_map);
+		State b = State(current_map, size_x, size_y);
+        b.calculate_ultility();
+        cout << b.get_ultility() << endl;
     }
 }
 
