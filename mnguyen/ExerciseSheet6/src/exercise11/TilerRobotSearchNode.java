@@ -50,7 +50,7 @@ public class TilerRobotSearchNode {
 	return true;
     }
 
-    public boolean checkConstraintOneRectangle(BlackRectangle rect) {
+    private boolean checkConstraintOneRectangle(BlackRectangle rect) {
 	/*
 	 * Number of remaining black tiles in each row and column must be enough
 	 * to form a minimum size rectangle
@@ -58,19 +58,30 @@ public class TilerRobotSearchNode {
 	// Check columns
 	for (int i = rect.getLeftMostColumn(); i < rect.getLeftMostColumn()
 		+ rect.getWidth(); i++) {
-	    if (columnConstraints[i] - rect.getHeight()
-		    - tileInstance.getBlackTilesInColumn(i) < TilerRobot.MIN_RECTANGLE_SIZE) {
+	    int remainingColumns = columnConstraints[i] - rect.getHeight()
+		    - tileInstance.getBlackTilesInColumn(i);
+	    if (remainingColumns < 0 || remainingColumns == 1) {
 		return false;
 	    }
 	}
 	// Check rows
 	for (int i = rect.getTopRow(); i < rect.getTopRow() + rect.getHeight(); i++) {
-	    if (rowConstraints[i] - rect.getWidth()
-		    - tileInstance.getBlackTilesInRow(i) < TilerRobot.MIN_RECTANGLE_SIZE) {
+	    int remainingRows = rowConstraints[i] - rect.getWidth()
+		    - tileInstance.getBlackTilesInRow(i);
+	    if (remainingRows < 0 || remainingRows == 1) {
 		return false;
 	    }
 	}
 	return true;
+    }
+
+    public boolean setRectangle(BlackRectangle rect) {
+	if (checkConstraintOneRectangle(rect) && tileInstance.canSetBlackRectangle(rect)) {
+	    tileInstance.setBlackRectangle(rect);
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     public void printFloor() {

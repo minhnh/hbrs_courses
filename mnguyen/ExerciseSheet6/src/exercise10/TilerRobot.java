@@ -51,7 +51,7 @@ public class TilerRobot {
 	return true;
     }
 
-    private boolean isNotTouchingOtherBlocks(BlackRectangle rect) {
+    private boolean isNotTouchingOtherRectangles(BlackRectangle rect) {
 	if (!isDimensionValid(rect))
 	    return false;
 	// Check upper and lower rows
@@ -72,9 +72,9 @@ public class TilerRobot {
 	return true;
     }
 
-    public boolean isValidBlackBlock(
+    public boolean isValidBlackRectangle(
 	    BlackRectangle rect) {
-	if (!isNotTouchingOtherBlocks(rect))
+	if (!isNotTouchingOtherRectangles(rect))
 	    return false;
 	// Check inside rectangle if there's a white tile
 	for (int i = rect.getLeftMostColumn(); i < rect.getLeftMostColumn()
@@ -87,8 +87,8 @@ public class TilerRobot {
 	return true;
     }
 
-    public boolean canSetBlackBlock(BlackRectangle rect) {
-	if (!isNotTouchingOtherBlocks(rect))
+    public boolean canSetBlackRectangle(BlackRectangle rect) {
+	if (!isNotTouchingOtherRectangles(rect))
 	    return false;
 	// Check inside rectangle if a tile is already black
 	for (int i = rect.getTopRow(); i < rect.getTopRow() + rect.getHeight(); i++) {
@@ -101,8 +101,8 @@ public class TilerRobot {
 	return true;
     }
 
-    public void setBlackBlock(BlackRectangle rect) {
-	if (canSetBlackBlock(rect)) {
+    public void setBlackRectangle(BlackRectangle rect) {
+	if (canSetBlackRectangle(rect)) {
 	    for (int i = rect.getTopRow(); i < rect.getTopRow() + rect.getHeight(); i++) {
 		for (int j = rect.getLeftMostColumn(); j < rect.getLeftMostColumn()
 			+ rect.getWidth(); j++) {
