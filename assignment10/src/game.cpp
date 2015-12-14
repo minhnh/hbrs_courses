@@ -83,22 +83,22 @@ void Game::computer_move(int symbol, vector<int> &map)
 {
     State state(current_map, size_x, size_y);
     if (mode == MINIMAX) {
-        Operator op = decision_minimax(state);
+        Operator op = decision_minimax(state, symbol);
         set_value_at(op.x, op.y, symbol, map);
     }
     else if (mode == ALPHA_BETA) {
-        Operator op = decision_alpha_beta(state);
+        Operator op = decision_alpha_beta(state, symbol);
         set_value_at(op.x, op.y, symbol, map);
     }
 }
 
-Game::Operator Game::decision_alpha_beta(State & state)
+Game::Operator Game::decision_alpha_beta(State & state, int symbol)
 {
     cout<<"Not implemented"<<endl;
     exit(0);
 }
 
-Game::Operator Game::decision_minimax(State & state)
+Game::Operator Game::decision_minimax(State & state, int symbol)
 {
     vector<Operator> operators;
     for (int x = 0; x < size_x; x++) {
@@ -108,7 +108,7 @@ Game::Operator Game::decision_minimax(State & state)
                 Operator op;
                 op.x = x;
                 op.y = y;
-                op.utility = value_minimax(state, x, y, depth);
+                op.utility = value_minimax(state, x, y, depth, symbol);
                 operators.push_back(op);
             }
         }
@@ -121,10 +121,12 @@ Game::Operator Game::decision_minimax(State & state)
     }
 }
 
-int Game::value_minimax(State & state, int x, int y, int & cur_depth)
+int Game::value_minimax(State & state, int x, int y, int symbol, int & cur_depth)
 {
+    // terminal check
     if (state.is_terminal_state())
         return state.get_ultility();
+    // depth limit
     cur_depth++;
     if (cur_depth > MAX_DEPTH)
         return state.get_ultility();

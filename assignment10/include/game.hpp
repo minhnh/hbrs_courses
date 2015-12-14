@@ -27,9 +27,9 @@ class Game
         void decide_move(bool Player, int symbol, std::vector<int> &map);
         void human_move(int symbol, std::vector<int> &map);
         void computer_move(int symbol, std::vector<int> &map);
-        Operator decision_alpha_beta(State &);
-        Operator decision_minimax(State &);
-        int value_minimax(State &, int, int, int &);
+        Operator decision_alpha_beta(State &, int);
+        Operator decision_minimax(State &, int);
+        int value_minimax(State &, int, int, int, int &);
 
     public:
         Game(int x, int y, int number_of_human_player, int mode);
