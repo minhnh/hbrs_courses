@@ -3,6 +3,10 @@
 #include <vector>
 #include "state.hpp"
 
+#define MINIMAX     1
+#define ALPHA_BETA  2
+#define MAX_DEPTH   20
+
 class Game
 {
     private:
@@ -23,7 +27,7 @@ class Game
         void decide_move(bool Player, int symbol, std::vector<int> &map);
         void human_move(int symbol, std::vector<int> &map);
         void computer_move(int symbol, std::vector<int> &map);
-        void decision_alpha_beta(State &);
+        Operator decision_alpha_beta(State &);
         Operator decision_minimax(State &);
         int value_minimax(State &, int, int);
 

@@ -81,14 +81,21 @@ void Game::human_move(int symbol, vector<int> &map)
 //Alpha-beta should be here
 void Game::computer_move(int symbol, vector<int> &map)
 {
-
     State state(current_map, size_x, size_y);
-
+    if (mode == MINIMAX) {
+        Operator op = decision_minimax(state);
+        set_value_at(op.x, op.y, symbol, map);
+    }
+    else if (mode == ALPHA_BETA) {
+        Operator op = decision_alpha_beta(state);
+        set_value_at(op.x, op.y, symbol, map);
+    }
 }
 
-void Game::decision_alpha_beta(State & state)
+Game::Operator Game::decision_alpha_beta(State & state)
 {
-
+    cout<<"Not implemented"<<endl;
+    exit(0);
 }
 
 Game::Operator Game::decision_minimax(State & state)
