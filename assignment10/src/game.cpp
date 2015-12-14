@@ -4,11 +4,17 @@
 
 using namespace std;
 
-Game::Game(int x, int y, int number_of_human_player)
+Game::Game(int x, int y, int number_of_human_player, int mode)
 {
     size_x = x;
     size_y = y;
     is_finished = false;
+
+    if (mode < 1 || mode > 2) {
+        cout << "Invalid mode. Exiting..." << endl;
+        exit(1);
+    }
+
     for (int i = 0; i < x*y; i++)
     {
         current_map.push_back(EMPTY);

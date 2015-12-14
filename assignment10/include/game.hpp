@@ -14,6 +14,7 @@ class Game
         };
         int size_x;
         int size_y;
+        int mode;
         bool is_finished;
         bool player1;
         bool player2;
@@ -27,7 +28,7 @@ class Game
         int value_minimax(State &, int, int);
 
     public:
-        Game(int x, int y, int number_of_human_player);
+        Game(int x, int y, int number_of_human_player, int mode);
         ~Game();
         int set_value_at(int x, int y, int symbol, std::vector<int> &map);
         int get_value_at(int x, int y, std::vector<int> map);

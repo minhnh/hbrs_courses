@@ -4,14 +4,22 @@
 int main(int argc, char* argv[]) {
     // Argument check
     int number_of_human = 2;
+    int mode = 1;
     switch (argc) {
         case 1:
-            std::cout << "Using default file and order option" << std::endl << std::endl;
-            new Game(6,7,number_of_human);
+            std::cout << "2-human mode" << std::endl << std::endl;
+            new Game(6,7,number_of_human, mode);
             break;
         case 2:
+            std::cout << "1-human mode, minimax" << std::endl << std::endl;
             number_of_human = std::stoi(argv[1]);
-            new Game(6,7,number_of_human);
+            new Game(6, 7, number_of_human, mode);
+            break;
+        case 3:
+            std::cout << "1-human mode, alpha-beta" << std::endl << std::endl;
+            number_of_human = std::stoi(argv[1]);
+            mode = std::stoi(argv[1]);
+            new Game(6, 7, number_of_human, mode);
             break;
         default:
             std::cout << "Too many arguments" << std::endl << std::endl;
