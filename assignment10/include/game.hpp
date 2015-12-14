@@ -10,7 +10,7 @@ class Game
         {
             int x = -1;
             int y = -1;
-            int utilities = 0;
+            int utility = 0;
         };
         int size_x;
         int size_y;
@@ -23,7 +23,7 @@ class Game
         void human_move(int symbol, std::vector<int> &map);
         void computer_move(int symbol, std::vector<int> &map);
         void decision_alpha_beta(State &);
-        void decision_minimax(State &);
+        Operator decision_minimax(State &);
         int value_minimax(State &, int, int);
 
     public:

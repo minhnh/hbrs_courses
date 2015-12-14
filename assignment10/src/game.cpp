@@ -2,6 +2,7 @@
 #include <iostream>
 #include "game.hpp"
 
+using namespace std;
 
 Game::Game(int x, int y, int number_of_human_player)
 {
@@ -45,7 +46,7 @@ Game::~Game()
 
 }
 
-void Game::decide_move(bool is_human, int symbol, std::vector<int> &map)
+void Game::decide_move(bool is_human, int symbol, vector<int> &map)
 {
     if (is_human)
     {
@@ -57,22 +58,22 @@ void Game::decide_move(bool is_human, int symbol, std::vector<int> &map)
     }
 }
 
-void Game::human_move(int symbol, std::vector<int> &map)
+void Game::human_move(int symbol, vector<int> &map)
 {
     int x = 0;
     int y = 0;
-    std::cout << "Choose your move: X Y :";
-    std::cin >> x >> y;
+    cout << "Choose your move: X Y :";
+    cin >> x >> y;
     while (get_value_at(x,y,map) != EMPTY)
     {
-        std::cout << "\nPlease choose a valid move: X Y :";
-        std::cin >> x >> y;
+        cout << "\nPlease choose a valid move: X Y :";
+        cin >> x >> y;
     }
     set_value_at(x,y,symbol,map);
 }
 
 //Alpha-beta should be here
-void Game::computer_move(int symbol, std::vector<int> &map)
+void Game::computer_move(int symbol, vector<int> &map)
 {
 
     State state(current_map, size_x, size_y);
@@ -84,18 +85,25 @@ void Game::decision_alpha_beta(State & state)
 
 }
 
-void Game::decision_minimax(State & state)
+Game::Operator Game::decision_minimax(State & state)
 {
-    std::vector<int> utilities;
+    vector<Operator> operators;
     for (int x = 0; x < size_x; x++) {
         for (int y = 0; y < size_y; y++) {
             if (state.get_value_at(x, y) == EMPTY) {
-                utilities.push_back(value_minimax(state, x, y));
-            }
-            else {
-
+                struct Operator op;
+                op.x = x;
+                op.y = y;
+                op.utility = value_minimax(state, x, y);
+                operators.push_back(op);
             }
         }
+    }
+    int max_utility = 0;
+    Operator max_op;
+    for (vector<Operator>::iterator it = operators.begin() ; it != operators.end(); ++it) {
+        if (it->utility > max_utility)
+            max_op = *it;
     }
 }
 
@@ -105,7 +113,7 @@ int Game::value_minimax(State & state, int x, int y)
         return state.get_ultility();
 }
 
-int Game::set_value_at(int x, int y, int Symbol, std::vector<int> &map)
+int Game::set_value_at(int x, int y, int Symbol, vector<int> &map)
 {
     if (x >= 0 && y >= 0 && x < size_x && y < size_y)
     {
@@ -114,7 +122,7 @@ int Game::set_value_at(int x, int y, int Symbol, std::vector<int> &map)
     return 0;
 }
 
-int Game::get_value_at(int x, int y, std::vector<int> map)
+int Game::get_value_at(int x, int y, vector<int> map)
 {
     if (x < 0 || y < 0 || x >= size_x || y >= size_y)
     {
@@ -123,7 +131,7 @@ int Game::get_value_at(int x, int y, std::vector<int> map)
     return map[x + y*size_x];
 }
 
-void Game::print_map(std::vector<int> map)
+void Game::print_map(vector<int> map)
 {
     int symbol = 0;
     for (int i = 0; i < size_x; i++)
@@ -133,18 +141,18 @@ void Game::print_map(std::vector<int> map)
             symbol = get_value_at(i,j,map);
             if (symbol == EMPTY)
             {
-                std::cout << "| ";
+                cout << "| ";
             }
             else if (symbol == X)
             {
-                std::cout << "|X";
+                cout << "|X";
             }
             else if (symbol == O)
             {
-                std::cout << "|O";
+                cout << "|O";
             }
         }
-        std::cout << "|\n";
+        cout << "|\n";
     }
-    std::cout << std::endl;
+    cout << endl;
 }
