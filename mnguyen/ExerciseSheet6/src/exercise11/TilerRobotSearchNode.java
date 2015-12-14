@@ -37,6 +37,18 @@ public class TilerRobotSearchNode {
 	}
     }
 
+    public boolean rowColumnConstraintSatisfied() {
+	for (int i = 0; i < tileInstance.getFloorHeight(); i++) {
+	    if (tileInstance.getBlackTilesInRow(i) != rowConstraints[i])
+		return false;
+	}
+	for (int i = 0; i < tileInstance.getFloorWidth(); i++) {
+	    if (tileInstance.getBlackTilesInColumn(i) != columnConstraints[i])
+		return false;
+	}
+	return true;
+    }
+
     public boolean rectangleBlockConstraintSatisfied() {
 	// boolean floor[][] = tileInstance.getFloor();
 	return false;
