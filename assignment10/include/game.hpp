@@ -6,6 +6,12 @@
 class Game
 {
     private:
+        struct Operator
+        {
+            int x = -1;
+            int y = -1;
+            int utilities = 0;
+        };
         int size_x;
         int size_y;
         bool is_finished;
@@ -16,8 +22,9 @@ class Game
         void decide_move(bool Player, int symbol, std::vector<int> &map);
         void human_move(int symbol, std::vector<int> &map);
         void computer_move(int symbol, std::vector<int> &map);
-        void decision_alpha_beta(State & state);
-        void decision_minimax(State & state);
+        void decision_alpha_beta(State &);
+        void decision_minimax(State &);
+        int value_minimax(State &, int, int);
 
     public:
         Game(int x, int y, int number_of_human_player);

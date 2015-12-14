@@ -86,8 +86,23 @@ void Game::decision_alpha_beta(State & state)
 
 void Game::decision_minimax(State & state)
 {
+    std::vector<int> utilities;
+    for (int x = 0; x < size_x; x++) {
+        for (int y = 0; y < size_y; y++) {
+            if (state.get_value_at(x, y) == EMPTY) {
+                utilities.push_back(value_minimax(state, x, y));
+            }
+            else {
+
+            }
+        }
+    }
+}
+
+int Game::value_minimax(State & state, int x, int y)
+{
     if (state.is_terminal_state())
-        return;
+        return state.get_ultility();
 }
 
 int Game::set_value_at(int x, int y, int Symbol, std::vector<int> &map)

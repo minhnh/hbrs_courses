@@ -17,11 +17,10 @@ class State
         int minimax_value;
         bool is_terminal;
 
-        int get_value_at(int x, int y);
-
     public:
         State(std::vector<int>, int, int);
         ~State();
+        int get_value_at(int x, int y);
         void calculate_ultility();
         bool is_terminal_state();
         int get_ultility();
