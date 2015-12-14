@@ -25,7 +25,7 @@ State::~State()
  * Blocked 3 point line:                    -48 points
  * Line with open end:                      5 points (for each open)
  * Point that block 3 points line         : 400 points
- * Point that block 2 points line         : 5 points
+ * Point that block 2 points line         : 45 points
  */
 void State::calculate_ultility()
 {
@@ -77,13 +77,18 @@ void State::calculate_ultility()
                                     }
                                 }
                                 //Add point for each open end
-                                else if (get_value_at(m + line_length*i, n + line_length*j) == EMPTY)
+                                else 
                                 {
-                                    points += 5;
-                                }
-                                else if (get_value_at(m - i, n - j) == EMPTY)
-                                {
-                                    points += 5;
+									if (get_value_at(m + line_length*i, n + line_length*j) == EMPTY)
+									{
+										points += 5;
+									}
+									
+									if (get_value_at(m - i, n - j) == EMPTY)
+									{
+										points += 5;
+									}
+                                    
                                 }
 
                                 //Add point for creating line
@@ -116,7 +121,7 @@ void State::calculate_ultility()
                                 //Add point for blocking opponent's line
                                 if (line_length == 2)
                                 {
-                                    points += 5;
+                                    points += 300;
                                 }
                                 else if (line_length == 3)
                                 {
