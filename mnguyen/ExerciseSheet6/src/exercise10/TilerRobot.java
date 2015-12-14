@@ -132,10 +132,6 @@ public class TilerRobot {
 	return tileCount;
     }
 
-    public boolean[][] getFloor() {
-	return floor;
-    }
-
     public int getFloorHeight() {
 	return floor.length;
     }

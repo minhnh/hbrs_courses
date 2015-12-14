@@ -55,7 +55,6 @@ public class TilerRobotSearchNode {
     }
 
     public void printFloor() {
-	boolean floor[][] = tileInstance.getFloor();
 	// Row 1: column constraints
 	System.out.print("  ");
 	for (int i : columnConstraints) {
@@ -63,9 +62,10 @@ public class TilerRobotSearchNode {
 	}
 	System.out.println();
 	// Row 2 -> end: row constraints and map
-	for (int i = 0; i < rowConstraints.length; i++) {
+	for (int i = 0; i < tileInstance.getFloorHeight(); i++) {
 	    System.out.print(" " + rowConstraints[i]);
-	    for (boolean color : floor[i]) {
+	    for (int j = 0; j < tileInstance.getFloorWidth(); j++) {
+		boolean color = tileInstance.getTileColor(i, j);
 		if (color == TilerRobot.BLACK) {
 		    System.out.print(" B");
 		} else if (color == TilerRobot.WHITE) {
