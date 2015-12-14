@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
+#include <climits>
 #include "game.hpp"
 
 using namespace std;
@@ -108,11 +109,13 @@ Game::Operator Game::decision_alpha_beta(State & state, int symbol)
         for (int y = 0; y < size_y; y++) {
             if (state.get_value_at(x, y) == EMPTY) {
                 int depth = 0;
+                int alpha = INT_MAX;
+                int beta = INT_MIN;
                 Operator op;
                 op.x = x;
                 op.y = y;
                 state.set_value_at(x, y, symbol);
-                op.utility = value_alpha_beta(state, symbol);
+                op.utility = value_alpha_beta(state, symbol, alpha, beta);
                 state.set_value_at(x, y, EMPTY);
                 operators.push_back(op);
             }
@@ -129,12 +132,54 @@ Game::Operator Game::decision_alpha_beta(State & state, int symbol)
     return max_op;
 }
 
-int Game::value_alpha_beta(State & state, int symbol)
+int Game::value_alpha_beta(State & state, int symbol, int & alpha, int & beta)
 {
     // terminal check
     if (state.is_terminal_state())
         return state.get_ultility();
-    return 0;
+
+    if (symbol == X) {  // MAX turn
+        // generate successor states
+        int v = INT_MIN;
+        for (int i = 0; i < size_x; i++) {
+            for (int j = 0; j < size_y; j++) {
+                if (state.get_value_at(i, j) == EMPTY) {
+                    // execute move
+                    state.set_value_at(i, j, X);
+                    // recursive call
+                    int result = value_alpha_beta(state, O, alpha, beta);
+                    // clear move
+                    state.set_value_at(i, j, EMPTY);
+                    // pruning
+                    v = (v > result) ? v : result;
+                    if (v >= beta)
+                        return v;
+                    alpha = (alpha > v) ? alpha : v;
+                }
+            }
+        }
+    }
+    else {              // MIN turn
+        // generate successor states
+        int v = INT_MAX;
+        for (int i = 0; i < size_x; i++) {
+            for (int j = 0; j < size_y; j++) {
+                if (state.get_value_at(i, j) == EMPTY) {
+                    // execute move
+                    state.set_value_at(i, j, O);
+                    // recursive call
+                    int result = value_alpha_beta(state, X, alpha, beta);
+                    // clear move
+                    state.set_value_at(i, j, EMPTY);
+                    // pruning
+                    v = (v < result) ? v : result;
+                    if (v <= alpha)
+                        return v;
+                    beta = (beta < v) ? beta : v;
+                }
+            }
+        }
+    }
 }
 
 Game::Operator Game::decision_minimax(State & state, int symbol)

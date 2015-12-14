@@ -30,7 +30,7 @@ class Game
         Operator decision_alpha_beta(State &, int);
         Operator decision_minimax(State &, int);
         int value_minimax(State &, int, int &);
-        int value_alpha_beta(State &, int);
+        int value_alpha_beta(State &, int, int&, int&);
 
     public:
         Game(int x, int y, int number_of_human_player, int mode);
