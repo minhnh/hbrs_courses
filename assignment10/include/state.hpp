@@ -3,8 +3,8 @@
 #include <vector>
 
 #define EMPTY   0
-#define X       1
-#define O       -1
+#define X       1       // positive
+#define O       -1      // negative
 #define EDGE    2
 
 class State

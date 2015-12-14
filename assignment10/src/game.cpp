@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <iostream>
+#include <cmath>
 #include "game.hpp"
 
 using namespace std;
@@ -116,8 +117,10 @@ Game::Operator Game::decision_minimax(State & state, int symbol)
     int max_utility = 0;
     Operator max_op;
     for (vector<Operator>::iterator it = operators.begin() ; it != operators.end(); ++it) {
-        if (it->utility > max_utility)
+        if (abs(it->utility) > max_utility) {
             max_op = *it;
+            max_utility = it->utility;
+        }
     }
 }
 
@@ -130,6 +133,7 @@ int Game::value_minimax(State & state, int x, int y, int symbol, int & cur_depth
     cur_depth++;
     if (cur_depth > MAX_DEPTH)
         return state.get_ultility();
+
 }
 
 int Game::set_value_at(int x, int y, int Symbol, vector<int> &map)
