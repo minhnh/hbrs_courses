@@ -35,8 +35,6 @@ void State::calculate_ultility()
     int cell = EMPTY;
     int neighbour_cell = EMPTY;
     int line_length = 0;
-    if (is_terminal)
-        return;
     for (int m = 0; m < size_x; m++)
     {
         for (int n = 0; n < size_y; n++)
@@ -150,6 +148,7 @@ bool State::is_terminal_state() {
 
 int State::get_ultility()
 {
+    calculate_ultility();
     return ultility;
 }
 
