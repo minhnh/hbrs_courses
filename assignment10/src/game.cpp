@@ -49,7 +49,7 @@ Game::Game(int x, int y, int number_of_human_player, int mode)
         State a = State(current_map, size_x, size_y);
         a.calculate_ultility();
         cout << a.get_ultility() << endl;
-        
+
         decide_move(player2, O, current_map);
         print_map(current_map);
 		State b = State(current_map, size_x, size_y);
@@ -244,6 +244,7 @@ int Game::value_minimax(State & state, int symbol, int & cur_depth)
             }
         }
         // Return max of the utilities collected
+        cur_depth--;
         return *(max_element(utilities.begin(), utilities.end()));
     }
     else {              // MIN turn
@@ -262,6 +263,7 @@ int Game::value_minimax(State & state, int symbol, int & cur_depth)
             }
         }
         // Return max of the utilities collected
+        cur_depth--;
         return *(min_element(utilities.begin(), utilities.end()));
     }
 }
