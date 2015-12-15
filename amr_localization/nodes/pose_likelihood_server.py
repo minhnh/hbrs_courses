@@ -155,13 +155,14 @@ class PoseLikelihoodServerNode:
             if map_range < self._scan_range_min:
                 map_range = self._scan_range_min
             difference = scanner_ranges[i] - map_range
-            if difference < 2 * self._scan_sigma:
-                weight = weight * (math.exp(-(difference)**2 / (2 * self._scan_sigma**2)))
-            else:
+            new_weight = (math.exp(-(difference)**2 / (2 * self._scan_sigma**2)))
+            if difference > 2 * self._scan_sigma:
+                # only count big mismatches over a specific limit
+                if mismatch_count <= self.ALLOWED_MISMATCH_NUM:
+                    new_weight = 1.0
                 mismatch_count = mismatch_count + 1
-            # limit number of mismatches
-            if mismatch_count > self.ALLOWED_MISMATCH_NUM:
-                return 0.0
+
+            weight = weight * new_weight
         return weight
 
 
