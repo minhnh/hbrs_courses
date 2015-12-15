@@ -82,15 +82,34 @@ class PoseLikelihoodServerNode:
 
     def _pose_likelihood_callback(self, multi_pose_srv):
         """ return likelihood for a cell group """
-        response = []
+        multiple_pose_likelihood = []
+
+        # setup beam request
+        req = GetNearestOccupiedPointOnBeamRequest()
+        req.threshold = 1
         for pose_stamped_msg in multi_pose_srv.poses:
-            # calculate response
-            response.append(self._calculate_single_pose_likelihood(pose_stamped_msg))
+            # add beams to self._scan_poses_world_frame
+            self._get_single_pose_beams(pose_stamped_msg)
 
-        return GetMultiplePoseLikelihoodResponse(response)
+        # request all poses for optimization
+        req.beams = self._scan_poses_world_frame
+        response = self._get_nearest_occupied_client(req)
+
+        # clear self._scan_poses_world_frame for next call
+        self._scan_poses_world_frame = []
+
+        # get likelihood for each pose and append to response
+        num_scan = len(self._scan_ranges)
+        for i in range(len(multi_pose_srv.poses)):
+            likelihood = self._cal_likelihood(
+                                self._scan_ranges,
+                                response.distances[i * num_scan : (i+1) * num_scan])
+            multiple_pose_likelihood.append(likelihood)
+
+        return GetMultiplePoseLikelihoodResponse(multiple_pose_likelihood)
 
 
-    def _calculate_single_pose_likelihood(self, pose_stamped_msg):
+    def _get_single_pose_beams(self, pose_stamped_msg):
         ''' Run here instead of _init_ to have access to _scan_front_header'''
         # get world frame id
         if self._world_frame_id is None:
@@ -122,17 +141,9 @@ class PoseLikelihoodServerNode:
             # adjust large angles
             if beam.theta > math.pi * 2:
                 beam.theta = beam.theta - math.pi * 2
-            # Keep beam length to 12
-            if len(self._scan_poses_world_frame) < i + 1:
-                self._scan_poses_world_frame.append(beam)
-            else:
-                self._scan_poses_world_frame[i] = beam
-
-        req = GetNearestOccupiedPointOnBeamRequest()
-        req.beams = self._scan_poses_world_frame
-        req.threshold = 1
-        response = self._get_nearest_occupied_client(req)
-        return self._cal_likelihood(self._scan_ranges, response.distances)
+            # Beams will be appended every call to this function
+            self._scan_poses_world_frame.append(beam)
+        return
 
 
     def _cal_likelihood(self, scanner_ranges, map_ranges):
