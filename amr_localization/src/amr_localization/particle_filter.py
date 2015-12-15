@@ -21,6 +21,7 @@ class ParticleFilter:
         self.random_particles_size = 10
         self.motion_model = MotionModel(0.02, 0.01)
         self.random_particle_generator = RandomParticleGenerator(map_min_x, map_max_x, map_min_y, map_max_y)
+        self.pose_estimate = Pose()
 
         self.particles = []
         for i in range(self.particle_set_size):
