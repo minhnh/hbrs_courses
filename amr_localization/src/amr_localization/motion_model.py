@@ -60,8 +60,20 @@ class MotionModel:
 
         ==========================================================================
         """
+        # simulate translational and rotational error
+        noisy_forward = self.forward + random.gauss(0, self.sigtran)
+        noisy_lateral = self.lateral + random.gauss(0, self.sigtran)
+        theta_after_motion = pose.theta + self.rotation + random.gauss(0, self.sigrot)
+
+        # transform from robot frame to world frame
+        translation_x_wf = (noisy_forward*math.cos(theta_after_motion)
+                            - noisy_lateral*math.sin(theta_after_motion))
+        translation_y_wf = (noisy_forward*math.sin(theta_after_motion)
+                            + noisy_lateral*math.cos(theta_after_motion))
+
+        #TODO check zero pose problem
         sample_pose = Pose()
-        sample_pose.x = pose.x + self.forward + random.gauss(0, self.sigtran)
-        sample_pose.y = pose.y + self.lateral + random.gauss(0, self.sigtran)
-        sample_pose.theta = pose.theta + self.rotation + random.gauss(0, self.sigrot)
+        sample_pose.x = pose.x + translation_x_wf
+        sample_pose.y = pose.y + translation_y_wf
+        sample_pose.theta = theta_after_motion
         return sample_pose
