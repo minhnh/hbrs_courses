@@ -59,7 +59,19 @@ class ParticleFilter:
                      self.pose_estimate = selected_particle.pose
         ============================================================================
         '''
-        pass
+        # apply motion model to particles
+        self.motion_model.setMotion(x, y, yaw)
+        for particle in self.particles:
+            particle.pose = self.motion_model.sample(particle.pose)
+
+        # calculate and update acuumulated weights of particles (creating the roulette)
+        weights = self.weigh_particles_callback(self.particles)
+        accumulated_weight = 0.0
+        for i in range(self.particle_set_size):
+            accumulated_weight = accumulated_weight + weights[i]
+            self.particles[i].weight = accumulated_weight
+
+        # particle redistribution
 
 
     def get_particles(self):
