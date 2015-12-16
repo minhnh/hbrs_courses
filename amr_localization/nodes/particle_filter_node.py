@@ -25,7 +25,7 @@ class ParticleFilterNode:
     This is a port of the AMR Python ParticleFilterNode
     """
     def __init__(self):
-        
+
         rospy.init_node(NODE)
 
         """
@@ -82,9 +82,8 @@ class ParticleFilterNode:
         # Determine the motion since the last update
         #tf::StampedTransform transform;
         try:
-            now = rospy.Time.now()
             #TODO wait for transform
-            transform = self._tf.lookupTransform('base_link', 'odom', now)
+            transform = self._tf.lookupTransform('base_link', 'odom', rospy.Time(0))
             transform = tf.TransformerROS().fromTranslationRotation(transform[0],transform[1])
         except tf.Exception, e:
             rospy.logerr('Service call failed: %s'%e)
