@@ -60,5 +60,8 @@ class MotionModel:
 
         ==========================================================================
         """
-
-        return Pose()
+        sample_pose = Pose()
+        sample_pose.x = pose.x + self.forward + random.gauss(0, self.sigtran)
+        sample_pose.y = pose.y + self.lateral + random.gauss(0, self.sigtran)
+        sample_pose.theta = pose.theta + self.rotation + random.gauss(0, self.sigrot)
+        return sample_pose
