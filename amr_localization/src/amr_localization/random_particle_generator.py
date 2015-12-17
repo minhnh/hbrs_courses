@@ -14,9 +14,9 @@ class RandomParticleGenerator:
         self.min_y = min_y
         self.max_y = max_y
         self.biased_particles = 0
-        self,normalx = (0,0)
-        self,normaly = (0,0)
-        self,normalt = (0,0)
+        self.normalx = (0,0)
+        self.normaly = (0,0)
+        self.normalt = (0,0)
 
     # Generate a random particle
     def generate_particle(self):
