@@ -67,22 +67,29 @@ class ParticleFilter:
         # calculate and update acuumulated weights of particles (creating the roulette)
         weights = self.weigh_particles_callback(self.particles)
         accumulated_weight = 0.0
+        accumulated_weight_list = []
         for i in range(self.particle_set_size):
             accumulated_weight = accumulated_weight + weights[i]
-            self.particles[i].weight = accumulated_weight
+            self.particles[i].weight = weights[i]
+            accumulated_weight_list.append(accumulated_weight)
+        # normalize weights
+        for i in range(len(accumulated_weight_list)):
+            self.particles[i].weight = self.particles[i].weight * 1.0 / accumulated_weight_list[-1]
+            accumulated_weight_list[i] = accumulated_weight_list[i] * 1.0 / accumulated_weight_list[-1]
 
         # resample particles:
-        self.particles = self._resample()
+        self.particles = self._resample(accumulated_weight_list)
 
         # set pose_estimate
 
 
-    def _resample(self):
+    def _resample(self, accumulated_weight_list):
         new_particles = []
 
-        # stochasticly draw from old sample set
+        # stochasticly draw from old sample set. Generate 8 samples each draw.
+        stochastic_increment = 1.0 / 8
         for i in range(self.particle_set_size - self.random_particles_size):
-            new_particles.append(None)
+            new_particles.append(Particle())
 
         # add uniformly distributed random particles
         for i in range(self.random_particles_size):
