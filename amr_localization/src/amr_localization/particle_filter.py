@@ -5,6 +5,7 @@ NODE = 'particle_filter'
 
 import roslib
 roslib.load_manifest(PACKAGE)
+import copy
 import rospy
 import math
 import random
@@ -102,7 +103,7 @@ class ParticleFilter:
                     random_weight = random_weight - 1.0
                 # find and append particle with the generated weight
                 found_index = self._find_particle(random_weight)
-                new_particles.append(self.particles[found_index])
+                new_particles.append(copy.deepcopy(self.particles[found_index]))
 
         # stochastic draw logic for the remaining particles
         random_num = random.random()
