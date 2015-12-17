@@ -71,13 +71,31 @@ class ParticleFilter:
             accumulated_weight = accumulated_weight + weights[i]
             self.particles[i].weight = accumulated_weight
 
-        # particle redistribution
+        # resample particles:
+        self.particles = self._resample()
 
         # set pose_estimate
 
 
+    def _resample(self):
+        new_particles = []
+
+        # stochasticly draw from old sample set
+        for i in range(self.particle_set_size - self.random_particles_size):
+            new_particles.append(None)
+
+        # add uniformly distributed random particles
+        for i in range(self.random_particles_size):
+            new_particles.append(self.random_particle_generator.generate_particle())
+
+        return new_particles
+
+
     def _find_particle(self, weight):
-        """ return index of particle matching the accumulated weight value """
+        """
+        return index of particle matching the accumulated weight value
+        expects particles' weights to be increasing through the whole list
+        """
         # weight out of range
         if (weight < self.particles[0].weight
                 or weight > self.particles[self.particle_set_size - 1].weight):
