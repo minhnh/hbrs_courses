@@ -83,6 +83,11 @@ class ParticleFilter:
         self.particles = self._resample(accumulated_weight_list)
 
         # set pose_estimate
+        self.pose_estimate = self._cal_pose_estimate()
+
+
+    def _cal_pose_estimate(self):
+        return Pose()
 
 
     def _resample(self, accumulated_weight_list):
@@ -93,8 +98,8 @@ class ParticleFilter:
         stochastic_increment = 1.0 / self._num_sample_per_draw
         num_draw_old_set = self.particle_set_size - self.random_particles_size
 
+        # stochastic draw logic
         while len(new_particles) + self._num_sample_per_draw <= num_draw_old_set:
-            # stochastic draw logic
             random_num = random.random()
             random_weight = random_num
             for i in range(self._num_sample_per_draw):
@@ -104,7 +109,6 @@ class ParticleFilter:
                 # find and append particle with the generated weight
                 found_index = self._find_particle(random_weight)
                 new_particles.append(copy.deepcopy(self.particles[found_index]))
-
         # stochastic draw logic for the remaining particles
         random_num = random.random()
         random_weight = random_num
