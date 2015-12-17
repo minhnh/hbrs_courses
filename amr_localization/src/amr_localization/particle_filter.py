@@ -68,26 +68,41 @@ class ParticleFilter:
 
         # calculate and update acuumulated weights of particles (creating the roulette)
         weights = self.weigh_particles_callback(self.particles)
+        self._weight_mean = sum(weights) / len(weights)
         accumulated_weight = 0.0
         accumulated_weight_list = []
         for i in range(self.particle_set_size):
-            accumulated_weight = accumulated_weight + weights[i]
             self.particles[i].weight = weights[i]
+            accumulated_weight = accumulated_weight + weights[i]
             accumulated_weight_list.append(accumulated_weight)
         # normalize weights
-        for i in range(len(accumulated_weight_list)):
-            self.particles[i].weight = self.particles[i].weight * 1.0 / accumulated_weight_list[-1]
+        for i in range(self.particle_set_size):
             accumulated_weight_list[i] = accumulated_weight_list[i] * 1.0 / accumulated_weight_list[-1]
 
         # resample particles:
         self.particles = self._resample(accumulated_weight_list)
+#        for i in range(self.particle_set_size):
+#            self.particles[i].weight = 1.0
 
         # set pose_estimate
         self.pose_estimate = self._cal_pose_estimate()
 
 
     def _cal_pose_estimate(self):
-        return Pose()
+        """ return the particle with the weight closest to _weight_mean """
+        estimate = None
+        min_weight_diff = 1.0
+        for particle in self.particles:
+            weight_diff = abs(particle.weight - self._weight_mean)
+            if weight_diff < min_weight_diff:
+                estimate = particle
+                min_weight_diff = weight_diff
+#        max_weight = 0.0
+#        for particle in self.particles:
+#            if particle.weight > max_weight:
+#                estimate = particle
+#                max_weight = particle.weight
+        return estimate.pose
 
 
     def _resample(self, accumulated_weight_list):
