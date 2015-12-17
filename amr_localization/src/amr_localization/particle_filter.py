@@ -82,6 +82,9 @@ class ParticleFilter:
         if (weight < self.particles[0].weight
                 or weight > self.particles[self.particle_set_size - 1].weight):
             return -1
+        elif weight <= self.particles[0].weight:
+            # recursive function does not check this case
+            return 0
         else:
             return self._find_particle_re(weight, self.particle_set_size - 1, 0)
 
