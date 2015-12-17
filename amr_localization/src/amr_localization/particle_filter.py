@@ -22,6 +22,7 @@ class ParticleFilter:
         self.motion_model = MotionModel(0.02, 0.01)
         self.random_particle_generator = RandomParticleGenerator(map_min_x, map_max_x, map_min_y, map_max_y)
         self.pose_estimate = Pose()
+        self._num_sample_per_draw = 8
 
         self.particles = []
         for i in range(self.particle_set_size):
@@ -85,11 +86,34 @@ class ParticleFilter:
 
     def _resample(self, accumulated_weight_list):
         new_particles = []
+        random.seed()
 
-        # stochasticly draw from old sample set. Generate 8 samples each draw.
-        stochastic_increment = 1.0 / 8
-        for i in range(self.particle_set_size - self.random_particles_size):
-            new_particles.append(Particle())
+        # stochasticly draw from old sample set.
+        stochastic_increment = 1.0 / self._num_sample_per_draw
+        num_draw_old_set = self.particle_set_size - self.random_particles_size
+
+        while len(new_particles) + self._num_sample_per_draw <= num_draw_old_set:
+            # stochastic draw logic
+            random_num = random.random()
+            random_weight = random_num
+            for i in range(self._num_sample_per_draw):
+                random_weight = random_num + i * stochastic_increment
+                if random_weight > 1.0:
+                    random_weight = random_weight - 1.0
+                # find and append particle with the generated weight
+                found_index = self._find_particle(random_weight)
+                new_particles.append(self.particles[found_index])
+
+        # stochastic draw logic for the remaining particles
+        random_num = random.random()
+        random_weight = random_num
+        for i in range(num_draw_old_set - len(new_particles)):
+            random_weight = random_num + i * stochastic_increment
+            if random_weight > 1.0:
+                random_weight = random_weight - 1.0
+            # find and append particle with the generated weight
+            found_index = self._find_particle(random_weight)
+            new_particles.append(self.particles[found_index])
 
         # add uniformly distributed random particles
         for i in range(self.random_particles_size):
