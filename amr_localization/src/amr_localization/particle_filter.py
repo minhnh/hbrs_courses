@@ -73,6 +73,34 @@ class ParticleFilter:
 
         # particle redistribution
 
+        # set pose_estimate
+
+
+    def _find_particle(self, weight):
+        """ return index of particle matching the accumulated weight value """
+        # weight out of range
+        if (weight < self.particles[0].weight
+                or weight > self.particles[self.particle_set_size - 1].weight):
+            return -1
+        else:
+            return self._find_particle_re(weight, self.particle_set_size - 1, 0)
+
+
+    def _find_particle_re(self, weight, upper_index, lower_index):
+        """ recursively search for weight """
+        mid_index = int((upper_index + lower_index) / 2)
+        # terminal condition - equal weight
+        if weight > self.particles[upper_index].weight:
+            return upper_index
+        # terminal condition - convergence of indices
+        if upper_index == lower_index + 1 or upper_index == lower_index:
+            return upper_index
+        # recursive call
+        if weight > self.particles[mid_index].weight:
+            return self._find_particle_re(weight, upper_index, mid_index)
+        else:
+            return self._find_particle_re(weight, mid_index, lower_index)
+
 
     def get_particles(self):
         return self.particles
