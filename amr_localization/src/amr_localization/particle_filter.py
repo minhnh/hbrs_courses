@@ -24,6 +24,7 @@ class ParticleFilter:
         self.random_particle_generator = RandomParticleGenerator(map_min_x, map_max_x, map_min_y, map_max_y)
         self.pose_estimate = Pose()
         self._num_sample_per_draw = 8
+        self._weight_mean = 0.0
 
         self.particles = []
         for i in range(self.particle_set_size):
@@ -122,7 +123,7 @@ class ParticleFilter:
                 if random_weight > 1.0:
                     random_weight = random_weight - 1.0
                 # find and append particle with the generated weight
-                found_index = self._find_particle(random_weight)
+                found_index = self._find_particle(random_weight, accumulated_weight_list)
                 new_particles.append(copy.deepcopy(self.particles[found_index]))
         # stochastic draw logic for the remaining particles
         random_num = random.random()
@@ -132,8 +133,8 @@ class ParticleFilter:
             if random_weight > 1.0:
                 random_weight = random_weight - 1.0
             # find and append particle with the generated weight
-            found_index = self._find_particle(random_weight)
-            new_particles.append(self.particles[found_index])
+            found_index = self._find_particle(random_weight, accumulated_weight_list)
+            new_particles.append(copy.deepcopy(self.particles[found_index]))
 
         # add uniformly distributed random particles
         for i in range(self.random_particles_size):
@@ -142,36 +143,36 @@ class ParticleFilter:
         return new_particles
 
 
-    def _find_particle(self, weight):
+    def _find_particle(self, weight, accumulated_weight_list):
         """
         return index of particle matching the accumulated weight value
         expects particles' weights to be increasing through the whole list
         """
         # weight out of range
-        if (weight < self.particles[0].weight
-                or weight > self.particles[self.particle_set_size - 1].weight):
+        if (weight < accumulated_weight_list[0]
+                or weight > accumulated_weight_list[self.particle_set_size - 1]):
             return -1
-        elif weight <= self.particles[0].weight:
+        elif weight <= accumulated_weight_list[0]:
             # recursive function does not check this case
             return 0
         else:
-            return self._find_particle_re(weight, self.particle_set_size - 1, 0)
+            return self._find_particle_re(weight, accumulated_weight_list, self.particle_set_size - 1, 0)
 
 
-    def _find_particle_re(self, weight, upper_index, lower_index):
+    def _find_particle_re(self, weight, accumulated_weight_list, upper_index, lower_index):
         """ recursively search for weight """
         mid_index = int((upper_index + lower_index) / 2)
         # terminal condition - equal weight
-        if weight > self.particles[upper_index].weight:
+        if weight > accumulated_weight_list[upper_index]:
             return upper_index
         # terminal condition - convergence of indices
         if upper_index == lower_index + 1 or upper_index == lower_index:
             return upper_index
         # recursive call
-        if weight > self.particles[mid_index].weight:
-            return self._find_particle_re(weight, upper_index, mid_index)
+        if weight > accumulated_weight_list[mid_index]:
+            return self._find_particle_re(weight, accumulated_weight_list, upper_index, mid_index)
         else:
-            return self._find_particle_re(weight, mid_index, lower_index)
+            return self._find_particle_re(weight, accumulated_weight_list, mid_index, lower_index)
 
 
     def get_particles(self):
