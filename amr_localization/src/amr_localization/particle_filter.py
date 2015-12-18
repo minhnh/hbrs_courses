@@ -62,6 +62,7 @@ class ParticleFilter:
                      self.pose_estimate = selected_particle.pose
         ============================================================================
         '''
+        ''' Works better with provided pose_likelihood binary '''
         # apply motion model to particles
         self.motion_model.setMotion(x, y, yaw)
         for particle in self.particles:
@@ -85,8 +86,6 @@ class ParticleFilter:
 
         # resample particles:
         self.particles = self._resample(accumulated_weight_list)
-#        for i in range(self.particle_set_size):
-#            self.particles[i].weight = 1.0
 
         # set pose_estimate
         self.pose_estimate = self._cal_pose_estimate()
@@ -108,11 +107,6 @@ class ParticleFilter:
             if weight_diff < min_weight_diff:
                 estimate = particle
                 min_weight_diff = weight_diff
-#        max_weight = 0.0
-#        for particle in self.particles:
-#            if particle.weight > max_weight:
-#                estimate = particle
-#                max_weight = particle.weight
         return estimate.pose
 
 
