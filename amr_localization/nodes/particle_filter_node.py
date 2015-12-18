@@ -150,9 +150,11 @@ class ParticleFilterNode:
             pose.pose.orientation = Quaternion(quat[0],quat[1],quat[2],quat[3])
             request.poses.append(pose)
 
-        #TODO safe service request
-        response = self.pose_likelihood_client_(request)
-        return response.likelihoods
+        try:
+            response = self.pose_likelihood_client_(request)
+            return response.likelihoods
+        except rospy.ServiceException:
+            return None
 
     # This callback is triggered when someone sends a message with a pose
     # estimate to the "~/pose_estimate" topic.
