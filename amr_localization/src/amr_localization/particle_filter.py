@@ -69,6 +69,9 @@ class ParticleFilter:
 
         # calculate and update acuumulated weights of particles (creating the roulette)
         weights = self.weigh_particles_callback(self.particles)
+        if weights is None:
+            rospy.logdebug("No data received from weigh_particles_callback")
+            return
         self._weight_mean = sum(weights) / len(weights)
         accumulated_weight = 0.0
         accumulated_weight_list = []
@@ -91,10 +94,17 @@ class ParticleFilter:
 
     def _cal_pose_estimate(self):
         """ return the particle with the weight closest to _weight_mean """
+        best_particles = []
+        best_sum = 0.0
+        for particle in self.particles:
+            if particle.weight > self._weight_mean:
+                best_particles.append(particle)
+                best_sum = best_sum + particle.weight
+        best_mean = best_sum / len(best_particles)
         estimate = None
         min_weight_diff = 1.0
-        for particle in self.particles:
-            weight_diff = abs(particle.weight - self._weight_mean)
+        for particle in best_particles:
+            weight_diff = abs(particle.weight - best_mean)
             if weight_diff < min_weight_diff:
                 estimate = particle
                 min_weight_diff = weight_diff
@@ -107,10 +117,23 @@ class ParticleFilter:
 
 
     def _resample(self, accumulated_weight_list):
+        """ resample new set of particles for next iteration """
+        # stochasticly draw from old sample set
+        new_particles = self._draw_stochastic(accumulated_weight_list)
+
+        # add uniformly distributed random particles
+        for i in range(self.random_particles_size):
+            new_particles.append(self.random_particle_generator.generate_particle())
+
+        return new_particles
+
+
+    def _draw_stochastic(self, accumulated_weight_list):
+        """ stochastic draw implementation """
         new_particles = []
+
         random.seed()
 
-        # stochasticly draw from old sample set.
         stochastic_increment = 1.0 / self._num_sample_per_draw
         num_draw_old_set = self.particle_set_size - self.random_particles_size
 
@@ -135,10 +158,6 @@ class ParticleFilter:
             # find and append particle with the generated weight
             found_index = self._find_particle(random_weight, accumulated_weight_list)
             new_particles.append(copy.deepcopy(self.particles[found_index]))
-
-        # add uniformly distributed random particles
-        for i in range(self.random_particles_size):
-            new_particles.append(self.random_particle_generator.generate_particle())
 
         return new_particles
 
