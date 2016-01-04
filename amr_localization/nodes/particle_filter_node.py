@@ -84,7 +84,7 @@ class ParticleFilterNode:
         try:
             now = rospy.Time.now()
             #TODO wait for transform
-            transform = self._tf.lookupTransform('base_link', 'odom', now)
+            transform = self._tf.lookupTransform('base_link', 'odom', rospy.Time(0))
             transform = tf.TransformerROS().fromTranslationRotation(transform[0],transform[1])
         except tf.Exception, e:
             rospy.logerr('Service call failed: %s'%e)

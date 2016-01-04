@@ -58,6 +58,7 @@ class ParticleFilter:
                      self.pose_estimate = selected_particle.pose
         ============================================================================
         '''
+        self.pose_estimate = self.random_particle_generator.generate_particle().pose
         pass
 
 
