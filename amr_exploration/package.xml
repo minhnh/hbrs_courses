@@ -1,0 +1,59 @@
+<package>
+  <name>amr_exploration</name>
+  <version>1.0.0</version>
+  <description>amr_exploration</description>
+  <maintainer email="alexander.hagg@inf.h-brs.de">Alexander Hagg</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website"></url>
+  <!-- <url type="bugtracker"></url> -->
+
+  <author>Alexander Hagg</author>
+
+  <!-- Dependencies which this package needs to build itself. -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Dependencies needed to compile this package. -->
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>pcl_ros</build_depend>
+  <build_depend>amr_msgs</build_depend>
+  <build_depend>amr_srvs</build_depend>
+  <build_depend>amr_mapping</build_depend>
+  <build_depend>amr_stage</build_depend>
+  <build_depend>amr_perception</build_depend>
+  <build_depend>amr_navigation</build_depend>
+
+  <!-- Dependencies needed after this package is compiled. -->
+  <run_depend>roscpp</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>pcl_ros</run_depend>
+  <run_depend>amr_msgs</run_depend>
+  <run_depend>amr_srvs</run_depend>
+  <run_depend>amr_mapping</run_depend>
+  <run_depend>amr_stage</run_depend>
+  <run_depend>amr_perception</run_depend>
+  <run_depend>amr_navigation</run_depend>
+
+  <!-- Dependencies needed only for running tests. -->
+  <!-- <test_depend>roscpp</test_depend> -->
+  <!-- <test_depend>rospy</test_depend> -->
+  <!-- <test_depend>std_msgs</test_depend> -->
+  <!-- <test_depend>nav_msgs</test_depend> -->
+  <!-- <test_depend>sensor_msgs</test_depend> -->
+  <!-- <test_depend>pcl_ros</test_depend> -->
+  <!-- <test_depend>amr_msgs</test_depend> -->
+  <!-- <test_depend>amr_srvs</test_depend> -->
+  <!-- <test_depend>amr_mapping</test_depend> -->
+  <!-- <test_depend>amr_stage</test_depend> -->
+  <!-- <test_depend>amr_perception</test_depend> -->
+  <!-- <test_depend>amr_navigation</test_depend> -->
+
+</package>
