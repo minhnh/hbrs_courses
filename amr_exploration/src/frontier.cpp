@@ -4,6 +4,7 @@
 #include <pcl/kdtree/kdtree.h>
 #include <pcl/point_types.h>
 #include <pcl/common/centroid.h>
+#include <typeinfo>
 
 Frontier::Frontier(const nav_msgs::OccupancyGridConstPtr& occupancy_grid)
 : frontier_(new PointCloud)
@@ -42,6 +43,7 @@ Frontier::Frontier(const nav_msgs::OccupancyGridConstPtr& occupancy_grid)
   {
     frontier_clusters_.resize(0);
     frontier_clusters_centroids_.resize(0);
+    frontier_clusters_sizes_.resize(0);
     return;
   }
 
@@ -60,6 +62,8 @@ Frontier::Frontier(const nav_msgs::OccupancyGridConstPtr& occupancy_grid)
   // Step 3: create a pointcloud for each cluster and compute its centroid
   frontier_clusters_.resize(cluster_indices.size());
   frontier_clusters_centroids_.resize(cluster_indices.size());
+  frontier_clusters_sizes_.resize(cluster_indices.size());
+
   for (size_t i = 0; i < cluster_indices.size(); i++)
   {
     frontier_clusters_[i] = boost::make_shared<PointCloud>();
@@ -67,6 +71,7 @@ Frontier::Frontier(const nav_msgs::OccupancyGridConstPtr& occupancy_grid)
     Eigen::Vector4f centroid;
     pcl::compute3DCentroid(*frontier_clusters_[i], centroid);
     frontier_clusters_centroids_[i].getVector4fMap() = centroid;
+    frontier_clusters_sizes_[i] = frontier_clusters_[i]->points.size()/3;
   }
 }
 

@@ -9,6 +9,7 @@
 #include <actionlib/client/simple_action_client.h>
 
 #include <sensor_msgs/PointCloud2.h>
+#include <std_msgs/UInt16.h>
 #include <geometry_msgs/Pose2D.h>
 #include <amr_msgs/ExecutePathAction.h>
 #include <amr_msgs/PathExecutionFailure.h>
@@ -41,11 +42,11 @@ public:
     frontier_clusters_publisher_.publish<Frontier::Point>(frontier.getClusterPointClouds());
 
     auto centroids = frontier.getClusterCentroids();
+    auto centroid_sizes = frontier.getClusterSizes();
     //world_is_explored_ = centroids.size() == 0;
 
     amr_msgs::Frontiers targets;
 
-    targets_.clear();
     for (const auto& centroid : centroids)
     {
       geometry_msgs::Pose2D ctr;
@@ -54,6 +55,14 @@ public:
       ctr.theta = 0;
       targets.centroids.push_back(ctr);
     }
+    
+    for (const auto& c_size : centroid_sizes)
+    {
+      std_msgs::UInt16 siz;
+      siz.data = c_size;
+      targets.sizes.push_back(siz);
+    }
+    
     frontier_centroid_publisher_.publish(targets);
     ROS_INFO("Received new frontier, created %zu targets.", targets.centroids.size());
   }
@@ -67,7 +76,6 @@ private:
   ros::Publisher frontier_publisher_;
   ros::Publisher frontier_centroid_publisher_;
   ClusteredPointCloudVisualizer frontier_clusters_publisher_;
-  std::list<geometry_msgs::Pose2D> targets_;
 
 };
 
