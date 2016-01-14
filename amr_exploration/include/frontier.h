@@ -41,11 +41,19 @@ public:
     return frontier_clusters_centroids_;
   }
 
+  /** Get a vector of centroids of clusters in which the frontier was split. */
+  const std::vector<uint>& getClusterSizes() const
+  {
+    return frontier_clusters_sizes_;
+  }
+
+
 private:
 
   PointCloud::Ptr frontier_;
   std::vector<PointCloud::Ptr> frontier_clusters_;
   PointCloud::VectorType frontier_clusters_centroids_;
+  std::vector<uint> frontier_clusters_sizes_;
 
 };
 
