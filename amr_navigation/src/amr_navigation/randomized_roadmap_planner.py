@@ -87,7 +87,7 @@ class RandomizedRoadmapPlanner:
         should be empty.
         """
         #reset number of trials
-        self.number_of_trials = 500
+        self.number_of_trials = 50
 
         self.search_result = False
         self.output_path = list()
