@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(amr_msgs)
 
 # Load catkin and all dependencies required for this package
-find_package(catkin REQUIRED 
+find_package(catkin REQUIRED
   COMPONENTS
     genmsg
     actionlib
@@ -11,6 +11,7 @@ find_package(catkin REQUIRED
     sensor_msgs
     geometry_msgs
     nav_msgs
+    std_msgs
 )
 
 include_directories(include ${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS})
@@ -30,9 +31,9 @@ add_message_files(
 
 add_action_files(
   DIRECTORY
-    action 
-  FILES 
-    ExecutePath.action 
+    action
+  FILES
+    ExecutePath.action
     MoveTo.action
 )
 
