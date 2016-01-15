@@ -59,7 +59,7 @@ class PathPlannerNode:
             # silently skip visualization
             pass
         if not len(path):
-            rospy.logwarn('Failed to find a path.')
+            rospy.logwarn(self.__class__.__name__ + ': Failed to find a path.')
             return None
         # Convert the path output by the planner to ROS message
         path_msg = Path()

@@ -94,7 +94,8 @@ class RandomizedRoadmapPlanner:
         start_node_id = self.next_id()
         end_node_id = self.next_id()
 
-        if not self.is_valid_points(point1, point2) :
+        if not self.is_valid_points(point1, point2):
+            rospy.logwarn(self.__class__.__name__ + ": invalid points")
             return self.output_path #return empty list
         else:
             # add point1, point2 to the graph
