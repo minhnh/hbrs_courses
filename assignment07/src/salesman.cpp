@@ -80,7 +80,7 @@ float Salesman::fullDist(vector<City> cities) {
 }
 
 /* Calculate distance around 2 cities to see if a swap should be done */
-bool Salesman::should_swap(vector<City> cities, int i, int j) {
+float Salesman::swap_distance_change(vector<City> cities, int i, int j) {
     int front_i = (i > 0) ? i - 1 : cities.size() - 1;
     int front_j = (j > 0) ? j - 1 : cities.size() - 1;
     int back_i = (i < cities.size() - 1) ? i + 1 : 0;
@@ -93,7 +93,12 @@ bool Salesman::should_swap(vector<City> cities, int i, int j) {
                         distance(cities[j], cities[back_i]) +
                         distance(cities[front_j], cities[i]) +
                         distance(cities[i], cities[back_j]);
-    if (after_swap < before_swap)
+    return after_swap - before_swap;
+}
+
+/* Calculate distance around 2 cities to see if a swap should be done */
+bool Salesman::should_swap(vector<City> cities, int i, int j) {
+    if (swap_distance_change(cities, i, j) < 0.0)
         return true;
     else
         return false;
@@ -116,7 +121,12 @@ vector<City> Salesman::wrongHillClimb(vector<City> cities_in) {
 /* Implement Hill Climbing algorithm */
 vector<City> Salesman::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
-    for (int i = 0; i < cities.size(); i++) {
+    for (int i = 0, k = 1; i < cities.size(); i++) {
+        if (i == cities.size() - 1) {
+            k = 0;
+        } else {
+            k = i + 1;
+        }
         for (int j = 0; j < cities.size(); j++) {
             // swap only if not same city and should_swap() returns true
             if (i != j && should_swap(cities, i, j)) {

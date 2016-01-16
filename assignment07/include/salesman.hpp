@@ -15,6 +15,7 @@ class Salesman {
         vector<City> hillClimb(vector<City> cities_in);
         float fullDist(vector<City> cities);
         float distance(City city1, City city2);
+        float swap_distance_change(vector<City> cities, int i, int j);
         bool should_swap(vector<City> cities, int i, int j);
         vector<City> readFile(ifstream & in_file);
 
