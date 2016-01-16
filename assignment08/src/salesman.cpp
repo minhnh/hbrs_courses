@@ -82,19 +82,7 @@ float Salesman::fullDist(vector<City> cities) {
 
 /* Calculate distance around 2 cities to see if a swap should be done */
 bool Salesman::should_swap(vector<City> cities, int i, int j) {
-    int front_i = (i > 0) ? i - 1 : cities.size() - 1;
-    int front_j = (j > 0) ? j - 1 : cities.size() - 1;
-    int back_i = (i < cities.size() - 1) ? i + 1 : 0;
-    int back_j = (j < cities.size() - 1) ? j + 1 : 0;
-    float before_swap = distance(cities[front_i], cities[i]) +
-                        distance(cities[i], cities[back_i]) +
-                        distance(cities[front_j], cities[j]) +
-                        distance(cities[j], cities[back_j]);
-    float after_swap  = distance(cities[front_i], cities[j]) +
-                        distance(cities[j], cities[back_i]) +
-                        distance(cities[front_j], cities[i]) +
-                        distance(cities[i], cities[back_j]);
-    if (after_swap < before_swap)
+    if (compare_successor_node_value(cities, i, j) > 0.0)
         return true;
     else
         return false;
@@ -106,15 +94,32 @@ float Salesman::compare_successor_node_value(vector<City> cities, int i, int j) 
     int front_j = (j > 0) ? j - 1 : cities.size() - 1;
     int back_i = (i < cities.size() - 1) ? i + 1 : 0;
     int back_j = (j < cities.size() - 1) ? j + 1 : 0;
-    float before_swap = distance(cities[front_i], cities[i]) +
-                        distance(cities[i], cities[back_i]) +
-                        distance(cities[front_j], cities[j]) +
-                        distance(cities[j], cities[back_j]);
-                                                    		
-    float after_swap  = distance(cities[front_i], cities[j]) +
-                        distance(cities[j], cities[back_i]) +
-                        distance(cities[front_j], cities[i]) +
-                        distance(cities[i], cities[back_j]);
+    float before_swap, after_swap;
+
+    if (back_i == j) {
+        // special case 1: j is right after i
+        before_swap = distance(cities[front_i], cities[i]) +
+                      distance(cities[j], cities[back_j]);
+        after_swap =  distance(cities[front_i], cities[j]) +
+                      distance(cities[i], cities[back_j]);
+    } else if (front_i == j) {
+        // special case 2: i is right after j
+        before_swap = distance(cities[front_j], cities[j]) +
+                      distance(cities[i], cities[back_i]);
+        after_swap =  distance(cities[front_j], cities[i]) +
+                      distance(cities[j], cities[back_i]);
+    } else {
+        // general case
+        before_swap = distance(cities[front_i], cities[i]) +
+                      distance(cities[i], cities[back_i]) +
+                      distance(cities[front_j], cities[j]) +
+                      distance(cities[j], cities[back_j]);
+
+        after_swap  = distance(cities[front_i], cities[j]) +
+                      distance(cities[j], cities[back_i]) +
+                      distance(cities[front_j], cities[i]) +
+                      distance(cities[i], cities[back_j]);
+    }
     //The smaller the distance, the higher the value of a node
     //The returned value is the delta_E in the pseudo code
 	return before_swap - after_swap;
@@ -168,7 +173,7 @@ void Salesman::random_restart_hill_climb() {
 void Salesman::simulated_annealing(double minute)
 {
 	srand (time(NULL));
-	
+
 	float full_dist = fullDist(cities);
 	float shortest_dist = 17000;
 	float chance = 0.0;
@@ -176,19 +181,19 @@ void Salesman::simulated_annealing(double minute)
 	int i = 0;
 	int j = 0;
 	double dice = 0.0;
-	
-	//Timing variables 
+
+	//Timing variables
 	//Duration is in second
 	float duration = minute * 60;
-	float T = 1;	
+	float T = 1;
 	float T_old = 1;
 	float scheduler = 0.0;
 	auto start = chrono::steady_clock::now();
 	auto now = chrono::steady_clock::now();
-	auto diff = now - start; 
-	
+	auto diff = now - start;
+
 	while(duration - T > 0)
-	{	
+	{
 		//Select a random successor node
 		do
 		{
@@ -196,7 +201,7 @@ void Salesman::simulated_annealing(double minute)
 			j = rand() % cities.size();
 		}
 		while (i == j);
-		
+
 		//Compare value of the current node and the next node
 		//Shorter distance means higher delta_E
 		delta_E = compare_successor_node_value(cities, i, j);
@@ -205,7 +210,7 @@ void Salesman::simulated_annealing(double minute)
 		now = chrono::steady_clock::now();
 		T = chrono::duration_cast<chrono::seconds>(now - start).count();
 		scheduler = (10 * pow(0.8, T));
-		 
+
 		if (delta_E > 0)
 		{
 			//Distance of next node is lower than the current node
@@ -224,23 +229,23 @@ void Salesman::simulated_annealing(double minute)
 				full_dist = fullDist(cities);
 			}
 		}
-		
-		
+
+
 		//Result is only printed once per second.
 		if (T_old != T)
 		{
-			printf("Distance: %8.2f - Time left: %.2f s \n", 
+			printf("Distance: %8.2f - Time left: %.2f s \n",
 							full_dist, duration - T);
 		}
 		T_old = T;
-		
-		
+
+
 		if (full_dist < shortest_dist)
 		{
 			shortest_dist = full_dist;
 		}
 	}
-	printf("Shortest distance: %8.2f - Time: %.2f s \n", 
+	printf("Shortest distance: %8.2f - Time: %.2f s \n",
 							shortest_dist, duration);
-	
+
 }
