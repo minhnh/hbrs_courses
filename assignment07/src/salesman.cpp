@@ -85,15 +85,34 @@ float Salesman::swap_distance_change(vector<City> cities, int i, int j) {
     int front_j = (j > 0) ? j - 1 : cities.size() - 1;
     int back_i = (i < cities.size() - 1) ? i + 1 : 0;
     int back_j = (j < cities.size() - 1) ? j + 1 : 0;
-    float before_swap = distance(cities[front_i], cities[i]) +
-                        distance(cities[i], cities[back_i]) +
-                        distance(cities[front_j], cities[j]) +
-                        distance(cities[j], cities[back_j]);
-    float after_swap  = distance(cities[front_i], cities[j]) +
-                        distance(cities[j], cities[back_i]) +
-                        distance(cities[front_j], cities[i]) +
-                        distance(cities[i], cities[back_j]);
-    return after_swap - before_swap;
+    float before_swap, after_swap;
+
+    if (back_i == j) {
+        // special case 1: j is right after i
+        before_swap = distance(cities[front_i], cities[i]) +
+                      distance(cities[j], cities[back_j]);
+        after_swap =  distance(cities[front_i], cities[j]) +
+                      distance(cities[i], cities[back_j]);
+    } else if (front_i == j) {
+        // special case 2: i is right after j
+        before_swap = distance(cities[front_j], cities[j]) +
+                      distance(cities[i], cities[back_i]);
+        after_swap =  distance(cities[front_j], cities[i]) +
+                      distance(cities[j], cities[back_i]);
+    } else {
+        // general case
+        before_swap = distance(cities[front_i], cities[i]) +
+                      distance(cities[i], cities[back_i]) +
+                      distance(cities[front_j], cities[j]) +
+                      distance(cities[j], cities[back_j]);
+
+        after_swap  = distance(cities[front_i], cities[j]) +
+                      distance(cities[j], cities[back_i]) +
+                      distance(cities[front_j], cities[i]) +
+                      distance(cities[i], cities[back_j]);
+    }
+
+    return (after_swap - before_swap);
 }
 
 /* Calculate distance around 2 cities to see if a swap should be done */
@@ -104,7 +123,7 @@ bool Salesman::should_swap(vector<City> cities, int i, int j) {
         return false;
 }
 
-/* Implement Hill Climbing algorithm */
+/* Implement Hill Climbing algorithm - old faster method */
 vector<City> Salesman::wrongHillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
     for (int i = 0; i < cities.size(); i++) {
@@ -121,19 +140,31 @@ vector<City> Salesman::wrongHillClimb(vector<City> cities_in) {
 /* Implement Hill Climbing algorithm */
 vector<City> Salesman::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
-    for (int i = 0, k = 1; i < cities.size(); i++) {
-        if (i == cities.size() - 1) {
-            k = 0;
-        } else {
-            k = i + 1;
-        }
-        for (int j = 0; j < cities.size(); j++) {
-            // swap only if not same city and should_swap() returns true
-            if (i != j && should_swap(cities, i, j)) {
-                swap(cities[i], cities[j]);
+    float min_change;
+
+    do {
+        int min_swap_index = -1;
+        float change = 0.0f;
+        // Change should be less than 0.0
+        min_change = 0.0f;
+
+        for (int i = 0; i < cities.size() - 1; i++) {
+            // Calculate distance change
+            change = swap_distance_change(cities, i, i + 1);
+            // Update if distance is smaller
+            if (change < min_change) {
+                min_change = change;
+                min_swap_index = i;
             }
         }
-    }
+
+        // updated min_swap_index will be >= 0
+        if (min_swap_index >= 0) {
+            swap(cities[min_swap_index], cities[min_swap_index + 1]);
+        }
+
+    } while (min_change < 0.0f); // Stop if distance can't be decreased
+
     return cities;
 }
 
