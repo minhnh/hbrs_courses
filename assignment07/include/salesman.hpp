@@ -11,7 +11,7 @@ class Salesman {
     private:
         vector<City> cities;
         float best_full_distance;
-
+        vector<City> wrongHillClimb(vector<City> cities_in);
         vector<City> hillClimb(vector<City> cities_in);
         float fullDist(vector<City> cities);
         float distance(City city1, City city2);

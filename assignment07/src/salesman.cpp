@@ -100,6 +100,20 @@ bool Salesman::should_swap(vector<City> cities, int i, int j) {
 }
 
 /* Implement Hill Climbing algorithm */
+vector<City> Salesman::wrongHillClimb(vector<City> cities_in) {
+    vector<City> cities(cities_in);
+    for (int i = 0; i < cities.size(); i++) {
+        for (int j = 0; j < cities.size(); j++) {
+            // swap only if not same city and should_swap() returns true
+            if (i != j && should_swap(cities, i, j)) {
+                swap(cities[i], cities[j]);
+            }
+        }
+    }
+    return cities;
+}
+
+/* Implement Hill Climbing algorithm */
 vector<City> Salesman::hillClimb(vector<City> cities_in) {
     vector<City> cities(cities_in);
     for (int i = 0; i < cities.size(); i++) {
