@@ -1,0 +1,15 @@
+<package format="2">
+    <name>face_detection_verilook</name>
+    <version>1.0.0</version>
+    <description>Implementation of the Verilook tool chain in ROS</description>
+    <maintainer email="minh.nguyen@smail.inf.h-brs.de">Minh Nguyen</maintainer>
+    <author>Minh Nguyen</author>
+    <license>LGPL</license>
+
+    <buildtool_depend>catkin</buildtool_depend>
+    <depend>cmake_modules</depend>
+    <depend>roscpp</depend>
+    <!--depend></depend>
+    <depend></depend-->
+
+</package>
