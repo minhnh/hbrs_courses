@@ -3,6 +3,7 @@ project(face_detection_verilook)
 
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
+    roscpp
 	${catkin_BUILD_PACKAGES}
 )
 
@@ -15,6 +16,11 @@ include_directories(
 )
 
 ## CPP executables
-add_executable(face_detection_verilook
+add_executable(${PROJECT_NAME}
     src/face_detection_verilook.cpp
+)
+
+## Linkers
+target_link_libraries(${PROJECT_NAME}
+    ${catkin_LIBRARIES}
 )
