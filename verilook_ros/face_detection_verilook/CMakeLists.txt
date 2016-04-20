@@ -4,6 +4,8 @@ project(face_detection_verilook)
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
     roscpp
+    nodelet
+    std_msgs
 	${catkin_BUILD_PACKAGES}
 )
 
