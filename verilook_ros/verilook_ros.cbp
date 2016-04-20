@@ -32,7 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.cpp" />
+		<Unit filename="face_detection_verilook/CMakeLists.txt" />
+		<Unit filename="face_detection_verilook/package.xml" />
+		<Unit filename="face_detection_verilook/src/face_detection_verilook_node.cpp" />
+		<Unit filename="face_detection_verilook/src/face_detection_verilook_nodelet.cpp" />
+		<Unit filename="face_recognition_verilook/CMakeLists.txt" />
+		<Unit filename="face_recognition_verilook/package.xml" />
 		<Extensions>
 			<code_completion />
 			<debugger />

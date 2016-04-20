@@ -19,7 +19,8 @@ include_directories(
 
 ## CPP executables
 add_executable(${PROJECT_NAME}
-    src/face_detection_verilook.cpp
+    src/face_detection_verilook_node.cpp
+    src/face_detection_verilook_nodelet.cpp
 )
 
 ## Linkers
