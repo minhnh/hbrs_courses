@@ -1,0 +1,29 @@
+digraph G {
+"odom" -> "base_footprint"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.100 ( 0.000 sec old)\nBuffer length: 9.500 sec\n"];
+"base_link" -> "base_laser_front_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"base_footprint" -> "base_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_braitenberg_link" -> "sonar_braitenberg_0_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"base_link" -> "sonar_braitenberg_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_braitenberg_link" -> "sonar_braitenberg_1_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_0_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"base_link" -> "sonar_pioneer_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_10_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_11_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_12_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_13_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_14_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_15_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_1_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_2_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_3_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_4_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_5_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_6_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_7_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_8_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+"sonar_pioneer_link" -> "sonar_pioneer_9_link"[label="Broadcaster: /stage\nAverage rate: 10.105 Hz\nMost recent transform: 1270.500 ( -0.400 sec old)\nBuffer length: 9.500 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1270.100"[ shape=plaintext ] ;
+ }->"odom";
+}
