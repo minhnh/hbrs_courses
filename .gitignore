@@ -1,4 +1,6 @@
+# python
 .ipynb_checkpoints/
+# cmake
 */build/CMakeCache.txt
 */build/CMakeFiles/
 */build/Makefile
@@ -14,3 +16,16 @@
 *.dvi
 *.pdf
 *.gz
+# Java eclipse
+.metadata/
+.classpath
+.project
+.recommenders/
+.settings/
+# C, C++
+bin/
+test/
+META-INF/
+samples/
+images/
+*.ser
