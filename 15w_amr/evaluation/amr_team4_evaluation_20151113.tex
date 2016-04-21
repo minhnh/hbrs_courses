@@ -1,0 +1,70 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{multirow}
+
+% Set margins
+\usepackage[margin=1in]{geometry}
+
+% Header and footer formating Must be after geometry.
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{M. Nguyen, K. Al-Kady	\& S. K. Kannaiah }
+\rhead{AMR Lab - Consolidation}
+\cfoot{\thepage}	
+
+% Verical stretch in tables
+\renewcommand{\arraystretch}{1.2}
+
+% Make title closer to top of page
+\usepackage{titling}
+\setlength{\droptitle}{-4em}
+\title{Autonomous Mobile Robots Lab\\
+Consolidation}
+\author{Minh Nguyen, Khaled Al-Kady and Sai Kiran Kannaiah}
+\date{Due date: Thursday, November 13 2015}
+
+\begin{document}
+
+\maketitle
+
+\begin{table}[h!]%
+    \begin{center}
+    \begin{tabular}{|p{2cm}|p{2.5cm}|p{3cm}|p{3cm}|p{3cm}|}
+    \hline
+    \multirow{2}{*}{Project} & \multirow{2}{*}{Test case} & \multicolumn{3}{|c|}{Repository}\\\cline{3-5}
+                             &                            & Minh & Khaled & Sai Kira        \\
+    \hline
+    \multirow{3}{*}{\parbox{1.5cm}{navigation}}
+                             & small distance    & no oscillation   & oscillates    & unstable \\\cline{2-5}
+                             & y-axis translation& very slow but no
+                                                   oscillation      & oscillates    & oscillates \\\cline{2-5}
+                             & simultaneous
+                               rotation and
+                               translation       & supported        & not supported & not supported \\\cline{2-5}
+    \hline
+    \multirow{3}{*}{\parbox{1.5cm}{wall follower}}
+                             & small convex      & no crash         & crashes       & crashes \\\cline{2-5}
+                             & stability         & smooth along
+                                                   walls            & smooth        & shaky \\\cline{2-5}
+    \hline
+    \multirow{3}{*}{\parbox{1.5cm}{bug 2}}
+                             & loop checking     & supported        & not supported & not supported \\\cline{2-5}
+                             & omni-drive        & supported but
+                                                   wall-follower
+                                                   causes problems  & not supported & not supported \\\cline{2-5}
+                             & goal unreachable
+                               test after wall
+                               following         & fails            & stop
+                                                                      prematurely   & not supported \\\cline{2-5}
+    \hline
+    \end{tabular}
+    \end{center}
+    \caption{Table comparing repositories}%
+    \label{Table comparing repositories}%
+\end{table}
+
+Decision: chose Minh's repository for all three projects. Issues are tracked for future improvement.
+
+\end{document}
