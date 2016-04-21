@@ -1,0 +1,559 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{titling}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\graphicspath{{.}}
+
+\usepackage[margin=1in]{geometry}
+
+% Must be after geometry
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AIR Homework 9}
+\lhead{M. Nguyen, B. Ha \& E. Ovchinnikova}
+\cfoot{\thepage}
+
+\setlength{\droptitle}{-5em}
+
+\title{Artificial Intelligence for Robots \\
+				- Homework 9 -}
+\author{Minh Nguyen, Bach Ha \& Evgenia Ovchinnikova}
+\date{Lecture date: 1 December 2015}
+
+\begin{document}
+
+\maketitle
+
+\section{Theoretical questions}
+    \begin{itemize}
+        \item \emph{What is a strategy?}\\
+            A strategy is a set of rules that specifies an agent's action in every possible situation.
+        \item \emph{What is the goal of Max agent?}\\
+        	The goal of Max agent is to maximize the Max’s expected utility.
+        \item \emph{What is the goal of Min agent?}\\
+        	The goal of Min agent is to minimize the Max’s expected utility.
+        \item \emph{What is the Minimax Theorem?}\\
+        	Minimax theorem is about a two-person finite zero-sum game G. The two players are Min and Max.
+        		There are two strategies s* and t* and the game G's minimax value: $V_G$.
+        	\begin{itemize}
+        		\item If Min uses t*, Max's expected utility would be smaller or equal to $V_G$.
+        		\item If Max uses s*, Max's expected utility would be greater or equal to $V_G$.
+			\end{itemize}      
+		\item \emph{How do we construct an strategy for Max?}\\
+			At the node, where it is Max's turn, chooses one branch. At the node, where it is Min's turn, 
+			takes all branchs into consideration.
+		\item \emph{How do we construct an strategy for Min?}\\
+			At the node, where it is Min's turn, chooses one branch. At the node, where it is Max's turn, 
+			takes all branchs into consideration.	
+		\item \emph{How do we find the best strategy?}\\
+			Brute-force algorithm, Minimax algorithm or alpha-beta pruning algorithm can be used to find the
+			best strategy.
+		\item \emph{How does the Minimax algorithm work?}\\		      
+			Agents decide action using the minimax value of the node. In minimax algorithm, the minimax value of a node
+			is calculated from the its branch. When it is Max's turn, the minimax value of a node is the highest minimax 
+			value of its branchs. During Min's turn, the minimax value of a node is the smallest minimax value of its branchs.
+		\item \emph{Is the Minimax algorithm affordable for chess? Why?}\\
+			No. Because the branching factor ($b \approx 35$) and max-depth ($b \approx 100$) of chess are too high, 
+			there would be around $35^{100}$ nodes, thus the search would take an unaffordable amount of time.
+		\item \emph{What is alpha-beta pruning?}\\
+			Alpha-beta pruning means stop computing the value of branchs in which, the value is worse
+			than the current best founded value.
+		\item \emph{Is the alpha-beta pruning affordable for chess? Why?}\\
+			No. Because even with the best move ordering, the time complexity is still $35^{50}$.
+    \end{itemize}
+    
+\section{Packages delivery}
+
+To solve this constraint satisfaction problem we've implemented a depth-first-search with backtracking algorithm. The program could be run with different scenarios and the following strategies:
+\begin{itemize}
+\item  Line number in the list
+\item Euclidean distance
+\item Time to deadline
+\end{itemize}
+
+Here are the results for different scenarios with different strategies:\\
+
+Scenario 1. Line number in the list
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  24.045099, Y:   1.638080, deadline:   0.000000
+City 2: X:  28.570999, Y:   1.912450, deadline:  41.574402
+City 3: X:   6.368160, Y:  19.371500, deadline:  43.795700
+City 4: X:  20.953600, Y:  25.543600, deadline:  60.155602
+City 5: X:  27.852900, Y:   4.700660, deadline:  66.537598
+City 6: X:   2.277090, Y:  15.517000, deadline:  77.684303
+
+Solution: 
+
+City  1: X:  24.045099, Y:   1.638080, deadline:   0.000000, arrival:   0.000000
+City  2: X:  28.570999, Y:   1.912450, deadline:  41.574402, arrival:   4.534209
+City  5: X:  27.852900, Y:   4.700660, deadline:  66.537598, arrival:   7.413407
+City  3: X:   6.368160, Y:  19.371500, deadline:  43.795700, arrival:  33.429317
+City  4: X:  20.953600, Y:  25.543600, deadline:  60.155602, arrival:  49.266926
+City  6: X:   2.277090, Y:  15.517000, deadline:  77.684303, arrival:  70.464676
+Elapsed time is: 0 ms
+
+
+\end{lstlisting}
+
+Scenario 1. Euclidean distance
+
+\begin{lstlisting}
+Sorted city list:
+
+City 1: X:  24.045099, Y:   1.638080, deadline:   0.000000
+City 2: X:  28.570999, Y:   1.912450, deadline:  41.574402
+City 3: X:  27.852900, Y:   4.700660, deadline:  66.537598
+City 4: X:  20.953600, Y:  25.543600, deadline:  60.155602
+City 5: X:   6.368160, Y:  19.371500, deadline:  43.795700
+City 6: X:   2.277090, Y:  15.517000, deadline:  77.684303
+
+Solution: 
+
+City  1: X:  24.045099, Y:   1.638080, deadline:   0.000000, arrival:   0.000000
+City  2: X:  28.570999, Y:   1.912450, deadline:  41.574402, arrival:   4.534209
+City  3: X:  27.852900, Y:   4.700660, deadline:  66.537598, arrival:   7.413407
+City  5: X:   6.368160, Y:  19.371500, deadline:  43.795700, arrival:  33.429317
+City  4: X:  20.953600, Y:  25.543600, deadline:  60.155602, arrival:  49.266926
+City  6: X:   2.277090, Y:  15.517000, deadline:  77.684303, arrival:  70.464676
+Elapsed time is: 0 ms
+
+\end{lstlisting}
+
+Scenario 1. Time to deadline
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  24.045099, Y:   1.638080, deadline:   0.000000
+City 2: X:  28.570999, Y:   1.912450, deadline:  41.574402
+City 3: X:   6.368160, Y:  19.371500, deadline:  43.795700
+City 4: X:  20.953600, Y:  25.543600, deadline:  60.155602
+City 5: X:  27.852900, Y:   4.700660, deadline:  66.537598
+City 6: X:   2.277090, Y:  15.517000, deadline:  77.684303
+
+Solution: 
+
+City  1: X:  24.045099, Y:   1.638080, deadline:   0.000000, arrival:   0.000000
+City  2: X:  28.570999, Y:   1.912450, deadline:  41.574402, arrival:   4.534209
+City  5: X:  27.852900, Y:   4.700660, deadline:  66.537598, arrival:   7.413407
+City  3: X:   6.368160, Y:  19.371500, deadline:  43.795700, arrival:  33.429317
+City  4: X:  20.953600, Y:  25.543600, deadline:  60.155602, arrival:  49.266926
+City  6: X:   2.277090, Y:  15.517000, deadline:  77.684303, arrival:  70.464676
+Elapsed time is: 0 ms
+
+\end{lstlisting}
+
+Scenario 2. Line number in the list
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  29.520700, Y:   9.897560, deadline:   0.000000
+City 2: X:   8.070720, Y:  23.994301, deadline:  66.622704
+City 3: X:  11.789400, Y:  17.271099, deadline: 114.761002
+City 4: X:   4.191680, Y:  13.334000, deadline:  67.781601
+City 5: X:  20.069700, Y:  28.636000, deadline:  72.755203
+City 6: X:  13.959600, Y:  23.889799, deadline: 102.084000
+City 7: X:  22.764900, Y:   0.016410, deadline:  68.514000
+City 8: X:  21.616501, Y:   6.491020, deadline: 107.129997
+City 9: X:   5.807560, Y:   5.062420, deadline:  98.358101
+City 10: X:   4.380270, Y:   6.963720, deadline:  57.240601
+
+Solution: 
+
+City  1: X:  29.520700, Y:   9.897560, deadline:   0.000000, arrival:   0.000000
+City  7: X:  22.764900, Y:   0.016410, deadline:  68.514000, arrival:  11.969876
+City  8: X:  21.616501, Y:   6.491020, deadline: 107.129997, arrival:  18.545544
+City  9: X:   5.807560, Y:   5.062420, deadline:  98.358101, arrival:  34.418903
+City 10: X:   4.380270, Y:   6.963720, deadline:  57.240601, arrival:  36.796318
+City  4: X:   4.191680, Y:  13.334000, deadline:  67.781601, arrival:  43.169388
+City  2: X:   8.070720, Y:  23.994301, deadline:  66.622704, arrival:  54.513504
+City  5: X:  20.069700, Y:  28.636000, deadline:  72.755203, arrival:  67.378998
+City  3: X:  11.789400, Y:  17.271099, deadline: 114.761002, arrival:  81.440445
+City  6: X:  13.959600, Y:  23.889799, deadline: 102.084000, arrival:  88.405853
+Elapsed time is: 8 ms
+
+
+
+\end{lstlisting}
+
+Scenario 2. Euclidean distance
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  29.520700, Y:   9.897560, deadline:   0.000000
+City 2: X:  21.616501, Y:   6.491020, deadline: 107.129997
+City 3: X:  22.764900, Y:   0.016410, deadline:  68.514000
+City 4: X:  11.789400, Y:  17.271099, deadline: 114.761002
+City 5: X:  13.959600, Y:  23.889799, deadline: 102.084000
+City 6: X:  20.069700, Y:  28.636000, deadline:  72.755203
+City 7: X:   5.807560, Y:   5.062420, deadline:  98.358101
+City 8: X:   4.380270, Y:   6.963720, deadline:  57.240601
+City 9: X:   4.191680, Y:  13.334000, deadline:  67.781601
+City 10: X:   8.070720, Y:  23.994301, deadline:  66.622704
+
+Solution: 
+
+City  1: X:  29.520700, Y:   9.897560, deadline:   0.000000, arrival:   0.000000
+City  2: X:  21.616501, Y:   6.491020, deadline: 107.129997, arrival:   8.607025
+City  3: X:  22.764900, Y:   0.016410, deadline:  68.514000, arrival:  15.182692
+City  7: X:   5.807560, Y:   5.062420, deadline:  98.358101, arrival:  32.874882
+City  8: X:   4.380270, Y:   6.963720, deadline:  57.240601, arrival:  35.252296
+City  9: X:   4.191680, Y:  13.334000, deadline:  67.781601, arrival:  41.625366
+City  4: X:  11.789400, Y:  17.271099, deadline: 114.761002, arrival:  50.182590
+City 10: X:   8.070720, Y:  23.994301, deadline:  66.622704, arrival:  57.865692
+City  5: X:  13.959600, Y:  23.889799, deadline: 102.084000, arrival:  63.755501
+City  6: X:  20.069700, Y:  28.636000, deadline:  72.755203, arrival:  71.492409
+Elapsed time is: 0 ms
+
+
+\end{lstlisting}
+
+Scenario 2. Time to deadline
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  29.520700, Y:   9.897560, deadline:   0.000000
+City 2: X:   4.380270, Y:   6.963720, deadline:  57.240601
+City 3: X:   8.070720, Y:  23.994301, deadline:  66.622704
+City 4: X:   4.191680, Y:  13.334000, deadline:  67.781601
+City 5: X:  22.764900, Y:   0.016410, deadline:  68.514000
+City 6: X:  20.069700, Y:  28.636000, deadline:  72.755203
+City 7: X:   5.807560, Y:   5.062420, deadline:  98.358101
+City 8: X:  13.959600, Y:  23.889799, deadline: 102.084000
+City 9: X:  21.616501, Y:   6.491020, deadline: 107.129997
+City 10: X:  11.789400, Y:  17.271099, deadline: 114.761002
+
+Solution: 
+
+City  1: X:  29.520700, Y:   9.897560, deadline:   0.000000, arrival:   0.000000
+City  5: X:  22.764900, Y:   0.016410, deadline:  68.514000, arrival:  11.969876
+City  2: X:   4.380270, Y:   6.963720, deadline:  57.240601, arrival:  31.623367
+City  4: X:   4.191680, Y:  13.334000, deadline:  67.781601, arrival:  37.996437
+City  3: X:   8.070720, Y:  23.994301, deadline:  66.622704, arrival:  49.340553
+City  6: X:  20.069700, Y:  28.636000, deadline:  72.755203, arrival:  62.206047
+City  8: X:  13.959600, Y:  23.889799, deadline: 102.084000, arrival:  69.942955
+City 10: X:  11.789400, Y:  17.271099, deadline: 114.761002, arrival:  76.908363
+City  7: X:   5.807560, Y:   5.062420, deadline:  98.358101, arrival:  90.503738
+City  9: X:  21.616501, Y:   6.491020, deadline: 107.129997, arrival: 106.377098
+Elapsed time is: 3 ms
+
+
+\end{lstlisting}
+
+
+Scenario 3. Line number in the list
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  10.420100, Y:  18.893200, deadline:   0.000000
+City 2: X:  17.843500, Y:   6.049210, deadline:  86.658798
+City 3: X:  29.776699, Y:  12.830500, deadline:  95.539398
+City 4: X:   8.705170, Y:  24.110800, deadline:  64.183701
+City 5: X:   5.854050, Y:   4.928260, deadline:  47.698002
+City 6: X:  15.734900, Y:   3.294540, deadline:  43.092999
+City 7: X:  14.229400, Y:  23.844999, deadline:  43.127998
+City 8: X:   8.017410, Y:  28.093800, deadline:  43.823101
+
+Solution: 
+
+City  1: X:  10.420100, Y:  18.893200, deadline:   0.000000, arrival:   0.000000
+City  4: X:   8.705170, Y:  24.110800, deadline:  64.183701, arrival:   5.492207
+City  8: X:   8.017410, Y:  28.093800, deadline:  43.823101, arrival:   9.534149
+City  7: X:  14.229400, Y:  23.844999, deadline:  43.127998, arrival:  17.060179
+City  6: X:  15.734900, Y:   3.294540, deadline:  43.092999, arrival:  37.665710
+City  5: X:   5.854050, Y:   4.928260, deadline:  47.698002, arrival:  47.680710
+City  2: X:  17.843500, Y:   6.049210, deadline:  86.658798, arrival:  59.722446
+City  3: X:  29.776699, Y:  12.830500, deadline:  95.539398, arrival:  73.447868
+Elapsed time is: 0 ms
+
+
+\end{lstlisting}
+
+Scenario 3. Euclidean distance
+
+\begin{lstlisting}
+Sorted city list:
+
+City 1: X:  10.420100, Y:  18.893200, deadline:   0.000000
+City 2: X:   8.705170, Y:  24.110800, deadline:  64.183701
+City 3: X:  14.229400, Y:  23.844999, deadline:  43.127998
+City 4: X:   8.017410, Y:  28.093800, deadline:  43.823101
+City 5: X:   5.854050, Y:   4.928260, deadline:  47.698002
+City 6: X:  17.843500, Y:   6.049210, deadline:  86.658798
+City 7: X:  15.734900, Y:   3.294540, deadline:  43.092999
+City 8: X:  29.776699, Y:  12.830500, deadline:  95.539398
+
+Solution: 
+
+City  1: X:  10.420100, Y:  18.893200, deadline:   0.000000, arrival:   0.000000
+City  2: X:   8.705170, Y:  24.110800, deadline:  64.183701, arrival:   5.492207
+City  4: X:   8.017410, Y:  28.093800, deadline:  43.823101, arrival:   9.534149
+City  3: X:  14.229400, Y:  23.844999, deadline:  43.127998, arrival:  17.060179
+City  7: X:  15.734900, Y:   3.294540, deadline:  43.092999, arrival:  37.665710
+City  5: X:   5.854050, Y:   4.928260, deadline:  47.698002, arrival:  47.680710
+City  6: X:  17.843500, Y:   6.049210, deadline:  86.658798, arrival:  59.722446
+City  8: X:  29.776699, Y:  12.830500, deadline:  95.539398, arrival:  73.447868
+Elapsed time is: 0 ms
+
+
+\end{lstlisting}
+
+Scenario 3. Time to deadline
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  10.420100, Y:  18.893200, deadline:   0.000000
+City 2: X:  15.734900, Y:   3.294540, deadline:  43.092999
+City 3: X:  14.229400, Y:  23.844999, deadline:  43.127998
+City 4: X:   8.017410, Y:  28.093800, deadline:  43.823101
+City 5: X:   5.854050, Y:   4.928260, deadline:  47.698002
+City 6: X:   8.705170, Y:  24.110800, deadline:  64.183701
+City 7: X:  17.843500, Y:   6.049210, deadline:  86.658798
+City 8: X:  29.776699, Y:  12.830500, deadline:  95.539398
+
+Solution: 
+
+City  1: X:  10.420100, Y:  18.893200, deadline:   0.000000, arrival:   0.000000
+City  6: X:   8.705170, Y:  24.110800, deadline:  64.183701, arrival:   5.492207
+City  4: X:   8.017410, Y:  28.093800, deadline:  43.823101, arrival:   9.534149
+City  3: X:  14.229400, Y:  23.844999, deadline:  43.127998, arrival:  17.060179
+City  2: X:  15.734900, Y:   3.294540, deadline:  43.092999, arrival:  37.665710
+City  5: X:   5.854050, Y:   4.928260, deadline:  47.698002, arrival:  47.680710
+City  7: X:  17.843500, Y:   6.049210, deadline:  86.658798, arrival:  59.722446
+City  8: X:  29.776699, Y:  12.830500, deadline:  95.539398, arrival:  73.447868
+Elapsed time is: 0 ms
+
+
+\end{lstlisting}
+
+Scenario 4. Line number in the list
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  22.749599, Y:   4.417130, deadline:   0.000000
+City 2: X:   4.268940, Y:   8.269140, deadline:  81.167198
+City 3: X:  26.165800, Y:  28.849100, deadline: 101.807999
+City 4: X:  20.819300, Y:  28.045500, deadline:  87.844498
+City 5: X:  15.203800, Y:  14.474100, deadline: 110.944000
+City 6: X:  16.177401, Y:  25.939301, deadline:  82.610703
+City 7: X:  26.663000, Y:  12.688900, deadline:  31.649500
+City 8: X:  15.398900, Y:   1.668400, deadline:  41.855701
+City 9: X:  27.562599, Y:  13.014800, deadline:  47.793999
+City 10: X:  15.086400, Y:  27.689899, deadline:  75.883499
+City 11: X:   0.804934, Y:   8.156330, deadline:  27.699800
+City 12: X:  12.395200, Y:  10.836500, deadline:  69.277199
+
+Could not find a solution
+Elapsed time is: 51 ms
+
+
+
+\end{lstlisting}
+
+Scenario 4. Euclidean distance
+
+\begin{lstlisting}
+Sorted city list:
+
+City 1: X:  22.749599, Y:   4.417130, deadline:   0.000000
+City 2: X:   4.268940, Y:   8.269140, deadline:  81.167198
+City 3: X:  26.165800, Y:  28.849100, deadline: 101.807999
+City 4: X:  20.819300, Y:  28.045500, deadline:  87.844498
+City 5: X:  15.203800, Y:  14.474100, deadline: 110.944000
+City 6: X:  16.177401, Y:  25.939301, deadline:  82.610703
+City 7: X:  26.663000, Y:  12.688900, deadline:  31.649500
+City 8: X:  15.398900, Y:   1.668400, deadline:  41.855701
+City 9: X:  27.562599, Y:  13.014800, deadline:  47.793999
+City 10: X:  15.086400, Y:  27.689899, deadline:  75.883499
+City 11: X:   0.804934, Y:   8.156330, deadline:  27.699800
+City 12: X:  12.395200, Y:  10.836500, deadline:  69.277199
+
+Could not find a solution
+Elapsed time is: 51 ms
+
+
+\end{lstlisting}
+
+Scenario 4. Time to deadline
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  22.749599, Y:   4.417130, deadline:   0.000000
+City 2: X:   0.804934, Y:   8.156330, deadline:  27.699800
+City 3: X:  26.663000, Y:  12.688900, deadline:  31.649500
+City 4: X:  15.398900, Y:   1.668400, deadline:  41.855701
+City 5: X:  27.562599, Y:  13.014800, deadline:  47.793999
+City 6: X:  12.395200, Y:  10.836500, deadline:  69.277199
+City 7: X:  15.086400, Y:  27.689899, deadline:  75.883499
+City 8: X:   4.268940, Y:   8.269140, deadline:  81.167198
+City 9: X:  16.177401, Y:  25.939301, deadline:  82.610703
+City 10: X:  20.819300, Y:  28.045500, deadline:  87.844498
+City 11: X:  26.165800, Y:  28.849100, deadline: 101.807999
+City 12: X:  15.203800, Y:  14.474100, deadline: 110.944000
+
+Could not find a solution
+Elapsed time is: 47 ms
+
+
+\end{lstlisting}
+
+Scenario 5. Line number in the list
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  20.385401, Y:   8.826160, deadline:   0.000000
+City 2: X:  20.851601, Y:   2.182910, deadline: 146.804993
+City 3: X:   4.676340, Y:  23.061001, deadline: 177.615005
+City 4: X:   5.062030, Y:  22.067499, deadline: 203.544998
+City 5: X:  28.103701, Y:   1.419850, deadline: 236.617996
+City 6: X:  19.947500, Y:  21.808399, deadline: 215.313004
+City 7: X:   5.939640, Y:   3.653470, deadline: 162.179993
+City 8: X:  24.545799, Y:  25.503300, deadline: 169.673996
+City 9: X:  26.993999, Y:   2.075310, deadline: 156.557007
+City 10: X:   7.093250, Y:   6.657670, deadline: 115.172997
+City 11: X:  19.630199, Y:  23.275600, deadline: 174.147995
+City 12: X:   2.862280, Y:  29.328199, deadline: 235.621994
+City 13: X:  14.056600, Y:  24.727100, deadline: 188.548996
+City 14: X:   5.435220, Y:  12.894500, deadline: 207.046005
+City 15: X:  13.081900, Y:  22.606600, deadline: 109.740997
+City 16: X:   3.001530, Y:   8.108620, deadline:  85.279701
+
+Solution: 
+
+City  1: X:  20.385401, Y:   8.826160, deadline:   0.000000, arrival:   0.000000
+City  2: X:  20.851601, Y:   2.182910, deadline: 146.804993, arrival:   6.659588
+City  3: X:   4.676340, Y:  23.061001, deadline: 177.615005, arrival:  33.070454
+City  4: X:   5.062030, Y:  22.067499, deadline: 203.544998, arrival:  34.136192
+City  6: X:  19.947500, Y:  21.808399, deadline: 215.313004, arrival:  49.023918
+City  7: X:   5.939640, Y:   3.653470, deadline: 162.179993, arrival:  71.954720
+City 10: X:   7.093250, Y:   6.657670, deadline: 115.172997, arrival:  75.172798
+City 16: X:   3.001530, Y:   8.108620, deadline:  85.279701, arrival:  79.514160
+City 11: X:  19.630199, Y:  23.275600, deadline: 174.147995, arrival: 102.020828
+City 15: X:  13.081900, Y:  22.606600, deadline: 109.740997, arrival: 108.603210
+City  5: X:  28.103701, Y:   1.419850, deadline: 236.617996, arrival: 134.574982
+City  9: X:  26.993999, Y:   2.075310, deadline: 156.557007, arrival: 135.863800
+City  8: X:  24.545799, Y:  25.503300, deadline: 169.673996, arrival: 159.419357
+City 13: X:  14.056600, Y:  24.727100, deadline: 188.548996, arrival: 169.937241
+City 12: X:   2.862280, Y:  29.328199, deadline: 235.621994, arrival: 182.040253
+City 14: X:   5.435220, Y:  12.894500, deadline: 207.046005, arrival: 198.674149
+Elapsed time is: 182 ms
+
+\end{lstlisting}
+
+Scenario 5. Euclidean distance
+
+\begin{lstlisting}
+City 1: X:  20.385401, Y:   8.826160, deadline:   0.000000
+City 2: X:  20.851601, Y:   2.182910, deadline: 146.804993
+City 3: X:  26.993999, Y:   2.075310, deadline: 156.557007
+City 4: X:  28.103701, Y:   1.419850, deadline: 236.617996
+City 5: X:  19.947500, Y:  21.808399, deadline: 215.313004
+City 6: X:   7.093250, Y:   6.657670, deadline: 115.172997
+City 7: X:  19.630199, Y:  23.275600, deadline: 174.147995
+City 8: X:   5.939640, Y:   3.653470, deadline: 162.179993
+City 9: X:   5.435220, Y:  12.894500, deadline: 207.046005
+City 10: X:  13.081900, Y:  22.606600, deadline: 109.740997
+City 11: X:  14.056600, Y:  24.727100, deadline: 188.548996
+City 12: X:  24.545799, Y:  25.503300, deadline: 169.673996
+City 13: X:   3.001530, Y:   8.108620, deadline:  85.279701
+City 14: X:   5.062030, Y:  22.067499, deadline: 203.544998
+City 15: X:   4.676340, Y:  23.061001, deadline: 177.615005
+City 16: X:   2.862280, Y:  29.328199, deadline: 235.621994
+
+Solution: 
+
+City  1: X:  20.385401, Y:   8.826160, deadline:   0.000000, arrival:   0.000000
+City  2: X:  20.851601, Y:   2.182910, deadline: 146.804993, arrival:   6.659588
+City  3: X:  26.993999, Y:   2.075310, deadline: 156.557007, arrival:  12.802929
+City  4: X:  28.103701, Y:   1.419850, deadline: 236.617996, arrival:  14.091752
+City  5: X:  19.947500, Y:  21.808399, deadline: 215.313004, arrival:  36.051182
+City  6: X:   7.093250, Y:   6.657670, deadline: 115.172997, arrival:  55.920158
+City  8: X:   5.939640, Y:   3.653470, deadline: 162.179993, arrival:  59.138237
+City  9: X:   5.435220, Y:  12.894500, deadline: 207.046005, arrival:  68.393021
+City 13: X:   3.001530, Y:   8.108620, deadline:  85.279701, arrival:  73.762146
+City  7: X:  19.630199, Y:  23.275600, deadline: 174.147995, arrival:  96.268814
+City 10: X:  13.081900, Y:  22.606600, deadline: 109.740997, arrival: 102.851196
+City 11: X:  14.056600, Y:  24.727100, deadline: 188.548996, arrival: 105.184982
+City 12: X:  24.545799, Y:  25.503300, deadline: 169.673996, arrival: 115.702866
+City 14: X:   5.062030, Y:  22.067499, deadline: 203.544998, arrival: 135.487259
+City 15: X:   4.676340, Y:  23.061001, deadline: 177.615005, arrival: 136.552994
+City 16: X:   2.862280, Y:  29.328199, deadline: 235.621994, arrival: 143.077454
+Elapsed time is: 30 ms
+
+\end{lstlisting}
+
+Scenario 5. Time to deadline
+
+\begin{lstlisting}
+
+Sorted city list:
+
+City 1: X:  20.385401, Y:   8.826160, deadline:   0.000000
+City 2: X:   3.001530, Y:   8.108620, deadline:  85.279701
+City 3: X:  13.081900, Y:  22.606600, deadline: 109.740997
+City 4: X:   7.093250, Y:   6.657670, deadline: 115.172997
+City 5: X:  20.851601, Y:   2.182910, deadline: 146.804993
+City 6: X:  26.993999, Y:   2.075310, deadline: 156.557007
+City 7: X:   5.939640, Y:   3.653470, deadline: 162.179993
+City 8: X:  24.545799, Y:  25.503300, deadline: 169.673996
+City 9: X:  19.630199, Y:  23.275600, deadline: 174.147995
+City 10: X:   4.676340, Y:  23.061001, deadline: 177.615005
+City 11: X:  14.056600, Y:  24.727100, deadline: 188.548996
+City 12: X:   5.062030, Y:  22.067499, deadline: 203.544998
+City 13: X:   5.435220, Y:  12.894500, deadline: 207.046005
+City 14: X:  19.947500, Y:  21.808399, deadline: 215.313004
+City 15: X:   2.862280, Y:  29.328199, deadline: 235.621994
+City 16: X:  28.103701, Y:   1.419850, deadline: 236.617996
+
+Solution: 
+
+City  1: X:  20.385401, Y:   8.826160, deadline:   0.000000, arrival:   0.000000
+City  2: X:   3.001530, Y:   8.108620, deadline:  85.279701, arrival:  17.398674
+City  3: X:  13.081900, Y:  22.606600, deadline: 109.740997, arrival:  35.056683
+City  4: X:   7.093250, Y:   6.657670, deadline: 115.172997, arrival:  52.092888
+City  5: X:  20.851601, Y:   2.182910, deadline: 146.804993, arrival:  66.560638
+City  6: X:  26.993999, Y:   2.075310, deadline: 156.557007, arrival:  72.703979
+City  7: X:   5.939640, Y:   3.653470, deadline: 162.179993, arrival:  93.817398
+City  8: X:  24.545799, Y:  25.503300, deadline: 169.673996, arrival: 122.515900
+City  9: X:  19.630199, Y:  23.275600, deadline: 174.147995, arrival: 127.912727
+City 10: X:   4.676340, Y:  23.061001, deadline: 177.615005, arrival: 142.868134
+City 11: X:  14.056600, Y:  24.727100, deadline: 188.548996, arrival: 152.395203
+City 12: X:   5.062030, Y:  22.067499, deadline: 203.544998, arrival: 161.774750
+City 13: X:   5.435220, Y:  12.894500, deadline: 207.046005, arrival: 170.955338
+City 15: X:   2.862280, Y:  29.328199, deadline: 235.621994, arrival: 187.589233
+City 14: X:  19.947500, Y:  21.808399, deadline: 215.313004, arrival: 206.256104
+City 16: X:  28.103701, Y:   1.419850, deadline: 236.617996, arrival: 228.215530
+Elapsed time is: 0 ms
+
+\end{lstlisting}
+
+
+\end{document}

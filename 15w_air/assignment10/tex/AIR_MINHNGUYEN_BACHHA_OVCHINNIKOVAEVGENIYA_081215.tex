@@ -1,0 +1,96 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage{titling}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\graphicspath{{.}}
+
+\usepackage[margin=1in]{geometry}
+
+% Must be after geometry
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{AIR Homework 10}
+\lhead{M. Nguyen, B. Ha \& E. Ovchinnikova}
+\cfoot{\thepage}
+
+\setlength{\droptitle}{-5em}
+
+\title{Artificial Intelligence for Robots \\
+				- Homework 10 -}
+\author{Minh Nguyen, Bach Ha \& Evgenia Ovchinnikova}
+\date{Lecture date: 8 December 2015}
+
+\begin{document}
+
+\maketitle
+
+\section{Theoretical questions}
+   
+\subsection{What is a Knowledge-Based Agent (KBA)}
+
+Knowledge-Based Agent (KBA)is an agent, that keeps track of the world in an internal state, that KBA regularly updates. The agent must include a knowledge base (set of sentences in a formal language) and a system of inference. KBA should be capable of the following:
+
+\begin{itemize}
+\item Having a knowledge about the world, in which it is acting
+\item Representing states, actions, etc.
+\item Assimilating new percepts
+\item Updating internal state, that represents the world
+\item Deducing hidden properties of the world
+\item Reasoning about the appropriate course of actions
+\end{itemize}
+
+
+\subsection{What is Knowledge Base (KB)?}
+
+Knowledge Base (KB) is a collection of sentences in a formal language.
+
+\subsection{What are the two operations that an KBA can perform?}
+
+KBA can perform the following operations:
+
+\begin{itemize}
+\item KBA can form a representation of the world, in which it is acting
+\item KBA can create a new representation of the world by using a system of inference and then use this new representation to decide what to do next
+\end{itemize}
+
+
+\subsection{What is the characteristic of logical reasoning?}
+Logical reasoning is a process of making conclusion by thinking in a logical way.
+The main characteristics of logical reasoning are its persuasiveness and conclusiveness.
+
+\subsection{What is syntax ?}
+
+Syntax is a set of the rules that governs the structure of the sentences in the language.
+
+\subsection{When can we say that m is a model of sentence $\alpha$ ?}
+
+Model is a formally structured world where the evaluation of the truth is possible, i.e. to
+each symbol of the world a (True/False) value is assigned. So, if a certain knowledge base contains k symbols, 2k models are possible.\\
+So, m is a model of sentence $\alpha$ if $\alpha$ is true in m.
+
+\subsection{What is entailment ?}
+
+Entailment is a semantic-based relationship between sentences (syntax). It means that one thing follows from the other, i.e. knowledge base entails a sentence (S) if and only if the sentence is True and all worlds where the knowledge base is True: KB $|$= S.
+
+\subsection{What is inference ?}
+
+An algorithm of inference allows to derive a sentence (S) from the knowledge base (KB) by a certain procedure (i):  $KB |=_i S$ . If the algorithms derives only the sentences, those are entailed by the knowledge base, i is a sound. i is complete if the following requirement is met: whenever KB $|$= S, $KB |=_i S$ as well.
+
+
+\subsection{What is the difference between entailment and inference?}
+
+It could be explained with a following example: if knowledge base is considered as a haystack, S could be considered as a needle. Then entailment is this needle and inference is an algorithm of finding it.
+
+
+\section{Minimax and Alpha-beta pruning}
+
+Alpha-beta is expected to have less space requirement and run faster than regular minimax,
+as not all nodes need to be visited. Minimax requires a depth limit to be run efficiently.
+
+\end{document}

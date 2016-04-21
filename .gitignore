@@ -1,1 +1,16 @@
 .ipynb_checkpoints/
+*/build/CMakeCache.txt
+*/build/CMakeFiles/
+*/build/Makefile
+*/build/cmake_install.cmake
+*/build/bin
+*~
+# tex files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.dvi
+*.pdf
+*.gz
