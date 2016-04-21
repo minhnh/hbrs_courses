@@ -14,8 +14,13 @@ namespace face_detection_verilook
 
 int main(int argc, char * argv[]) {
     ros::init(argc, argv, "face_detection_verilook");
-    ros::NodeHandle nh;
+
+    ros::NodeHandle nh("~");
+
+    face_detection_verilook::FaceDetectionVerilookNode face_detection_verilook_node(nh);
+
     ROS_INFO("face_detection_verilook: beginning main");
+
     ros::spin();
     return 0;
 }
