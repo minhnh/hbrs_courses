@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+
+%-------------------------------------------------
+%   THEMES & PACKAGES
+%-------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+%-------------------------------------------------
+%   COMMON INFO
+%-------------------------------------------------
+\newcommand{\hmwkTitle}{Essay \#1}
+\newcommand{\hmwkDueDate}{Monday, January 1, 2016}
+\newcommand{\hmwkClass}{Advanced Scientific Working}
+\newcommand{\hmwkAuthorName}{Minh Nguyen}
+
+%-------------------------------------------------
+% 	MARGINS
+%-------------------------------------------------
+\topmargin=-0.75cm
+\evensidemargin=0cm
+\oddsidemargin=0cm
+\textwidth=16.0cm
+\textheight=24.0cm
+\headsep=0.25in
+
+\linespread{1.1} % Line spacing
+
+%-------------------------------------------------
+%   HEADERS & FOOTERS
+%-------------------------------------------------
+\pagestyle{fancy}
+%-------------------------------------------------
+% Special first page
+\fancypagestyle{firststyle} {
+    \fancyhf{}
+    \fancyfoot{}
+    \renewcommand\headrulewidth{0.pt}
+    \renewcommand\footrulewidth{0.pt}
+}
+%-------------------------------------------------
+\lhead{\hmwkAuthorName}
+\rhead{\hmwkClass: \hmwkTitle}
+%-------------------------------------------------
+\cfoot{Page \thepage\ of \protect\pageref{LastPage}}
+%-------------------------------------------------
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+%-------------------------------------------------
+%   TITLE
+%-------------------------------------------------
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass}\\ \hmwkTitle}\\
+    \normalsize\vspace{0.1in}\small{Due on \hmwkDueDate}\\
+    \vspace{3in}
+}
+\author{\textbf{\hmwkAuthorName}}
+\date{}
+
+%-------------------------------------------------
+%   BEGIN
+%-------------------------------------------------
+\begin{document}
+%-------------------------------------------------
+    \maketitle
+    \thispagestyle{firststyle}
+    \newpage
+%-------------------------------------------------
+    \section{Section 1}
+    \newpage
+    \section{Section 2}
+%-------------------------------------------------
+%   END
+%-------------------------------------------------
+\end{document}
