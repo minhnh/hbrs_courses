@@ -30,3 +30,25 @@ def normalize(x):
 
 def make_homogeneous(x):
     return np.append(x, np.ones((len(x), 1)), axis=1)
+
+
+def transform_image(image, homography):
+    """
+    Transform an image using a given homography
+
+    :param image: original image to be transformed
+    :param homography: homography matrix of the transformation
+    :return: transformed image
+    """
+    x_range, y_range = image.shape
+    image_reconstruct = np.zeros((x_range, y_range))
+
+    for x in range(x_range):
+        for y in range(y_range):
+            x_transformed, y_transformed, w = np.dot(homography, np.transpose([x, y, 1.]))
+            x_transformed = int(np.round(x_transformed))
+            y_transformed = int(np.round(y_transformed))
+            if x_transformed < x_range and y_transformed < y_range:
+                image_reconstruct[x_transformed, y_transformed] = image[x, y]
+
+    return image_reconstruct
