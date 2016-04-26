@@ -3,7 +3,7 @@
 import numpy as np
 
 
-def dlt_normalized(x, x_tick):
+def get_homography(x, x_tick):
     """
     Perform normalized DLT algorithm
 
@@ -15,13 +15,13 @@ def dlt_normalized(x, x_tick):
     (x_similar_transform, x_norm) = normalize(x)
     (x_tick_similar_transform, x_tick_norm) = normalize(x_tick)
     # DLT algorithm
-    h_norm = dlt(x_norm, x_tick_norm)
+    h_norm = get_homography_unnormalized(x_norm, x_tick_norm)
     # Denormalize H_norm
-    H = np.dot(np.dot(np.linalg.inv(x_tick_similar_transform), h_norm), x_similar_transform)
-    return H
+    homography = np.dot(np.dot(np.linalg.inv(x_tick_similar_transform), h_norm), x_similar_transform)
+    return homography
 
 
-def dlt(x, x_tick):
+def get_homography_unnormalized(x, x_tick):
     """
     Perform DLT algorithm
     """
@@ -54,14 +54,18 @@ def dlt(x, x_tick):
     # SVD decomposition, H is the eigenvector corresponding to the
     # smallest singular value
     u, s, v = np.linalg.svd(A, full_matrices=False)
-    H = v[np.argmin(s)].reshape(3, 3)
+    homography = v[np.argmin(s)].reshape(3, 3)
     # Divide by H[2][2] for correct scaling? Not sure why this worked
-    H = H/H[2][2]
+    homography = homography/homography[2][2]
 
-    return H
+    return homography
 
 
 def normalize(x):
+    """
+    Normalize a matrix of 2D coordinates to have mean at the origin and average
+    distance from origin of sqrt(2)
+    """
     # Calculate centroid of points and translate points to origin
     centroid = np.mean(x, axis=0)
     x_normalized = x - centroid
@@ -70,7 +74,7 @@ def normalize(x):
     # Scale factor to achieve average distance sqrt(2)
     scale_factor = np.sqrt(2) / scale_factor
     x_normalized = x_normalized * scale_factor
-    x_normalized = make_homog(x_normalized)
+    x_normalized = make_homogeneous(x_normalized)
     # Similarity transform matrix, no rotation, in the form:
     # | s 0 t_x |
     # | 0 s t_y |
@@ -82,5 +86,5 @@ def normalize(x):
     return similarity_transform, x_normalized
 
 
-def make_homog(x):
+def make_homogeneous(x):
     return np.append(x, np.ones((len(x), 1)), axis=1)
