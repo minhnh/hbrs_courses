@@ -1,5 +1,7 @@
-# python
+# python notebooks
 .ipynb_checkpoints/
+# PyCharm
+.idea/
 # cmake
 */build/CMakeCache.txt
 */build/CMakeFiles/
