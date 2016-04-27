@@ -13,7 +13,7 @@ def normalize(x):
     centroid = np.mean(x, axis=0)
     x_normalized = x - centroid
     # Calculate the average distance to origin
-    scale_factor = np.mean(np.sqrt(np.sum(x_normalized**2, axis=1)))
+    scale_factor = np.mean(np.sqrt(np.sum(x_normalized ** 2, axis=1)))
     # Scale factor to achieve average distance sqrt(2)
     scale_factor = np.sqrt(2) / scale_factor
     x_normalized = x_normalized * scale_factor
@@ -65,4 +65,21 @@ def plot_lines_on_image(img, x, x_tick):
 
 def euclidean_squared(x, y):
     """Squared euclidean distance between 2 1D arrays"""
-    return np.sum(np.subtract(x, y)**2)
+    return np.sum(np.subtract(x, y) ** 2)
+
+
+def calculate_transfer_error(x, x_tick, homography):
+    """
+    Calculate symmetric transfer error between 2 similar points using a given homography
+    d = sqrt(d(x, x'.inv(H))^2 + d(x', x.H)^2)
+
+    :param x: (1, 2) array of coordinates of ONE original point
+    :param x_tick: (1, 2) array of coordinates of ONE similar point
+    :param homography: homography matrix of the transformation
+    :return: symmetric transfer error
+    """
+    x_tick_transformed = np.dot(homography, np.append(x, 1.))
+    x_transformed = np.dot(np.linalg.inv(homography), np.append(x_tick, 1.))
+    squared_distance = euclidean_squared(x, x_transformed[:2]) + euclidean_squared(x_tick, x_tick_transformed[:2])
+
+    return np.sqrt(squared_distance)
