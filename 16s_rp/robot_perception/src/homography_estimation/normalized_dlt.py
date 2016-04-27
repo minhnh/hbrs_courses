@@ -8,9 +8,9 @@ def get_homography(x, x_tick):
     """
     Perform normalized DLT algorithm
 
-    @param: homogeneous coordinates of similar points in 2 images, in 2D
-            numpy array format
-    @return: transform matrix
+    :param x: coordinates of points in original image
+    :param x_tick: coordinates of similar points in transformed image
+    :return: homography matrix
     """
     # Normalize x and x_tick
     (x_similar_transform, x_norm) = util.normalize(x)
