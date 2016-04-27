@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import numpy as np
 
@@ -29,6 +29,7 @@ def normalize(x):
 
 
 def make_homogeneous(x):
+    """Append 1's to a 2D array to make homogeneous"""
     return np.append(x, np.ones((len(x), 1)), axis=1)
 
 
@@ -45,10 +46,15 @@ def transform_image(image, homography):
 
     for x in range(x_range):
         for y in range(y_range):
-            x_transformed, y_transformed, w = np.dot(homography, np.transpose([x, y, 1.]))
+            x_transformed, y_transformed, w = np.dot(homography, [x, y, 1.])
             x_transformed = int(np.round(x_transformed))
             y_transformed = int(np.round(y_transformed))
             if x_transformed < x_range and y_transformed < y_range:
                 image_reconstruct[x_transformed, y_transformed] = image[x, y]
 
     return image_reconstruct
+
+
+def euclidean_squared(x, y):
+    """Squared euclidean distance between 2 1D arrays"""
+    return np.sum(np.subtract(x, y)**2)
