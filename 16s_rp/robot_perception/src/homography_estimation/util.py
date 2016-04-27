@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -53,6 +54,13 @@ def transform_image(image, homography):
                 image_reconstruct[x_transformed, y_transformed] = image[x, y]
 
     return image_reconstruct
+
+
+def plot_lines_on_image(img, x, x_tick):
+    """Draw lines (2D) from coordinates in x to coordinates in x_tick"""
+    plt.imshow(img, cmap='gray')
+    for i in range(len(x)):
+        plt.plot(x[i], x_tick[i], color='r', linestyle='-', linewidth=1)
 
 
 def euclidean_squared(x, y):
