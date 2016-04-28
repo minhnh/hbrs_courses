@@ -3,8 +3,6 @@
 
 #include <ros/ros.h>
 
-namespace face_detection_verilook
-{
     class FaceDetectionVerilookNode
     {
     public:
@@ -13,5 +11,4 @@ namespace face_detection_verilook
     protected:
         ros::NodeHandle node_handle_;
     };
-}
 #endif // FACE_DETECTION_VERILOOK_NODE_HPP_INCLUDED
