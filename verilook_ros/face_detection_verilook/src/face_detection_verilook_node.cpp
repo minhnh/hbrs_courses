@@ -35,7 +35,7 @@ FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh) :
     {
         for (unsigned int i = 0; i < sizeof(Components); i++)
         {
-            //ROS_ERROR_STREAM(e);
+            ROS_ERROR_STREAM(std::string(e.ToString()));
             Neurotec::Licensing::NLicense::ReleaseComponents(Components[i]);
         }
     }
@@ -53,13 +53,13 @@ FaceDetectionVerilookNode::~FaceDetectionVerilookNode(void)
             Neurotec::Licensing::NLicense::ReleaseComponents(Components[i]);
         }
     }
-    catch (Neurotec::NError& ex)
+    catch (Neurotec::NError& e)
     {
-        //ROS_ERROR_STREAM(ex);
+        ROS_ERROR_STREAM(std::string(e.ToString()));
     }
-    catch (std::exception& ex)
+    catch (std::exception& e)
     {
-        //ROS_ERROR_STREAM(ex.what());
+        ROS_ERROR_STREAM(e.what());
     }
     Neurotec::NCore::OnExit(false);
 }
