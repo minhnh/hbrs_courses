@@ -1,12 +1,12 @@
 /**/
 
-#include <face_detection_verilook/face_detection_verilook_node.h>
-
 /* ROS */
 #include <pluginlib/class_list_macros.h>
 #include <nodelet/nodelet.h>
 
-namespace face_detection_verilook
+#include <face_detection_verilook/face_detection_verilook_node.h>
+
+namespace verilook_ros
 {
     class FaceDetectionVerilookNodelet : public nodelet::Nodelet
     {
@@ -35,6 +35,6 @@ namespace face_detection_verilook
 }
 // watch the capitalization carefully
 PLUGINLIB_DECLARE_CLASS(
-    face_detection_verilook, FaceDetectionVerilookNodelet,
-    face_detection_verilook::FaceDetectionVerilookNodelet, nodelet::Nodelet
+    verilook_ros, FaceDetectionVerilookNodelet,
+    verilook_ros::FaceDetectionVerilookNodelet, nodelet::Nodelet
 )
