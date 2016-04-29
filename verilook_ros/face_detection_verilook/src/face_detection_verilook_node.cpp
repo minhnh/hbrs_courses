@@ -4,6 +4,7 @@
 
 #include <NCore.hpp>
 #include <NLicensing.hpp>
+#include <NBiometrics.hpp>
 
 #define LICENSE_COMPONENTS {\
 	"Biometrics.FaceDetection", \
@@ -27,9 +28,12 @@ FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh) :
         Neurotec::NCore::OnStart();
         for (unsigned int i = 0; i < sizeof(Components); i++)
         {
-            Neurotec::Licensing::NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
+            successful = Neurotec::Licensing::NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
+            if (!successful)
+            {
+                ROS_ERROR_STREAM("verilook: License for " << Components[i] << " is not available");
+            }
         }
-        successful = true;
     }
     catch (Neurotec::NError& e)
     {
@@ -62,6 +66,16 @@ FaceDetectionVerilookNode::~FaceDetectionVerilookNode(void)
         ROS_ERROR_STREAM(e.what());
     }
     Neurotec::NCore::OnExit(false);
+}
+
+
+void FaceDetectionVerilookNode::createTemplateFromCamera() {
+    using namespace Neurotec::Biometrics;
+
+    NSubject subject;
+    NFace face;
+    face.SetCaptureOptions((NBiometricCaptureOptions)(nbcoManual | nbcoStream));
+    subject.GetFaces().Add(face);
 }
 
 

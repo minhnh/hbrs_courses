@@ -10,6 +10,8 @@ public:
     ~FaceDetectionVerilookNode(void);
 protected:
     ros::NodeHandle node_handle_;
+private:
+    void createTemplateFromCamera();
 };
 
 #endif // FACE_DETECTION_VERILOOK_NODE_HPP_INCLUDED
