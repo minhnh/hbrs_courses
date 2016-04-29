@@ -1,10 +1,7 @@
-#include <face_detection_verilook/face_detection_verilook_node.h>
 
 #include <string>
 
-#include <NCore.hpp>
-#include <NLicensing.hpp>
-#include <NBiometrics.hpp>
+#include <face_detection_verilook/face_detection_verilook_node.h>
 
 #define LICENSE_COMPONENTS {\
 	"Biometrics.FaceDetection", \
@@ -18,73 +15,75 @@
 #define LICENSE_SERVER	"/local"
 #define LICENSE_PORT	"5000"
 
-FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh) :
-    node_handle_(nh)
+namespace verilook_ros
 {
-    const std::string Components[] = LICENSE_COMPONENTS;
-    bool successful = false;
-    try
+    FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh) :
+        node_handle_(nh)
     {
-        Neurotec::NCore::OnStart();
-        for (unsigned int i = 0; i < sizeof(Components); i++)
+        const std::string Components[] = LICENSE_COMPONENTS;
+        bool successful = false;
+        try
         {
-            successful = Neurotec::Licensing::NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
-            if (!successful)
+            Neurotec::NCore::OnStart();
+            for (unsigned int i = 0; i < sizeof(Components); i++)
             {
-                ROS_ERROR_STREAM("verilook: License for " << Components[i] << " is not available");
+                successful = Neurotec::Licensing::NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
+                if (!successful)
+                {
+                    ROS_ERROR_STREAM("verilook: License for " << Components[i] << " is not available");
+                }
             }
         }
+        catch (Neurotec::NError& e)
+        {
+            for (unsigned int i = 0; i < sizeof(Components); i++)
+            {
+                ROS_ERROR_STREAM(std::string(e.ToString()));
+                Neurotec::Licensing::NLicense::ReleaseComponents(Components[i]);
+            }
+        }
+
+        if (!successful) Neurotec::NCore::OnExit(false);
     }
-    catch (Neurotec::NError& e)
+
+    FaceDetectionVerilookNode::~FaceDetectionVerilookNode(void)
     {
-        for (unsigned int i = 0; i < sizeof(Components); i++)
+        const std::string Components[] = LICENSE_COMPONENTS;
+        try
+        {
+            for (unsigned int i = 0; i < sizeof(Components); i++)
+            {
+                Neurotec::Licensing::NLicense::ReleaseComponents(Components[i]);
+            }
+        }
+        catch (Neurotec::NError& e)
         {
             ROS_ERROR_STREAM(std::string(e.ToString()));
-            Neurotec::Licensing::NLicense::ReleaseComponents(Components[i]);
         }
-    }
-
-    if (!successful) Neurotec::NCore::OnExit(false);
-}
-
-FaceDetectionVerilookNode::~FaceDetectionVerilookNode(void)
-{
-    const std::string Components[] = LICENSE_COMPONENTS;
-    try
-    {
-        for (unsigned int i = 0; i < sizeof(Components); i++)
+        catch (std::exception& e)
         {
-            Neurotec::Licensing::NLicense::ReleaseComponents(Components[i]);
+            ROS_ERROR_STREAM(e.what());
         }
+        Neurotec::NCore::OnExit(false);
     }
-    catch (Neurotec::NError& e)
-    {
-        ROS_ERROR_STREAM(std::string(e.ToString()));
+
+
+    void FaceDetectionVerilookNode::createTemplateFromCamera() {
+        using namespace Neurotec::Biometrics;
+
+        NSubject subject;
+        NFace face;
+        face.SetCaptureOptions((NBiometricCaptureOptions)(nbcoManual | nbcoStream));
+        subject.GetFaces().Add(face);
     }
-    catch (std::exception& e)
-    {
-        ROS_ERROR_STREAM(e.what());
-    }
-    Neurotec::NCore::OnExit(false);
 }
-
-
-void FaceDetectionVerilookNode::createTemplateFromCamera() {
-    using namespace Neurotec::Biometrics;
-
-    NSubject subject;
-    NFace face;
-    face.SetCaptureOptions((NBiometricCaptureOptions)(nbcoManual | nbcoStream));
-    subject.GetFaces().Add(face);
-}
-
 
 int main(int argc, char * argv[]) {
     ros::init(argc, argv, "face_detection_verilook");
 
     ros::NodeHandle nh("~");
 
-    FaceDetectionVerilookNode face_detection_verilook_node(nh);
+    verilook_ros::FaceDetectionVerilookNode face_detection_verilook_node(nh);
 
     ROS_INFO("face_detection_verilook: beginning main");
 
