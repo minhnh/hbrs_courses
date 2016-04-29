@@ -25,7 +25,7 @@ add_executable(${PROJECT_NAME}
 
 ## Linkers
 target_link_libraries(${PROJECT_NAME}
-    #-lNBiometricClient
+    -lNBiometricClient
     -lNBiometrics
     -lNLicensing
     -lNCore
