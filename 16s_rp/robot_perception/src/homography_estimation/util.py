@@ -68,7 +68,7 @@ def euclidean_squared(x, y):
     return np.sum(np.subtract(x, y) ** 2)
 
 
-def calculate_transfer_error(x, x_tick, homography):
+def calculate_transfer_error_symmetric(x, x_tick, homography):
     """
     Calculate symmetric transfer error between 2 similar points using a given homography
     d = sqrt(d(x, x'.inv(H))^2 + d(x', x.H)^2)
