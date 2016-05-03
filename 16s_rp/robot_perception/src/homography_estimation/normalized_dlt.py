@@ -33,24 +33,13 @@ def get_homography_unnormalized(x, x_tick):
 
     # Construct matrix A in equation A.H = 0
     A = None
-    zeros = np.zeros(3)
     for i in range(len(x)):
-        # First row of A_i [0  -w'x  y'x]
-        A_i_0 = zeros
-        A_i_0 = np.append(A_i_0, - x_tick[i][2]*x[i])
-        A_i_0 = np.append(A_i_0,   x_tick[i][1]*x[i])
-        A_i_0 = A_i_0.reshape(1, len(A_i_0))
-        # Second row of A_i [w'x  0  -x'x]
-        A_i_1 = x_tick[i][2]*x[i]
-        A_i_1 = np.append(A_i_1,   zeros)
-        A_i_1 = np.append(A_i_1, - x_tick[i][0]*x[i])
-        A_i_1 = A_i_1.reshape(1, len(A_i_1))
+        A_i = construct_A_i_matrix(x[i], x_tick[i])
         # Append to A
         if A is None:
-            A = A_i_0
+            A = A_i
         else:
-            A = np.append(A, A_i_0, axis=0)
-        A = np.append(A, A_i_1, axis=0)
+            A = np.append(A, A_i, axis=0)
 
     # SVD decomposition, H is the eigenvector corresponding to the
     # smallest singular value
@@ -60,3 +49,19 @@ def get_homography_unnormalized(x, x_tick):
     homography = homography/homography[2][2]
 
     return homography
+
+
+def construct_A_i_matrix(x, x_tick):
+    zeros = np.zeros(3)
+    # First row of A_i [0  -w'x  y'x]
+    A_i_0 = zeros
+    A_i_0 = np.append(A_i_0, - x_tick[2]*x)
+    A_i_0 = np.append(A_i_0,   x_tick[1]*x)
+    A_i_0 = A_i_0.reshape(1, len(A_i_0))
+    # Second row of A_i [w'x  0  -x'x]
+    A_i_1 = x_tick[2]*x
+    A_i_1 = np.append(A_i_1,   zeros)
+    A_i_1 = np.append(A_i_1, - x_tick[0]*x)
+    A_i_1 = A_i_1.reshape(1, len(A_i_1))
+
+    return np.append(A_i_0, A_i_1, axis=0)

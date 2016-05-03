@@ -96,7 +96,6 @@ class RANSAC:
         """
         if p_outlier is None:
             p_outlier = self._p_outlier
-        print("outlier: ", p_outlier)
         if np.isclose(p_outlier, 1.0):
             return self._max_iteration_num
         if np.isclose(p_outlier, 0.0):
