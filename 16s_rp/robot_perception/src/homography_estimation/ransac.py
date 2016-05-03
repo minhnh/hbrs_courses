@@ -38,11 +38,17 @@ class RANSAC:
         if self._sample_size_min < 4:
             print("ransac: Need at least 4 samples for homography calculation.")
             return None
+        # TODO: test with normalized x, x_tick
+        x_transform, x = util.normalize(x, make_homog=False)
+        x_tick_transform, x_tick = util.normalize(x_tick, make_homog=False)
+        # scaling the threshold
+        self._error_threshold = self._error_threshold * x_transform[0, 0]
 
         iteration_num = self._calculate_iteration_num_adaptive(x, x_tick)
         sample_num = len(x)
         inlier_num_threshold = int((1 - self._p_outlier) * sample_num * 0.8)
 
+        # TODO: use the sample with the highest number of inliers, higher inlier_num_threshold
         for i in range(iteration_num*2):
             # Pick and fit sample of minimum size
             random_indices = self._get_random_indices(sample_num)
@@ -90,8 +96,12 @@ class RANSAC:
         """
         if p_outlier is None:
             p_outlier = self._p_outlier
+        print("outlier: ", p_outlier)
         if np.isclose(p_outlier, 1.0):
             return self._max_iteration_num
+        if np.isclose(p_outlier, 0.0):
+            print("ransac: warning: probability of outlier is 0")
+            return 1
         iteration_num = np.log10(1 - self._p) / np.log10(1 - np.power(1 - p_outlier, self._sample_size_min))
 
         return int(iteration_num)

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def normalize(x):
+def normalize(x, make_homog=True):
     """
     Normalize a matrix of 2D coordinates to have mean at the origin and average
     distance from origin of sqrt(2)
@@ -17,7 +17,8 @@ def normalize(x):
     # Scale factor to achieve average distance sqrt(2)
     scale_factor = np.sqrt(2) / scale_factor
     x_normalized = x_normalized * scale_factor
-    x_normalized = make_homogeneous(x_normalized)
+    if make_homog:
+        x_normalized = make_homogeneous(x_normalized)
     # Similarity transform matrix, no rotation, in the form:
     # | s 0 t_x |
     # | 0 s t_y |
