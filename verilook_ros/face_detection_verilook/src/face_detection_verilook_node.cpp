@@ -20,18 +20,32 @@ namespace verilook_ros
     FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh) :
         node_handle_(nh)
     {
+        using namespace Neurotec;
+        using namespace Neurotec::Biometrics::Client;
+
         const std::string Components[] = LICENSE_COMPONENTS;
         bool successful = false;
+        NResult result = Neurotec::N_OK;
+        HNBiometricClient hBiometricClient = NULL;
+
         try
         {
-            Neurotec::NCore::OnStart();
+            NCore::OnStart();
             for (unsigned int i = 0; i < sizeof(Components); i++)
             {
-                successful = Neurotec::Licensing::NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
+                using namespace Neurotec::Licensing;
+                successful = NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
                 if (!successful)
                 {
                     ROS_ERROR_STREAM("verilook: License for " << Components[i] << " is not available");
                 }
+            }
+
+            // create biometric client
+            result = NBiometricClientCreate(&hBiometricClient);
+            if (Neurotec::NFailed(result))
+            {
+                ROS_ERROR_STREAM("verilook: NBiometricClientCreate() failed (result = " << result << ")!");
             }
         }
         catch (Neurotec::NError& e)

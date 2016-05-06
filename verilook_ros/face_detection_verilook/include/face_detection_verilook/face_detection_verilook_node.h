@@ -4,6 +4,8 @@
 #include <ros/ros.h>
 
 #include <NCore.hpp>
+#include <Core/NTypes.hpp>
+#include <NMedia.hpp>
 #include <NLicensing.hpp>
 #include <NBiometrics.hpp>
 #include <NBiometricClient.hpp>
@@ -18,8 +20,6 @@ namespace verilook_ros
     protected:
         ros::NodeHandle node_handle_;
     private:
-        Neurotec::Biometrics::Client::NBiometricClient m_biometricClient;
-
         void createTemplateFromCamera();
     };
 }
