@@ -1,0 +1,1 @@
+/home/minh/workspace/rossmann/extract_stores.py
