@@ -1,5 +1,6 @@
-/**/
-
+/* Copyright 2016 Bonn-Rhein-Sieg University
+ * Author: Minh Nguyen
+ */
 /* ROS */
 #include <pluginlib/class_list_macros.h>
 #include <nodelet/nodelet.h>
@@ -8,31 +9,32 @@
 
 namespace verilook_ros
 {
-    class FaceDetectionVerilookNodelet : public nodelet::Nodelet
+class FaceDetectionVerilookNodelet : public nodelet::Nodelet
+{
+protected:
+    ros::NodeHandle node_handle_;
+    FaceDetectionVerilookNode * face_detection_node_;
+
+public:
+    FaceDetectionVerilookNodelet(void)
     {
-    protected:
-        ros::NodeHandle node_handle_;
-        FaceDetectionVerilookNode * face_detection_node_;
+        face_detection_node_ = 0;
+    }
 
-    public:
-        FaceDetectionVerilookNodelet(void)
-        {
-            face_detection_node_ = 0;
-        }
+    ~FaceDetectionVerilookNodelet(void)
+    {
+        if (face_detection_node_ != 0)
+            delete face_detection_node_;
+    }
 
-        ~FaceDetectionVerilookNodelet(void)
-        {
-            if (face_detection_node_ != 0)
-                delete face_detection_node_;
-        }
+    virtual void onInit(void)
+    {
+        node_handle_ = getNodeHandle();
+        face_detection_node_ = new FaceDetectionVerilookNode(node_handle_);
+    }
+};
+}   // namespace verilook_ros
 
-        virtual void onInit(void)
-        {
-            node_handle_ = getNodeHandle();
-            face_detection_node_ = new FaceDetectionVerilookNode(node_handle_);
-        }
-    };
-}
 // watch the capitalization carefully
 PLUGINLIB_DECLARE_CLASS(
     verilook_ros, FaceDetectionVerilookNodelet,

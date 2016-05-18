@@ -1,5 +1,8 @@
-#ifndef FACE_DETECTION_VERILOOK_NODE_HPP_INCLUDED
-#define FACE_DETECTION_VERILOOK_NODE_HPP_INCLUDED
+/* Copyright 2016 Bonn-Rhein-Sieg University
+ * Author: Minh Nguyen
+ */
+#ifndef FACE_DETECTION_VERILOOK_FACE_DETECTION_VERILOOK_NODE_H
+#define FACE_DETECTION_VERILOOK_FACE_DETECTION_VERILOOK_NODE_H
 
 #include <ros/ros.h>
 
@@ -12,16 +15,16 @@
 
 namespace verilook_ros
 {
-    class FaceDetectionVerilookNode
-    {
-    public:
-        FaceDetectionVerilookNode(ros::NodeHandle nh);
-        ~FaceDetectionVerilookNode(void);
-    protected:
-        ros::NodeHandle node_handle_;
-    private:
-        void createTemplateFromCamera();
-    };
-}
+class FaceDetectionVerilookNode
+{
+public:
+    explicit FaceDetectionVerilookNode(ros::NodeHandle nh);
+    ~FaceDetectionVerilookNode(void);
+protected:
+    ros::NodeHandle node_handle_;
+private:
+    void createTemplateFromCamera();
+};
+}   // namespace verilook_ros
 
-#endif // FACE_DETECTION_VERILOOK_NODE_HPP_INCLUDED
+#endif  // FACE_DETECTION_VERILOOK_FACE_DETECTION_VERILOOK_NODE_H
