@@ -1,5 +1,5 @@
 <package format="2">
-    <name>face_detection_verilook</name>
+    <name>verilook_ros</name>
     <version>1.0.0</version>
     <description>Implementation of the Verilook tool chain in ROS</description>
     <maintainer email="minh.nguyen@smail.inf.h-brs.de">Minh Nguyen</maintainer>
@@ -14,4 +14,7 @@
     <depend>roscpp</depend>
     <depend>std_msgs</depend>
 
+    <export>
+        <nodelet plugin="${prefix}/nodelet_face_detection_verilook.xml"/>
+    </export>
 </package>
