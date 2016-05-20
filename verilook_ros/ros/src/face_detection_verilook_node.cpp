@@ -47,19 +47,50 @@ FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh)
     sub_event_in_ = nh.subscribe("event_in", 1, &FaceDetectionVerilookNode::eventInCallback, this);
 
     // Obtain VeriLook license
-    ROS_INFO("verilook: before ObtainComponents...");
     // result = NLicense::ObtainComponents(, LICENSE_PORT, Components[0]);
     // result = NLicense::ObtainComponents(Neurotec::N_T("127.0.0.1"), Neurotec::N_T("5000"), Neurotec::N_T("Biometrics.FaceDetection"));
-    result = NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[0]);
-    ROS_INFO("verilook: before ObtainComponents...");
-    if (Neurotec::NFailed(result))
+    try
     {
-        ROS_INFO("verilook: license OK...");
+        NCore::OnStart();
+        for (unsigned int i = 0; i < sizeof(Components); i++)
+        {
+            result = NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
+            if (!result)
+            {
+                ROS_ERROR_STREAM("verilook: License for " << Components[i] << " is not available");
+            }
+        }
     }
-    else
+    catch (Neurotec::NError& e)
     {
-        ROS_ERROR_STREAM("verilook: License is not available");
+        ROS_ERROR_STREAM("verilook: " << std::string(e.ToString()));
+        NLicense::ReleaseComponents(Components[0]);
     }
+
+    ROS_INFO("verilook: after ObtainComponents...");
+    if (!result) NCore::OnExit(false);
+
+//        try
+//        {
+//
+//            // create biometric client
+//            result = NBiometricClientCreate(&hBiometricClient);
+//            if (Neurotec::NFailed(result))
+//            {
+//                ROS_ERROR_STREAM("verilook: NBiometricClientCreate() failed (result = " << result << ")!");
+//            }
+//        }
+//        catch (Neurotec::NError& e)
+//        {
+//            ROS_INFO("verilook: in catch...");
+//            for (unsigned int i = 0; i < sizeof(Components); i++)
+//            {
+//                ROS_ERROR_STREAM(std::string(e.ToString()));
+//                NLicense::ReleaseComponents(Components[i]);
+//            }
+//        }
+//
+//        if (!successful) NCore::OnExit(false);
 
 }
 

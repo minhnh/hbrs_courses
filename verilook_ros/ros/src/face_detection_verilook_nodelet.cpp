@@ -35,37 +35,6 @@ private:
     {
         node_handle_ = getMTNodeHandle();
         face_detection_node_ = new verilook_ros::FaceDetectionVerilookNode(node_handle_);
-//        try
-//        {
-//            NCore::OnStart();
-//            ROS_INFO("verilook: in try...");
-//            for (unsigned int i = 0; i < sizeof(Components); i++)
-//            {
-//                successful = NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
-//                if (!successful)
-//                {
-//                    ROS_ERROR_STREAM("verilook: License for " << Components[i] << " is not available");
-//                }
-//            }
-//
-//            // create biometric client
-//            result = NBiometricClientCreate(&hBiometricClient);
-//            if (Neurotec::NFailed(result))
-//            {
-//                ROS_ERROR_STREAM("verilook: NBiometricClientCreate() failed (result = " << result << ")!");
-//            }
-//        }
-//        catch (Neurotec::NError& e)
-//        {
-//            ROS_INFO("verilook: in catch...");
-//            for (unsigned int i = 0; i < sizeof(Components); i++)
-//            {
-//                ROS_ERROR_STREAM(std::string(e.ToString()));
-//                NLicense::ReleaseComponents(Components[i]);
-//            }
-//        }
-//
-//        if (!successful) NCore::OnExit(false);
     }
 
 protected:
