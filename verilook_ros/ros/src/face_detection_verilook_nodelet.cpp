@@ -1,11 +1,17 @@
 /* Copyright 2016 Bonn-Rhein-Sieg University
  * Author: Minh Nguyen
  */
-#include <pluginlib/class_list_macros.h>
-#include <nodelet/nodelet.h>
+#include <string>
+
+/* ROS */
 #include <ros/ros.h>
 #include <std_msgs/String.h>
-#include <stdio.h>
+// Nodelet
+#include <pluginlib/class_list_macros.h>
+#include <nodelet/nodelet.h>
+
+/* Local */
+#include <face_detection_verilook_node.h>
 
 namespace verilook_ros
 {
@@ -14,24 +20,58 @@ class FaceDetectionVerilookNodelet : public nodelet::Nodelet
 {
 public:
     FaceDetectionVerilookNodelet()
-    {}
+    {
+        ROS_INFO("verilook: face detection nodelet starting...");
+        face_detection_node_ = 0;
+    }
+    virtual ~FaceDetectionVerilookNodelet()
+    {
+        if (face_detection_node_ != 0)
+            delete face_detection_node_;
+    }
 
 private:
     virtual void onInit()
     {
-        ros::NodeHandle& private_nh = getMTPrivateNodeHandle();
-        pub_event_out_ = private_nh.advertise<std_msgs::String>("event_out", 1);
-        sub_event_in_ = private_nh.subscribe("event_in", 1, &FaceDetectionVerilookNodelet::eventInCallback, this);
+        node_handle_ = getMTNodeHandle();
+        face_detection_node_ = new verilook_ros::FaceDetectionVerilookNode(node_handle_);
+//        try
+//        {
+//            NCore::OnStart();
+//            ROS_INFO("verilook: in try...");
+//            for (unsigned int i = 0; i < sizeof(Components); i++)
+//            {
+//                successful = NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
+//                if (!successful)
+//                {
+//                    ROS_ERROR_STREAM("verilook: License for " << Components[i] << " is not available");
+//                }
+//            }
+//
+//            // create biometric client
+//            result = NBiometricClientCreate(&hBiometricClient);
+//            if (Neurotec::NFailed(result))
+//            {
+//                ROS_ERROR_STREAM("verilook: NBiometricClientCreate() failed (result = " << result << ")!");
+//            }
+//        }
+//        catch (Neurotec::NError& e)
+//        {
+//            ROS_INFO("verilook: in catch...");
+//            for (unsigned int i = 0; i < sizeof(Components); i++)
+//            {
+//                ROS_ERROR_STREAM(std::string(e.ToString()));
+//                NLicense::ReleaseComponents(Components[i]);
+//            }
+//        }
+//
+//        if (!successful) NCore::OnExit(false);
     }
 
-    void eventInCallback(const std_msgs::String::Ptr &msg)
-    {
-        if (msg->data == "e_trigger")
-        {}
-    }
+protected:
+    ros::NodeHandle node_handle_;
+    verilook_ros::FaceDetectionVerilookNode * face_detection_node_;
 
-    ros::Publisher pub_event_out_;
-    ros::Subscriber sub_event_in_;
 };
 
 PLUGINLIB_EXPORT_CLASS(verilook_ros::FaceDetectionVerilookNodelet, nodelet::Nodelet);
