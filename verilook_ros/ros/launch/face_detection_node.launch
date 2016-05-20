@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<launch>
+  <node pkg="verilook_ros" type="face_detection_verilook_node" name="face_detection_verilook_node" output="screen">
+    <remap from="/face_detection_verilook_node/event_out" to="remapped_output"/>
+  </node>
+</launch>
+
