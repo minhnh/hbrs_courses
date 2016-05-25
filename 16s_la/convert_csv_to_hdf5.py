@@ -7,13 +7,19 @@ import argparse
 import sys
 
 
-ARGPARSE_DESCRIPTION = "Script to parse Rossmann stores data"
+_ARGPARSE_DESCRIPTION = "Script to parse Rossmann stores data"
 
-NA_VALUE = ""
+_NA_VALUE = ""
 
-DATE_FORMAT = '%Y-%m-%d'
+_DATE_FORMAT = '%Y-%m-%d'
 
-DTYPE_TEST = {
+_NUM_STORE_TOTAL = 1115
+
+_ARG_TRAIN = "train"
+_ARG_TEST = "test"
+_ARG_STORE = "store"
+
+_DTYPE_TEST = {
     'Id': np.int32,
     'Store': np.int32,
     'DayOfWeek': np.int8,
@@ -22,7 +28,7 @@ DTYPE_TEST = {
     'StateHoliday': np.object,  # categorical
     'SchoolHoliday': np.int8}
 
-DTYPE_TRAIN = {
+_DTYPE_TRAIN = {
     'Id': np.int32,
     'Store': np.int32,
     'DayOfWeek': np.int8,
@@ -33,7 +39,7 @@ DTYPE_TRAIN = {
     'StateHoliday': np.object,  # categorical
     'SchoolHoliday': np.int8}
 
-DTYPE_STORE = {
+_DTYPE_STORE = {
     'Store': np.int32,
     'StoreType': np.object,
     'Assortment': np.object,
@@ -55,59 +61,81 @@ def load_data_file(filename, dtypes, parse_date=True, nrows=None):
     :param parse_date:
     :param nrows:
     """
-    def date_parse(x): return pd.datetime.strptime(x, DATE_FORMAT)
+    def date_parse(x): return pd.datetime.strptime(x, _DATE_FORMAT)
 
     if parse_date:
         return pd.read_csv(filename, sep=',', parse_dates=['Date'],
                            date_parser=date_parse, dtype=dtypes, nrows=nrows,
-                           na_values=NA_VALUE)
+                           na_values=_NA_VALUE)
     else:
         return pd.read_csv(filename, sep=',', dtype=dtypes,
-                           nrows=nrows, na_values=NA_VALUE)
+                           nrows=nrows, na_values=_NA_VALUE)
 
 
 def main(args):
-    print(args.file)
-    if args.type == "train":
-        store_data = load_data_file(args.file[0], DTYPE_TRAIN, nrows=args.nrows)
-    elif args.type == "test":
-        store_data = load_data_file(args.file[0], DTYPE_TEST, nrows=args.nrows)
-    elif args.type == "store":
-        store_data = load_data_file(args.file[0], DTYPE_STORE, nrows=args.nrows, parse_date=False)
+
+    if args.store_num and args.store_num > _NUM_STORE_TOTAL:
+        sys.exit(1)
+        print("[FAIL] Data should only have %d stores!" % (_NUM_STORE_TOTAL))
+    elif args.nrows and args.store_num > args.nrows:
+        print("[FAIL] Should read more rows than than the number of stores!")
+        sys.exit(1)
+
+    train_data = None
+    test_data = None
+    store_data = None
+    print("Loading data files")
+    if args.type == _ARG_TRAIN:
+        train_data = load_data_file(args.file[0], _DTYPE_TRAIN, nrows=args.nrows)
+    elif args.type == _ARG_TEST:
+        test_data = load_data_file(args.file[0], _DTYPE_TEST, nrows=args.nrows)
+    elif args.type == _ARG_STORE:
+        store_data = load_data_file(args.file[0], _DTYPE_STORE, nrows=args.nrows,
+                                    parse_date=False)
     elif args.type == "all":
-        pass
+        if len(args.file) < 3:
+            print("all option requires three input files")
+            sys.exit(1)
+        train_data = load_data_file(args.file[0], _DTYPE_TRAIN, nrows=args.nrows)
+        test_data = load_data_file(args.file[1], _DTYPE_TEST, nrows=args.nrows)
+        store_data = load_data_file(args.file[2], _DTYPE_STORE, nrows=args.nrows,
+                                    parse_date=False)
     else:
         print("Invalid database type")
         sys.exit(1)
 
-    if args.sparse_mode is not None:
-        if args.sparse_mode == "random":
-            store_list = []
-            random.seed()
-            for i in range(10):
-                store_list.append(random.randint(1, 1000))
-        elif args.sparse_mode == "head":
-            store_list = range(1, 11)
-        else:
-            store_list = range(990, 1001)
+    if args.store_num:
+        print("Selecting %d random stores" % (args.store_num))
+        store_list = []
+        random.seed()
+        for i in range(args.store_num):
+            store_list.append(random.randint(1, args.store_num + 1))
+        if train_data is not None:
+            train_data = train_data.loc[train_data['Store'].isin(store_list)]
+        if test_data is not None:
+            test_data = test_data.loc[test_data['Store'].isin(store_list)]
+        if store_data is not None:
+            store_data = store_data.loc[store_data['Store'].isin(store_list)]
 
-        store_data = store_data.loc[store_data['Store'].isin(store_list)]
-
+    print("Writing to HDF5 type file %s" % (args.file_out.name))
     hdf = HDFStore(args.file_out.name, mode='w')
-    if args.type in hdf:
-        print(args.type + " data is already in database")
-        sys.exit(0)
-    hdf.put(args.type, store_data, format='table', data_columns=True)
+    if train_data is not None:
+        hdf.put(_ARG_TRAIN + "_data", train_data, format='table', data_columns=True)
+    if test_data is not None:
+        hdf.put(_ARG_TEST + "_data", test_data, format='table', data_columns=True)
+    if store_data is not None:
+        hdf.put(_ARG_STORE + "_data", store_data, format='table', data_columns=True)
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description=ARGPARSE_DESCRIPTION)
-    parser.add_argument("type", choices=["train", "test", "store", "all"],
-                        help="Type of data base file")
+    parser = argparse.ArgumentParser(description=_ARGPARSE_DESCRIPTION)
+    parser.add_argument("type", choices=[_ARG_TRAIN, _ARG_TEST, _ARG_STORE, "all"],
+                        help="Type of data base file. If \"all\" then expects \
+                        train, test, store order")
     parser.add_argument("file", type=argparse.FileType('r'), nargs='+',
                         help="Name of database file")
-    parser.add_argument("--sparse_mode", choices=["random", "head", "tail"],
-                        help="mode for picking specific stores")
+    parser.add_argument("--store_num", type=int,
+                        help="number of stores to select")
     parser.add_argument("file_out", type=argparse.FileType('w'),
                         help="file to write data for selected stores")
     parser.add_argument("--nrows", type=int,
