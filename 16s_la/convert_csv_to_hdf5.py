@@ -2,6 +2,7 @@
 import random
 import numpy as np
 import pandas as pd
+from pandas import HDFStore
 import argparse
 import sys
 
@@ -49,6 +50,10 @@ DTYPE_STORE = {
 def load_data_file(filename, dtypes, parse_date=True, nrows=None):
     """
     Load file to data frame.
+
+    :param filename: name of the file to be loaded
+    :param parse_date:
+    :param nrows:
     """
     def date_parse(x): return pd.datetime.strptime(x, DATE_FORMAT)
 
@@ -62,12 +67,15 @@ def load_data_file(filename, dtypes, parse_date=True, nrows=None):
 
 
 def main(args):
+    print(args.file)
     if args.type == "train":
-        store_data = load_data_file(args.file, DTYPE_TRAIN, nrows=args.nrows)
+        store_data = load_data_file(args.file[0], DTYPE_TRAIN, nrows=args.nrows)
     elif args.type == "test":
-        store_data = load_data_file(args.file, DTYPE_TEST, nrows=args.nrows)
+        store_data = load_data_file(args.file[0], DTYPE_TEST, nrows=args.nrows)
     elif args.type == "store":
-        store_data = load_data_file(args.file, DTYPE_STORE, nrows=args.nrows, parse_date=False)
+        store_data = load_data_file(args.file[0], DTYPE_STORE, nrows=args.nrows, parse_date=False)
+    elif args.type == "all":
+        pass
     else:
         print("Invalid database type")
         sys.exit(1)
@@ -83,20 +91,24 @@ def main(args):
         else:
             store_list = range(990, 1001)
 
-        if args.file_out:
-            store_data_small = store_data.loc[store_data['Store'].isin(store_list)]
-            store_data_small.to_csv(args.file_out, index=False, date_format=DATE_FORMAT)
+        store_data = store_data.loc[store_data['Store'].isin(store_list)]
+
+    hdf = HDFStore(args.file_out.name, mode='w')
+    if args.type in hdf:
+        print(args.type + " data is already in database")
+        sys.exit(0)
+    hdf.put(args.type, store_data, format='table', data_columns=True)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=ARGPARSE_DESCRIPTION)
-    parser.add_argument("type", choices=["train", "test", "store"],
+    parser.add_argument("type", choices=["train", "test", "store", "all"],
                         help="Type of data base file")
-    parser.add_argument("file", type=argparse.FileType('r'),
+    parser.add_argument("file", type=argparse.FileType('r'), nargs='+',
                         help="Name of database file")
     parser.add_argument("--sparse_mode", choices=["random", "head", "tail"],
                         help="mode for picking specific stores")
-    parser.add_argument("--file_out", type=argparse.FileType('w'),
+    parser.add_argument("file_out", type=argparse.FileType('w'),
                         help="file to write data for selected stores")
     parser.add_argument("--nrows", type=int,
                         help="number of rows to read", default=None)
