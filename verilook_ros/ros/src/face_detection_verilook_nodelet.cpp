@@ -21,7 +21,7 @@ class FaceDetectionVerilookNodelet : public nodelet::Nodelet
 public:
     FaceDetectionVerilookNodelet()
     {
-        ROS_INFO("verilook: face detection nodelet starting...");
+        ROS_INFO_STREAM(PACKAGE_NAME << ": face detection nodelet starting...");
         face_detection_node_ = 0;
     }
     virtual ~FaceDetectionVerilookNodelet()

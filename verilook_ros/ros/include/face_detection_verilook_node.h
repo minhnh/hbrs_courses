@@ -21,6 +21,8 @@ public:
 
 private:
     void eventInCallback(const std_msgs::String::Ptr &msg);
+    void releaseLicenses();
+    void obtainLicenses();
 
     ros::Publisher pub_event_out_;
     ros::Subscriber sub_event_in_;
