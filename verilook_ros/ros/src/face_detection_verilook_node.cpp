@@ -18,14 +18,11 @@
 #define LICENSE_COMPONENTS \
 {\
     "Biometrics.FaceDetection", \
-    "Biometrics.FaceSegmentsDetection", \
     "Devices.Cameras", \
     "Biometrics.FaceExtraction", \
-    "Biometrics.FaceSegmentation", \
-    "Biometrics.FaceMatching", \
-    "Biometrics.FaceQualityAssessment" \
+    "Biometrics.FaceMatching" \
 }
-#define LICENSE_SERVER  "127.0.0.1"     //"/local"
+#define LICENSE_SERVER  "/local"
 #define LICENSE_PORT    "5000"
 
 namespace verilook_ros
@@ -39,7 +36,6 @@ FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh)
     using Neurotec::Biometrics::Client::HNBiometricClient;
 
     const std::string Components[] = LICENSE_COMPONENTS;
-    bool successful = false;
     Neurotec::NResult result = Neurotec::N_OK;
     HNBiometricClient hBiometricClient = NULL;
 
@@ -47,51 +43,28 @@ FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh)
     sub_event_in_ = nh.subscribe("event_in", 1, &FaceDetectionVerilookNode::eventInCallback, this);
 
     // Obtain VeriLook license
-    // result = NLicense::ObtainComponents(, LICENSE_PORT, Components[0]);
-    // result = NLicense::ObtainComponents(Neurotec::N_T("127.0.0.1"), Neurotec::N_T("5000"), Neurotec::N_T("Biometrics.FaceDetection"));
+    ROS_INFO_STREAM(PACKAGE_NAME << ": obtaining licenses...");
     try
     {
         NCore::OnStart();
-        for (unsigned int i = 0; i < sizeof(Components); i++)
+        for (unsigned int i = 0; i < sizeof(Components)/sizeof(*Components); i++)
         {
             result = NLicense::ObtainComponents(LICENSE_SERVER, LICENSE_PORT, Components[i]);
             if (!result)
             {
-                ROS_ERROR_STREAM("verilook: License for " << Components[i] << " is not available");
+                ROS_ERROR_STREAM(PACKAGE_NAME << ": License for " << Components[i] << " is not available");
+            }
+            else
+            {
+                ROS_DEBUG_STREAM(PACKAGE_NAME << ": License for " << Components[i] << " obtained successfully");
             }
         }
     }
     catch (Neurotec::NError& e)
     {
-        ROS_ERROR_STREAM("verilook: " << std::string(e.ToString()));
+        ROS_ERROR_STREAM(PACKAGE_NAME << ": " << std::string(e.ToString()));
         NLicense::ReleaseComponents(Components[0]);
     }
-
-    ROS_INFO("verilook: after ObtainComponents...");
-    if (!result) NCore::OnExit(false);
-
-//        try
-//        {
-//
-//            // create biometric client
-//            result = NBiometricClientCreate(&hBiometricClient);
-//            if (Neurotec::NFailed(result))
-//            {
-//                ROS_ERROR_STREAM("verilook: NBiometricClientCreate() failed (result = " << result << ")!");
-//            }
-//        }
-//        catch (Neurotec::NError& e)
-//        {
-//            ROS_INFO("verilook: in catch...");
-//            for (unsigned int i = 0; i < sizeof(Components); i++)
-//            {
-//                ROS_ERROR_STREAM(std::string(e.ToString()));
-//                NLicense::ReleaseComponents(Components[i]);
-//            }
-//        }
-//
-//        if (!successful) NCore::OnExit(false);
-
 }
 
 FaceDetectionVerilookNode::~FaceDetectionVerilookNode()
