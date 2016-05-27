@@ -35,14 +35,32 @@ FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh)
 {
     using Neurotec::Biometrics::Client::HNBiometricClient;
 
-    const std::string Components[] = LICENSE_COMPONENTS;
-    Neurotec::NResult result = Neurotec::N_OK;
     HNBiometricClient hBiometricClient = NULL;
 
     pub_event_out_ = nh.advertise<std_msgs::String>("event_out", 1);
     sub_event_in_ = nh.subscribe("event_in", 1, &FaceDetectionVerilookNode::eventInCallback, this);
 
     // Obtain VeriLook license
+    obtainLicenses();
+}
+
+FaceDetectionVerilookNode::~FaceDetectionVerilookNode()
+{
+	releaseLicenses();
+    NCore::OnExit(false);
+}
+
+void FaceDetectionVerilookNode::eventInCallback(const std_msgs::String::Ptr &msg)
+{
+    ROS_INFO("verilook: in event_in callback...");
+    if (msg->data == "e_trigger")
+    {}
+}
+
+void FaceDetectionVerilookNode::obtainLicenses()
+{
+    const std::string Components[] = LICENSE_COMPONENTS;
+    Neurotec::NResult result = Neurotec::N_OK;
     ROS_INFO_STREAM(PACKAGE_NAME << ": obtaining licenses...");
     try
     {
@@ -63,16 +81,17 @@ FaceDetectionVerilookNode::FaceDetectionVerilookNode(ros::NodeHandle nh)
     catch (Neurotec::NError& e)
     {
         ROS_ERROR_STREAM(PACKAGE_NAME << ": " << std::string(e.ToString()));
-        NLicense::ReleaseComponents(Components[0]);
+        releaseLicenses();
     }
 }
 
-FaceDetectionVerilookNode::~FaceDetectionVerilookNode()
+void FaceDetectionVerilookNode::releaseLicenses()
 {
     const std::string Components[] = LICENSE_COMPONENTS;
+    ROS_INFO_STREAM(PACKAGE_NAME << ": releasing licenses");
     try
     {
-        for (unsigned int i = 0; i < sizeof(Components); i++)
+        for (unsigned int i = 0; i < sizeof(Components)/sizeof(*Components); i++)
         {
             NLicense::ReleaseComponents(Components[i]);
         }
@@ -85,14 +104,6 @@ FaceDetectionVerilookNode::~FaceDetectionVerilookNode()
     {
         ROS_ERROR_STREAM(e.what());
     }
-    NCore::OnExit(false);
-}
-
-void FaceDetectionVerilookNode::eventInCallback(const std_msgs::String::Ptr &msg)
-{
-    ROS_INFO("verilook: in event_in callback...");
-    if (msg->data == "e_trigger")
-    {}
 }
 
 }   // namespace verilook_ros
