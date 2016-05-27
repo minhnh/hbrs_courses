@@ -8,6 +8,8 @@
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 
+#define PACKAGE_NAME "verilook_ros"
+
 namespace verilook_ros
 {
 
