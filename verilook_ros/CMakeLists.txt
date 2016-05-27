@@ -33,12 +33,14 @@ catkin_package(
 
 add_executable(${NODE_EXEC_FACE_DETECTION}
     ros/src/face_detection_verilook_node.cpp
+    ros/src/verilook_wrapper.cpp
 )
 
 ## Create the nodelet tutorial library
 add_library(${NODELET_LIBRARY}
     ros/src/face_detection_verilook_nodelet.cpp
     ros/src/face_detection_verilook_node.cpp
+    ros/src/verilook_wrapper.cpp
 )
 
 target_link_libraries(${NODELET_LIBRARY}

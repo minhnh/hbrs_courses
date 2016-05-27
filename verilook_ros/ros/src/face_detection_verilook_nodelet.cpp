@@ -3,9 +3,6 @@
  */
 #include <string>
 
-/* ROS */
-#include <ros/ros.h>
-#include <std_msgs/String.h>
 // Nodelet
 #include <pluginlib/class_list_macros.h>
 #include <nodelet/nodelet.h>

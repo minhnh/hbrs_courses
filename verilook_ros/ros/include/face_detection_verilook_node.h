@@ -8,7 +8,8 @@
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 
-#define PACKAGE_NAME "verilook_ros"
+/* Package */
+#include <verilook_ros.h>
 
 namespace verilook_ros
 {
@@ -21,8 +22,6 @@ public:
 
 private:
     void eventInCallback(const std_msgs::String::Ptr &msg);
-    void releaseLicenses();
-    void obtainLicenses();
 
     ros::Publisher pub_event_out_;
     ros::Subscriber sub_event_in_;
