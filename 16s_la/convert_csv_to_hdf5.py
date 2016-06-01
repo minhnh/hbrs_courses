@@ -6,6 +6,9 @@ from pandas import HDFStore
 import argparse
 import sys
 
+"""
+Code referenced from https://github.com/Cospel/kaggle-rossmann/
+"""
 
 _ARGPARSE_DESCRIPTION = "Script to parse Rossmann stores data"
 
@@ -52,6 +55,12 @@ _DTYPE_STORE = {
     'PromoInterval': np.object
 }
 
+_REPLACE_DICT = {
+    'StateHoliday' : {'a': 1, 'b': 2, 'c': 3, '0': 0, 0: 0},
+    'Assortment' : {'a': 0, 'b': 1, 'c': 2},
+    'StoreType' : {'a': 0,'b': 1,'c': 2, 'd': 3}
+}
+
 
 def load_data_file(filename, dtypes, parse_date=True, nrows=None):
     """
@@ -72,12 +81,26 @@ def load_data_file(filename, dtypes, parse_date=True, nrows=None):
                            nrows=nrows, na_values=_NA_VALUE)
 
 
-def main(args):
+def process_data(train_data=None, test_data=None, store_data=None):
+    if train_data is not None:
+        if store_data is None:
+            store_data = pd.DataFrame()
+        train_data = train_data.replace(_REPLACE_DICT)
 
+    if test_data is not None:
+        test_data = test_data.replace(_REPLACE_DICT)
+
+    if store_data is not None:
+        store_data = store_data.replace(_REPLACE_DICT)
+
+    return train_data, test_data, store_data
+
+
+def main(args):
     if args.store_num and args.store_num > _NUM_STORE_TOTAL:
         sys.exit(1)
         print("[FAIL] Data should only have %d stores!" % (_NUM_STORE_TOTAL))
-    elif args.nrows and args.store_num > args.nrows:
+    if args.nrows and args.nrows < _NUM_STORE_TOTAL:
         print("[FAIL] Should read more rows than than the number of stores!")
         sys.exit(1)
 
@@ -109,13 +132,16 @@ def main(args):
         store_list = []
         random.seed()
         for i in range(args.store_num):
-            store_list.append(random.randint(1, args.store_num + 1))
+            store_list.append(random.randint(1, _NUM_STORE_TOTAL + 1))
         if train_data is not None:
             train_data = train_data.loc[train_data['Store'].isin(store_list)]
         if test_data is not None:
             test_data = test_data.loc[test_data['Store'].isin(store_list)]
         if store_data is not None:
             store_data = store_data.loc[store_data['Store'].isin(store_list)]
+
+    print("Perform additional processing...")
+    train_data, test_data, store_data = process_data(train_data, test_data, store_data)
 
     print("Writing to HDF5 type file %s" % (args.file_out.name))
     hdf = HDFStore(args.file_out.name, mode='w')
@@ -125,6 +151,8 @@ def main(args):
         hdf.put(_ARG_TEST + "_data", test_data, format='table', data_columns=True)
     if store_data is not None:
         hdf.put(_ARG_STORE + "_data", store_data, format='table', data_columns=True)
+
+    return
 
 
 if __name__ == '__main__':
