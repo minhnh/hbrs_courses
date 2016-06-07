@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-import random
-import numpy as np
-import pandas as pd
-from pandas import HDFStore
-import argparse
-import sys
-
 """
 Code referenced from https://github.com/Cospel/kaggle-rossmann/
 """
+
+import sys
+import random
+import argparse
+import numpy as np
+import pandas as pd
+from pandas import HDFStore
 
 _ARGPARSE_DESCRIPTION = "Script to parse Rossmann stores data"
 
@@ -35,8 +35,8 @@ _DTYPE_TRAIN = {
     'Id': np.int32,
     'Store': np.int32,
     'DayOfWeek': np.int8,
-    'Sales': np.int32,
-    'Customers': np.int32,
+    'Sales': np.float32,
+    'Customers': np.float32,
     'Open': np.int8,
     'Promo': np.int8,
     'StateHoliday': np.object,  # categorical
@@ -56,10 +56,15 @@ _DTYPE_STORE = {
 }
 
 _REPLACE_DICT = {
-    'StateHoliday' : {'a': 1, 'b': 2, 'c': 3, '0': 0, 0: 0},
+    'StateHoliday' : {'a': 1, 'b': 2, 'c': 3, '0': 0},
     'Assortment' : {'a': 0, 'b': 1, 'c': 2},
-    'StoreType' : {'a': 0,'b': 1,'c': 2, 'd': 3}
+    'StoreType' : {'a': 0, 'b': 1, 'c': 2, 'd': 3}
 }
+
+
+def date_parse(date_string):
+    """:param date_string: date string from csv file """
+    return pd.datetime.strptime(date_string, _DATE_FORMAT)
 
 
 def load_data_file(filename, dtypes, parse_date=True, nrows=None):
@@ -70,18 +75,61 @@ def load_data_file(filename, dtypes, parse_date=True, nrows=None):
     :param parse_date:
     :param nrows:
     """
-    def date_parse(x): return pd.datetime.strptime(x, _DATE_FORMAT)
-
     if parse_date:
         return pd.read_csv(filename, sep=',', parse_dates=['Date'],
                            date_parser=date_parse, dtype=dtypes, nrows=nrows,
                            na_values=_NA_VALUE)
     else:
-        return pd.read_csv(filename, sep=',', dtype=dtypes,
-                           nrows=nrows, na_values=_NA_VALUE)
+        return pd.read_csv(filename, sep=',', dtype=dtypes, nrows=nrows,
+                           na_values=_NA_VALUE)
+
+
+def normalize_data_by_column(data_train, data_store, column_name='Sales'):
+    """
+    :param data_train:
+    :param data_store:
+    :param column_name:
+    """
+    if 'Store' in data_store:
+        stores = data_store['Store'].unique()
+    else:
+        stores = data_train['Store'].unique()
+        data_store['Store'] = stores
+
+    store_means = []
+    store_means_openonly = []
+    store_stds = []
+    store_stds_openonly = []
+    for store_id in data_store['Store']:
+        store_train_data = data_train[column_name].loc[data_train['Store'] == store_id]
+        store_train_data_openonly = data_train[column_name].loc[(data_train['Store'] == store_id) &
+                                                                (data_train['Open'] == 1)]
+
+        store_means.append(store_train_data.mean())
+        store_means_openonly.append(store_train_data_openonly.mean())
+        store_stds.append(store_train_data.std())
+        store_stds_openonly.append(store_train_data_openonly.std())
+
+        data_train.loc[data_train['Store'] == store_id, column_name + 'Norm'] \
+            = (store_train_data - store_means[-1]) / store_stds[-1]
+
+        data_train.loc[data_train['Store'] == store_id, column_name + "NormOpenOnly"] \
+            = (store_train_data - store_means_openonly[-1]) / store_stds_openonly[-1]
+
+    data_store['Mean' + column_name] = store_means
+    data_store['Std' + column_name] = store_stds
+    data_store['Mean' + column_name + 'OpenOnly'] = store_means_openonly
+    data_store['Std' + column_name + 'OpenOnly'] = store_stds_openonly
+
+    # add new columns to data_store
+    data_store['Mean' + column_name] = store_means
+    data_store['Std' + column_name] = store_stds
+
+    return data_train, data_store
 
 
 def process_data(train_data=None, test_data=None, store_data=None):
+    """ Perform additional data processing """
     if train_data is not None:
         if store_data is None:
             store_data = pd.DataFrame()
@@ -93,11 +141,20 @@ def process_data(train_data=None, test_data=None, store_data=None):
     if store_data is not None:
         store_data = store_data.replace(_REPLACE_DICT)
 
+    train_data, store_data = normalize_data_by_column(train_data, store_data,
+                                                      column_name='Sales')
+    train_data, store_data = normalize_data_by_column(train_data, store_data,
+                                                      column_name='Customers')
+    # Add WeekOfYear column
+    train_data['WeekOfYear'] = train_data['Date'].map(lambda x: x.isocalendar()[1])
+    test_data['WeekOfYear'] = test_data['Date'].map(lambda x: x.isocalendar()[1])
+
     return train_data, test_data, store_data
 
 
 def main(args):
-    if args.store_num and args.store_num > _NUM_STORE_TOTAL:
+    """ main function """
+    if args.num_store and args.num_store > _NUM_STORE_TOTAL:
         sys.exit(1)
         print("[FAIL] Data should only have %d stores!" % (_NUM_STORE_TOTAL))
     if args.nrows and args.nrows < _NUM_STORE_TOTAL:
@@ -127,11 +184,17 @@ def main(args):
         print("Invalid database type")
         sys.exit(1)
 
-    if args.store_num:
-        print("Selecting %d random stores" % (args.store_num))
+    # Reverse dates
+    if train_data is not None:
+        train_data = train_data.iloc[::-1]
+    if test_data is not None:
+        test_data = test_data.iloc[::-1]
+
+    if args.num_store:
+        print("Selecting %d random stores" % (args.num_store))
         store_list = []
         random.seed()
-        for i in range(args.store_num):
+        for _ in range(args.num_store):
             store_list.append(random.randint(1, _NUM_STORE_TOTAL + 1))
         if train_data is not None:
             train_data = train_data.loc[train_data['Store'].isin(store_list)]
@@ -162,12 +225,12 @@ if __name__ == '__main__':
                         train, test, store order")
     parser.add_argument("file", type=argparse.FileType('r'), nargs='+',
                         help="Name of database file")
-    parser.add_argument("--store_num", type=int,
+    parser.add_argument("--num_store", type=int,
                         help="number of stores to select")
     parser.add_argument("file_out", type=argparse.FileType('w'),
                         help="file to write data for selected stores")
     parser.add_argument("--nrows", type=int,
                         help="number of rows to read", default=None)
-    args = parser.parse_args()
+    arguments = parser.parse_args()
 
-    main(args)
+    main(arguments)
