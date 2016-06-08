@@ -41,3 +41,4 @@ def draw_epilines(img1, img2, points_img1, points_img2, fundamental_matrix):
     plt.subplot(211), plt.imshow(img5)
     plt.subplot(212), plt.imshow(img3)
     plt.show()
+    return lines1, lines2
