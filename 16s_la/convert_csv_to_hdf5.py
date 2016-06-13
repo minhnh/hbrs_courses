@@ -47,18 +47,19 @@ _DTYPE_STORE = {
     'StoreType': np.object,
     'Assortment': np.object,
     'CompetitionDistance': np.float32,
-    'CompetitionOpenSiceMonth': np.object,  # categorical
-    'CompetitionOpenSiceYear': np.object,
+    'CompetitionOpenSiceMonth': np.float32,  # categorical
+    'CompetitionOpenSiceYear': np.float32,
     'Promo2': np.int8,
-    'Promo2SinceWeek': np.object,
-    'Promo2SinceYear': np.object,
+    'Promo2SinceWeek': np.float32,
+    'Promo2SinceYear': np.float32,
     'PromoInterval': np.object
 }
 
 _REPLACE_DICT = {
     'StateHoliday' : {'a': 1, 'b': 2, 'c': 3, '0': 0},
     'Assortment' : {'a': 0, 'b': 1, 'c': 2},
-    'StoreType' : {'a': 0, 'b': 1, 'c': 2, 'd': 3}
+    'StoreType' : {'a': 0, 'b': 1, 'c': 2, 'd': 3},
+    'Year' : { '2013': 1, '2014': 2, '2015': 3 }
 }
 
 
@@ -84,7 +85,17 @@ def load_data_file(filename, dtypes, parse_date=True, nrows=None):
                            na_values=_NA_VALUE)
 
 
-def normalize_data_by_column(data_train, data_store, column_name='Sales'):
+def normalize_series_by_column(series, column_name, new_column=None):
+    series_mean = series[column_name].mean()
+    series_std = series[column_name].std()
+    if new_column is None:
+        series[column_name] = (series[column_name] - series_mean) / series_std
+    else:
+        series[new_column] = (series[column_name] - series_mean) / series_std
+    return series_mean, series_std, series
+
+
+def normalize_train_data_by_column(data_train, data_store, additional_info, column_name='Sales'):
     """
     :param data_train:
     :param data_store:
@@ -100,56 +111,87 @@ def normalize_data_by_column(data_train, data_store, column_name='Sales'):
     store_means_openonly = []
     store_stds = []
     store_stds_openonly = []
-    for store_id in data_store['Store']:
+
+    # Calculate mean and standard deviation of whole column
+    train_column_mean = data_train[column_name].mean()
+    train_column_std = data_train[column_name].std()
+    train_column_mean_openonly = data_train[column_name].loc[(data_train['Open'] == 1)].mean()
+    train_column_std_openonly = data_train[column_name].loc[(data_train['Open'] == 1)].std()
+
+    # Write these info to additional_info
+    additional_info[column_name + 'Mean'] = [train_column_mean]
+    additional_info[column_name + 'Std'] = [train_column_mean]
+    additional_info[column_name + 'MeanOpenOnly'] = [train_column_mean_openonly]
+    additional_info[column_name + 'StdOpenOnly'] = [train_column_mean_openonly]
+
+    # Normalize whole column of data_train
+    data_train[column_name + 'Norm'] \
+        = (data_train[column_name] - train_column_mean) / train_column_std
+    data_train[column_name + 'NormOpenOnly'] \
+        = (data_train[column_name] - train_column_mean_openonly) / train_column_std_openonly
+
+    # Calculate mean and standard deviation of normalized column for each store
+    for store_id in stores:
         store_train_data = data_train[column_name].loc[data_train['Store'] == store_id]
         store_train_data_openonly = data_train[column_name].loc[(data_train['Store'] == store_id) &
                                                                 (data_train['Open'] == 1)]
-
         store_means.append(store_train_data.mean())
-        store_means_openonly.append(store_train_data_openonly.mean())
         store_stds.append(store_train_data.std())
+        store_means_openonly.append(store_train_data_openonly.mean())
         store_stds_openonly.append(store_train_data_openonly.std())
 
-        data_train.loc[data_train['Store'] == store_id, column_name + 'Norm'] \
-            = (store_train_data - store_means[-1]) / store_stds[-1]
+    # Write more store specific info to data_store
+    data_store[column_name + 'NormMean'] = store_means
+    data_store[column_name + 'NormStd'] = store_stds
+    data_store[column_name + 'NormMeanOpenOnly'] = store_means_openonly
+    data_store[column_name + 'NormStdOpenOnly'] = store_stds_openonly
 
-        data_train.loc[data_train['Store'] == store_id, column_name + "NormOpenOnly"] \
-            = (store_train_data - store_means_openonly[-1]) / store_stds_openonly[-1]
-
-    data_store['Mean' + column_name] = store_means
-    data_store['Std' + column_name] = store_stds
-    data_store['Mean' + column_name + 'OpenOnly'] = store_means_openonly
-    data_store['Std' + column_name + 'OpenOnly'] = store_stds_openonly
-
-    # add new columns to data_store
-    data_store['Mean' + column_name] = store_means
-    data_store['Std' + column_name] = store_stds
-
-    return data_train, data_store
+    return data_train, data_store, additional_info
 
 
-def process_data(train_data=None, test_data=None, store_data=None):
+def process_data(train_data=None, test_data=None, store_data=None, additional_info=None):
     """ Perform additional data processing """
-    if train_data is not None:
-        if store_data is None:
-            store_data = pd.DataFrame()
-        train_data = train_data.replace(_REPLACE_DICT)
 
     if test_data is not None:
         test_data = test_data.replace(_REPLACE_DICT)
 
     if store_data is not None:
+        store_mean, store_std, store_data = normalize_series_by_column(store_data, 'CompetitionDistance')
+        additional_info['CompetitionDistanceMean'] = [store_mean]
+        additional_info['CompetitionDistanceStd'] = [store_std]
+
+        store_data['CompetitionMonthsSinceOpen'] \
+            = (2015.0 - store_data['CompetitionOpenSinceYear'])*12 \
+            + 12.0 - store_data['CompetitionOpenSinceMonth']
+        #TODO: Use machine learning to guess missing values
+        store_data.loc[store_data['CompetitionMonthsSinceOpen'].isnull(), 'CompetitionMonthsSinceOpen'] = 0.0
+        store_mean, store_std, store_data = normalize_series_by_column(store_data, 'CompetitionMonthsSinceOpen')
+
+        store_data['Promo2WeeksSinceJoined'] \
+            = (2015.0 - store_data['Promo2SinceYear'])*52 \
+            + 52.0 - store_data['Promo2SinceWeek']
+        store_data.loc[store_data['Promo2WeeksSinceJoined'].isnull(), 'Promo2WeeksSinceJoined'] = 0.0
+        store_mean, store_std, store_data = normalize_series_by_column(store_data, 'Promo2WeeksSinceJoined')
+
         store_data = store_data.replace(_REPLACE_DICT)
 
-    train_data, store_data = normalize_data_by_column(train_data, store_data,
-                                                      column_name='Sales')
-    train_data, store_data = normalize_data_by_column(train_data, store_data,
-                                                      column_name='Customers')
+    if train_data is not None:
+        if store_data is None:
+            store_data = pd.DataFrame()
+        train_data = train_data.replace(_REPLACE_DICT)
+
+    train_data, store_data, additional_info \
+        = normalize_train_data_by_column(train_data, store_data, additional_info,
+                                         column_name='Sales')
+    train_data, store_data, additional_info \
+        = normalize_train_data_by_column(train_data, store_data, additional_info,
+                                         column_name='Customers')
+
     # Add WeekOfYear column
     train_data['WeekOfYear'] = train_data['Date'].map(lambda x: x.isocalendar()[1])
     test_data['WeekOfYear'] = test_data['Date'].map(lambda x: x.isocalendar()[1])
 
-    return train_data, test_data, store_data
+    return train_data, test_data, store_data, additional_info
 
 
 def main(args):
@@ -164,6 +206,7 @@ def main(args):
     train_data = None
     test_data = None
     store_data = None
+    additional_info = pd.DataFrame()
     print("Loading data files")
     if args.type == _ARG_TRAIN:
         train_data = load_data_file(args.file[0], _DTYPE_TRAIN, nrows=args.nrows)
@@ -194,7 +237,7 @@ def main(args):
         print("Selecting %d random stores" % (args.num_store))
         store_list = []
         random.seed()
-        for _ in range(args.num_store):
+        for _ in range(args.num_store + 1):
             store_list.append(random.randint(1, _NUM_STORE_TOTAL + 1))
         if train_data is not None:
             train_data = train_data.loc[train_data['Store'].isin(store_list)]
@@ -204,7 +247,8 @@ def main(args):
             store_data = store_data.loc[store_data['Store'].isin(store_list)]
 
     print("Perform additional processing...")
-    train_data, test_data, store_data = process_data(train_data, test_data, store_data)
+    train_data, test_data, store_data, additional_info \
+            = process_data(train_data, test_data, store_data, additional_info)
 
     print("Writing to HDF5 type file %s" % (args.file_out.name))
     hdf = HDFStore(args.file_out.name, mode='w')
@@ -214,6 +258,8 @@ def main(args):
         hdf.put(_ARG_TEST + "_data", test_data, format='table', data_columns=True)
     if store_data is not None:
         hdf.put(_ARG_STORE + "_data", store_data, format='table', data_columns=True)
+    #if not additional_info.empty:
+    hdf.put("common_info", additional_info, format='table', data_columns=True)
 
     return
 
