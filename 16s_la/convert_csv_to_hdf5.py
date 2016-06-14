@@ -112,23 +112,25 @@ def normalize_train_data_by_column(data_train, data_store, additional_info, colu
     store_stds = []
     store_stds_openonly = []
 
-    # Calculate mean and standard deviation of whole column
-    train_column_mean = data_train[column_name].mean()
-    train_column_std = data_train[column_name].std()
-    train_column_mean_openonly = data_train[column_name].loc[(data_train['Open'] == 1)].mean()
-    train_column_std_openonly = data_train[column_name].loc[(data_train['Open'] == 1)].std()
+    # Calculate max and min of whole column
+    train_column_max = data_train[column_name].max()
+    train_column_min = data_train[column_name].min()
+    train_column_max_openonly = data_train[column_name].loc[(data_train['Open'] == 1)].max()
+    train_column_min_openonly = data_train[column_name].loc[(data_train['Open'] == 1)].min()
 
     # Write these info to additional_info
-    additional_info[column_name + 'Mean'] = [train_column_mean]
-    additional_info[column_name + 'Std'] = [train_column_mean]
-    additional_info[column_name + 'MeanOpenOnly'] = [train_column_mean_openonly]
-    additional_info[column_name + 'StdOpenOnly'] = [train_column_mean_openonly]
+    additional_info[column_name + 'Max'] = [train_column_max]
+    additional_info[column_name + 'Min'] = [train_column_min]
+    additional_info[column_name + 'MaxOpenOnly'] = [train_column_max_openonly]
+    additional_info[column_name + 'MinOpenOnly'] = [train_column_min_openonly]
 
-    # Normalize whole column of data_train
+    # Normalize whole column of data_train (val - min)/(max - min) for sigmoid
+    # activation (0-1 ouputs)
     data_train[column_name + 'Norm'] \
-        = (data_train[column_name] - train_column_mean) / train_column_std
+        = (data_train[column_name] - train_column_min) / (train_column_max - train_column_min)
     data_train[column_name + 'NormOpenOnly'] \
-        = (data_train[column_name] - train_column_mean_openonly) / train_column_std_openonly
+        = (data_train[column_name] - train_column_min_openonly) / (train_column_max_openonly - train_column_min_openonly)
+    data_train.loc[data_train['Open'] == 0, column_name + 'NormOpenOnly'] = 0.0
 
     # Calculate mean and standard deviation of normalized column for each store
     for store_id in stores:
@@ -156,22 +158,28 @@ def process_data(train_data=None, test_data=None, store_data=None, additional_in
         test_data = test_data.replace(_REPLACE_DICT)
 
     if store_data is not None:
-        store_mean, store_std, store_data = normalize_series_by_column(store_data, 'CompetitionDistance')
+        store_mean, store_std, store_data \
+            = normalize_series_by_column(store_data, 'CompetitionDistance')
         additional_info['CompetitionDistanceMean'] = [store_mean]
         additional_info['CompetitionDistanceStd'] = [store_std]
+        store_mean, store_std, store_data \
+            = normalize_series_by_column(store_data, 'Store', new_column='StoreNorm')
 
         store_data['CompetitionMonthsSinceOpen'] \
             = (2015.0 - store_data['CompetitionOpenSinceYear'])*12 \
             + 12.0 - store_data['CompetitionOpenSinceMonth']
         #TODO: Use machine learning to guess missing values
-        store_data.loc[store_data['CompetitionMonthsSinceOpen'].isnull(), 'CompetitionMonthsSinceOpen'] = 0.0
-        store_mean, store_std, store_data = normalize_series_by_column(store_data, 'CompetitionMonthsSinceOpen')
+        store_data.loc[store_data['CompetitionMonthsSinceOpen'].isnull(),
+                       'CompetitionMonthsSinceOpen'] = 0.0
+        store_mean, store_std, store_data \
+            = normalize_series_by_column(store_data, 'CompetitionMonthsSinceOpen')
 
         store_data['Promo2WeeksSinceJoined'] \
-            = (2015.0 - store_data['Promo2SinceYear'])*52 \
-            + 52.0 - store_data['Promo2SinceWeek']
-        store_data.loc[store_data['Promo2WeeksSinceJoined'].isnull(), 'Promo2WeeksSinceJoined'] = 0.0
-        store_mean, store_std, store_data = normalize_series_by_column(store_data, 'Promo2WeeksSinceJoined')
+            = (2015.0 - store_data['Promo2SinceYear'])*52 + 52.0 - store_data['Promo2SinceWeek']
+        store_data.loc[store_data['Promo2WeeksSinceJoined'].isnull(),
+                       'Promo2WeeksSinceJoined'] = 0.0
+        store_mean, store_std, store_data \
+            = normalize_series_by_column(store_data, 'Promo2WeeksSinceJoined')
 
         store_data = store_data.replace(_REPLACE_DICT)
 
@@ -189,6 +197,7 @@ def process_data(train_data=None, test_data=None, store_data=None, additional_in
 
     # Add WeekOfYear column
     train_data['WeekOfYear'] = train_data['Date'].map(lambda x: x.isocalendar()[1])
+    train_data['Year'] = train_data['Date'].map(lambda x: x.isocalendar()[0] - 2013.)
     test_data['WeekOfYear'] = test_data['Date'].map(lambda x: x.isocalendar()[1])
 
     return train_data, test_data, store_data, additional_info
