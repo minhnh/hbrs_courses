@@ -1,0 +1,3 @@
+[submodule "16s_la/rossmann_lstm"]
+	path = 16s_la/rossmann_lstm
+	url = git@github.com:minhnh/rossmann_lstm.git
