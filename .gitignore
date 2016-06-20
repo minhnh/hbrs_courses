@@ -11,6 +11,9 @@ __pycache__/
 */build/bin
 *~
 # tex files
+*.nav
+*.snm
+*.toc
 *.aux
 *.bbl
 *.blg
