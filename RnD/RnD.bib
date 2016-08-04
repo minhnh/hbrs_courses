@@ -1,0 +1,399 @@
+% This file was created with JabRef 2.10b2.
+% Encoding: UTF-8
+
+
+@InProceedings{conf/icml/JozefowiczZS15,
+  Title                    = {An Empirical Exploration of Recurrent Network Architectures.},
+  Author                   = {Józefowicz, Rafal and Zaremba, Wojciech and Sutskever, Ilya},
+  Booktitle                = {ICML},
+  Year                     = {2015},
+  Editor                   = {Bach, Francis R. and Blei, David M.},
+  Pages                    = {2342-2350},
+  Publisher                = {JMLR.org},
+  Series                   = {JMLR Proceedings},
+  Volume                   = {37},
+
+  Abstract                 = {The Recurrent Neural Network (RNN) is an extremely powerful sequence model that is often difficult to train. The Long Short-Term Memory (LSTM) is a specific RNN architecture whose design makes it much easier to train. While wildly successful in practice, the LSTM’s architecture appears to be ad-hoc so it is not clear if it is optimal, and the significance of its individual components is unclear. In this work, we aim to determine whether the LSTM architecture is optimal or whether much better architectures exist. We conducted a thorough architecture search where we evaluated over ten thousand different RNN architectures, and identified an architecture that outperforms both the LSTM and the recently-introduced Gated Recurrent Unit (GRU) on some but not all tasks. We found that adding a bias of 1 to the LSTM’s forget gate closes the gap between the LSTM and the GRU.},
+  Added-at                 = {2015-07-05T00:00:00.000+0200},
+  Biburl                   = {http://www.bibsonomy.org/bibtex/2a0f6b70e724206e0ae11cd825d02af27/dblp},
+  Crossref                 = {conf/icml/2015},
+  Ee                       = {http://jmlr.org/proceedings/papers/v37/jozefowicz15.html},
+  File                     = {:references/jozefowicz15.pdf:PDF},
+  Interhash                = {d2d1852b6d6d3af194b06605fcdaf832},
+  Intrahash                = {a0f6b70e724206e0ae11cd825d02af27},
+  Keywords                 = {LSTM, RNN, GRU},
+  Timestamp                = {2015-07-07T11:37:54.000+0200},
+  Url                      = {http://dblp.uni-trier.de/db/conf/icml/icml2015.html}
+}
+
+@InProceedings{DBLP:conf/icml/PascanuMB13,
+  Title                    = {On the difficulty of training recurrent neural networks},
+  Author                   = {Razvan Pascanu and Tomas Mikolov and Yoshua Bengio},
+  Booktitle                = {Proceedings of the 30th International Conference on Machine Learning, {ICML} 2013, Atlanta, GA, USA, 16-21 June 2013},
+  Year                     = {2013},
+  Pages                    = {1310--1318},
+
+  Abstract                 = {There are two widely known issues with properly training recurrent neural networks, the vanishing and the exploding gradient problems detailed in Bengio et al. (1994). In this paper we attempt to improve the understanding of the underlying issues by exploring these problems from an analytical, a geometric and a dynamical systems perspective. Our analysis is used to justify a simple yet effective solution. We propose a gradient norm clipping strategy to deal with exploding gradients and a soft constraint for the vanishing gradients problem. We validate empirically our hypothesis and proposed solutions in the experimental section.},
+  Bibsource                = {dblp computer science bibliography, http://dblp.org},
+  Biburl                   = {http://dblp.uni-trier.de/rec/bib/conf/icml/PascanuMB13},
+  Crossref                 = {DBLP:conf/icml/2013},
+  File                     = {:references/pascanu13-difficultyRNN.pdf:PDF},
+  Timestamp                = {Thu, 11 Sep 2014 07:28:55 +0200},
+  Url                      = {http://jmlr.org/proceedings/papers/v28/pascanu13.html}
+}
+
+@Article{Bengio13representationlearning,
+  Title                    = {Representation Learning: A Review and New Perspectives},
+  Author                   = {Yoshua Bengio and Aaron Courville and Pascal Vincent},
+  Journal                  = {Pattern Analysis and Machine Intelligence, IEEE Transactions on},
+  Year                     = {2013},
+
+  Month                    = {Aug},
+  Number                   = {8},
+  Pages                    = {1798-1828},
+  Volume                   = {35},
+
+  __markedentry            = {[minhnh.91:5]},
+  Abstract                 = {The success of machine learning algorithms generally depends on data representation, and we hypothesize that this is because different representations can entangle and hide more or less the different explanatory factors of variation behind the data. Although specific domain knowledge can be used to help design representations, learning with generic priors can also be used, and the quest for AI is motivating the design of more powerful representation-learning algorithms implementing such priors. This paper reviews recent work in the area of unsupervised feature learning and deep learning, covering advances in probabilistic models, autoencoders, manifold learning, and deep networks. This motivates longer term unanswered questions about the appropriate objectives for learning good representations, for computing representations (i.e., inference), and the geometrical connections between representation learning, density estimation, and manifold learning.},
+  Doi                      = {10.1109/TPAMI.2013.50},
+  File                     = {:readings\\Bengio13-representation_learning.pdf:PDF},
+  ISSN                     = {0162-8828},
+  Keywords                 = {artificial intelligence;data structures;probability;unsupervised learning;AI;autoencoders;data representation;density estimation;geometrical connections;machine learning algorithms;manifold learning;probabilistic models;representation learning;unsupervised feature learning;Abstracts;Feature extraction;Learning systems;Machine learning;Manifolds;Neural networks;Speech recognition;Boltzmann machine;Deep learning;autoencoder;feature learning;neural nets;representation learning;unsupervised learning;Algorithms;Artificial Intelligence;Humans;Neural Networks (Computer)},
+  Owner                    = {minh},
+  Timestamp                = {2016.05.12}
+}
+
+@InProceedings{cho14GRU,
+  Title                    = {Learning Phrase Representations using RNN Encoder--Decoder for Statistical Machine Translation},
+  Author                   = {Cho, Kyunghyun and Van Merri{\"{e}}nboer, Bart and G{\"{u}}l{\c c}ehre, {\c C}ağlar and Bahdanau, Dzmitry and Bougares, Fethi and Schwenk, Holger and Bengio, Yoshua},
+  Booktitle                = {Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  Year                     = {2014},
+
+  Address                  = {Doha, Qatar},
+  Month                    = oct,
+  Pages                    = {1724--1734},
+  Publisher                = {Association for Computational Linguistics},
+
+  Abstract                 = {In this paper, we propose a novel neural network model called RNN Encoder-Decoder that consists of two recurrent neural networks (RNN). One RNN encodes a sequence of symbols into a fixed-length vector representation, and the other decodes the representation into another sequence of symbols. The encoder and decoder of the proposed model are jointly trained to maximize the conditional probability of a target sequence given a source sequence. The performance of a statistical machine translation system is empirically found to improve by using the conditional probabilities of phrase pairs computed by the RNN Encoder-Decoder as an additional feature in the existing log-linear model. Qualitatively, we show that the proposed model learns a semantically and syntactically meaningful representation of linguistic phrases.},
+  File                     = {:references/cho14-PhraseRepresentGRU.pdf:PDF},
+  Url                      = {http://emnlp2014.org/papers/pdf/EMNLP2014179.pdf}
+}
+
+@Article{Chung14GRNN,
+  Title                    = {Empirical Evaluation of Gated Recurrent Neural Networks on Sequence Modeling},
+  Author                   = {Junyoung Chung and {\c{C}}aglar G{\"{u}}l{\c{c}}ehre and KyungHyun Cho and Yoshua Bengio},
+  Journal                  = {CoRR},
+  Year                     = {2014},
+  Volume                   = {abs/1412.3555},
+
+  Abstract                 = {In this paper we compare different types of recurrent units in recurrent neural networks (RNNs). Especially, we focus on more sophisticated units that implement a gating mechanism, such as a long short-term memory (LSTM) unit and a recently proposed gated recurrent unit (GRU). We evaluate these recurrent units on the tasks of polyphonic music modeling and speech signal modeling. Our experiments revealed that these advanced recurrent units are indeed better than more traditional recurrent units such as tanh units. Also, we found GRU to be comparable to LSTM.},
+  Bibsource                = {dblp computer science bibliography, http://dblp.org},
+  Biburl                   = {http://dblp.uni-trier.de/rec/bib/journals/corr/ChungGCB14},
+  File                     = {:references/Chung14-GRNN.pdf:PDF},
+  Timestamp                = {Thu, 01 Jan 2015 19:51:08 +0100},
+  Url                      = {http://arxiv.org/abs/1412.3555}
+}
+
+@InProceedings{Dietterich02,
+  Title                    = {Machine Learning for Sequential Data: A Review},
+  Author                   = {Dietterich, Thomas G.},
+  Booktitle                = {Proceedings of the Joint IAPR International Workshop on Structural, Syntactic, and Statistical Pattern Recognition},
+  Year                     = {2002},
+
+  Address                  = {London, UK, UK},
+  Pages                    = {15--30},
+  Publisher                = {Springer-Verlag},
+
+  Abstract                 = {Statistical learning problems in many fields involve sequential data. This paper formalizes the principal learning tasks and describes the methods that have been developed within the machine learning research community for addressing these problems. These methods include sliding window methods, recurrent sliding windows, hidden Markov models, conditional random fields, and graph transformer networks. The paper also discusses some open research issues.},
+  Acmid                    = {671269},
+  File                     = {:references/Dietterich02-MLsequential.pdf:PDF},
+  ISBN                     = {3-540-44011-9},
+  Numpages                 = {16},
+  Url                      = {http://dl.acm.org/citation.cfm?id=645890.671269}
+}
+
+@InProceedings{Fueller15,
+  Title                    = {Modeling and Predicting the Human Heart Rate During Running Exercise},
+  Author                   = {Matthias F{\"u}ller and Ashok Meenakshi Sundaram and Melanie Ludwig and Alexander Asteroth and Erwin Prassler},
+  Booktitle                = {Helfert, Holzinger et al. (Eds.): Information and Communication Technologies for Ageing Well and e-Health. International Conference, ICT4AgeingWell 2015, Lisbon, Portugal, May 20-22, 2015. Revised Selected Papers},
+  Year                     = {2015},
+  Pages                    = {106 -- 125},
+  Volume                   = {578},
+
+  Abstract                 = {The positive influence of physical activity for people at all life stages is well known. Exercising has a proven therapeutic effect on the cardiovascular system and can counteract the increase of cardiovascular diseases in our aging society. An easy and good measure of the cardiovascular feedback is the heart rate. Being able to model and predict the response of a subject’s heart rate on work load input allows the development of more advanced smart devices and analytic tools. These tools can monitor and control the subject’s activity and thus avoid overstrain which would eliminate the positive effect on the cardiovascular system. Current heart rate models were developed for a specific scenario and evaluated on unique data sets only. Additionally, most of these models were tested in indoor environments, e.g. on treadmills and bicycle ergometers. However, many people prefer to do sports in outdoors environments and use their smart phone to record their training data. In this paper, we present an evaluation of existing heart rate models and compare their prediction performance for indoor as well as for outdoor running exercises. For this purpose, we investigate analytical models as well as machine learning approaches in two training sets: one indoor exercise set recorded on a treadmill and one outdoor exercise set recorded by a smart phone.},
+  Doi                      = {10.1007/978-3-319-27695-3\_7},
+  File                     = {:references/Fueller15-ModelPredictHeartRate.pdf:PDF},
+  ISBN                     = {978-3-319-27694-6}
+}
+
+@Article{Gers:2000:LFC:1121912.1121915,
+  Title                    = {Learning to Forget: Continual Prediction with LSTM},
+  Author                   = {Gers, Felix A. and Schmidhuber, J\"{u}rgen A. and Cummins, Fred A.},
+  Journal                  = {Neural Computation},
+  Year                     = {2000},
+
+  Month                    = oct,
+  Number                   = {10},
+  Pages                    = {2451--2471},
+  Volume                   = {12},
+
+  Abstract                 = {Long short-term memory (LSTM) can solve many tasks not solvable by previous learning algorithms for recurrent neural networks (RNNs). We identify a weakness of LSTM networks processing continual input streams without explicitly marked sequence ends. Without resets, the internal state values may grow indefinitely and eventually cause the network to break down. Our remedy is an adaptive “forget gate” that enables an LSTM cell to learn to reset itself at appropriate times, thus releasing internal resources. We review an illustrative benchmark problem on which standard LSTM outperforms other RNN algorithms. All algorithms (including LSTM) fail to solve a continual version of that problem. LSTM with forget gates, however, easily solves it in an elegant way.},
+  Acmid                    = {1121915},
+  Address                  = {Cambridge, MA, USA},
+  Doi                      = {10.1162/089976600300015015},
+  File                     = {:references/Gers00-ForgetLSTM.pdf:PDF},
+  ISSN                     = {0899-7667},
+  Issue_date               = {October 2000},
+  Numpages                 = {21},
+  Publisher                = {MIT Press},
+  Url                      = {http://dx.doi.org/10.1162/089976600300015015}
+}
+
+@Unpublished{Goodfellow-et-al-2016-Book,
+  Title                    = {Deep Learning},
+  Author                   = {Ian Goodfellow and Yoshua Bengio and Aaron Courville},
+  Note                     = {Book in preparation for MIT Press},
+  Year                     = {2016},
+
+  File                     = {:references/Bengio16-DeepLearning-Chapter10.pdf:PDF},
+  Url                      = {http://www.deeplearningbook.org}
+}
+
+@Article{DBLP:journals/corr/Graves13,
+  Title                    = {Generating Sequences With Recurrent Neural Networks},
+  Author                   = {Alex Graves},
+  Journal                  = {CoRR},
+  Year                     = {2013},
+  Volume                   = {abs/1308.0850},
+
+  Abstract                 = {This paper shows how Long Short-term Memory recurrent neural networks can be used to generate complex sequences with long-range structure, simply by predicting one data point at a time. The approach is demonstrated for text (where the data are discrete) and online handwriting (where the data are real-valued). It is then extended to handwriting synthesis by allowing the network to condition its predictions on a text sequence. The resulting system is able to generate highly realistic cursive handwriting in a wide variety of styles.},
+  Bibsource                = {dblp computer science bibliography, http://dblp.org},
+  Biburl                   = {http://dblp.uni-trier.de/rec/bib/journals/corr/Graves13},
+  File                     = {:references/Graves13-SequenceRNN.pdf:PDF},
+  Timestamp                = {Tue, 10 Dec 2013 12:03:02 +0100},
+  Url                      = {http://arxiv.org/abs/1308.0850}
+}
+
+@Article{Hochreiter:1997:LSM:1246443.1246450,
+  Title                    = {Long Short-Term Memory},
+  Author                   = {Hochreiter, Sepp and Schmidhuber, J\"{u}rgen},
+  Journal                  = {Neural Computation},
+  Year                     = {1997},
+
+  Month                    = nov,
+  Number                   = {8},
+  Pages                    = {1735--1780},
+  Volume                   = {9},
+
+  Abstract                 = {Learning to store information over extended time intervals by recurrent backpropagation takes a very long time, mostly because of insufficient, decaying error backflow. We briefly review Hochreiter's (1991) analysis of this problem, then address it by introducing a novel, efficient, gradient based method called long short-term memory (LSTM). Truncating the gradient where this does not do harm, LSTM can learn to bridge minimal time lags in excess of 1000 discrete-time steps by enforcing constant error flow through constant error carousels within special units. Multiplicative gate units learn to open and close access to the constant error flow. LSTM is local in space and time; its computational complexity per time step and weight is O. 1. Our experiments with artificial data involve local, distributed, real-valued, and noisy pattern representations. In comparisons with real-time recurrent learning, back propagation through time, recurrent cascade correlation, Elman nets, and neural sequence chunking, LSTM leads to many more successful runs, and learns much faster. LSTM also solves complex, artificial long-time-lag tasks that have never been solved by previous recurrent network algorithms.},
+  Acmid                    = {1246450},
+  Address                  = {Cambridge, MA, USA},
+  Doi                      = {10.1162/neco.1997.9.8.1735},
+  File                     = {:references/Hochreiter97-lstm.pdf:PDF},
+  ISSN                     = {0899-7667},
+  Issue_date               = {November 15, 1997},
+  Numpages                 = {46},
+  Publisher                = {MIT Press},
+  Url                      = {http://dx.doi.org/10.1162/neco.1997.9.8.1735}
+}
+
+@Article{langkvist2014review,
+  Title                    = {A review of unsupervised feature learning and deep learning for time-series modeling},
+  Author                   = {L{\"a}ngkvist, Martin and Karlsson, Lars and Loutfi, Amy},
+  Journal                  = {Pattern Recognition Letters},
+  Year                     = {2014},
+  Pages                    = {11--24},
+  Volume                   = {42},
+
+  Abstract                 = {This paper gives a review of the recent developments in deep learning and un-supervised feature learning for time-series problems. While these techniques have shown promise for modeling static data, such as computer vision, ap-plying them to time-series data is gaining increasing attention. This paper overviews the particular challenges present in time-series data and provides a review of the works that have either applied time-series data to unsupervised feature learning algorithms or alternatively have contributed to modications of feature learning algorithms to take into account the challenges present in time-series data.},
+  File                     = {:references/Längkvist_et_al._-_2014_-_A_review_of_unsupervised_feature_learning_and_deep.pdf:PDF},
+  Publisher                = {Elsevier}
+}
+
+@Article{larochelle11neuralautoregressive,
+  Title                    = {The Neural Autoregressive Distribution Estimator},
+  Author                   = {Hugo Larochelle and Iain Murray},
+  Journal                  = {JMLR: W\&CP},
+  Year                     = {2011},
+  Pages                    = {29--37},
+  Volume                   = {15},
+
+  Abstract                 = {We describe a new approach for modeling the distribution of high-dimensional vectors of discrete variables. This model is inspired by the restricted Boltzmann machine (RBM), which has been shown to be a powerful model of such distributions. However, an RBM typically does not provide a tractable distribution estimator, since evaluating the probability it assigns to some given observation requires the computation of the so-called partition function, which itself is intractable for RBMs of even moderate size. Our model circumvents this difficulty by decomposing the joint distribution of observations into tractable conditional distributions and modeling each conditional using a non-linear function similar to a conditional of an RBM. Our model can also be interpreted as an autoencoder wired such that its output can be used to assign valid probabilities to observations. We show that this new model outperforms other multivariate binary distribution estimators on several datasets and performs similarly to a large (but intractable) RBM.},
+  File                     = {:references/larochelle11-neuralautoregressive.pdf:PDF}
+}
+
+@InProceedings{martens2010HFDNN,
+  Title                    = {Deep learning via Hessian-free optimization},
+  Author                   = {Martens, James},
+  Booktitle                = {Proceedings of the 27th International Conference on Machine Learning (ICML-10)},
+  Year                     = {2010},
+  Pages                    = {735--742},
+
+  Abstract                 = {We  develop a 2nd-order optimization method based on the “Hessian-free” approach, and apply it to training deep auto-encoders. Without using pre-training, we obtain results superior to those reported  by Hinton & Salakhutdinov (2006) on the same tasks they considered. Our method is practical, easy to use, scales nicely to very large datasets, and isn’t limited in applicability to auto-encoders, or any specific model class. We also discuss the issue of “pathological curvature” as a possible explanation for the difficulty of deep learning and how 2nd-order optimization, and our method in particular, effectively deals with it.},
+  File                     = {:references/Martens10-HFDNN.pdf:PDF}
+}
+
+@InProceedings{Martens2011HFRNN,
+  Title                    = {Learning Recurrent Neural Networks with Hessian-Free Optimization },
+  Author                   = {James Martens and Ilya Sutskever},
+  Booktitle                = {Proceedings of the 28th International Conference on Machine Learning (ICML-11)},
+  Year                     = {2011},
+
+  Address                  = {New York, NY, USA},
+  Editor                   = {Lise Getoor and Tobias Scheffer},
+  Month                    = {June},
+  Pages                    = {1033--1040},
+  Publisher                = {ACM},
+  Series                   = {ICML '11},
+
+  Abstract                 = {In this work we resolve the long-outstanding problem of how to effectively train recurrent neural networks (RNNs) on complex and difficult sequence modeling problems which may contain long-term data dependencies. Utilizing recent advances in the Hessian-free optimization approach (Martens, 2010), together with a novel damping scheme, we successfully train RNNs on two sets of challenging problems. First, a collection of pathological synthetic datasets which are known to be impossible for standard optimization approaches (due to their extremely long-term dependencies), and second, on three natural and highly complex real-world sequence datasets where we find that our method significantly outperforms the previous state-of-the-art method for training neural sequence models: the Long Short-term Memory approach of Hochreiter and Schmidhuber (1997). Additionally, we offer a new interpretation of the generalized Gauss-Newton matrix of Schraudolph (2002) which is used within the HF approach of Martens.},
+  File                     = {:references/Martens11-HFRNN.pdf:PDF},
+  ISBN                     = {978-1-4503-0619-5},
+  Location                 = {Bellevue, Washington, USA}
+}
+
+@Article{Mikolov14longmemRNN,
+  Title                    = {Learning Longer Memory in Recurrent Neural Networks},
+  Author                   = {Tomas Mikolov and Armand Joulin and Sumit Chopra and Micha{\"{e}}l Mathieu and Marc'Aurelio Ranzato},
+  Journal                  = {CoRR},
+  Year                     = {2014},
+  Volume                   = {abs/1412.7753},
+
+  Abstract                 = {Recurrent neural network is a powerful model that learns temporal patterns in sequential data. For a long time, it was believed that recurrent networks are difficult to train using simple optimizers, such as stochastic gradient descent, due to the so-called vanishing gradient problem. In this paper, we show that learning longer term patterns in real data, such as in natural language, is perfectly possible using gradient descent. This is achieved by using a slight structural modification of the simple recurrent neural network architecture. We encourage some of the hidden units to change their state slowly by making part of the recurrent weight matrix close to identity, thus forming kind of a longer term memory. We evaluate our model in language modeling experiments, where we obtain similar performance to the much more complex Long Short Term Memory (LSTM) networks (Hochreiter & Schmidhuber, 1997).},
+  Bibsource                = {dblp computer science bibliography, http://dblp.org},
+  Biburl                   = {http://dblp.uni-trier.de/rec/bib/journals/corr/MikolovJCMR14},
+  File                     = {:references/Mikolov14longmemRNN.pdf:PDF},
+  Timestamp                = {Thu, 01 Jan 2015 19:51:08 +0100},
+  Url                      = {http://arxiv.org/abs/1412.7753}
+}
+
+@Article{Pascanu13DRNN,
+  Title                    = {How to Construct Deep Recurrent Neural Networks},
+  Author                   = {Razvan Pascanu and {\c{C}}aglar G{\"{u}}l{\c{c}}ehre and Kyunghyun Cho and Yoshua Bengio},
+  Journal                  = {CoRR},
+  Year                     = {2013},
+  Volume                   = {abs/1312.6026},
+
+  Abstract                 = {In this paper, we explore different ways to extend a recurrent neural network (RNN) to a \textit{deep} RNN. We start by arguing that the concept of depth in an RNN is not as clear as it is in feedforward neural networks. By carefully analyzing and understanding the architecture of an RNN, however, we find three points of an RNN which may be made deeper; (1) input-to-hidden function, (2) hidden-to-hidden transition and (3) hidden-to-output function. Based on this observation, we propose two novel architectures of a deep RNN which are orthogonal to an earlier attempt of stacking multiple recurrent layers to build a deep RNN (Schmidhuber, 1992; El Hihi and Bengio, 1996). We provide an alternative interpretation of these deep RNNs using a novel framework based on neural operators. The proposed deep RNNs are empirically evaluated on the tasks of polyphonic music prediction and language modeling. The experimental result supports our claim that the proposed deep RNNs benefit from the depth and outperform the conventional, shallow RNNs.},
+  Bibsource                = {dblp computer science bibliography, http://dblp.org},
+  Biburl                   = {http://dblp.uni-trier.de/rec/bib/journals/corr/PascanuGCB13},
+  File                     = {:references/Pascanu13DRNN.pdf:PDF},
+  Timestamp                = {Mon, 06 Jan 2014 15:10:41 +0100},
+  Url                      = {http://arxiv.org/abs/1312.6026}
+}
+
+@Article{Schmidhuber201585,
+  Title                    = {Deep learning in neural networks: An overview },
+  Author                   = {Jürgen Schmidhuber},
+  Journal                  = {Neural Networks },
+  Year                     = {2015},
+  Pages                    = {85 - 117},
+  Volume                   = {61},
+
+  Abstract                 = {Abstract In recent years, deep artificial neural networks (including recurrent ones) have won numerous contests in pattern recognition and machine learning. This historical survey compactly summarizes relevant work, much of it from the previous millennium. Shallow and Deep Learners are distinguished by the depth of their credit assignment paths, which are chains of possibly learnable, causal links between actions and effects. I review deep supervised learning (also recapitulating the history of backpropagation), unsupervised learning, reinforcement learning &amp; evolutionary computation, and indirect search for short programs encoding deep and large networks.},
+  Doi                      = {http://dx.doi.org/10.1016/j.neunet.2014.09.003},
+  File                     = {:references/Schmidhuber2015-DLOverview.pdf:PDF},
+  ISSN                     = {0893-6080},
+  Keywords                 = {Deep learning},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0893608014002135}
+}
+
+@Article{srivastava14-dropout,
+  Title                    = {Dropout: A Simple Way to Prevent Neural Networks from Overfitting},
+  Author                   = {Nitish Srivastava and Geoffrey Hinton and Alex Krizhevsky and Ilya Sutskever and Ruslan Salakhutdinov},
+  Journal                  = {Journal of Machine Learning Research},
+  Year                     = {2014},
+  Pages                    = {1929-1958},
+  Volume                   = {15},
+
+  Abstract                 = {Deep neural nets with a large number of parameters are very powerful machine learning systems. However, overfitting is a serious problem in such networks. Large networks are also slow to use, making it difficult to deal with overfitting by combining the predictions of many different large neural nets at test time. Dropout is a technique for addressing this problem. The key idea is to randomly drop units (along with their connections) from the neural network during training. This prevents units from co-adapting too much. During training, dropout samples from an exponential number of different “thinned” networks. At test time, it is easy to approximate the effect of averaging the predictions of all these thinned networks by simply using a single unthinned network that has smaller weights. This significantly reduces overfitting and gives major improvements over other regularization methods. We show that dropout improves the performance of neural networks on supervised learning tasks in vision, speech recognition, document classification and computational biology, obtaining state-of-the-art results on many benchmark data sets.},
+  File                     = {:references/srivastava14-dropout.pdf:PDF},
+  Url                      = {http://jmlr.org/papers/v15/srivastava14a.html}
+}
+
+@InProceedings{sutskever13initdeeplearning,
+  Title                    = {On the importance of initialization and momentum in deep learning},
+  Author                   = {Ilya Sutskever and James Martens and George Dahl and Geoffrey Hinton},
+  Booktitle                = {Proceedings of the 30th International Conference on Machine Learning (ICML-13)},
+  Year                     = {2013},
+  Editor                   = {Sanjoy Dasgupta and David Mcallester},
+  Month                    = may,
+  Number                   = {3},
+  Pages                    = {1139-1147},
+  Publisher                = {JMLR Workshop and Conference Proceedings},
+  Volume                   = {28},
+
+  Abstract                 = {Deep and recurrent neural networks (DNNs and RNNs respectively) are powerful models that were considered to be almost impossible to train using stochastic gradient descent with momentum. In this paper, we show that when stochastic gradient descent with momentum uses a well-designed random initialization and a particular type of slowly increasing schedule for the momentum parameter, it can train both DNNs and RNNs (on datasets with long-term dependencies) to levels of performance that were previously achievable only with Hessian-Free optimization. We find that both the initialization and the momentum are crucial since poorly initialized networks cannot be trained with momentum and well-initialized networks perform markedly worse when the momentum is absent or poorly tuned. Our success training these models suggests that previous attempts to train deep and recurrent neural networks from random initializations have likely failed due to poor initialization schemes. Furthermore, carefully tuned momentum methods suffice for dealing with the curvature issues in deep and recurrent network training objectives without the need for sophisticated second-order methods.},
+  File                     = {:references/sutskever13-initdeeplearning.pdf:PDF},
+  Url                      = {http://jmlr.org/proceedings/papers/v28/sutskever13.pdf}
+}
+
+@InCollection{Sutskever14SequenceNN,
+  Title                    = {Sequence to Sequence Learning with Neural Networks},
+  Author                   = {Sutskever, Ilya and Vinyals, Oriol and Le, Quoc V},
+  Booktitle                = {Advances in Neural Information Processing Systems 27},
+  Publisher                = {Curran Associates, Inc.},
+  Year                     = {2014},
+  Editor                   = {Z. Ghahramani and M. Welling and C. Cortes and N. D. Lawrence and K. Q. Weinberger},
+  Pages                    = {3104--3112},
+
+  Abstract                 = {Deep Neural Networks (DNNs) are powerful models that have achieved excellent performance on difficult learning tasks. Although DNNs work well whenever large labeled training sets are available, they cannot be used to map sequences to sequences. In this paper, we present a general end-to-end approach to sequence learning that makes minimal assumptions on the sequence structure. Our method uses a multilayered Long Short-Term Memory (LSTM) to map the input sequence to a vector of a fixed dimensionality, and then another deep LSTM to decode the target sequence from the vector. Our main result is that on an English to French translation task from the WMT-14 dataset, the translations produced by the LSTM achieve a BLEU score of 34.8 on the entire test set, where the LSTM's BLEU score was penalized on out-of-vocabulary words. Additionally, the LSTM did not have difficulty on long sentences. For comparison, a phrase-based SMT system achieves a BLEU score of 33.3 on the same dataset. When we used the LSTM to rerank the 1000 hypotheses produced by the aforementioned SMT system, its BLEU score increases to 36.5, which is close to the previous state of the art. The LSTM also learned sensible phrase and sentence representations that are sensitive to word order and are relatively invariant to the active and the passive voice. Finally, we found that reversing the order of the words in all source sentences (but not target sentences) improved the LSTM's performance markedly, because doing so introduced many short term dependencies between the source and the target sentence which made the optimization problem easier.},
+  File                     = {:references/Sutskever14-SequenceNN.pdf:PDF},
+  Url                      = {http://papers.nips.cc/paper/5346-sequence-to-sequence-learning-with-neural-networks.pdf}
+}
+
+@InProceedings{Taylor2009_CRBM,
+  Title                    = {Factored Conditional Restricted Boltzmann Machines for Modeling Motion Style},
+  Author                   = {Taylor, Graham W. and Hinton, Geoffrey E.},
+  Booktitle                = {Proceedings of the 26th Annual International Conference on Machine Learning},
+  Year                     = {2009},
+
+  Address                  = {New York, NY, USA},
+  Pages                    = {1025--1032},
+  Publisher                = {ACM},
+  Series                   = {ICML '09},
+
+  Abstract                 = {The Conditional Restricted Boltzmann Machine (CRBM) is a recently proposed model for time series that has a rich, distributed hidden state and permits simple, exact inference. We present a new model, based on the CRBM that preserves its most important computational properties and includes multiplicative three-way interactions that allow the effective interaction weight between two units to be modulated by the dynamic state of a third unit. We factor the three-way weight tensor implied by the multiplicative model, reducing the number of parameters from O(N3) to O(N2). The result is an efficient, compact model whose effectiveness we demonstrate by modeling human motion. Like the CRBM, our model can capture diverse styles of motion with a single set of parameters, and the three-way interactions greatly improve the model's ability to blend motion styles or to transition smoothly among them.},
+  Acmid                    = {1553505},
+  Doi                      = {10.1145/1553374.1553505},
+  File                     = {:references/Taylor2009_fcrbm_icml.pdf:PDF},
+  ISBN                     = {978-1-60558-516-1},
+  Location                 = {Montreal, Quebec, Canada},
+  Numpages                 = {8},
+  Url                      = {http://doi.acm.org/10.1145/1553374.1553505}
+}
+
+@InProceedings{Xiao10HeartEvol,
+  Title                    = {Heart Rate Prediction Model Based on Physical Activities Using Evolutionary Neural Network},
+  Author                   = {F. Xiao and Y. Chen and M. Yuchi and M. Ding and J. Jo},
+  Booktitle                = {Genetic and Evolutionary Computing (ICGEC), 2010 Fourth International Conference on},
+  Year                     = {2010},
+  Month                    = {Dec},
+  Pages                    = {198-201},
+
+  Abstract                 = {Physical activity (PA) can influence heart rate(HR). But the relationship between HR and PA is hard to describe. In our previous works, HR prediction models based on PA were designed. However, the prediction time length and accuracy are usually hard to compromise. In this study, a new HR prediction method is proposed. The predicted HR is used as the input in the next prediction step. Only HR at the initial time step and PA signals are needed in a long prediction time length. Evolutionary neural network is used as the mathematic basic of the predictor to ensure the prediction accuracy. The results show the predicted HR can trace the actual HR well.},
+  Doi                      = {10.1109/ICGEC.2010.56},
+  File                     = {:references/Xiao10-modelheartevolutionary.pdf:PDF},
+  Keywords                 = {cardiology;medical signal processing;neural nets;prediction theory;ECG signal;PA signal;evolutionary neural network;heart rate prediction model;heart rate signal analysis;multistep prediction;physical activity;Accuracy;Artificial neural networks;Biomedical monitoring;Heart rate;Monitoring;Predictive models;Training;Evolutionary Neural Network;Heart Rate;Multi-Step Prediction;Physical Activity}
+}
+
+@Proceedings{DBLP:conf/icml/2013,
+  Title                    = {Proceedings of the 30th International Conference on Machine Learning, {ICML} 2013, Atlanta, GA, USA, 16-21 June 2013},
+  Year                     = {2013},
+  Publisher                = {JMLR.org},
+  Series                   = {{JMLR} Proceedings},
+  Volume                   = {28},
+
+  Bibsource                = {dblp computer science bibliography, http://dblp.org},
+  Biburl                   = {http://dblp.uni-trier.de/rec/bib/conf/icml/2013},
+  Timestamp                = {Thu, 11 Sep 2014 07:28:55 +0200},
+  Url                      = {http://jmlr.org/proceedings/papers/v28/}
+}
+
+@comment{jabref-meta: groupsversion:3;}
+
+@comment{jabref-meta: groupstree:
+0 AllEntriesGroup:;
+1 ExplicitGroup:surveys\;2\;langkvist2014review\;;
+}
+

@@ -1,0 +1,184 @@
+\documentclass[12pt]{article}
+
+%-------------------------------------------------
+%   THEMES & PACKAGES
+%-------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{xcolor}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+%%% Custom colors & commands
+\newcommand{\HRule}[1]{\rule{\linewidth}{#1}}   % Horizontal rule
+
+%-------------------------------------------------
+%   COMMON INFO
+%-------------------------------------------------
+\newcommand{\hmwkTitle}{R \& D Proposal}
+\newcommand{\hmwkTopic}{Deep Learning for Modeling Cardiovascular Response in Sport Exercises}
+\newcommand{\hmwkDueDate}{May 15, 2016}
+\newcommand{\hmwkClass}{Research and Development}
+\newcommand{\hmwkAuthorName}{Minh H. Nguyen}
+\newcommand{\hmwkAuthorSchool}{Bonn-Rhein-Sieg University of Applied Sciences}
+\newcommand{\hmwkAdvisorFirst}{Prof. Dr. Erwin Prassler}
+\newcommand{\hmwkAdvisorSecond}{Matthias F{\"u}ller}
+
+%-------------------------------------------------
+%   MARGINS
+%-------------------------------------------------
+\topmargin=-0.75cm
+\evensidemargin=0cm
+\oddsidemargin=0cm
+\textwidth=16.0cm
+\textheight=22.0cm
+\headsep=0.6cm
+
+\linespread{1.1} % Line spacing
+
+%-------------------------------------------------
+%   HEADERS & FOOTERS
+%-------------------------------------------------
+\pagestyle{fancy}
+%-------------------------------------------------
+% Special first page
+\fancypagestyle{firststyle} {
+    \fancyhf{}
+    \fancyfoot{}
+    \renewcommand\headrulewidth{0.pt}
+    \renewcommand\footrulewidth{0.pt}
+}
+%-------------------------------------------------
+\lhead{\hmwkAuthorName}
+\rhead{\hmwkTitle}
+%-------------------------------------------------
+\cfoot{Page \thepage\ of \protect\pageref{LastPage}}
+%-------------------------------------------------
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+%-------------------------------------------------
+%   TITLE
+%-------------------------------------------------
+\title{\normalsize \textsc{\hmwkAuthorSchool}   % Subtitle
+    \\[2.0cm]                                   % 2cm spacing
+    \HRule{0.5pt} \\                            % Upper rule
+    \LARGE \textbf{\uppercase{\hmwkTopic}}
+    \HRule{2pt} \\ [0.5cm]                      % Lower rule + 0.5cm spacing
+    \hmwkTitle\\[0.5cm]
+    \normalsize \hmwkDueDate\\
+}
+
+\author{
+    \\[4.0cm]
+    Author:\\
+    \hmwkAuthorName\\
+    \ \\
+    Advisors:\\
+    \hmwkAdvisorFirst\\
+    \hmwkAdvisorSecond\\
+}
+
+\date{}
+
+%-------------------------------------------------
+%   BEGIN
+%-------------------------------------------------
+\begin{document}
+%-------------------------------------------------
+    \maketitle
+    \thispagestyle{firststyle}
+    \newpage
+
+%-------------------------------------------------
+\section{Introduction}
+
+    %---------------------------------------------
+    \subsection{Motivation}
+
+    In an aging society, exercising is an important factor to ensure a long and healthy life. This project will address the problem of learning user-specific heart rate response models for the use in (novel) smart training devices.
+
+    Heart rates play an important role in improving the efficiency of physical training, but the data is highly individual-specific. The ability to reliably predicting heart rates from exercise workload can, as the result, allow for personalized training sessions. Model based planning, control and advanced monitoring techniques can also be built on top of such heart rate models. Finally, machine learning techniques allow learning non-linear models based on the recorded workload and environmental data, as well as adaptation to the environments through introducing additional variables such as track elevation and inclination.
+
+    %---------------------------------------------
+    \subsection{Prior Work}
+
+        \subsubsection{Analytical models}
+
+        Several analytical approaches exist for modeling heart rate:
+        \begin{itemize}[label={--}]
+            \item Ordinary differential equations (ODE) model by Cheng et al. \cite{Cheng08NonlinearModelHeartRate} uses a system of four differential equations to capture the change in heart rate, slow reaction of human metabolism to this change, and the non-linear relation between heart rate and work load, to predict heart rate during treadmill walking.
+
+            \item ODE model by Paradiso et al. \cite{paradiso13heartregulation} has a similar structure to the model used by Cheng et al., but differs in how the slow reaction and the non-linear work load dependency of the heart rates are simulated.
+
+            \item (Second order) Linear Time-invariant (LTI) method by Baig et al. \cite{Baig10ModelHeart} models the relation between current change in heart rates and this change as well as the inputs from two previous points in time.
+
+            \item Takagi-Sugeno model (TS): a modified Hammerstein model with 12 parameters originally used for controlling a cyclic ergometer for elderly untrained people \cite{Mohammad2013821}.
+
+            \end{itemize}
+
+        In the experimental results from F{\"u}ller et al. \cite{Fueller15}, analytical models yield inferior performance compared to the learning approaches on the indoor exercise data set, and unsatisfying results on the outdoor exercise data set. The existence of unexplained errors mentioned in the paper from these methods also suggests that analytical models may be inadequate to represent this type of data.
+
+        \subsubsection{Traditional machine learning methods}
+
+        In F{\"u}ller et al. \cite{Fueller15} linear regression, multi-layer perception (MLP) and support vector regression (SVR) are used for heart rate prediction on both the indoor and outdoor exercise data sets. The learning techniques use past heart rates as feedback signals and input features from the running velocity, distance run and the estimated slope to predict the current heart rate. Feeding the output of the model back to the feedback input allows for predicting infinite steps ahead. The paper experimented on the following learning techniques:
+        \begin{itemize}[label={--}]
+            \item Linear regression \cite{SEAL01121977} is a statistical technique which predict response variables using a predictor function consisting of linear combination of explanatory variables. In F{\"u}ller et al. the explanatory variable are the mentioned features and the response variable is the heart rate to be predicted.
+            \item Multilayer Perceptron (MLP) \cite{VanDerMalsburg1986} is an artificial feed-forward neural network. F{\"u}ller et al. \cite{Fueller15} uses a network of two hidden layers with sigmoid activation function for the heart rate prediction task.
+            \item Support Vector Regression (SVR) \cite{Vapnik:1995:NSL:211359} tries to find a function $f(x) = w \cdot \phi(x) + b$ with a maximum of $\epsilon$ deviation from actual targets, in which the kernel function $\phi(x)$ transform $x$ to a lower dimension.
+            \end{itemize}
+
+        These machine learning techniques yield better performance than analytical models on indoor, but not outdoor exercise data \cite{Fueller15}. This can be attributed to the difficulties of using traditional  machine learning techniques to model heart rate. First, standard machine learning approaches require predefined features to learn a model, but for modeling heart rate, identifying or creating relevant features is difficult \cite{Xiao10HeartEvol}. Secondly, temporal influence on features and heart rates are not fully known and only roughly described by analytic models \cite{Fueller15}.
+
+        \subsubsection{Deep learning}
+
+        Feature learning and deep learning techniques have achieved promising results in modeling temporal data. L{\"a}ngvist et al. \cite{langkvist2014review} reviews several deep learning methods and their  applications in time-series problems:
+        \begin{itemize}[label={--}]
+            \item Conditional Restricted Boltzmann Machine (cRBM): is a model for short term temporal relations, using auto-regressive weights to connect hidden units for data points at sequential times. cRBM is commonly used in motion capture.
+            \item Gated RBM models the interactions among the inputs, outputs and latent variables using a weight tensor. GBRM has applications in music recognition and video modeling.
+            \item Autoencoders (AE): encodes data with hidden units and minimizes the error after reconstruction compared to the original input. Convolutional AE is applied for physiological data modeling.
+            \item Recurrent Neural network (RNN): connects the neurons' outputs to their inputs and iteratively train them using ``back-propagation-through-time'' (BPTT). RNN is commonly used in speech recognition and music recognition.
+            \end{itemize}
+
+        The temporal nature of exercise data and the success of deep learning in modeling time-series problems suggest that these feature learning techniques can also be applied to model heart rate. Indeed, deep learning techniques eliminate the need for predefined features as the features are learned through unsupervised learning \cite{Bengio13representationlearning}. Furthermore, deep learning methods tailored for time series data have shown improvements over traditional methods that do not take into account the temporal relation \cite{Pascanu13DRNN}.
+
+    %---------------------------------------------
+    \subsection{Approach}
+
+    This project will evaluate and compare different learning techniques in their ability to predict heart rate from data recorded during training sessions. The focus will be on deep learning techniques, however, as heart rate modeling has already been done with other machine learning approaches. The deep learning techniques to be evaluated should take into account time dependency and non-linearity inherent in heart rate and velocity data. Their performance will be compared based on prediction error rates at different time horizons.
+
+    %---------------------------------------------
+    \subsection{Expected Results}
+
+    This project will evaluate the application of deep learning techniques tailored for temporal data in running activity, in order to find out whether deep learning can find better features in the data, and which learning techniques have which impact on the prediction capabilities. The models are to be tested on data from exercise sessions indoor and outdoor, and to be compared to existing state-of-the-art results.
+
+%-------------------------------------------------
+\section{Project Plan}
+
+    %---------------------------------------------
+    \subsection{Work Packages}
+    \begin{itemize}[label={--}]
+        \item Literature research, including both surveys of deep learning techniques for time series analysis
+            and papers of specific learning techniques mentioned in the these surveys.
+        \item Familiarization with deep learning libraries.
+        \item Experiment design.
+        \item Experiments on the same indoor exercise data set experimented in F{\"u}ller et al. \cite{Fueller15}, as well as the publicly available outdoor exercise data from a certain number of users.
+        \item Writing and submitting the project report.
+        \end{itemize}
+
+    %---------------------------------------------
+    \subsection{Work Schedule}
+    (included in the next page)
+    \includepdf[pages={1}]{rnd_nguyen_workschedule_gannt.pdf}
+
+%-------------------------------------------------
+%   Bibliography
+\bibliographystyle{IEEEtran}
+\bibliography{../RnD.bib,proposal.bib}
+
+%-------------------------------------------------
+%   END
+%-------------------------------------------------
+\end{document}
