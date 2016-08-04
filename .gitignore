@@ -12,6 +12,7 @@ __pycache__/
 *~
 # tex files
 *.nav
+*.tgz
 *.snm
 *.toc
 *.aux
@@ -22,6 +23,10 @@ __pycache__/
 *.dvi
 *.pdf
 *.gz
+*.html
+*.zip
+*.bak
+
 # Java eclipse
 .metadata/
 .classpath
