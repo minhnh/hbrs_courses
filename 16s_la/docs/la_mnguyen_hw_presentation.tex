@@ -164,7 +164,7 @@
             Store  & Validation accuracy (\%)\\
             \toprule
             854    & 88.36 \\
-            1022   & 64.02 \\
+            1022   & 71.02 \\
             463    & 82.54 \\
             905    & 93.65 \\
             494    & 99.47 \\
@@ -186,12 +186,12 @@
         \begin{subfigure}[t]{0.5\textwidth}
             \centering
             \includegraphics[height=1.5in]{rossmann_prediction_errors_store1022}
-            \caption{Store 1022}
+            \caption{Store 1022 (71.02\% val acc)}
         \end{subfigure}%
         \begin{subfigure}[t]{0.5\textwidth}
             \centering
             \includegraphics[height=1.5in]{rossmann_prediction_errors_store307}
-            \caption{Store 307}
+            \caption{Store 307 (72.09\% val acc)}
         \end{subfigure}
         \label{fig:sub1}
         \caption{Normalized actual and predicted number of sales}
@@ -204,8 +204,8 @@
 \begin{frame}{Experiment}
     \begin{figure}[t!]
         \centering
-        \includegraphics[height=2.8in]{rossmann_prediction_errors_store45}
-        \caption{Normalized actual and predicted number of sales for store 45}
+        \includegraphics[height=2.6in]{rossmann_prediction_errors_store45}
+        \caption{Normalized actual and predicted number of sales for store 45 (99.20\% val acc)}
     \end{figure}
 \end{frame}
 
@@ -218,6 +218,7 @@
         \item Confirm whether using the same model for all the stores is better than training each store separately.
         \item Experiments with more models: more layers and hidden units
         \item Experiment with GRU
+        \item Gradually decreasing learning rates
     \end{itemize}
 \end{frame}
 
