@@ -1,3 +1,6 @@
 [submodule "16s_la/rossmann_lstm"]
 	path = 16s_la/rossmann_lstm
 	url = git@github.com:minhnh/rossmann_lstm.git
+[submodule "16w_see/evgenia"]
+	path = 16w_see/shared
+	url = https://github.com/elhele/SEE.git
