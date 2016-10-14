@@ -11,8 +11,9 @@
 \usepackage[export]{adjustbox}
 \usepackage[svgnames]{xcolor}                           % Enabling colors by their 'svgnames'
 \usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats
+\usepackage{subcaption}
 \usepackage{epstopdf}       % Converts .eps to .pdf
-\usepackage{subfig}         % Subfigures
+%\usepackage{subfig}         % Subfigures
 \usepackage{booktabs}       % Nicer tables
 \usepackage{fix-cm}         % Custom fontsizes
 \usepackage{listings}
@@ -155,18 +156,105 @@
                 where adjustment $\Delta w_{kj}(n)$ for excitement $x_j(n)$ and error signal $e_k(n)$ is:
                 \[ \Delta w_{kj}(n) = \eta e_k(n)x_j(n) \]
 
-            \item Memory-based learning: updates for new data point use old data from the ``local neighborhood'' of the new data point. Learning involves:
+            \item Memory-based learning: updates for new test vector use old data from the ``local neighborhood'' of the new data point. Learning involves:
             \begin{itemize}
                 \item criterion for defining the neighborhood
                 \item learning rule applied to this neighborhood
             \end{itemize}
+            KNN learning:
+            \begin{itemize}
+                \item Identify $k$ classified patterns nearest to test vector.
+                \item Assign test vector to class most frequently represented in the $k$ neighbors.
+            \end{itemize}
 
-            \item Hebbian learning
-            \item Competitive learning
-            \item Boltzmann learning
+            \item Hebbian learning - two rules:
+            \begin{itemize}
+                \item strength of synapse increases if the two neurons on either side are activated simultaneously (synchronously).
+                \item strength decreases if the two neurons are activated asynchronously.
+            \end{itemize}
+            Four key properties:
+            \begin{itemize}
+                \item time-dependent: modification to synapse depends on time of occurrence of presynaptic and postsynaptic signals.
+                \item local mechanism: information bearing signals are in ``spatiotemporal contiguity.''
+                \item interactive mechanism: change in synapse depends on both sides of the synapse
+                \item conjunctional or correlational mechanism.
+            \end{itemize}
+
+            \item Competitive learning: only one output neuron is active at any one time. Three basic elements:
+            \begin{itemize}
+                \item set of neurons that respond differently to a given set of inputs.
+                \item a limit imposed on the strength of each neuron.
+                \item a mechanism for neurons to compete for the right to respond to a subset of inputs.
+            \end{itemize}
+
+            \item Boltzmann learning: stochastic learning mechanism based on statistical mechanics.
+            \begin{itemize}
+                \item  Characterized by an \textit{energy function}:
+                \[ E = -\frac{1}{2} \sum_{j} \sum_{k} w_{kj} x_k x_j \]
+                where $x_j$ is the state of neuron $j$, weight $w_{kj}$ connects neuron $j$ to $k$, and $j \neq k$.
+                \item Each neuron is either in ``on'' ($+1$) or ``off'' ($-1$) state. At some step of learning and some temperature $T$, the state is switched with probability:
+                \[ P(x_k \rightarrow -x_k) = \cfrac{1}{1 + \exp(-\Delta E_k/T)} \]
+            \end{itemize}
+        \end{itemize}
+
+        \item Learning paradigms
+        \begin{itemize}
+            \item Learning with a teacher - supervised learning:
+            \begin{center}
+                \includegraphics[width=12.0cm]{../images/Haykin-NN-figure2-6.png} %
+            \end{center}
+
+            \item Learning without a teacher:
+            \begin{itemize}
+                \item Reinforcement learning:
+                \begin{center}
+                    \includegraphics[width=12.0cm]{../images/Haykin-NN-figure2-7.png} %
+                \end{center}
+                \item Unsupervised learning:
+                \begin{center}
+                    \includegraphics[width=10.0cm]{../images/Haykin-NN-figure2-8.png} %
+                \end{center}
+            \end{itemize}
         \end{itemize}
 
     \end{itemize}
 
+    \section*{Exercises}
+    \subsection*{Problem 1-13}
+    Python code is included in attached notebook. Input-output mapping calculated:
+    \tiny
+    \[\cfrac{1}{\exp\left(\cfrac{2}{\exp\left(\cfrac{1}{\exp(-2x_1 + 3x_2) + 1} - \cfrac{3}{\exp(-5x_1 - x_2) + 1}\right) + 1} - \cfrac{1}{\exp\left(\cfrac{-6}{\exp(-2x_1 + 3x_2) + 1} - \cfrac{4}{\exp(-5x_1 - x_2) + 1}\right) + 1}\right) + 1}\]
+    \normalsize
+
+    \newpage
+    Plotting of the classifier:
+    \begin{figure}[h!]
+        \centering
+        \begin{subfigure}[b]{0.65\textwidth}
+            \setlength{\fboxsep}{0.5pt} %
+            \setlength{\fboxrule}{0.5pt}
+            \includegraphics[width=\textwidth,fbox]{../images/NN_MinhNguyen_20161010_ex1-13.png}
+            \caption{2D representation}
+        \end{subfigure}
+        ~
+        \begin{subfigure}[b]{0.65\textwidth}
+            \setlength{\fboxsep}{0.5pt} %
+            \setlength{\fboxrule}{0.5pt}
+            \includegraphics[width=\textwidth,fbox]{../images/NN_MinhNguyen_20161010_ex1-13_3d.png}
+            \caption{3D representation}
+        \end{subfigure}
+        \caption{Illustration of the classification regions of the given network}
+    \end{figure}
+
+    \subsection*{Problem in PDF file}
+    Calculations are done in the attached Python notebook.
+
+    \subsection*{New classification example with bias}
+    Plot of adjusted points:
+    \begin{center}
+        %\setlength{\fboxsep}{0.5pt} %
+        %\setlength{\fboxrule}{0.5pt} %,fbox
+        \includegraphics[width=10.0cm]{../images/NN_MinhNguyen_20161010_ex5.png} %
+    \end{center}
 
 \end{document}
