@@ -127,29 +127,43 @@
 
     \section*{Text Summary}
 
-    Title: \textit{Neural Networks: A Comprehensive Foundation} by Haykin Simons, chapter 2.
+    Title: \textit{Neural Networks: A Comprehensive Foundation} by Haykin Simons, chapter 2 - Learning Processes.
 
     \begin{itemize}
-        \item Neural Network definition:
+        \item Learning process definition:
         \begin{itemize}
-            \item 
+            \item Sequence of events that take place:
+            \begin{enumerate}
+                \item Neural network is stimulated by an environment
+                \item Simulation causes changes in the network's free parameter
+                \item Network responds to the environment differently because of these changes
+            \end{enumerate}
+            \item Type of learning is determined by how the parameters are changed.
         \end{itemize}
 
-        \begin{center}
-            \setlength{\fboxsep}{0.5pt} %
-            \setlength{\fboxrule}{0.5pt}
-            \includegraphics[width=14.0cm,fbox]{../images/Haykin-NN-figure1-5.png} %
-        \end{center}
-
-        \item Types of activation functions, $v$ being the induced local field:
+        \item Types of learning:
         \begin{itemize}
-            \item threshold function:
-                \[\phi(v) =
-                    \begin{dcases}
-                    1, & \text{if } v \geq 0\\
-                    0, & \text{if } v < 0
-                    \end{dcases}
-                \]
+            \item Error-correction learning
+            \begin{center}
+                %\setlength{\fboxsep}{0.5pt} %
+                %\setlength{\fboxrule}{0.5pt} %,fbox
+                \includegraphics[width=14.0cm]{../images/Haykin-NN-figure2-1.png} %
+            \end{center}
+
+            Update rule for synaptic weight for neuron $k$:
+                \[ w_{kj}(n+1) = w_{kj}(n) + \Delta w_{kj}(n) \]
+                where adjustment $\Delta w_{kj}(n)$ for excitement $x_j(n)$ and error signal $e_k(n)$ is:
+                \[ \Delta w_{kj}(n) = \eta e_k(n)x_j(n) \]
+
+            \item Memory-based learning: updates for new data point use old data from the ``local neighborhood'' of the new data point. Learning involves:
+            \begin{itemize}
+                \item criterion for defining the neighborhood
+                \item learning rule applied to this neighborhood
+            \end{itemize}
+
+            \item Hebbian learning
+            \item Competitive learning
+            \item Boltzmann learning
         \end{itemize}
 
     \end{itemize}
