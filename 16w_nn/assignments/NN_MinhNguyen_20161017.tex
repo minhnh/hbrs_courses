@@ -156,8 +156,8 @@
     \end{center}
 
     Output $y_j$ of neuron $j$:
-    \[ v_j = \sum_i w_{ji} x_i - \sum_k c_{kj} y_k = \sum_i w_{ji} x_i - \sum_k c_{kj} \sum_i w_{ki} x_i \]
-    \[ y_j = \phi(v_j) = \phi \left( \sum_i w_{ji} x_i - \sum_k c_{kj} y_k \right) \]
+    \[ v_j = \sum_i w_{ji} x_i + \sum_k c_{kj} y_k = \sum_i w_{ji} x_i + \sum_k c_{kj} \sum_i w_{ki} x_i \]
+    \[ y_j = \phi(v_j) = \phi \left( \sum_i w_{ji} x_i + \sum_k c_{kj} \sum_i w_{ki} x_i \right) \]
     Neuron $j$ is winning if $v_j$ is larger than local fields of all other neurons.
 
     \subsection*{Problem 2-21}
