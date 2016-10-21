@@ -7,3 +7,6 @@
 [submodule "16w_see/SEE_BachHa_MinhNguyen_270916"]
 	path = 16w_see/overleaf
 	url = https://github.com/minhnh/16w_see.git
+[submodule "16w_nn/padmaja"]
+	path = 16w_nn/padmaja
+	url = https://github.com/padmaja-kulkarni/NN.git
