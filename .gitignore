@@ -26,6 +26,8 @@ __pycache__/
 *.html
 *.zip
 *.bak
+*.bcf
+*.run.xml
 
 # Java eclipse
 .metadata/
