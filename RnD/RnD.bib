@@ -4,7 +4,7 @@
 
 @InProceedings{conf/icml/JozefowiczZS15,
   Title                    = {An Empirical Exploration of Recurrent Network Architectures.},
-  Author                   = {Józefowicz, Rafal and Zaremba, Wojciech and Sutskever, Ilya},
+  Author                   = {J\'{o}zefowicz, Rafal and Zaremba, Wojciech and Sutskever, Ilya},
   Booktitle                = {ICML},
   Year                     = {2015},
   Editor                   = {Bach, Francis R. and Blei, David M.},
@@ -149,6 +149,27 @@
   Url                      = {http://dx.doi.org/10.1162/089976600300015015}
 }
 
+@Article{Gers:2003:LPT:944919.944925,
+  Title                    = {Learning Precise Timing with LSTM Recurrent Networks},
+  Author                   = {Gers, Felix A. and Schraudolph, Nicol N. and Schmidhuber, J\"{u}rgen},
+  Journal                  = {J. Mach. Learn. Res.},
+  Year                     = {2003},
+
+  Month                    = mar,
+  Pages                    = {115--143},
+  Volume                   = {3},
+
+  Abstract                 = {The temporal distance between events conveys information essential for numerous sequential tasks such as motor control and rhythm detection. While Hidden Markov Models tend to ignore this information, recurrent neural networks (RNNs) can in principle learn to make use of it. We focus on Long Short-Term Memory (LSTM) because it has been shown to outperform other RNNs on tasks involving long time lags. We find that LSTM augmented by "peephole connections" from its internal cells to its multiplicative gates can learn the fine distinction between sequences of spikes spaced either 50 or 49 time steps apart without the help of any short training exemplars. Without external resets or teacher forcing, our LSTM variant also learns to generate stable streams of precisely timed spikes and other highly nonlinear periodic patterns. This makes LSTM a promising approach for tasks that require the accurate measurement or generation of time intervals.},
+  Acmid                    = {944925},
+  Doi                      = {10.1162/153244303768966139},
+  ISSN                     = {1532-4435},
+  Issue_date               = {3/1/2003},
+  Keywords                 = {long short-term memory, recurrent neural networks, timing},
+  Numpages                 = {29},
+  Publisher                = {JMLR.org},
+  Url                      = {http://dx.doi.org/10.1162/153244303768966139}
+}
+
 @Unpublished{Goodfellow-et-al-2016-Book,
   Title                    = {Deep Learning},
   Author                   = {Ian Goodfellow and Yoshua Bengio and Aaron Courville},
@@ -172,6 +193,22 @@
   File                     = {:references/Graves13-SequenceRNN.pdf:PDF},
   Timestamp                = {Tue, 10 Dec 2013 12:03:02 +0100},
   Url                      = {http://arxiv.org/abs/1308.0850}
+}
+
+@Book{Graves2012-385,
+  Title                    = {Supervised Sequence Labelling with Recurrent Neural Networks},
+  Author                   = {Alex Graves},
+  Publisher                = {Springer},
+  Year                     = {2012},
+  Series                   = {Studies in Computational Intelligence},
+  Volume                   = {385},
+
+  Bibsource                = {dblp computer science bibliography, http://dblp.org},
+  Biburl                   = {http://dblp.uni-trier.de/rec/bib/series/sci/2012-385},
+  Doi                      = {10.1007/978-3-642-24797-2},
+  ISBN                     = {978-3-642-24796-5},
+  Timestamp                = {Tue, 20 Mar 2012 09:00:13 +0100},
+  Url                      = {http://dx.doi.org/10.1007/978-3-642-24797-2}
 }
 
 @Misc{Hochreiter01gradientflow,
@@ -240,6 +277,25 @@
 
   Abstract                 = {We describe a new approach for modeling the distribution of high-dimensional vectors of discrete variables. This model is inspired by the restricted Boltzmann machine (RBM), which has been shown to be a powerful model of such distributions. However, an RBM typically does not provide a tractable distribution estimator, since evaluating the probability it assigns to some given observation requires the computation of the so-called partition function, which itself is intractable for RBMs of even moderate size. Our model circumvents this difficulty by decomposing the joint distribution of observations into tractable conditional distributions and modeling each conditional using a non-linear function similar to a conditional of an RBM. Our model can also be interpreted as an autoencoder wired such that its output can be used to assign valid probabilities to observations. We show that this new model outperforms other multivariate binary distribution estimators on several datasets and performs similarly to a large (but intractable) RBM.},
   File                     = {:references/larochelle11-neuralautoregressive.pdf:PDF}
+}
+
+@Article{LeCun2015,
+  Title                    = {Deep learning},
+  Author                   = {LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+  Journal                  = {Nature},
+  Year                     = {2015},
+
+  Month                    = {May},
+  Note                     = {Insight},
+  Number                   = {7553},
+  Pages                    = {436-444},
+  Volume                   = {521},
+
+  Abstract                 = {Deep learning allows computational models that are composed of multiple processing layers to learn representations of data with multiple levels of abstraction. These methods have dramatically improved the state-of-the-art in speech recognition, visual object recognition, object detection and many other domains such as drug discovery and genomics. Deep learning discovers intricate structure in large data sets by using the backpropagation algorithm to indicate how a machine should change its internal parameters that are used to compute the representation in each layer from the representation in the previous layer. Deep convolutional nets have brought about breakthroughs in processing images, video, speech and audio, whereas recurrent nets have shone light on sequential data such as text and speech.},
+  Day                      = {28},
+  ISSN                     = {0028-0836},
+  Publisher                = {Nature Publishing Group, a division of Macmillan Publishers Limited. All Rights Reserved.},
+  Url                      = {http://dx.doi.org/10.1038/nature14539}
 }
 
 @InProceedings{martens2010HFDNN,
