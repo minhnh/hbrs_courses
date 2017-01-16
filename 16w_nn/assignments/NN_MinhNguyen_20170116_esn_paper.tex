@@ -1,0 +1,167 @@
+\documentclass[9pt]{beamer}
+
+%-------------------------------------------------
+%   THEMES & PACKAGES
+%-------------------------------------------------
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage[belowskip=-15pt]{caption}
+\usepackage{graphicx}
+
+%-------------------------------------------------
+%   Settings
+%-------------------------------------------------
+\setbeamertemplate{footline}[text line]{%
+    \parbox{\linewidth}{\vspace*{-8pt}\insertshorttitle\hfill\insertshortsubtitle\hfill\insertshortauthor\hfill\insertpagenumber}}
+\setbeamertemplate{navigation symbols}{}
+
+%-------------------------------------------------
+%   TITLE
+%-------------------------------------------------
+\title{Neural Networks}
+\subtitle{ESN Paper Review}
+\date{Lecture date: Jan 16, 2017}
+\author{Minh Nguyen}
+\titlegraphic{\hfill\includegraphics[height=0.7cm]{../../images/h-brs-logo.jpg}}
+
+%-------------------------------------------------
+%   COMMANDS
+%-------------------------------------------------
+\newcommand{\picEqHereWidth}[2] { %
+    \begin{figure}[htp] 
+        \centering
+        \includegraphics[width=#2]{#1}
+    \end{figure}
+}
+\newcommand{\picHereWidth}[4] { %
+    \begin{figure}[htp] %
+        \centering
+        \includegraphics[width=#4]{#1} %
+        \caption{#2} %
+        \label{#3}
+    \end{figure} %
+}
+%-------------------------------------------------
+%   BEGIN
+%-------------------------------------------------
+\begin{document}
+
+%-------------------------------------------------
+\maketitle
+
+%-------------------------------------------------
+\begin{frame}{Introduction}
+    \begin{alertblock}{Title}
+        Opening the Black Box: Low-Dimensional Dynamics in High-Dimensional Recurrent Neural Networks
+    \end{alertblock}
+    \begin{alertblock}{Author}
+        \emph{David Sussillo and Omri Barak}
+    \end{alertblock}
+    \begin{alertblock}{Abstract}
+        \begin{itemize}
+            \item Explore hypothesis that linearized dynamics around stable and unstable fixed points reveal how RNNs implement their computations
+            \item Explore utility of linearization around points not which are not true fixed points but of slow movement
+            \item Present simple optimization technique to find fixed and slow points of RNNs' dynamics
+            \item Showcase the technique on three high-dimensional RNN examples: 3-bit flip-flop device, input-dependent sine wave generator, \& two-point moving average.
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Fixed Points}
+    \begin{alertblock}{Definitions and properties}
+        \begin{itemize}
+            \item Fixed points are common anchors to start an analysis of a nonlinear dynamical system (NLDS)
+            \item RNNs can be viewed as NLDSs to learn how they implement their target functions
+            \item Fixed points can be stable or unstable (starting in vicinity converges towards or diverges away)
+            \item Saddle points with with both stable and unstable modes allow better understanding of RNNs and can be found using the introduced optimization technique
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Optimization technique}
+    \begin{alertblock}{Linear approximations}
+        Consider system of first order differential equations $\mathbf{\dot{x} = F(x)}$. Linearization of the Taylor expansion can be done for $\mathbf{x^*}$ and perturbations $\mathbf{\delta x \equiv x - x^* }$ s.t.:
+        \picEqHereWidth{../images/sussilo13-eq3_4.png}{0.3\linewidth}
+        Define auxiliary scaler function:
+        \[ q(\mathbf{x}) = \frac{1}{2} |\mathbf{F(x)}|^2 \]
+        Minimizing $q(\mathbf{x})$ can give candidate regions for linearization. Fixed points are $\mathbf{x^*}$ s.t $q(\mathbf{x}) = 0$
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Examples -- 2D}
+    \picHereWidth{../images/sussilo13-fig1_2d.png}{Behavior of minimizing $q$ relative to a simple 2D system}{fig:2d}{0.4\linewidth}
+    \begin{itemize}
+        \item The system (trajectories in black lines): $\dot{x_1} = (1 - x_1^2)x_2,\dot{x_2} = x_1/2 - x_2$
+        \item Black `x': 2 attractors; green `x': saddle point
+        \item Thick red lines: gradient descent on $q$
+        \item Trajectories only lead to fixed points, whereas minimization of $q$ can converge at saddle point
+    \end{itemize}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Examples -- RNNs}
+    \begin{alertblock}{Formulation}
+        \picEqHereWidth{../images/sussilo13-eq10_11.png}{0.37\linewidth}
+        \begin{itemize}
+            \item $\mathbf{r} = h(\mathbf{x})$ are firing rates (element-wise application of nonlinear $h$ to $\mathbf{x}$)
+            \item Recurrence defined via $\mathbf{J}$, $I$-dimensional inputs $\mathbf{u}$ are connected via $\mathbf{B}$
+            \item Jacobian of network:
+            \picEqHereWidth{../images/sussilo13-eq12.png}{0.25\linewidth}
+            where $\delta_ij = 1$ if $i = j$ and $0$ otherwise.
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Examples -- 3-Bit Flip-Flop}
+    \picHereWidth{../images/sussilo13-fig2_flipflop.png}{Left: example input-output pairs of the 3-bit flip-flop. Right: ESN used to learn the flip-flop task}{fig:flipflop_model}{0.55\linewidth}
+    \begin{itemize}
+        \item Output should transition to or stay at $+1$ ($-1$) when receive input pulse $+1$ ($-1$)
+        \item All possible transitions between memory states are spanned using the network inputs, 600 of these trajectories are randomly selected for $q$ optimization.
+        \item In figure \ref{fig:flipflop_result} (left) network state $\mathbf{x}(t)$ is projected on first 3 principle components of the network activations. Right panel visualizes transition $(-1,-1,-1)$ to $( 1, -1, -1)$ projected on (PC3, relevant input).
+    \end{itemize}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Examples -- 3-Bit Flip-Flop}
+    \picHereWidth{../images/sussilo13-fig3_flipflop.png}{Left: low-dim phase representation of flip-flop task. Right: demonstration that saddle point mediates transitions between attractors.}{fig:flipflop_result}{0.78\linewidth}
+    \begin{itemize}
+        \item Black `x': 8 memory states; green `x': saddle fixed points with one unstable dimension; pink `x': fixed points with 4 unstable dimensions.
+        \item Blue lines: 24 1-bit transitions; thick red lines: denotes dimensions of instability; thin red lines: trajectories starting from unstable dimension.
+        \item For right panel transition input pulse amplitude is varied in small increments from 0 to 1. Blue line is the normal transition and cyan lines correspond with intermediate amplitudes.
+    \end{itemize}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Examples -- Input-dependent sine wave generator}
+    \picHereWidth{../images/sussilo13-fig4_sinegen.png}{Sine wave generator task. \textbf{A}: network is to generate unity amplitude sine wave with frequency given by a static input. \textbf{B}: trajectories (blue), fixed points (green) and eigenvectors of unstable plane around fixed points, projected onto first 3 PCs. \textbf{C}: target frequency compared with that predicted by fixed points.}{fig:sine_gen}{0.7\linewidth}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Points of slow movement -- 2-point moving average}
+    \picHereWidth{../images/sussilo13-fig7_movingavg.png}{2D approximate plane attractor in 2-point moving average task. \textbf{A}: slow points form a 2D manifold. \textbf{B}: dynamical picture of 2D manifold of slow points.}{fig:sine_gen}{0.68\linewidth}
+    \begin{itemize}
+        \item Task: predict average of last 2 analog input pulses, which are generated at random times.
+        \item gray `x': 2 fixed points; orange: trajectory for computing average with a new input.
+        \item green lines: stable direction from fixed points; red lines: unstable directions; blue lines: trajectories from slow points (where network starts).
+    \end{itemize}
+
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Points of slow movement -- 2-point moving average}
+    \picHereWidth{../images/sussilo13-fig8_movingavg.png}{Transition dynamics of RNN vs LTVDS. \textbf{A}: separated trials of RNNs (red) and LTVDS (dotted). \textbf{B}: same trials in space of first 3 PCs; black dots: starting slow points. \textbf{C, D}: transition of values from input pulse to previous 2 inputs; blue are RNN transitions, red are LTVDS.}{fig:sine_gen}{0.5\linewidth}
+    \begin{itemize}
+        \item Replace the full nonlinear system with a succession of linear systems defined by
+        the slow points
+        \item Linear Time-Varying Dynamical System (LTVDS): dynamics at each time point are linear dynamics induced by closest slow points.
+    \end{itemize}
+
+\end{frame}
+
+%-------------------------------------------------
+%   END
+%-------------------------------------------------
+\end{document}
