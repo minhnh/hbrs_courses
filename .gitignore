@@ -28,6 +28,7 @@ __pycache__/
 *.bak
 *.bcf
 *.run.xml
+.$RnD.bib$
 
 # Java eclipse
 .metadata/
