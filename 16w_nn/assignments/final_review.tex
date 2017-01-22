@@ -12,6 +12,7 @@
 %-------------------------------------------------
 %   Settings
 %-------------------------------------------------
+\graphicspath{{../images/}{../../images/}}
 \setbeamertemplate{footline}[text line]{%
     \parbox{\linewidth}{\vspace*{-8pt}\insertshorttitle\hfill\insertshortsubtitle\hfill\insertshortauthor\hfill\insertpagenumber}}
 \setbeamertemplate{navigation symbols}{}
@@ -23,7 +24,7 @@
 \subtitle{Final Review}
 \date{\today}
 \author{Minh Nguyen}
-\titlegraphic{\hfill\includegraphics[height=0.7cm]{../../images/h-brs-logo.png}}
+\titlegraphic{\hfill\includegraphics[height=0.7cm]{h-brs-logo.png}}
 
 %-------------------------------------------------
 %   COMMANDS
@@ -77,7 +78,7 @@
 
 %-------------------------------------------------
 \begin{frame}{Artificial Neural Networks}
-    \picHereWidth{../images/neuron_graph}{Neuron graph}{fig:neuron}{0.7\linewidth}
+    \picHereWidth{neuron_graph}{Neuron graph}{fig:neuron}{0.7\linewidth}
     \begin{alertblock}{Types of NN architectures}
         \begin{itemize}
             \item single layer feed forward (neurons organized)
@@ -93,11 +94,11 @@
         \centering
         \begin{subfigure}{.5\textwidth}
             \centering
-            \includegraphics[width=.7\linewidth]{../images/mlp.png}
+            \includegraphics[width=.7\linewidth]{mlp.png}
         \end{subfigure}%
         \begin{subfigure}{.5\textwidth}
             \centering
-            \includegraphics[width=\linewidth]{../images/rnn.png}
+            \includegraphics[width=\linewidth]{rnn.png}
         \end{subfigure}
         \caption{MLP and RNN networks}
     \end{figure}
@@ -118,7 +119,7 @@
 
 %-------------------------------------------------
 \begin{frame}{Artificial Neural Networks}
-    \picHereWidth{../images/reinforce_learn.png}{Reinforcement learning}{fig:rf}{0.5\linewidth}
+    \picHereWidth{reinforce_learn.png}{Reinforcement learning}{fig:rf}{0.5\linewidth}
     \begin{alertblock}{Learning paradigms}
         \begin{itemize}
             \item supervised: build input-output relation known through examples
@@ -174,24 +175,24 @@
 
 %-------------------------------------------------
 \begin{frame}{Single layer learning}
-    \picHereWidth{../images/learning.png}{Learning process}{fig:learning}{0.6\linewidth}
+    \picHereWidth{learning.png}{Learning process}{fig:learning}{0.6\linewidth}
     \begin{alertblock}{Perceptron learning for classification}
         \begin{figure}[htp!]
             \centering
             \begin{subfigure}{.3\textwidth}
                 \centering
-                \includegraphics[width=\linewidth]{../images/perceptron_learning1.png}
+                \includegraphics[width=\linewidth]{perceptron_learning1.png}
             \end{subfigure}%
             \begin{subfigure}{.3\textwidth}
                 \centering
-                \includegraphics[width=\linewidth]{../images/perceptron_learning2.png}
+                \includegraphics[width=\linewidth]{perceptron_learning2.png}
             \end{subfigure}
             \begin{subfigure}{.3\textwidth}
                 \centering
-                \includegraphics[width=\linewidth]{../images/perceptron_learning3.png}
+                \includegraphics[width=\linewidth]{perceptron_learning3.png}
             \end{subfigure}
         \end{figure}
-        \picEqHereWidth{../images/perceptron_learning_eq.png}{0.3\linewidth}
+        \picEqHereWidth{perceptron_learning_eq.png}{0.3\linewidth}
     \end{alertblock}
 \end{frame}
 
@@ -263,8 +264,8 @@
 \begin{frame}{Single layer learning}
     \begin{wrapfigure}{r}{0.4\linewidth}
         \centering
-        \includegraphics[width=\linewidth]{../images/knn_algorithm.png} \\\hfill\\
-        \includegraphics[width=0.8\linewidth]{../images/hebbs.png}
+        \includegraphics[width=\linewidth]{knn_algorithm.png} \\\hfill\\
+        \includegraphics[width=0.8\linewidth]{hebbs.png}
     \end{wrapfigure}
     \begin{alertblock}{2nd learning rule -- Memory based}
         \begin{itemize}
@@ -290,7 +291,7 @@
         \end{itemize}
     \end{alertblock}
     \begin{alertblock}{4th learning rule -- Competitive learning}
-        \picEqHereWidth{../images/competitive_learning}{0.7\linewidth}
+        \picEqHereWidth{competitive_learning}{0.7\linewidth}
     \end{alertblock}
 \end{frame}
 
@@ -300,10 +301,63 @@
         \begin{itemize}
             \item Recurrent ANN with \textbf{binary neurons}.
             \item Operate by flipping -- probability of turning on:
-            \picEqHereWidth{../images/boltzmann_eq.png}{0.5\linewidth}
+            \picEqHereWidth{boltzmann_eq.png}{0.5\linewidth}
             \item Modes of operation: clamped and free running conditions:
-            \picEqHereWidth{../images/boltzmann_eq2.png}{0.4\linewidth}
+            \picEqHereWidth{boltzmann_eq2.png}{0.4\linewidth}
             where $ \rho^+_{kj} $ and $ \rho^-_{kj} $ are correlation in clamped and free running states.
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Statistical Learning Theory}
+    \begin{alertblock}{VC-Dimension}
+        \begin{itemize}
+            \item Given learning machine $ \mathbf{f} $ with vector of adjustable parameters $ \alpha $. Define probability of misclassification:
+            \picEqHereWidth{prob_misclass.png}{0.6\linewidth}
+            \item Define fraction of training set misclassified ($ R $ is number of training set data points):
+            \picEqHereWidth{prob_train_misclass.png}{0.7\linewidth}
+            \item Let $ h $ be VC dimension of $ \mathbf{f} $. With probability $ 1 - \eta $ (Vapnik):
+            \picEqHereWidth{prob_misclass_vapnik}{0.8\linewidth}
+            $ \rightarrow $ allow estimating future error based on training error and VC dimension of $ \mathbf{f} $
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Statistical Learning Theory}
+    \begin{alertblock}{Shattering}
+        Machine $ f $ can shatter set of point $ x_1, x_2, ..., x_r $ iff $ \forall $ training set $ (x_1, y_1), (x_2, y_2), ... , (x_r, y_r) $, $ \exists \alpha $ with no training error ($ 2^r $ possible sets).
+    \end{alertblock}
+    \begin{alertblock}{VC dimension}
+        \begin{itemize}
+            \item Terms: instance space $ X $ , hypothesis $ h \in \mathcal{H} $
+            \item $ \mathcal{H} $ shatters $ A \subseteq X $ if $ \exists h \in \mathcal{H} $ that separate negative from positive examples (for any possible labeling of A).
+            \item Definition: largest finite subset $ A \subseteq X $ than can be shattered by $ \mathcal{H} $
+            \item If VC dimension is $ m $
+            \begin{itemize}
+                \item $ \exists $ at least 1 set of $ m $ points $ \in X $ that can be shattered
+                \item not every set of $ m $ points can necessarily be shattered
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Learning as Nonlinear Optimization}
+    \begin{alertblock}{Shattering}
+        Machine $ f $ can shatter set of point $ x_1, x_2, ..., x_r $ iff $ \forall $ training set $ (x_1, y_1), (x_2, y_2), ... , (x_r, y_r) $, $ \exists \alpha $ with no training error ($ 2^r $ possible sets).
+    \end{alertblock}
+    \begin{alertblock}{VC dimension}
+        \begin{itemize}
+            \item Terms: instance space $ X $ , hypothesis $ h \in \mathcal{H} $
+            \item $ \mathcal{H} $ shatters $ A \subseteq X $ if $ \exists h \in \mathcal{H} $ that separate negative from positive examples (for any possible labeling of A).
+            \item Definition: largest finite subset $ A \subseteq X $ than can be shattered by $ \mathcal{H} $
+            \item If VC dimension is $ m $
+            \begin{itemize}
+                \item $ \exists $ at least 1 set of $ m $ points $ \in X $ that can be shattered
+                \item not every set of $ m $ points can necessarily be shattered
+            \end{itemize}
         \end{itemize}
     \end{alertblock}
 \end{frame}
