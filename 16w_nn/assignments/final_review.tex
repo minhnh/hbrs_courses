@@ -118,22 +118,6 @@
 
 %-------------------------------------------------
 \begin{frame}{Artificial Neural Networks}
-    \begin{wrapfigure}{r}{0.5\linewidth}
-        \centering
-        \includegraphics[width=0.8\linewidth]{../images/hebbs.png}
-        \caption{Hebbs' and symmetric Hebbs' rule}
-    \end{wrapfigure}
-    \begin{alertblock}{Learning - Hebbs rule}
-        \begin{itemize}
-            \item defines how~synaptic~weights influence and are~influenced by the neurons operations
-            \item weight~should~increase~when both neurons~are~excited~(black circle): increase~efficiency~of firing both neurons.
-            \item symmetrical~Hebbs'~used~to avoid saturation.
-        \end{itemize}
-    \end{alertblock}
-\end{frame}
-
-%-------------------------------------------------
-\begin{frame}{Artificial Neural Networks}
     \picHereWidth{../images/reinforce_learn.png}{Reinforcement learning}{fig:rf}{0.5\linewidth}
     \begin{alertblock}{Learning paradigms}
         \begin{itemize}
@@ -187,6 +171,143 @@
         \end{itemize}
     \end{alertblock}
 \end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Single layer learning}
+    \picHereWidth{../images/learning.png}{Learning process}{fig:learning}{0.6\linewidth}
+    \begin{alertblock}{Perceptron learning for classification}
+        \begin{figure}[htp!]
+            \centering
+            \begin{subfigure}{.3\textwidth}
+                \centering
+                \includegraphics[width=\linewidth]{../images/perceptron_learning1.png}
+            \end{subfigure}%
+            \begin{subfigure}{.3\textwidth}
+                \centering
+                \includegraphics[width=\linewidth]{../images/perceptron_learning2.png}
+            \end{subfigure}
+            \begin{subfigure}{.3\textwidth}
+                \centering
+                \includegraphics[width=\linewidth]{../images/perceptron_learning3.png}
+            \end{subfigure}
+        \end{figure}
+        \picEqHereWidth{../images/perceptron_learning_eq.png}{0.3\linewidth}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Single layer learning}
+    \begin{alertblock}{Adaline learning for regression}
+        Adaline (\textbf{Ada}ptive \textbf{Lin}ear \textbf{E}lement) architecture:
+        \begin{itemize}
+            \item perceptron with linear activation function
+            \item learning: error correction derived from LMS:
+            \[ w(n+1) = w(n) - \eta \nabla E(w(n)) \approx w(n) + \eta x(w e(n)) \]
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Fixed-increment learning algorithm}
+        \begin{enumerate}
+            \item initialization: $ n = 1, (n) = 0 $
+            \item activate perceptron by applying input $ x(n) $
+            \item compute output: $ y(n) = step(w^T(n) x(n)) $
+            \item adapt weight vector: if $ d(n) \neq y(n) $ $ \Rightarrow w(n+1) = w(n) + \eta e(n) x(n) $,
+            where $ e(n) = +1 $ for $ \textbf{X}(n) \in C_1 $ and $ e(n) = -1 $ for $ \textbf{X}(n) \in C_2 $
+            \item continuation: increment $n$ and go to activation (step 2)
+        \end{enumerate}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Single layer learning}
+    \begin{alertblock}{Convergence theorem}
+        Proof that perceptron algorithm converges
+        \begin{itemize}
+            \item Let $ \mathbf{w_0} $ be such that $ \mathbf{w_0^T x}(n) > 0, ~ \forall \mathbf{x}(n) \in C_1 $
+            \item Let $ \alpha = \min(\mathbf{w_0^T x}(n)), ~ \forall \mathbf{x}(n) \in C_1 \Rightarrow $ Cauchy-Schwarz inequality: $ ||\mathbf{w}(k+1)||^2 \geq \cfrac{k^2 \alpha^2}{||\textbf{w}_0||^2} $
+            \item Let $ \beta  = \max(||\textbf{x}(n)||^2), ~ \forall \mathbf{x}(n) \in C_1  \Rightarrow ||\mathbf{w}(k+1)||^2 \leq k \beta $
+            \item To satisfied both above conditions, perceptron algorithm must terminate in at most $ n_{max} $ iterations: $ n_{max} = \cfrac{\beta ||\textbf{w}_0||^2}{\alpha^2} $
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Perceptron limitation}
+        \begin{itemize}
+            \item can only model linearly separable functions.
+            \item can model AND, OR, COMPLEMENT but not XOR.
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Single layer learning}
+    \begin{alertblock}{Adaline vs. Perceptron}
+        \begin{itemize}
+            \item Model: Adaline uses linear, perceptron uses nonlinear activation functions.
+            \item Learning: Adaline's continuous, perceptron has finite number of iterations.
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{ANN learning definition}
+        \begin{itemize}
+            \item process by which \textbf{free parameters} of a NN \textbf{are adapted} in a desired way
+            \item through a \textbf{process of stimulation} by the environment
+            \item type of learning is determined by how the parameter update are performed.
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{1st learning rule -- Error Correction}
+        \begin{itemize}
+            \item Optimize cost function (instantaneous at time $ n $, local at output node $ k $): $ \mathcal{E}(n) = \frac{1}{2} e_k^2(n) $, where $ e_k(n) = d_k(n) - y_k(n) $
+            \item Widrow-Hoff rule (delta rule) for weight update: $ w_{kj}(n+1) = w_{kj}(n) + \eta \Delta w_{kj}(n) = w_{kj}(n) + \eta e_k(n) x_j(n) $
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Single layer learning}
+    \begin{wrapfigure}{r}{0.4\linewidth}
+        \centering
+        \includegraphics[width=\linewidth]{../images/knn_algorithm.png} \\\hfill\\
+        \includegraphics[width=0.8\linewidth]{../images/hebbs.png}
+    \end{wrapfigure}
+    \begin{alertblock}{2nd learning rule -- Memory based}
+        \begin{itemize}
+            \item Nearest Neighbor definition: Given $ L = \{x_1, x_2,...,x_N\} $ and $ x_{test} \notin L $, $ x' \in L $ is nearest neighbor to $ x{test} \in L \iff \min_i d(x_i, x_{test}) = d(x', x_{test}) $
+            \item k-NN algorithm (right).
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{3rd learning rule -- Hebbian}
+        \begin{itemize}
+            \item simultaneous~activation~of~2~neurons on either~side~of~a~synapse~$ \rightarrow $~synaptic weight increases
+            \item asynchronous~activation~of~2~neurons~$ \rightarrow $~synaptic weight decreases
+        \end{itemize}
+    \end{alertblock}
+
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Single layer learning}
+    \begin{alertblock}{3rd learning rule -- Hebbian}
+        \begin{itemize}
+            \item 4 mechanisms: time-dependent, local, interactive, conjunctional/correlational.
+            \item Covariance hypothesis: $ \Delta W_{kj}(n) = \eta (y_k - \bar{y})(x_j - \bar{x}) $
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{4th learning rule -- Competitive learning}
+        \picEqHereWidth{../images/competitive_learning}{0.7\linewidth}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Single layer learning}
+    \begin{alertblock}{5th learning rule -- Boltzmann}
+        \begin{itemize}
+            \item Recurrent ANN with \textbf{binary neurons}.
+            \item Operate by flipping -- probability of turning on:
+            \picEqHereWidth{../images/boltzmann_eq.png}{0.5\linewidth}
+            \item Modes of operation: clamped and free running conditions:
+            \picEqHereWidth{../images/boltzmann_eq2.png}{0.4\linewidth}
+            where $ \rho^+_{kj} $ and $ \rho^-_{kj} $ are correlation in clamped and free running states.
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
 %-------------------------------------------------
 %   END
 %-------------------------------------------------
