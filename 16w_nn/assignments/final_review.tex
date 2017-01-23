@@ -561,6 +561,141 @@
 \end{frame}
 
 %-------------------------------------------------
+\begin{frame}{Support Vector Machines}
+    \begin{alertblock}{Maximum margin}
+        \begin{itemize}
+            \item Simplest SVM: linear SVM (LSVM) $ \equiv $ maximum margin linear classifier
+            \item Support vectors: data points that margin pushes up against
+            \item Margin width: $ M = \cfrac{2}{\sqrt{\mathbf{w} . \mathbf{w}}} $
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Learn maximum margin}
+        For R data points, minimize (error term for handling noise): $ \frac{1}{2} \mathbf{w} . \mathbf{w} + C \sum_{k=1}^{R}\epsilon_k $ \\
+        2R constraints:
+        \picEqHereWidth{svm_constraints}{0.3\linewidth}
+    \end{alertblock}
+    \begin{alertblock}{Nonlinear basis function}
+        Common SVM basis functions $ \mathbf{z}_k $: (1) polynomial terms, (2) radial basis functions, or (3) sigmoid of $ \mathbf{x}_k $
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Support Vector Machines}
+    \begin{alertblock}{Quadratic programming}
+        \picEqHereWidth{svm_qp}{\linewidth}
+        Can be simplified by observing $ \mathbf{\Phi(a) . \Phi(b)} = (\mathbf{a . b} +1)^2 $
+    \end{alertblock}
+    \begin{alertblock}{VC dimension}
+        \picEqHereWidth{svm_vcdim}{0.4\linewidth}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Self-Organizing Maps}
+    \begin{alertblock}{SOM algorithm basics}
+        \begin{itemize}
+            \item Winner Takes All (WTA) algorithm
+            \item 2 layers
+            \begin{itemize}
+                \item input layer: fully connected to each neuron in 2\textsuperscript{nd} layer
+                \item map layer: 1D/2D/3D, organized as line/square/cube
+            \end{itemize}
+            \item Goal: find weight vectors connecting inputs to each node of lattice s.t.:
+            \begin{itemize}
+                \item adjacent neurons have similar weight vectors
+                \item output of NN will be neuron whose weight vector is most similar to input
+                \item each neuron is a \textbf{center of a cluster} containing all inputs mapped to it
+            \end{itemize}
+            \item Essential ingredients:
+            \begin{itemize}
+                \item continuous input space of activation patterns generated in accordance with a probability distribution
+                \item topology of the network: a lattice of neurons defining discrete output space
+                \item time-varying neighborhood function $ h_{ij(x)}(n) $ defined around a winning neuron $ i(x) $
+                \item decreasing learning rate parameters $ h(n) $ starting at $ h_0 $ but never goes to $ 0 $
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Self-Organizing Maps}
+    \begin{alertblock}{Algorithm summary}
+        \begin{itemize}
+            \item Initialization: choose random, small weight vectors unique for each neuron
+            \item Sampling: draw sample $ x $ from input space
+            \item Similarity matching: find winning neuron $ i(x) $ at step $ n $
+                \[ i(x) = \arg\min_j ||x(n) - w_j|| \]
+            \item Updating: adjust weight vectors:
+                \picEqHereWidth{som_weight_update}{0.5\linewidth}
+            \item Continuation: go to sampling step until no more changes in feature map
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Learning characteristics}
+        \begin{itemize}
+            \item neurons not in neighborhood left unchanged
+            \item starts with neighborhood size $ \lambda $ and gradually reduces it
+            \item and gradually reduces learning rate $ \eta $
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Self-Organizing Maps}
+    \begin{alertblock}{Essential processes}
+        \begin{enumerate}
+            \item Competition: choose best matching neuron, input space mapped to discrete output space
+            \item Cooperation:
+            \begin{itemize}
+                \item winning neuron locates center of neighborhood of cooperating neurons
+                \item this neighborhood depends on lateral distance $ d_{ij} $ between winning neuron $ i $ and neuron $ j $
+                \item neighborhood function -- Gaussian:
+                \picEqHereWidth{som_nbh_gaussion}{0.3\linewidth}
+                where $ \sigma $ decays with time \& $ d_{ji} $ is the lateral distance
+            \end{itemize}
+            \item Weight adaptation:
+                \picEqHereWidth{som_weight_update2}{0.6\linewidth}
+        \end{enumerate}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Self-Organizing Maps}
+    \begin{alertblock}{2 phases of weight adaptation}
+        \begin{itemize}
+            \item Ordering phase: topological ordering of weight vectors (1k iterations). Parameter choices:
+            \begin{itemize}
+                \item $ \eta(n) $: $ \eta_0 = 0.1, T_2=1000 $
+                \item $ h_{ji(x)}(n) $: $ \sigma_0$ big enough, $T_1=\cfrac{1000}{\log(\sigma_0)} $
+            \end{itemize}
+            \item Convergence phase: fine tune feature map (10k iterations). Parameter choices:
+            \begin{itemize}
+                \item $ \eta(n) $ maintained on order of $ 0.01 $
+                \item $ h_{ji(x)}(n) $ eventually reduces to 1 or 0 neighboring neurons
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Echo State Networks}
+    Bifurcation: qualitative change induce by control parameters
+    \begin{alertblock}{Backpropagation through time (BPTT)}
+        \begin{itemize}
+            \item stack network time steps and use backprop like with feedforward network
+            \item problems:
+            \begin{itemize}
+                \item passing through bifurcation: error function does not change smoothly
+                \item error gradient information diverges/shrink exponentially
+                \item trapped in local optimum
+                \item non-local info needed
+                \item computationally costly
+                \item algorithms are difficult
+            \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
 %   END
 %-------------------------------------------------
 \end{document}
