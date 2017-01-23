@@ -496,6 +496,71 @@
 \end{frame}
 
 %-------------------------------------------------
+\begin{frame}{Radial Basis Function}
+    \begin{alertblock}{Cover's Theorem}
+        $ \{ \phi_i(x) \}_{i=1}^{m_1} $: family of $ m_1 $ nonlinear functions
+        \begin{itemize}
+            \item binary partition $ C^1, C^2 $ of training set $ C $ is \textbf{$ \phi $-separable} if $ \exists w $ of dimension $ m_1 $ s.t.: $ w^T \phi(x) > 0$ $\forall x \in C^1 $, and $ w^T \phi(x) < 0$ $\forall x \in C^2 $
+            \item theorem: probability that randomly picked partition $ C^1, C^2 $ of $ C $ is $ \phi $-separable:
+            \[ P(N, m_1) = \left(\frac{1}{2}\right)^{N-1}\sum_{m=0}^{m_1-1}\binom{N-1}{m} \]
+            for number of data points $ N > m_1 - 1 $
+            \item corollary: \textbf{expected maximum} number of \textbf{randomly assigned} patterns that are \textbf{linearly separable} in a feature space of \textbf{dimension} $ \mathbf{m_1} $ is $ \mathbf{2 m_1} $
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{RBF architechture}
+        \begin{itemize}
+            \item hidden layer: nonlinear transformation from input space to hidden space
+            \item output layer: linear transformation from hidden space to output space
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Radial Basis Function}
+    \begin{alertblock}{Interpolation problem}
+        \begin{itemize}
+            \item Problem: given points $ (x_i, t_i) , x_i \in \mathbb{R}^{m_0}, t_i \in \mathbb{R}, 1<i<N $, find $ \mathbf{F}: \mathbb{R}^{m_0} \mapsto \mathbb{R} $ s.t. $ \mathbf{F(x_i)} = t_i $
+            \item RBF solution: $ \mathbf{F(x)} = \sum_{i}w_i\phi(||\mathbf{x}-\mathbf{x_i}||) \Rightarrow \mathbf{w} = \mathbf{\Phi^{-1}t} $
+            \item Michelli's theorem: if $ \mathbf{x_i} $ are distinct, $ \mathbf{\Phi} $ is non-singular. Valid RBF families:
+            \picEqHereWidth{rbf_valid_func}{0.7\linewidth}
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{RBF with regularization}
+        $ \mathbf{w} = (\mathbf{G} + \lambda \mathbf{I})^{-1} \mathbf{t} $, where $ G_{kl} = \mathbf{G(x_k, x_l)} $ and $ G() $ is a Green's function
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Radial Basis Function}
+    \begin{alertblock}{Generalized RBFN}
+        Use only $ K $ radial functions with only centers $ \mathbf{c_i} $ where $ K << $ number of pattern $ P $: $ \mathbf{F(x)} = \sum_{i=1}^{K}w_i\phi(||\mathbf{x}-\mathbf{c_i}||) $
+    \end{alertblock}
+    \begin{alertblock}{Comparison with MLP}
+        \centering
+        \begin{tabular}{p{0.3\linewidth} p{0.3\linewidth}p{0.3\linewidth}}
+            & RBFN & MLP \\
+            \hline
+            number of hidden layers & single & single or multiple \\
+            linear-ness & nonlinear hidden, linear output & nonlinear hidden, linear/nonlinear output \\
+            argument of hidden & Euclidean norm & scalar product \\
+            approximation property & universal & universal \\
+            approximators scope & local & global \\
+            learning & splitted & global
+        \end{tabular}
+    \end{alertblock}
+    \begin{alertblock}{Computation of centers}
+        Centers $ \mathbf{c_i} $ must have (density) properties of data points $ \mathbf{x_i} $
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Radial Basis Function}
+    \begin{alertblock}{k-means}
+        \picEqHereWidth{rbfn_kmeans}{\linewidth}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
 %   END
 %-------------------------------------------------
 \end{document}
