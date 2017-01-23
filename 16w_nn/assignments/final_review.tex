@@ -345,19 +345,152 @@
 
 %-------------------------------------------------
 \begin{frame}{Learning as Nonlinear Optimization}
-    \begin{alertblock}{Shattering}
-        Machine $ f $ can shatter set of point $ x_1, x_2, ..., x_r $ iff $ \forall $ training set $ (x_1, y_1), (x_2, y_2), ... , (x_r, y_r) $, $ \exists \alpha $ with no training error ($ 2^r $ possible sets).
-    \end{alertblock}
-    \begin{alertblock}{VC dimension}
+    \begin{alertblock}{Steepest Descent}
         \begin{itemize}
-            \item Terms: instance space $ X $ , hypothesis $ h \in \mathcal{H} $
-            \item $ \mathcal{H} $ shatters $ A \subseteq X $ if $ \exists h \in \mathcal{H} $ that separate negative from positive examples (for any possible labeling of A).
-            \item Definition: largest finite subset $ A \subseteq X $ than can be shattered by $ \mathcal{H} $
-            \item If VC dimension is $ m $
+            \item Minimize cost function through iterations: $ \mathcal{E}(w(n+1)) \leq \mathcal{E}(w(n)) $
+            \item Steepest descent: weight adjustments are in opposite direction of the gradient vector
+            \item Effects of learning rate $ \eta $:
             \begin{itemize}
-                \item $ \exists $ at least 1 set of $ m $ points $ \in X $ that can be shattered
-                \item not every set of $ m $ points can necessarily be shattered
+                \item: small $ \eta $: overdamped, $ \mathbf{w}(n) $ trajectory smooth in $ W $ plane
+                \item: large $ \eta $: underamped, $ \mathbf{w}(n) $ trajectory oscillates in $ W $ plane
+                \item: $ \eta $ exceed a certain threshold: trajectory unstable, diverse.
             \end{itemize}
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Newton's Method}
+        2\textsuperscript{nd}-order Taylor series expansion around $ \mathbf{w}(n) $:
+        \[ \Delta \mathbf{\mathcal{E}}(w(n)) = \mathbf{\mathcal{E}}(w(n+1)) - \mathbf{\mathcal{E}}(w(n)) = g^T(n)\Delta w(n) + \frac{1}{2} \Delta w^T(n) H(n) \Delta w(n) \]
+        Differentiate wrt $ \Delta w $ and set equal to zero:
+        \[ g(n) + H(n)\Delta w(n) = 0 \Rightarrow \Delta w(n) = - H^{-1}(n)g(n) \]
+        \[ \Rightarrow \mathbf{w(n+1) = w(n) - H^{-1}(n)g(n)} \]
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Learning as Nonlinear Optimization}
+    \begin{alertblock}{Newton's Method}
+        \begin{itemize}
+            \item converges quickly \& no zigzagging behavior
+            \item requires H(n) to be positive definite $ \forall n $
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Gauss-Newton}
+        \begin{itemize}
+            \item Special case of Newton's -- cost function is sum of error squares
+            \item Batch learning procedure: $ \mathbf{w} $ trained by all data from entire observation interval $ 1 \leq i \leq n $: $ \mathcal{E}(w) = \frac{1}{2} \sum_{i=1}^{n} e^2(i) $
+            \item Update rule:
+            $ \mathbf{w}(n+1) = \mathbf{w}(n) - (\mathbf{J}^T(n) \mathbf{J}(n))^{-1}\mathbf{J}^T(n) \mathbf{e}(n) $
+            \item Conditions:
+            \begin{itemize}
+                \item Jacobian $ \mathbf{J} $ of $ e(n) $ must be known
+                \item $ \mathbf{J}^T(n) \mathbf{J}(n) $ always non-negative definite and non-singular ($ J(n) $ should have row rank $ n $)
+            \end{itemize}
+            \item Add diagonal matrix $ \rho I $ ($ \rho $ is small positive constant) to ensure $ \mathbf{J}^T(n) \mathbf{J}(n) + \rho I $ positive definite $ \forall n $ (regularization by $ \rho $).
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Learning as Nonlinear Optimization}
+    \begin{alertblock}{Gauss-Newton}
+        \begin{itemize}
+            \item Adaline (single linear neuron): $ \mathbf{J}(n) = -\mathbf{X}(n) \Rightarrow \mathbf{w}(n+1) = \mathbf{X}^+(n)\mathbf{d}(n) $ (pseudo-inverse)
+            \item Instantaneous error at \textbf{single} time step $ n $: $ \mathcal{E} = \frac{1}{2} e^2(n) \Rightarrow $ can simplify:
+            \[ \frac{\delta \mathbf{\mathcal{E}}(\mathbf{w})}{\delta\mathbf{w}} = e(n)\frac{\delta e(n)}{\delta\mathbf{w}} = -\mathbf{x}(n)e(n) \Rightarrow \mathbf{\hat{w}}(n+1) = \mathbf{\hat{w}}(n) + \eta \mathbf{x}(n)e(n) \]
+            $ \Rightarrow $ allow stochastic mode and online learning.
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Back-propagation for MLP}
+    \picHereWidth{mlp_xor}{Solution with for XOR problem}{fig:mlp_xor}{0.4\linewidth}
+    \begin{alertblock}{Sigmoid activation}
+        \[ \phi(v_j) = \frac{1}{1 + e^{-av_j}} \Rightarrow \phi'(v_j) = a \phi(v_j)(1 - \phi(v_j)) \]
+    \end{alertblock}
+    \begin{alertblock}{Average Squared Error}
+        \[ \mathbf{\mathcal{E}}_{AV} = \frac{1}{N}\sum_{n=1}^{N}\mathbf{\mathcal{E}}(n) = \frac{1}{N}\sum_{n=1}^{N} \frac{1}{2} \sum_{j \in C} e_j^2(n) \]
+        where $ e_j(n) \equiv d_j(n) - y_j(n) $, and $ C $ is set of all neurons in output layer.
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Back-propagation for MLP}
+    \begin{alertblock}{Local gradient}
+        \begin{wrapfigure}{l}{0.5\linewidth}
+            \centering
+            \includegraphics[width=0.9\linewidth]{mlp_bp_breakdown}
+        \end{wrapfigure}
+        \[ \Rightarrow \Delta w_{ji}(n) = -\eta \delta_j y_i(n) \]
+
+        2 cases:
+        \begin{itemize}
+            \item $ j $ is an output neuron
+            \item $ j $ is a hidden neuron
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Local gradient -- output neuron}
+        \picEqHereWidth{mlp_bp_localgrad_1}{0.6\linewidth}
+        \[ \Rightarrow \delta_j = e_j \phi'(v_j) = (d_j - y_j) \phi'(v_j) \]
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Back-propagation for MLP}
+    \begin{alertblock}{Local gradient -- hidden neuron}
+        Since $ e_j = d_j - y_j $ is missing, reformulate local gradient and apply chain rule:
+        \[ \delta_j = \cfrac{\delta \mathbf{\mathcal{E}}}{\delta y_j} \frac{\delta y_j}{\delta v_j} = \phi'(v_j) \sum_{k \in C} \delta_k w_{kj}) \]
+        where $ \phi'(v_j) = ay_j(1-y_j) $ (in which $ a > 0 $)
+    \end{alertblock}
+    \begin{alertblock}{BP algorithm}
+        \begin{itemize}
+            \item Forward: run NN \& compute error for each neuron of output layer
+            \item Backward: pass errors backwards from output layer, by recursively computing local gradient of each neuron.
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Stopping criterion}
+        \begin{itemize}
+            \item absolute rate of change in average squared error small enough
+            \item test NN for generalization after each epoch, stop if performance adequate.
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Back-propagation for MLP}
+    \begin{alertblock}{Generalization}
+        Generalize well if the produced mapping works well with new data. May over-fit and memorize the data if NN learns to many examples. Influencing factors:
+        \begin{itemize}
+            \item size of training set
+            \item architecture of NN
+            \item complexity of problem
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{Expressive capability}
+        \begin{itemize}
+            \item Every \textbf{boolean} function can be represented by NN with \textbf{1 hidden layer}, but may require \textbf{exponential hidden units}
+            \item Every \textbf{bounded continuous} can be approximated with arbitrarily small error by NN with \textbf{1 hidden layer}
+            \item \textbf{Any function} can be approximated with arbitrary accuracy by NN with \textbf{2 hidden layer}
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+\begin{frame}{Back-propagation for MLP}
+    \begin{alertblock}{Convergence: Generalized Delta Rule}
+        \begin{itemize}
+            \item Hard to choose learning rate:\\
+                $ \eta $ small $ \rightarrow $ slow rate of learning,\\
+                $ \eta $ large $ \rightarrow $ NN can become unstable
+            \item Solution: add momentum $ \rightarrow $ generalized delta rule:
+                \picEqHereWidth{mlp_generalized_delta}{0.5\linewidth}
+            \item Momentem $ \alpha $ (1) accelerates descent in steady downhill directions and (2) stabilizes directions oscillating in time.
+        \end{itemize}
+    \end{alertblock}
+    \begin{alertblock}{$ \eta $ Adaptation}
+        \begin{itemize}
+            \item Heuristic 1: every weight has own $ \eta $
+            \item Heuristic 2: every $ \eta $ can vary from one iteration to the next
         \end{itemize}
     \end{alertblock}
 \end{frame}
