@@ -7,21 +7,20 @@
 classdef BinaryEncoding
 
     properties
-        MIN_ARG_NUM = 8;
+        MIN_ARG_NUM = 7;
         Population
         BitLength
         Target
         funcGetFitness
         funcSelectWinners
         funcSingleCrossover
-        funcSingleMutate
         funcCheckConvergence
     end
 
     methods
         function obj = BinaryEncoding(size, maxInitValue, bitLength,...
                                       getFitness, selectWinners, crossover,...
-                                      singleMutate, checkConvergence, target)
+                                      checkConvergence, target)
             if nargin < obj.MIN_ARG_NUM
                 error(['GenerationBinary constructor requires at least '...
                        num2str(obj.MIN_ARG_NUM) ' arguments']);
@@ -37,7 +36,6 @@ classdef BinaryEncoding
             obj.funcGetFitness = getFitness;
             obj.funcSelectWinners = selectWinners;
             obj.funcSingleCrossover = crossover;
-            obj.funcSingleMutate = singleMutate;
             obj.funcCheckConvergence = checkConvergence;
             disp(['Initialized population with ' num2str(size) ' members:']);
             obj.DisplayPopulation();
@@ -65,19 +63,16 @@ classdef BinaryEncoding
             end
         end
 
-        function children = Mutate(obj, children, mutationRate)
-            for k = 1:length(children)
-                if rand() < mutationRate
-                    children(k, :) = obj.funcSingleMutate(obj, children(k, :));
-                end
-            end
+        function children = Mutate(~, children, mutationRate)
+            mutationMatrix = rand(size(children)) < mutationRate;
+            children = xor(children, mutationMatrix);
         end
 
         function numIteration = Iterate(obj, iterNum, elitism, crossoverRate,...
                                         mutationRate)
             for i = 1:iterNum
                 if obj.funcCheckConvergence(obj)
-                    disp(['converged after ' int2str(i) ' iterations'])
+                    disp(['converged after ' int2str(i) ' iterations']);
                     break
                 end
                 selectedParents = obj.Select(elitism);
