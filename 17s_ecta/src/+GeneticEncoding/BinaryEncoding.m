@@ -10,7 +10,7 @@ classdef BinaryEncoding
         MIN_ARG_NUM = 8;
         Population
         BitLength
-        TargetFitness
+        Target
         funcGetFitness
         funcSelectWinners
         funcSingleCrossover
@@ -21,15 +21,15 @@ classdef BinaryEncoding
     methods
         function obj = BinaryEncoding(size, maxInitValue, bitLength,...
                                       getFitness, selectWinners, crossover,...
-                                      singleMutate, checkConvergence, targetFitness)
+                                      singleMutate, checkConvergence, target)
             if nargin < obj.MIN_ARG_NUM
                 error(['GenerationBinary constructor requires at least '...
                        num2str(obj.MIN_ARG_NUM) ' arguments']);
             elseif nargin > obj.MIN_ARG_NUM
-                obj.TargetFitness = targetFitness;
+                obj.Target = target;
             else
                 % default target is all bits are 1's
-                obj.TargetFitness = bitLength;
+                obj.Target = bitLength;
             end
 
             obj.Population = InitPopulation(size, maxInitValue, bitLength);
@@ -47,9 +47,9 @@ classdef BinaryEncoding
             selection_size = length(obj.Population);
             selected = [];
             if elitism
-                [~, minArg] = min(abs(obj.funcGetFitness(obj.Population) -...
-                                      obj.TargetFitness));
-                selected = [selected; obj.Population(minArg, :)];
+                [~, maxArg] = max(obj.funcGetFitness(obj, obj.Population,...
+                                                     obj.Target));
+                selected = [selected; obj.Population(maxArg, :)];
                 selection_size = selection_size - 1;
             end
 
@@ -80,7 +80,8 @@ classdef BinaryEncoding
             end
         end
 
-        function Iterate(obj, iterNum, elitism, crossoverRate, mutationRate)
+        function numIteration = Iterate(obj, iterNum, elitism, crossoverRate,...
+                                        mutationRate)
             for i = 1:iterNum
                 if obj.funcCheckConvergence(obj)
                     disp(['converged after ' int2str(i) ' iterations'])
@@ -91,13 +92,14 @@ classdef BinaryEncoding
                 obj.Population = obj.Mutate(children, mutationRate);
                 obj.DisplayPopulation();
             end
+            numIteration = i;
         end
 
         function DisplayPopulation(obj)
             disp(obj.Population);
-            fitness = obj.funcGetFitness(obj.Population);
-            [~, argMin] = min(abs(fitness - obj.TargetFitness));
-            disp(['Best fitness:    ' num2str(fitness(argMin))]);
+            fitness = obj.funcGetFitness(obj, obj.Population, obj.Target);
+            [~, argMax] = max(fitness);
+            disp(['Best fitness:    ' num2str(fitness(argMax))]);
             disp(['Average fitness: ' num2str(mean(fitness))]);
         end
     end
