@@ -1,0 +1,59 @@
+\documentclass[9pt]{beamer}
+
+%-------------------------------------------------
+%   THEMES & PACKAGES
+%-------------------------------------------------
+\usetheme[progressbar=frametitle]{metropolis}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+%-------------------------------------------------
+%   COMMON INFO
+%-------------------------------------------------
+\newcommand{\hmwkTitle}{Title}
+\newcommand{\hmwkDueDate}{October 27, 2016}
+\newcommand{\hmwkClass}{Course name}
+\newcommand{\hmwkClassShort}{Course name short}
+\newcommand{\hmwkAuthorFullName}{Minh H. Nguyen}
+\newcommand{\hmwkAuthorLastName}{Nguyen}
+\newcommand{\hmwkAuthorEmail}{minh.nguyen@smail.inf.h-brs.de}
+\newcommand{\hmwkAuthorInstitute}{BRS University of Applied Sciences}
+\graphicspath{{images/}}
+
+
+%-------------------------------------------------
+%   TITLE
+%-------------------------------------------------
+\title{\hmwkClass}
+\subtitle{\hmwkTitle}
+\date{Lecture date: \hmwkDueDate}
+\author[\hmwkAuthorLastName]{\hmwkAuthorFullName}
+\titlegraphic{\hfill\includegraphics[height=0.7cm]{h-brs-logo}}
+
+\setbeamertemplate{footline}[text line]{%
+    \parbox{\linewidth}{\vspace*{-8pt}\hmwkClassShort\hfill\hmwkTitle\hfill\insertshortauthor\hfill\insertpagenumber}}
+\setbeamertemplate{navigation symbols}{}
+
+%-------------------------------------------------
+%   BEGIN
+%-------------------------------------------------
+\begin{document}
+
+%-------------------------------------------------
+\maketitle
+
+%-------------------------------------------------
+\begin{frame}{Slide 1}
+    \begin{alertblock}{Important note 1}
+    	Important text
+    \end{alertblock}
+\end{frame}
+
+%-------------------------------------------------
+
+%-------------------------------------------------
+%   END
+%-------------------------------------------------
+\end{document}
