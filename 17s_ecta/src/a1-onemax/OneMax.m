@@ -41,7 +41,7 @@ function converging = CheckConvergence(obj)
     fitness = obj.funcGetFitness(obj, obj.Population, obj.Target);
     targetFitness = obj.funcGetFitness(obj, de2bi(obj.Target, 'left-msb'),...
                                        obj.Target);
-    if sum(abs(fitness - targetFitness)) < 1
+    if abs(max(fitness) - targetFitness) < 1
         converging = true;
     end
 end

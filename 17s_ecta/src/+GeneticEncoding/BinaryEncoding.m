@@ -43,31 +43,24 @@ classdef BinaryEncoding
             obj.DisplayPopulation();
         end
 
-        function selected = Select(obj, elitism)
+        function winners = Select(obj, elitism)
             selection_size = length(obj.Population);
-            selected = [];
             if elitism
-                [~, maxArg] = max(obj.funcGetFitness(obj, obj.Population,...
-                                                     obj.Target));
-                selected = [selected; obj.Population(maxArg, :)];
                 selection_size = selection_size - 1;
             end
-
             winners = obj.funcSelectWinners(obj, selection_size);
-            selected = [selected; winners];
         end
 
         function children = Crossover(obj, selectedParents, crossoverRate)
-            children = zeros(size(obj.Population));
-            populationSize = length(obj.Population);
-            numCrossover = int32(crossoverRate * populationSize);
+            children = zeros(size(selectedParents));
             numParents = length(selectedParents);
+            numCrossover = int32(crossoverRate * numParents);
             for k = 1:numCrossover
                 parentIndices = randperm(numParents, 2);
                 children(k, :) = obj.funcSingleCrossover(...
                         obj, selectedParents(parentIndices, :));
             end
-            for k = 1:(populationSize - numCrossover)
+            for k = 1:(numParents - numCrossover)
                 children(numCrossover + k, :) = selectedParents(randi(numParents));
             end
         end
@@ -89,7 +82,13 @@ classdef BinaryEncoding
                 end
                 selectedParents = obj.Select(elitism);
                 children = obj.Crossover(selectedParents, crossoverRate);
-                obj.Population = obj.Mutate(children, mutationRate);
+                children = obj.Mutate(children, mutationRate);
+                if elitism
+                    fitness = obj.funcGetFitness(obj, obj.Population, obj.Target);
+                    [~, argMax] = max(fitness);
+                    children = [children; obj.Population(argMax, :)];
+                end
+                obj.Population = children;
                 obj.DisplayPopulation();
             end
             numIteration = i;
