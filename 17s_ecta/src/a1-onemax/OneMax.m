@@ -9,11 +9,11 @@ BIT_LENGTH = 8;
 oneMax =  GeneticEncoding.BinaryEncoding(...
                             POPULATION_SIZE, MAX_INIT_VALUE, BIT_LENGTH,...
                             @GetFitness, @SelectWinners, @SingleCrossover,...
-                            @SingleMutate, @CheckConvergence, 2^BIT_LENGTH - 1);
+                            @SingleMutate, @CheckConvergence, ones(1, BIT_LENGTH));
 
-function fitness = GetFitness(obj, gene, target)
-    difference = abs(bi2de(gene, 'left-msb') - target);
-    fitness = 2^obj.BitLength - 1 - difference;
+function fitness = GetFitness(gene, target)
+    difference = xor(gene, target);
+    fitness = sum(difference == 0, 2);
 end
 
 function winners = SelectWinners(obj, selection_size)
@@ -21,7 +21,7 @@ function winners = SelectWinners(obj, selection_size)
     for i = 1:selection_size
         parentIndices = randperm(length(obj.Population), 2);
         parents = obj.Population(parentIndices, :);
-        [~, maxArg] = max(obj.funcGetFitness(obj, parents, obj.Target));
+        [~, maxArg] = max(obj.funcGetFitness(parents, obj.Target));
         winners(i, :) = parents(maxArg, :);
     end
 end
@@ -38,9 +38,8 @@ end
 
 function converging = CheckConvergence(obj)
     converging = false;
-    fitness = obj.funcGetFitness(obj, obj.Population, obj.Target);
-    targetFitness = obj.funcGetFitness(obj, de2bi(obj.Target, 'left-msb'),...
-                                       obj.Target);
+    fitness = obj.funcGetFitness(obj.Population, obj.Target);
+    targetFitness = obj.BitLength;
     if abs(max(fitness) - targetFitness) < 1
         converging = true;
     end

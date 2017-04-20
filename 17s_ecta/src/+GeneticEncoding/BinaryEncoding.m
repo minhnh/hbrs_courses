@@ -29,7 +29,7 @@ classdef BinaryEncoding
                 obj.Target = target;
             else
                 % default target is all bits are 1's
-                obj.Target = bitLength;
+                obj.Target = ones(1, bitLength);
             end
 
             obj.Population = InitPopulation(size, maxInitValue, bitLength);
@@ -84,7 +84,7 @@ classdef BinaryEncoding
                 children = obj.Crossover(selectedParents, crossoverRate);
                 children = obj.Mutate(children, mutationRate);
                 if elitism
-                    fitness = obj.funcGetFitness(obj, obj.Population, obj.Target);
+                    fitness = obj.funcGetFitness(obj.Population, obj.Target);
                     [~, argMax] = max(fitness);
                     children = [children; obj.Population(argMax, :)];
                 end
@@ -96,7 +96,7 @@ classdef BinaryEncoding
 
         function DisplayPopulation(obj)
             disp(obj.Population);
-            fitness = obj.funcGetFitness(obj, obj.Population, obj.Target);
+            fitness = obj.funcGetFitness(obj.Population, obj.Target);
             [~, argMax] = max(fitness);
             disp(['Best fitness:    ' num2str(fitness(argMax))]);
             disp(['Average fitness: ' num2str(mean(fitness))]);
