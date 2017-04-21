@@ -60,6 +60,7 @@
 \newcommand{\hmwkAuthorEmail}{minh.nguyen@smail.inf.h-brs.de}
 \newcommand{\hmwkAuthorInstitute}{BRS University of Applied Sciences}
 \newcommand{\headerFontSize}{19}
+\graphicspath{{images/}}
 
 %-------------------------------------------------
 %   HEADERS & FOOTERS
@@ -131,11 +132,32 @@
 %-------------------------------------------------
 \begin{document}
     \maketitle
-    \thispagestyle{fancy} % Enabling the custom headers/footers for the first page
-    
-    \section{Section 1}
+    \thispagestyle{fancy}
 
-	\section{Section 2}
+    In the following experiments, the default bit length is 10, and elitism is enabled.
 
+    \section{Number of iterations}
+
+    The following plot shows the average number of iterations to find a solution from 20 separated runs, over population sizes from 10 to 55 in increment of 5. The default crossover rate is 0.7, and mutation rate is 0.1.
+
+    \includegraphics[width=\linewidth]{a1-onemax-population}
+
+    \pagebreak
+
+    The following plot shows the average number of iterations to find a solution from 20 separated runs, over crossover rates from 0.1 to 0.9 in increment of 0.1. The default population is 20, and mutation rate is 0.1.
+
+    \includegraphics[width=\linewidth]{a1-onemax-crossover_iter}
+
+    \section{Fitness of each iteration}
+
+    The following plot shows the fitness of each generation with crossover rates ranging from 0.45 to 0.9 in increment of 0.15. When recording fitness after each generation, the default mutation rate is 0.1, and the experiments are stopped after 40 iterations. The default population is 20.
+
+    \includegraphics[width=\linewidth]{a1-onemax-crossover_fitness}
+
+    \pagebreak
+
+    The following plot shows the fitness of each generation with crossover rates ranging from 0.1 to 0.4 in increment of 0.1. When recording fitness after each generation, the default crossover rate is 0.7, and the experiments are stopped after 40 iterations. The default population is 20.
+
+    \includegraphics[width=\linewidth]{a1-onemax-mutation_fitness}
 
 \end{document}
