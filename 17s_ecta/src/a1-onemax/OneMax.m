@@ -3,14 +3,54 @@
 % Author:   Minh Nguyen
 % Date: 2017-04-15
 %%
-POPULATION_SIZE = 10;
+POPULATION_SIZE = 20;
 MAX_INIT_VALUE = 6;
-BIT_LENGTH = 8;
-oneMax =  GeneticEncoding.BinaryEncoding(...
-                            POPULATION_SIZE, MAX_INIT_VALUE, BIT_LENGTH,...
-                            @GetFitness, @SelectWinners, @SingleCrossover,...
-                            @CheckConvergence, ones(1, BIT_LENGTH));
+BIT_LENGTH = 10;
+ITERATION_NUM = 50;
+ELITISM = true;
+CROSSOVER_RATE = 0.7;
+MUTATION_RATE = 0.1;
+NUM_TRIES = 20;
 
+DEFAULT_CONSTRUCTOR_PARAMS = { MAX_INIT_VALUE, BIT_LENGTH, @GetFitness,...
+                               @SelectWinners, @SingleCrossover,...
+                               @CheckConvergence, ones(1, BIT_LENGTH), false};
+DEFAULT_ITERATE_PARAMS = {ITERATION_NUM, ELITISM, CROSSOVER_RATE, MUTATION_RATE};
+
+CHECK_CONVERGE_INDEX = 6;
+NUM_ITER_PARAM_INDEX = 1;
+CROSSOVER_PARAM_INDEX = 3;
+MUTATION_PARAM_INDEX = 4;
+
+%% Create evaluation object
+evalPopulation = GeneticEncoding.Evaluation(@GeneticEncoding.BinaryEncoding,...
+                                            POPULATION_SIZE,...
+                                            DEFAULT_CONSTRUCTOR_PARAMS,...
+                                            DEFAULT_ITERATE_PARAMS,...
+                                            CHECK_CONVERGE_INDEX,...
+                                            NUM_ITER_PARAM_INDEX);
+
+%% Vary population
+sizes = 10:5:60;
+evalPopulation.EvalNumIterOverPopulation(sizes, NUM_TRIES, 1);
+
+%% Vary crossover rate - plot average number of iterations
+rates = 0.1:0.1:0.9;
+evalPopulation.EvalNumIterOverRates(rates, NUM_TRIES, CROSSOVER_PARAM_INDEX,...
+                                    'crossover', 2)
+
+%% Vary crossover rate - plot fitness over each iteration
+rates = 0.45:0.15:0.9;
+evalPopulation.EvalFitnessOverRates(rates, 40, NUM_TRIES,...
+                                    CROSSOVER_PARAM_INDEX, 'crossover', 3)
+
+%% Vary mutation rate - plot fitness over each iteration
+rates = 0.1:0.1:0.4;
+evalPopulation.EvalFitnessOverRates(rates, 40, NUM_TRIES,...
+                                    MUTATION_PARAM_INDEX, 'mutation', 4)
+
+
+%% functions specific to the OneMax task
 function fitness = GetFitness(gene, target)
     difference = xor(gene, target);
     fitness = sum(difference == 0, 2);
