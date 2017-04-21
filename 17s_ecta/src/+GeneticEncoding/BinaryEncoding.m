@@ -11,6 +11,7 @@ classdef BinaryEncoding
         Population
         BitLength
         Target
+        Verbose
         funcGetFitness
         funcSelectWinners
         funcSingleCrossover
@@ -20,15 +21,20 @@ classdef BinaryEncoding
     methods
         function obj = BinaryEncoding(size, maxInitValue, bitLength,...
                                       getFitness, selectWinners, crossover,...
-                                      checkConvergence, target)
+                                      checkConvergence, target, verbose)
             if nargin < obj.MIN_ARG_NUM
                 error(['GenerationBinary constructor requires at least '...
                        num2str(obj.MIN_ARG_NUM) ' arguments']);
+            elseif nargin > obj.MIN_ARG_NUM + 1
+                obj.Verbose = verbose;
+                obj.Target = target;
             elseif nargin > obj.MIN_ARG_NUM
                 obj.Target = target;
+                obj.Verbose = true;
             else
                 % default target is all bits are 1's
                 obj.Target = ones(1, bitLength);
+                obj.Verbose = true;
             end
 
             obj.Population = InitPopulation(size, maxInitValue, bitLength);
@@ -37,12 +43,14 @@ classdef BinaryEncoding
             obj.funcSelectWinners = selectWinners;
             obj.funcSingleCrossover = crossover;
             obj.funcCheckConvergence = checkConvergence;
-            disp(['Initialized population with ' num2str(size) ' members:']);
-            obj.DisplayPopulation();
+            if obj.Verbose
+                disp(['Initialized population with ' num2str(size) ' members:']);
+                obj.DisplayPopulation();
+            end
         end
 
         function winners = Select(obj, elitism)
-            selection_size = length(obj.Population);
+            selection_size = size(obj.Population, 1);
             if elitism
                 selection_size = selection_size - 1;
             end
@@ -51,7 +59,7 @@ classdef BinaryEncoding
 
         function children = Crossover(obj, selectedParents, crossoverRate)
             children = zeros(size(selectedParents));
-            numParents = length(selectedParents);
+            numParents = size(selectedParents, 1);
             numCrossover = int32(crossoverRate * numParents);
             for k = 1:numCrossover
                 parentIndices = randperm(numParents, 2);
@@ -68,11 +76,15 @@ classdef BinaryEncoding
             children = xor(children, mutationMatrix);
         end
 
-        function numIteration = Iterate(obj, iterNum, elitism, crossoverRate,...
+        function [bestFitness, averageFitness] = Iterate(obj, iterNum, elitism, crossoverRate,...
                                         mutationRate)
+            bestFitness = zeros(1, iterNum);
+            averageFitness = zeros(1, iterNum);
             for i = 1:iterNum
                 if obj.funcCheckConvergence(obj)
-                    disp(['converged after ' int2str(i) ' iterations']);
+                    if obj.Verbose
+                        disp(['converged after ' int2str(i) ' iterations']);
+                    end
                     break
                 end
                 selectedParents = obj.Select(elitism);
@@ -81,12 +93,23 @@ classdef BinaryEncoding
                 if elitism
                     fitness = obj.funcGetFitness(obj.Population, obj.Target);
                     [~, argMax] = max(fitness);
-                    children = [children; obj.Population(argMax, :)];
+                    obj.Population(size(children, 1), :)...
+                                = obj.Population(argMax, :);
                 end
-                obj.Population = children;
-                obj.DisplayPopulation();
+                obj.Population(1:size(children, 1), :) = children;
+
+                % record fitness
+                fitness = obj.funcGetFitness(obj.Population, obj.Target);
+                bestFitness(i) = max(fitness);
+                averageFitness(i) = mean(fitness);
+
+                % print result
+                if obj.Verbose
+                    obj.DisplayPopulation();
+                end
             end
-            numIteration = i;
+            bestFitness = bestFitness(1:i);
+            averageFitness = averageFitness(1:i);
         end
 
         function DisplayPopulation(obj)
@@ -103,5 +126,3 @@ function population = InitPopulation(size, maxInit, bitLength)
     initNums = randi(maxInit, 1, size);
     population = de2bi(initNums, bitLength, 'left-msb');
 end
-
-
