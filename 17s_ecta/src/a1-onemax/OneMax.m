@@ -32,23 +32,53 @@ evalPopulation = GeneticEncoding.Evaluation(@GeneticEncoding.BinaryEncoding,...
 
 %% Vary population
 sizes = 10:5:60;
-evalPopulation.EvalNumIterOverPopulation(sizes, NUM_TRIES, 1);
+evalPopulation.EvalNumIterOverPopulation(sizes, NUM_TRIES);
+figure(1);
+plot(evalPopulation.NumIterOverPopulationResult(1, :),...
+     evalPopulation.NumIterOverPopulationResult(2, :), '--rs');
+evalPopulation.setupPlot('Average iteration number over population size',...
+                          'Population size', 'Number of iterations', 18);
 
 %% Vary crossover rate - plot average number of iterations
 rates = 0.1:0.1:0.9;
-evalPopulation.EvalNumIterOverRates(rates, NUM_TRIES, CROSSOVER_PARAM_INDEX,...
-                                    'crossover', 2)
+evalPopulation.EvalNumIterOverRates(rates, NUM_TRIES, CROSSOVER_PARAM_INDEX)
+figure(2);
+plot(evalPopulation.NumIterOverRatesResult(1, :),...
+     evalPopulation.NumIterOverRatesResult(2, :), '--rs');
+evalPopulation.setupPlot('Average iteration number over crossover rates',...
+                         'crossover rates', 'Number of iterations', 18);
 
 %% Vary crossover rate - plot fitness over each iteration
 rates = 0.45:0.15:0.9;
+rateName = 'Crossover';
 evalPopulation.EvalFitnessOverRates(rates, 40, NUM_TRIES,...
-                                    CROSSOVER_PARAM_INDEX, 'crossover', 3)
+                                    CROSSOVER_PARAM_INDEX, rateName);
 
+figure(3);
+plot(evalPopulation.FitnessOverCrossoverRatesResult, '--s');
+evalPopulation.setupPlot(['Fitness each Iteration for different ' rateName ' rates'],...
+          'Iteration number', 'Fitnes', 18);
+legends = cell(1, 3);
+for i = 1:length(rates)
+    legends{i} = num2str(rates(i));
+end
+lgd = legend(legends{:}, 'Location', 'southeast');
+title(lgd, [rateName ' rates']);
 %% Vary mutation rate - plot fitness over each iteration
 rates = 0.1:0.1:0.4;
+rateName = 'Mutation';
 evalPopulation.EvalFitnessOverRates(rates, 40, NUM_TRIES,...
-                                    MUTATION_PARAM_INDEX, 'mutation', 4)
-
+                                    MUTATION_PARAM_INDEX, rateName)
+figure(4);
+plot(evalPopulation.FitnessOverMutationRatesResult, '--s');
+evalPopulation.setupPlot(['Fitness each Iteration for different ' rateName ' rates'],...
+          'Iteration number', 'Fitnes', 18);
+legends = cell(1, 3);
+for i = 1:length(rates)
+    legends{i} = num2str(rates(i));
+end
+lgd = legend(legends{:}, 'Location', 'southeast');
+title(lgd, [rateName ' rates']);
 
 %% functions specific to the OneMax task
 function fitness = GetFitness(gene, target)

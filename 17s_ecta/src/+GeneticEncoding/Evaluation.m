@@ -1,9 +1,9 @@
 %% Evaluation.m
-% Class for evaluating gnetic algorithm solutions
+% Class for evaluating genetic algorithm solutions
 % Author:   Minh Nguyen
 % Date:     2017-04-20
 %%
-classdef Evaluation
+classdef Evaluation < matlab.mixin.SetGet
 
     properties
         DefaultPopulationSize
@@ -12,6 +12,10 @@ classdef Evaluation
         ConvergeFunctionParamIndex
         NumIterParamIndex
         EncodingConstructor
+        NumIterOverPopulationResult
+        NumIterOverRatesResult
+        FitnessOverCrossoverRatesResult
+        FitnessOverMutationRatesResult
     end
 
     methods
@@ -26,7 +30,7 @@ classdef Evaluation
         end
 
         function EvalNumIterOverPopulation(obj, populationSizes,...
-                                           numRunPerSize, figureNum)
+                                           numRunPerSize)
             % generate random seed for same initial population
             s = rng(randseed());
 
@@ -48,14 +52,11 @@ classdef Evaluation
                 results(i) = mean(numIterations);
             end
 
-            figure(figureNum);
-            plot(populationSizes, results, '--rs');
-            setupPlot('Average iteration number over population size',...
-                      'Population size', 'Number of iterations', 18);
+            set(obj, 'NumIterOverPopulationResult', [populationSizes; results]);
         end
 
         function EvalNumIterOverRates(obj, rates, numRunPerRate,...
-                                      rateParamIndex, rateName, figureNum)
+                                      rateParamIndex)
             % generate random seed for same initial population
             s = rng(randseed());
 
@@ -78,14 +79,11 @@ classdef Evaluation
                 results(i) = mean(numIterations);
             end
 
-            figure(figureNum);
-            plot(rates, results, '--rs');
-            setupPlot(['Average iteration number over ' rateName ' rates'],...
-                      [rateName ' rates'], 'Number of iterations', 18);
+            set(obj, 'NumIterOverRatesResult', [rates; results])
         end
 
         function EvalFitnessOverRates(obj, rates, iterNum, numRunPerRate,...
-                                      rateParamIndex, rateName, figureNum)
+                                      rateParamIndex, rateName)
             % generate random seed for same initial population
             s = rng(randseed());
             % change CheckConverge function in constructor params to always
@@ -115,27 +113,18 @@ classdef Evaluation
                 results(:, i) = mean(averageAverageFitness, 1);
             end
 
-            figure(figureNum);
-            plot(results, '--s');
-            setupPlot(['Fitness each Iteration for different ' rateName ' rates'],...
-                      'Iteration number', 'Fitnes', 18);
-            legends = cell(1, 3);
-            for i = 1:length(rates)
-                legends{i} = num2str(rates(i));
-            end
-            lgd = legend(legends{:}, 'Location', 'southeast');
-            title(lgd, [rateName ' rates']);
+            set(obj, ['FitnessOver' rateName 'RatesResult'], results);
+        end
+
+        function setupPlot(~, plotTitle, xLabel, yLabel, fontSize)
+            set(gca, 'fontsize', fontSize)
+            grid();
+            title(plotTitle);
+            xlabel(xLabel);
+            ylabel(yLabel);
         end
     end
 
-end
-
-function setupPlot(plotTitle, xLabel, yLabel, fontSize)
-    set(gca, 'fontsize', fontSize)
-    grid();
-    title(plotTitle);
-    xlabel(xLabel);
-    ylabel(yLabel);
 end
 
 function converging = NeverConverge(~)
