@@ -115,13 +115,23 @@ classdef Evaluation < matlab.mixin.SetGet
 
             set(obj, ['FitnessOver' rateName 'RatesResult'], results);
         end
+    end
 
-        function setupPlot(~, plotTitle, xLabel, yLabel, fontSize)
+    methods(Static)
+        function setupPlot(plotTitle, xLabel, yLabel, fontSize)
             set(gca, 'fontsize', fontSize)
             grid();
             title(plotTitle);
             xlabel(xLabel);
             ylabel(yLabel);
+        end
+
+        function lgd = SetupLegends(legendValues)
+            legends = cell(1, 3);
+            for i = 1:length(legendValues)
+                legends{i} = num2str(legendValues(i));
+            end
+            lgd = legend(legends{:}, 'Location', 'southeast');
         end
     end
 
