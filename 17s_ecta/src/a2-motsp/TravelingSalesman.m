@@ -2,21 +2,30 @@
 % Author:   Minh Nguyen
 % Date:     2017-05-01
 %%
-POPULATION_SIZE = 20;
+POPULATION_SIZE = 200;
+VERBOSE = false;
+TARGET = 0;
+ELITISM = true;
 cities = importdata('cities_small.csv');
 coords = cities.data(:, 2:3);
 numCities = size(coords, 1);
 
 %% Precompute euclidean distance between cities
 distances = PrecomputeDistance(coords);
+CONSTRAINTS = distances;
+NUM_GENE = numCities;
 
 %% Initialize population
-ie = GeneticEncoding.PermutationEncoding(POPULATION_SIZE, numCities, 0, distances,...
+ie = GeneticEncoding.PermutationEncoding(POPULATION_SIZE, NUM_GENE, TARGET, CONSTRAINTS,...
                                          @GeneratePopulation, @GetFitness,...
-                                         @SelectWinners, @SingleCrossover,...
-                                         @Mutate, @CheckConvergence, true);
+                                         @SelectWinners, @SinglePointCrossover,...
+                                         @MutateOrderChange, @CheckConvergence,...
+                                         VERBOSE);
 
-VisualizeCities(coords, ie.Population(1, :))
+VisualizeCities(coords, ie.GetBestChild(), 1);
+[bestFitness, medianFitness, minFitness] =...
+                    ie.Iterate(1000, ELITISM, 0.8, 0.1);
+VisualizeCities(coords, ie.GetBestChild(), 2);
 
 %% Helper Functions for TSP
 function distances = PrecomputeDistance(coords)
@@ -28,7 +37,6 @@ function GeneratePopulation(obj, populationSize, numGene, ~)
     for i = 1:populationSize
         population(i, :) = randperm(numGene);
     end
-    disp(numGene)
     set(obj, 'Population', population);
 end
 
@@ -39,15 +47,15 @@ function fitness = GetFitness(genomes, ~, distances)
     for i = 1:numGenomes
         distanceSum = distances(1, numGenes);
         for j = 1:numGenes - 1
-            genePair = num2cell(genomes(i, j:j + 1));
-            distanceSum = distanceSum + distances(genePair{:});
+            genePair = genomes(i, j:j + 1);
+            distanceSum = distanceSum + distances(genePair(1), genePair(2));
         end
         fitness(i) = -distanceSum;
     end
 end
 
 function winners = SelectWinners(obj, selection_size)
-    winners = zeros(selection_size, obj.BitLength);
+    winners = zeros(selection_size, obj.NumGene);
     for i = 1:selection_size
         parentIndices = randperm(size(obj.Population, 1), 2);
         parents = obj.Population(parentIndices, :);
@@ -57,12 +65,34 @@ function winners = SelectWinners(obj, selection_size)
     end
 end
 
-function Mutate()
+function children = MutateOrderChange(children, mutationRate)
+    mutationMatrix = rand(size(children)) < mutationRate;
+    numGenome = size(children, 1);
+    numGene = size(children, 2);
+    numSwap = sum(mutationMatrix, 2);
+    for i = 1 : numGenome
+        if numSwap(i) == 0
+            continue;
+        end
+        for j = 1 : numGene
+            if ~mutationMatrix(i, j)
+                continue;
+            end
+            swapIndex = randi(numGene);
+            swapTemp = children(i, swapIndex);
+            children(i, swapIndex) = children(i, j);
+            children(i, j) = swapTemp;
+        end
+    end
 end
 
-function child = SingleCrossover(obj, parents)
-    midPoint = int16(obj.BitLength / 2 + 0.5);
-    child = [parents(1, 1 : midPoint), parents(2, midPoint + 1 : obj.BitLength)];
+function child = SinglePointCrossover(parents)
+    numGene = size(parents, 2);
+    midPoint = int16(numGene / 2);
+    child = -ones(1, numGene);
+    child(1 : midPoint) = parents(1, 1 : midPoint);
+    parent2 = parents(2, :);
+    child(midPoint + 1 : numGene) = parent2(~ismember(parent2, child));
 end
 
 function converging = CheckConvergence(~)
@@ -70,8 +100,8 @@ function converging = CheckConvergence(~)
 end
 
 %% Visualization of cities
-function VisualizeCities(coords, cityOrder)
-    figure(1);
+function VisualizeCities(coords, cityOrder, figNum)
+    figure(figNum);
     orderedCoords = coords(cityOrder, :);
     orderedCoords = [orderedCoords; coords(cityOrder(1), :)];
     plot(orderedCoords(:, 1), orderedCoords(:, 2), '-r*');

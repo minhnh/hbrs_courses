@@ -56,13 +56,14 @@ classdef PermutationEncoding < matlab.mixin.SetGet
             children = zeros(size(selectedParents));
             numParents = size(selectedParents, 1);
             numCrossover = int32(crossoverRate * numParents);
+%             disp(selectedParents);
             for k = 1:numCrossover
                 parentIndices = randperm(numParents, 2);
                 children(k, :) = obj.funcSingleCrossover(...
-                        obj, selectedParents(parentIndices, :));
+                                     selectedParents(parentIndices, :));
             end
             for k = 1:(numParents - numCrossover)
-                children(numCrossover + k, :) = selectedParents(randi(numParents));
+                children(numCrossover + k, :) = selectedParents(randi(numParents), :);
             end
         end
 
@@ -89,6 +90,7 @@ classdef PermutationEncoding < matlab.mixin.SetGet
 
                 % evolve
                 selectedParents = obj.Select(elitism);
+%                 disp(selectedParents)
                 children = obj.Crossover(selectedParents, crossoverRate);
                 children = obj.funcMutate(children, mutationRate);
                 if elitism

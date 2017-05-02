@@ -75,7 +75,7 @@ classdef BinaryEncoding < matlab.mixin.SetGet
                         obj, selectedParents(parentIndices, :));
             end
             for k = 1:(numParents - numCrossover)
-                children(numCrossover + k, :) = selectedParents(randi(numParents));
+                children(numCrossover + k, :) = selectedParents(randi(numParents), :);
             end
         end
 
