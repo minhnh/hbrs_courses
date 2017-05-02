@@ -25,6 +25,15 @@ MUTATION_PARAM_INDEX = 4;
 binEncoding = GeneticEncoding.BinaryEncoding(POPULATION_SIZE, DEFAULT_CONSTRUCTOR_PARAMS{:});
 [bestFit, medianFit, minFit] = binEncoding.Iterate(DEFAULT_ITERATE_PARAMS{:});
 
+bestChild = binEncoding.GetBestChild();
+bestChildWeight = sum(weights .* bestChild);
+bestChildValue = sum(values .* bestChild);
+
+disp(['Best solution weight: ' num2str(bestChildWeight)]);
+disp(['Best solution value: ' num2str(bestChildValue)]);
+disp('Items:');
+disp(items.textdata(bestChild == 1, 1));
+
 %% Create evaluation object
 evalPopulation = GeneticEncoding.Evaluation(@GeneticEncoding.BinaryEncoding,...
                                             POPULATION_SIZE,...
@@ -62,7 +71,7 @@ function fitness = GetFitness(gene, ~, items)
     fitness = sum(gene .* values, 2);
     penalties = 400 - sum(gene .* weights, 2);
     penalties(penalties > 0) = 0;
-    fitness = fitness + penalties;
+    fitness = fitness + penalties*2;
 end
 
 function winners = SelectWinners(obj, selection_size)
