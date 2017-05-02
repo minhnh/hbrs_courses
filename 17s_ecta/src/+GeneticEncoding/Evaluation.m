@@ -14,8 +14,12 @@ classdef Evaluation < matlab.mixin.SetGet
         EncodingConstructor
         NumIterOverPopulationResult
         NumIterOverRatesResult
-        FitnessOverCrossoverRatesResult
-        FitnessOverMutationRatesResult
+        MaxFitnessOverCrossoverRatesResult
+        MedianFitnessOverCrossoverRatesResult
+        MinFitnessOverCrossoverRatesResult
+        MaxFitnessOverMutationRatesResult
+        MedianFitnessOverMutationRatesResult
+        MinFitnessOverMutationRatesResult
     end
 
     methods
@@ -76,7 +80,7 @@ classdef Evaluation < matlab.mixin.SetGet
                     [bestFitness, ~] = encodingObj.Iterate(params{:});
                     numIterations(j) = length(bestFitness);
                 end
-                results(i) = mean(numIterations);
+                results(i) = median(numIterations);
             end
 
             set(obj, 'NumIterOverRatesResult', [rates; results])
@@ -94,26 +98,34 @@ classdef Evaluation < matlab.mixin.SetGet
             iterateParams = obj.DefaultIterateParams;
             iterateParams{obj.NumIterParamIndex} = iterNum;
 
-            results = zeros(iterNum + 1, length(rates));
+            maxResults = zeros(iterNum + 1, length(rates));
+            medianResults = zeros(iterNum + 1, length(rates));
+            minResults = zeros(iterNum + 1, length(rates));
             for i = 1:length(rates)
                 % restore random seed
                 rng(s);
 
-                averageAverageFitness = zeros(numRunPerRate, iterNum + 1);
+                averageMedianFitness = zeros(numRunPerRate, iterNum + 1);
+                averageMaxFitness = zeros(numRunPerRate, iterNum + 1);
+                averageMinFitness = zeros(numRunPerRate, iterNum + 1);
                 for j = 1:numRunPerRate
                     encodingObj = obj.EncodingConstructor(obj.DefaultPopulationSize,...
-                                                     constructorParams{:});
-                    initAverageFitness = mean(encodingObj.funcGetFitness(...
-                                             encodingObj.Population,...
-                                             encodingObj.Target));
+                                                          constructorParams{:});
                     iterateParams{rateParamIndex} = rates(i);
-                    [~, averageFitness] = encodingObj.Iterate(iterateParams{:});
-                    averageAverageFitness(j, :) = [initAverageFitness averageFitness];
+                    [maxFitness, medianFitness, minFitness] =...
+                                  encodingObj.Iterate(iterateParams{:});
+                    averageMaxFitness(j, :) = maxFitness;
+                    averageMinFitness(j, :) = minFitness;
+                    averageMedianFitness(j, :) = medianFitness;
                 end
-                results(:, i) = mean(averageAverageFitness, 1);
+                maxResults(:, i) = mean(averageMaxFitness, 1);
+                minResults(:, i) = mean(averageMinFitness, 1);
+                medianResults(:, i) = mean(averageMedianFitness, 1);
             end
 
-            set(obj, ['FitnessOver' rateName 'RatesResult'], results);
+            set(obj, ['MaxFitnessOver' rateName 'RatesResult'], maxResults);
+            set(obj, ['MedianFitnessOver' rateName 'RatesResult'], medianResults);
+            set(obj, ['MinFitnessOver' rateName 'RatesResult'], minResults);
         end
     end
 
@@ -127,7 +139,7 @@ classdef Evaluation < matlab.mixin.SetGet
         end
 
         function lgd = SetupLegends(legendValues)
-            legends = cell(1, 3);
+            legends = cell(1, length(legendValues));
             for i = 1:length(legendValues)
                 legends{i} = num2str(legendValues(i));
             end
@@ -137,6 +149,6 @@ classdef Evaluation < matlab.mixin.SetGet
 
 end
 
-function converging = NeverConverge(~)
+function converging = NeverConverge(~, ~)
     converging = false;
 end

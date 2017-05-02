@@ -4,13 +4,14 @@
 % Author:   Minh Nguyen
 % Date: 2017-04-14
 %%
-classdef BinaryEncoding
+classdef BinaryEncoding < matlab.mixin.SetGet
 
     properties
         MIN_ARG_NUM = 7;
         Population
         BitLength
         Target
+        Constraints
         Verbose
         funcGetFitness
         funcSelectWinners
@@ -19,7 +20,7 @@ classdef BinaryEncoding
     end
 
     methods
-        function obj = BinaryEncoding(size, maxInitValue, bitLength,...
+        function obj = BinaryEncoding(size, maxInitValue, bitLength, constraints,...
                                       getFitness, selectWinners, crossover,...
                                       checkConvergence, target, verbose)
             if nargin < obj.MIN_ARG_NUM
@@ -37,8 +38,9 @@ classdef BinaryEncoding
                 obj.Verbose = true;
             end
 
-            obj.Population = InitPopulation(size, maxInitValue, bitLength);
+            obj.InitPopulation(size, maxInitValue, bitLength);
             obj.BitLength = bitLength;
+            obj.Constraints = constraints;
             obj.funcGetFitness = getFitness;
             obj.funcSelectWinners = selectWinners;
             obj.funcSingleCrossover = crossover;
@@ -47,6 +49,12 @@ classdef BinaryEncoding
                 disp(['Initialized population with ' num2str(size) ' members:']);
                 obj.DisplayPopulation();
             end
+        end
+
+        function InitPopulation(obj, size, maxInit, bitLength)
+            initNums = randi(maxInit, 1, size);
+            population = de2bi(initNums, bitLength, 'left-msb');
+            set(obj, 'Population', population);
         end
 
         function winners = Select(obj, elitism)
@@ -76,53 +84,68 @@ classdef BinaryEncoding
             children = xor(children, mutationMatrix);
         end
 
-        function [bestFitness, averageFitness] = Iterate(obj, iterNum, elitism, crossoverRate,...
-                                        mutationRate)
+        function [bestFitness, medianFitness, minFitness] =...
+                    Iterate(obj, iterNum, elitism, crossoverRate, mutationRate)
             bestFitness = zeros(1, iterNum);
-            averageFitness = zeros(1, iterNum);
+            medianFitness = zeros(1, iterNum);
+            minFitness = zeros(1, iterNum);
             for i = 1:iterNum
+                % record fitness
+                fitness = obj.funcGetFitness(obj.Population, obj.Target,...
+                                             obj.Constraints);
+                bestFitness(i) = max(fitness);
+                medianFitness(i) = median(fitness);
+                minFitness(i) = min(fitness);
+
+                % check convergence
                 if obj.funcCheckConvergence(obj)
                     if obj.Verbose
                         disp(['converged after ' int2str(i) ' iterations']);
                     end
                     break
                 end
+
+                % evolve
                 selectedParents = obj.Select(elitism);
                 children = obj.Crossover(selectedParents, crossoverRate);
                 children = obj.Mutate(children, mutationRate);
                 if elitism
-                    fitness = obj.funcGetFitness(obj.Population, obj.Target);
+                    fitness = obj.funcGetFitness(obj.Population, obj.Target,...
+                                                 obj.Constraints);
                     [~, argMax] = max(fitness);
-                    obj.Population(size(children, 1), :)...
+                    obj.Population(size(obj.Population, 1), :)...
                                 = obj.Population(argMax, :);
                 end
                 obj.Population(1:size(children, 1), :) = children;
-
-                % record fitness
-                fitness = obj.funcGetFitness(obj.Population, obj.Target);
-                bestFitness(i) = max(fitness);
-                averageFitness(i) = mean(fitness);
 
                 % print result
                 if obj.Verbose
                     obj.DisplayPopulation();
                 end
             end
-            bestFitness = bestFitness(1:i);
-            averageFitness = averageFitness(1:i);
+
+            % record last fitness
+            fitness = obj.funcGetFitness(obj.Population, obj.Target,...
+                                         obj.Constraints);
+            bestFitness = [bestFitness, max(fitness)];
+            medianFitness = [medianFitness, median(fitness)];
+            minFitness = [minFitness, min(fitness)];
         end
 
-        function DisplayPopulation(obj)
-            disp(obj.Population);
-            fitness = obj.funcGetFitness(obj.Population, obj.Target);
+        function argMax = DisplayPopulation(obj)
+%             disp(obj.Population);
+            fitness = obj.funcGetFitness(obj.Population, obj.Target,...
+                                         obj.Constraints);
             [~, argMax] = max(fitness);
             disp(['Best fitness:    ' num2str(fitness(argMax))]);
             disp(['Average fitness: ' num2str(mean(fitness))]);
         end
-    end
-end
 
-function population = InitPopulation(size, maxInit, bitLength)
-    initNums = randi(maxInit, 1, size);
-    population = de2bi(initNums, bitLength, 'left-msb');
+        function bestChild = GetBestChild(obj)
+            fitness = obj.funcGetFitness(obj.Population, obj.Target,...
+                                         obj.Constraints);
+            [~, argMax] = max(fitness);
+            bestChild = obj.Population(argMax, :);
+        end
+    end
 end
