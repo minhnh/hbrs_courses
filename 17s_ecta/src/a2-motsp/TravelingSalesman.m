@@ -6,6 +6,7 @@ POPULATION_SIZE = 200;
 VERBOSE = false;
 TARGET = 0;
 ELITISM = true;
+NUM_ITERATION = 500;
 cities = importdata('cities_small.csv');
 coords = cities.data(:, 2:3);
 numCities = size(coords, 1);
@@ -18,14 +19,25 @@ NUM_GENE = numCities;
 %% Initialize population
 ie = GeneticEncoding.PermutationEncoding(POPULATION_SIZE, NUM_GENE, TARGET, CONSTRAINTS,...
                                          @GeneratePopulation, @GetFitness,...
-                                         @SelectWinners, @SinglePointCrossover,...
+                                         @SelectWinners, @RandomCrossover,...
                                          @MutateOrderChange, @CheckConvergence,...
                                          VERBOSE);
+population = ie.Population;
 
+% RandomCrossover & MutateOrderChange
 VisualizeCities(coords, ie.GetBestChild(), 1);
-[bestFitness, medianFitness, minFitness] =...
-                    ie.Iterate(1000, ELITISM, 0.8, 0.1);
+[bestFitness, medianFitness, minFitness] = ie.Iterate(NUM_ITERATION, ELITISM,...
+                                                      0.8, 0.1);
 VisualizeCities(coords, ie.GetBestChild(), 2);
+
+% RandomCrossover & MutateSwitchNeighbor
+set(ie, 'Population', population);
+set(ie, 'funcMutate', @MutateSwitchNeighbor)
+VisualizeCities(coords, ie.GetBestChild(), 3);
+[bestFitness2, medianFitness2, minFitness2] = ie.Iterate(NUM_ITERATION, ELITISM,...
+                                                         0.8, 0.1);
+VisualizeCities(coords, ie.GetBestChild(), 4);
+
 
 %% Helper Functions for TSP
 function distances = PrecomputeDistance(coords)
@@ -86,6 +98,31 @@ function children = MutateOrderChange(children, mutationRate)
     end
 end
 
+function children = MutateSwitchNeighbor(children, mutationRate)
+    mutationMatrix = rand(size(children)) < mutationRate;
+    numGenome = size(children, 1);
+    numGene = size(children, 2);
+    numSwap = sum(mutationMatrix, 2);
+    for i = 1 : numGenome
+        if numSwap(i) == 0
+            continue;
+        end
+        for j = 1 : numGene
+            if ~mutationMatrix(i, j)
+                continue;
+            end
+            if j == numGene
+                swapIndex = 1;
+            else
+                swapIndex = j + 1;
+            end
+            swapTemp = children(i, swapIndex);
+            children(i, swapIndex) = children(i, j);
+            children(i, j) = swapTemp;
+        end
+    end
+end
+
 function child = SinglePointCrossover(parents)
     numGene = size(parents, 2);
     midPoint = int16(numGene / 2);
@@ -93,6 +130,15 @@ function child = SinglePointCrossover(parents)
     child(1 : midPoint) = parents(1, 1 : midPoint);
     parent2 = parents(2, :);
     child(midPoint + 1 : numGene) = parent2(~ismember(parent2, child));
+end
+
+function child = RandomCrossover(parents)
+    numGene = size(parents, 2);
+    numChange = int16(numGene / 2);
+    child = -ones(1, numGene);
+    changeIndices = randperm(numGene, numChange);
+    child(changeIndices) = parents(1, changeIndices);
+    child(child == -1) = parents(2, ~ismember(parents(2, :), child));
 end
 
 function converging = CheckConvergence(~)
