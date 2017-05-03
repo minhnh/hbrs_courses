@@ -6,8 +6,8 @@ POPULATION_SIZE = 200;
 VERBOSE = false;
 TARGET = 0;
 ELITISM = true;
-NUM_ITERATION = 500;
-cities = importdata('cities_small.csv');
+NUM_ITERATION = 1700;
+cities = importdata('cities.csv');
 coords = cities.data(:, 2:3);
 numCities = size(coords, 1);
 
@@ -25,19 +25,19 @@ ie = GeneticEncoding.PermutationEncoding(POPULATION_SIZE, NUM_GENE, TARGET, CONS
 population = ie.Population;
 
 % RandomCrossover & MutateOrderChange
-VisualizeCities(coords, ie.GetBestChild(), 1);
-[bestFitness, medianFitness, minFitness] = ie.Iterate(NUM_ITERATION, ELITISM,...
-                                                      0.8, 0.1);
-VisualizeCities(coords, ie.GetBestChild(), 2);
+% VisualizeCities(coords, ie.GetBestChild(), 1);
+% [bestFitness, medianFitness, minFitness] = ie.Iterate(NUM_ITERATION, ELITISM,...
+%                                                       0.9, 0.05);
+% VisualizeCities(coords, ie.GetBestChild(), 2);
 
 % RandomCrossover & MutateSwitchNeighbor
 set(ie, 'Population', population);
 set(ie, 'funcMutate', @MutateSwitchNeighbor)
 VisualizeCities(coords, ie.GetBestChild(), 3);
 [bestFitness2, medianFitness2, minFitness2] = ie.Iterate(NUM_ITERATION, ELITISM,...
-                                                         0.8, 0.1);
+                                                         0.9, 0.02);
 VisualizeCities(coords, ie.GetBestChild(), 4);
-
+figure(5)
 
 %% Helper Functions for TSP
 function distances = PrecomputeDistance(coords)
@@ -143,12 +143,4 @@ end
 
 function converging = CheckConvergence(~)
     converging = false;
-end
-
-%% Visualization of cities
-function VisualizeCities(coords, cityOrder, figNum)
-    figure(figNum);
-    orderedCoords = coords(cityOrder, :);
-    orderedCoords = [orderedCoords; coords(cityOrder(1), :)];
-    plot(orderedCoords(:, 1), orderedCoords(:, 2), '-r*');
 end
