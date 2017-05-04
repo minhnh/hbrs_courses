@@ -6,7 +6,8 @@ POPULATION_SIZE = 200;
 VERBOSE = false;
 TARGET = 0;
 ELITISM = true;
-NUM_ITERATION = 1700;
+NUM_ITERATION = 800;
+NUM_TRIES = 30;
 cities = importdata('cities.csv');
 coords = cities.data(:, 2:3);
 numCities = size(coords, 1);
@@ -25,19 +26,71 @@ ie = GeneticEncoding.PermutationEncoding(POPULATION_SIZE, NUM_GENE, TARGET, CONS
 population = ie.Population;
 
 % RandomCrossover & MutateOrderChange
-% VisualizeCities(coords, ie.GetBestChild(), 1);
-% [bestFitness, medianFitness, minFitness] = ie.Iterate(NUM_ITERATION, ELITISM,...
-%                                                       0.9, 0.05);
-% VisualizeCities(coords, ie.GetBestChild(), 2);
+VisualizeCities(coords, ie.GetBestChild(), 1);
+bestFitness1 = zeros(NUM_TRIES, NUM_ITERATION + 1);
+bestChildren1 = zeros(NUM_TRIES, NUM_GENE);
+parfor i = 1:NUM_TRIES
+    set(ie, 'Population', population);
+    [bestFitness, ~, ~] = ie.Iterate(NUM_ITERATION, ELITISM, 0.9, 0.02);
+    bestFitness1(i, :) = bestFitness;
+    bestChildren1(i, :) = ie.GetBestChild();
+end
+bestFitness1 = median(bestFitness1, 1);
+[~, argMax] = max(GetFitness(bestChildren1, 0, distances));
+bestChild1 = bestChildren1(argMax, :);
+VisualizeCities(coords, bestChild1, 2);
 
 % RandomCrossover & MutateSwitchNeighbor
-set(ie, 'Population', population);
+bestFitness2 = zeros(NUM_TRIES, NUM_ITERATION + 1);
+bestChildren2 = zeros(NUM_TRIES, NUM_GENE);
 set(ie, 'funcMutate', @MutateSwitchNeighbor)
-VisualizeCities(coords, ie.GetBestChild(), 3);
-[bestFitness2, medianFitness2, minFitness2] = ie.Iterate(NUM_ITERATION, ELITISM,...
-                                                         0.9, 0.02);
-VisualizeCities(coords, ie.GetBestChild(), 4);
-figure(5)
+parfor i = 1:NUM_TRIES
+    set(ie, 'Population', population);
+    [bestFitness, ~, ~] = ie.Iterate(NUM_ITERATION, ELITISM, 0.9, 0.02);
+    bestFitness2(i, :) = bestFitness;
+    bestChildren2(i, :) = ie.GetBestChild();
+end
+bestFitness2 = median(bestFitness2, 1);
+[~, argMax] = max(GetFitness(bestChildren2, 0, distances));
+bestChild2 = bestChildren2(argMax, :);
+VisualizeCities(coords, bestChild2, 3);
+
+% CycleCrossover & MutateSwitchNeighbor
+bestFitness3 = zeros(NUM_TRIES, NUM_ITERATION + 1);
+bestChildren3 = zeros(NUM_TRIES, NUM_GENE);
+set(ie, 'funcSingleCrossover', @CycleCrossover)
+parfor i = 1:NUM_TRIES
+    set(ie, 'Population', population);
+    [bestFitness, ~, ~] = ie.Iterate(NUM_ITERATION, ELITISM, 0.9, 0.02);
+    bestFitness3(i, :) = bestFitness;
+    bestChildren3(i, :) = ie.GetBestChild();
+end
+bestFitness3 = median(bestFitness3, 1);
+[~, argMax] = max(GetFitness(bestChildren3, 0, distances));
+bestChild3 = bestChildren3(argMax, :);
+VisualizeCities(coords, bestChild3, 4);
+
+% CycleCrossover & MutateOrderChange
+bestFitness4 = zeros(NUM_TRIES, NUM_ITERATION + 1);
+bestChildren4 = zeros(NUM_TRIES, NUM_GENE);
+set(ie, 'funcMutate', @MutateOrderChange)
+parfor i = 1:NUM_TRIES
+    set(ie, 'Population', population);
+    [bestFitness, ~, ~] = ie.Iterate(NUM_ITERATION, ELITISM, 0.9, 0.02);
+    bestFitness4(i, :) = bestFitness;
+    bestChildren4(i, :) = ie.GetBestChild();
+end
+bestFitness4 = median(bestFitness4, 1);
+[~, argMax] = max(GetFitness(bestChildren4, 0, distances));
+bestChild4 = bestChildren4(argMax, :);
+VisualizeCities(coords, bestChild4, 5);
+
+save('./a2-motsp/median_fitness.mat',...
+     'bestFitness1', 'bestChild1',...
+     'bestFitness2', 'bestChild2',...
+     'bestFitness3', 'bestChild3',...
+     'bestFitness4', 'bestChild4');
+
 
 %% Helper Functions for TSP
 function distances = PrecomputeDistance(coords)
@@ -138,6 +191,30 @@ function child = RandomCrossover(parents)
     child = -ones(1, numGene);
     changeIndices = randperm(numGene, numChange);
     child(changeIndices) = parents(1, changeIndices);
+    child(child == -1) = parents(2, ~ismember(parents(2, :), child));
+end
+
+function child = CycleCrossover(parents)
+    numGene = size(parents, 2);
+    cycleStart = 1;
+    child = -ones(1, numGene);
+    parentIndex = 0;
+    while sum(ismember(child, -1)) > 0
+        currentCycle = cycleStart;
+        cycleEnd = cycleStart;
+        while ~(parents(2, cycleEnd) == parents(1, cycleStart))
+            parent2CycleEndValue = parents(2, cycleEnd);
+            cycleEnd = find(ismember(parents(1, :), parent2CycleEndValue));
+            currentCycle = [currentCycle, cycleEnd];
+        end
+        child(currentCycle) = parents(parentIndex + 1, currentCycle);
+        parentIndex = ~parentIndex;
+        for cycleStart = 1:numGene
+            if child(cycleStart) == -1
+                break;
+            end
+        end
+    end
     child(child == -1) = parents(2, ~ismember(parents(2, :), child));
 end
 
