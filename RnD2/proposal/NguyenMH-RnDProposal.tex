@@ -26,6 +26,8 @@
 \newcommand{\hmwkAdvisorFirst}{Prof. Dr. Erwin Prassler}
 \newcommand{\hmwkAdvisorSecond}{Matthias F{\"u}ller}
 
+\graphicspath{{../images/}}
+
 %-------------------------------------------------
 %   MARGINS
 %-------------------------------------------------
@@ -84,6 +86,14 @@
 \date{}
 
 %-------------------------------------------------
+%   BIBLIOGRAPHY
+%-------------------------------------------------
+\usepackage[english]{babel}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{../RnD.bib}
+\addbibresource{proposal.bib}
+
+%-------------------------------------------------
 %   BEGIN
 %-------------------------------------------------
 \begin{document}
@@ -101,21 +111,32 @@
     Significance of heart rate prediction:
     \begin{itemize}
         \item Health benefits of exercise can be improved by better understanding of how the heart react to different forms of physical exertion.
-        \item Machine learning has shown promising results in modeling heart rates for running exercises \cite{Fueller15}
+        \item Machine learning has shown promising results in modeling heart rates for running exercises \autocite{Fueller2015}
     \end{itemize}
 
     Physiological data recorded using \underline{hand-held} (better term?) devices (i.e. the Polar H7 sensor) can sometimes contain invalid data due to low battery level, external electromagnetic influences \underline{(citation needed)}.
     \begin{itemize}
         \item Such unreliability can impair generalization ability of heart rate modeling techniques \underline{(citation needed)}
         \item Automatic removal of such outliers in the larger datasets can improve performance of existing models.
-        \item Anomaly models for temporal data can vary greatly depending on the specific data type and scenario, therefore need to be designed for the particular problem \cite{Gupta2013}.
+        \item Anomaly models for temporal data can vary greatly depending on the specific data type and scenario, therefore need to be designed for the particular problem \autocite{Gupta2013}.
     \end{itemize}
 
     This project aims to survey existing outlier detection techniques for temporal data, to find a suitable outlier model for physiological data used in the heart rate prediction task.
 
     %---------------------------------------------
     \subsection{Prior Work}
-    Detecting anomaly in temporal data include
+    \begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.9\linewidth]{gupta2014-mind_map.png}
+        \caption{Outlier detection mind map \autocite{Gupta2013}}
+        \label{fig:mindmap}
+    \end{figure}
+    Detecting anomaly in temporal data can involve a wide variety of tasks as shown in the mind map in figure \ref{fig:mindmap} proposed by Gupta et al. For the heart rate prediction task, outlier models for time series are most relevant. Since the data set contains a large number of relatively short time series, this paper will focus on finding anomalies in the whole database, as opposed to abnormalities within individual time series.
+
+    Following the categorization by Gupta et al., detection of abnormal time series sequences within a database can be done directly, through identifying anomalous time windows or through finding outlier subsequences in a test time series.
+    \subsubsection{Direct detection}
+    \subsubsection{Window-based detection}
+    \subsubsection{Outlier subsequence detection}
 
     %---------------------------------------------
     \subsection{Approach}
@@ -135,10 +156,7 @@
     \subsection{Work Schedule}
     %\includepdf[pages={1}]{rnd_nguyen_workschedule_gannt.pdf}
 
-%-------------------------------------------------
-%   Bibliography
-\bibliographystyle{IEEEtran}
-\bibliography{../RnD.bib,proposal.bib}
+\printbibliography
 
 %-------------------------------------------------
 %   END
