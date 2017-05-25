@@ -5,7 +5,15 @@ population = repmat(mean', populationSize, 1);
 numGene = length(mean);
 covariance = triu(covariance) + triu(covariance, 1)';   % enforce symmetry
 [B, D] = eig(covariance);                               % eigen decomposition, B==normalized eigenvectors
+if ~isreal(B)
+    disp('eigen vector complex')
+    B = real(B);
+end
 D = sqrt(diag(D));                                      % D is a vector of standard deviations now
+if ~isreal(D)
+    disp('eigen value complex');
+    D = real(D);
+end
 invSqrtC = B * diag(D .^ -1) * B';
 % sample from the normal distribution with given covariance
 parfor i = 1:populationSize
