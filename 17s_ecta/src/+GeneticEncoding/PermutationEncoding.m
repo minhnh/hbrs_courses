@@ -1,6 +1,6 @@
- %% IntegerEncoding.m
+ %% PermutationEncoding.m
 % Class structure for various evolutionary algorithm problems using
-% integer encoding
+% permutation encoding
 % Author:   Minh Nguyen
 % Date: 2017-04-14
 %%

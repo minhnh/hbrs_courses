@@ -20,4 +20,4 @@ fig = figure(1);
     ylabel('Fitness');
     
 % Set formatting, save to Matlab .fig and export to cropped PDF, fontsize of 48 is used here    
-save_figure(fig, ['hillclimber_comparison'], 36); 
+save_figure(fig, ['hillclimber_comparison'], 36);
