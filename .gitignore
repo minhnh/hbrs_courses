@@ -21,7 +21,6 @@ __pycache__/
 *.log
 *.out
 *.dvi
-*.pdf
 *.gz
 *.html
 *.zip
