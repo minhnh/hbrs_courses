@@ -41,17 +41,11 @@ tic
 VisualizeFoil(ie.GetBestChild()', nacafoil, nacaNum, 1);
 bestFitnessAllTries = zeros(NUM_TRIES, NUM_ITERATION + 1);
 bestChildren = zeros(NUM_TRIES, NUM_GENE);
-badChildren = zeros(NUM_TRIES, NUM_GENE);
-badFitness = zeros(NUM_TRIES, NUM_GENE);
 parfor i = 1:NUM_TRIES
     tic
     ie.funcInitPopulation(ie, POPULATION_SIZE, NUM_GENE, CONSTRAINTS);
     population = ie.Population;
     [bestFitness, ~, ~] = ie.Iterate(NUM_ITERATION, ELITISM, -1, -1);
-    if ~isreal(bestFitness)
-        badChildren(i, :) = population;
-        badFitness(i, :) = bestFitness;
-    end
     bestFitnessAllTries(i, :) = bestFitness;
     bestChildren(i, :) = ie.GetBestChild();
     toc
@@ -64,7 +58,7 @@ VisualizeFoil(bestChild', nacafoil, nacaNum, 2);
 toc
 % save data
 save('./median_fitness.mat',...
-     'bestFitnessAllTries', 'medianBestFitness', 'bestChild');
+     'bestFitnessAllTries', 'medianBestFitness', 'bestChild', 'bestChildren');
 
 %% Functions specific to Shape Matching problem
 function GeneratePopulation(obj, populationSize, numGene, ~)
