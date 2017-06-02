@@ -1,0 +1,239 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % KOMA-article class
+
+%-------------------------------------------------
+%   THEMES, PACKAGES, CUSTOM COMMANDS
+%-------------------------------------------------
+\usepackage{blindtext}
+\usepackage[english]{babel}                             % English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}  % Better typography
+\usepackage{amsmath,amsfonts,amsthm}                    % Math packages
+\usepackage[pdftex]{graphicx}                           % Enable pdflatex
+\usepackage[export]{adjustbox}
+\usepackage[svgnames]{xcolor}                           % Enabling colors by their 'svgnames'
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{epstopdf}       % Converts .eps to .pdf
+%\usepackage{subfig}         % Subfigures
+\usepackage{booktabs}       % Nicer tables
+\usepackage{fix-cm}         % Custom fontsizes
+\usepackage{listings}
+\usepackage{soul}
+\usepackage{float}
+
+\usepackage{hyperref}
+
+\usepackage[foot=30pt,margin=1in]{geometry}
+
+% Custom sectioning (sectsty package)
+\usepackage{sectsty}
+\allsectionsfont{
+    \usefont{OT1}{phv}{b}{n}    % bch-b-n: CharterBT-Bold font
+}
+\sectionfont{
+    \usefont{OT1}{phv}{b}{n}
+}
+
+% Custom colors
+\definecolor{brsugrey}{rgb}{0.9, 0.9, 0.9}
+\definecolor{brsublue}{rgb}{0, 0.594, 0.949}
+
+%
+\newcommand{\upperRomannumeral}[1]{\uppercase\expandafter{\romannumeral#1}}
+
+% Creating an initial of the very first character of the content
+\usepackage{lettrine}
+\newcommand{\initial}[1]{%
+    \lettrine[lines=3,lhang=0.3,nindent=0em]{
+        \color{brsublue}
+        {\textsf{#1}}}{}}
+
+%-------------------------------------------------
+%   COMMON INFO
+%-------------------------------------------------
+\newcommand{\hmwkTitle}{Assessment \upperRomannumeral{3} - Function Minimization}
+\newcommand{\hmwkDueDate}{Thursday, 1 June 2017}
+\newcommand{\hmwkClass}{Evolutionary Computation Theory and Application}
+\newcommand{\hmwkClassShort}{ECTA SS17}
+\newcommand{\hmwkAuthorFullName}{Minh H. Nguyen}
+\newcommand{\hmwkAuthorLastName}{Nguyen}
+\newcommand{\hmwkAuthorEmail}{minh.nguyen@smail.inf.h-brs.de}
+\newcommand{\hmwkAuthorInstitute}{BRS University of Applied Sciences}
+\newcommand{\headerFontSize}{19}
+\graphicspath{{images/}}
+
+%-------------------------------------------------
+%   HEADERS & FOOTERS
+%-------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{lastpage}
+% Header (empty)
+\lhead{}
+\chead{}
+\rhead{}
+% Footer (you may change this to your own needs)
+\lfoot{\footnotesize
+    \texttt{\hmwkClassShort} ~
+    \textbullet ~ \hmwkAuthorLastName ~
+    \textbullet ~ \hmwkTitle}
+\cfoot{}
+\rfoot{\footnotesize page \thepage\ of \pageref{LastPage}}  % "Page 1 of 2"
+\renewcommand{\headrulewidth}{0.0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%-------------------------------------------------
+%   TITLE & AUTHOR
+%-------------------------------------------------
+\usepackage{titling}
+
+\newcommand{\HorRule}{\color{brsublue}% Creating a horizontal rule
+    \rule{\linewidth}{1pt}%
+    \color{black}
+}
+
+% Title
+\pretitle{
+    \vspace{-30pt}
+    \begin{flushleft}
+        \HorRule
+        \fontsize{\headerFontSize}{\headerFontSize} \usefont{OT1}{phv}{b}{n} \color{gray} \selectfont
+}
+\title{\hmwkClass \\
+       \hmwkTitle}
+\posttitle{
+    \par
+    \end{flushleft}
+    \vskip 0.5em
+}
+
+% Author
+\preauthor{
+    \begin{flushleft}
+        \large \lineskip 0.25em
+        \usefont{OT1}{phv}{b}{sl} \color{brsublue}}
+
+\author{\hmwkAuthorFullName}
+
+\postauthor{
+        \footnotesize
+        \usefont{OT1}{phv}{m}{sl} \color{Black}
+        \\\hmwkAuthorInstitute
+        \\\hmwkAuthorEmail
+        \par
+    \end{flushleft}
+    \HorRule}
+
+% Date
+\date{\hmwkDueDate}
+
+%-------------------------------------------------
+%   BEGIN
+%-------------------------------------------------
+\begin{document}
+    \maketitle
+    \thispagestyle{fancy}
+
+\section{Hyper parameters}
+
+    \begin{tabular}{ll}
+        Population size ($\lambda$) & $15$ \\
+        Number of genes ($N$)       & 2 \& 12 \\
+        Number of generations       & $1000$ \\
+        Step size ($\sigma$)        & $0.3$ \\
+        $\mu$ ($\lambda / 2$)       & $7$ \\
+        weights ($w_i \propto (\mu - i + 1)$)
+        & $\left[ \begin{matrix}
+        0.2381 & 0.2063 & 0.1746 & 0.1429 & 0.1111 & 0.0794 & 0.0476
+        \end{matrix} \right]$ \\
+        $\mu_{eff}$ ($1 / \sum w_i^2$)
+        & $5.845$ \\
+        $c_\mu$ ($\mu_{eff} / N^2$) & $0.0057$ \\
+    \end{tabular}
+
+
+    \section{Solution}
+    \begin{tabular}{p{5cm}c}
+        Function & Minimum value\\
+        frosen 2D & 0.015679 \\
+        frosen 12D & 5.5009 \\
+        frastrigin 2D & -80.7066 \\
+        frastrigin 12D & -478.2697 \\
+    \end{tabular}
+
+
+    \section{Statistical Evaluation}
+
+    The following box plot shows the median fitness evolution after 20 runs of 1000 generations each.
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.8\textwidth}
+            \centering
+            \includegraphics[width=.95\linewidth]{t3-funcMin-fitness-frosen2D}
+            \captionof{figure}{median fitness of 20 runs over 1000 generations - frosen 2D}
+            \label{fig:boxplot}
+        \end{minipage}%
+        \linebreak
+        \begin{minipage}{.8\textwidth}
+            \centering
+            \includegraphics[width=.95\linewidth]{t3-funcMin-fitness-frosen12D}
+            \captionof{figure}{median fitness of 20 runs over 1000 generations - frosen 12D}
+            \label{fig:median}
+        \end{minipage}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.8\textwidth}
+            \centering
+            \includegraphics[width=.95\linewidth]{t3-funcMin-fitness-frastrigin2D}
+            \captionof{figure}{median fitness of 20 runs over 1000 generations - frastrigin 2D}
+            \label{fig:boxplot}
+        \end{minipage}%
+        \linebreak
+        \begin{minipage}{.8\textwidth}
+            \centering
+            \includegraphics[width=.95\linewidth]{t3-funcMin-fitness-frastrigin12D}
+            \captionof{figure}{median fitness of 20 runs over 1000 generations - frastrigin 12D}
+            \label{fig:median}
+        \end{minipage}
+    \end{figure}
+
+    The following box plot shows the fitness distribution of the best children after 20 runs of 1000 generations each.
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.8\textwidth}
+            \centering
+            \includegraphics[width=.95\linewidth]{t3-funcMin-box-frosen2D}
+            \captionof{figure}{Box plot for the distribution of fitness of the best children over 20 runs - frosen 2D}
+            \label{fig:boxplot}
+        \end{minipage}%
+        \linebreak
+        \begin{minipage}{.8\textwidth}
+            \centering
+            \includegraphics[width=.95\linewidth]{t3-funcMin-box-frosen12D}
+            \captionof{figure}{Median fitness progression over 60 generations of 20 runs - frosen 12D}
+            \label{fig:median}
+        \end{minipage}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{.8\textwidth}
+            \centering
+            \includegraphics[width=.95\linewidth]{t3-funcMin-box-frastrigin2D}
+            \captionof{figure}{Box plot for the distribution of fitness of the best children over 20 runs - frastrigin 2D}
+            \label{fig:boxplot}
+        \end{minipage}%
+        \linebreak
+        \begin{minipage}{.8\textwidth}
+            \centering
+            \includegraphics[width=.95\linewidth]{t3-funcMin-box-frastrigin12D}
+            \captionof{figure}{Median fitness progression over 60 generations of 20 runs - frastrigin 12D}
+            \label{fig:median}
+        \end{minipage}
+    \end{figure}
+
+\end{document}
