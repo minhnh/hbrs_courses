@@ -10,3 +10,6 @@
 [submodule "16w_nn/padmaja"]
 	path = 16w_nn/padmaja
 	url = https://github.com/padmaja-kulkarni/NN.git
+[submodule "17s_ecta/src"]
+	path = 17s_ecta/src
+	url = https://github.com/minhnh/evolutionary_algorithm_course.git
