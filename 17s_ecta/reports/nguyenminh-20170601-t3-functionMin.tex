@@ -139,7 +139,7 @@
     \begin{tabular}{ll}
         Population size ($\lambda$) & $15$ \\
         Number of genes ($N$)       & 2 \& 12 \\
-        Number of generations       & $1000$ \\
+        Number of generations       & $150$ \\
         Step size ($\sigma$)        & $0.3$ \\
         $\mu$ ($\lambda / 2$)       & $7$ \\
         weights ($w_i \propto (\mu - i + 1)$)
@@ -164,76 +164,46 @@
 
     \section{Statistical Evaluation}
 
-    The following box plot shows the median fitness evolution after 20 runs of 1000 generations each.
+    The following plots shows the median fitness evolution and the fitness distribution of the best children after 20 runs of 150 generations each.
 
     \begin{figure}[H]
         \centering
-        \begin{minipage}{.8\textwidth}
+        \begin{minipage}{\textwidth}
             \centering
-            \includegraphics[width=.95\linewidth]{t3-funcMin-fitness-frosen2D}
-            \captionof{figure}{median fitness of 20 runs over 1000 generations - frosen 2D}
-            \label{fig:boxplot}
+            \includegraphics[width=.95\linewidth]{t3-funcMin-fitnessandbox-frosen2d}
+            \captionof{figure}{median fitness and distribution of best children over 20 runs of 150 generations - frosen 2D}
+            \label{fig:frosen2d}
         \end{minipage}%
-        \linebreak
-        \begin{minipage}{.8\textwidth}
-            \centering
-            \includegraphics[width=.95\linewidth]{t3-funcMin-fitness-frosen12D}
-            \captionof{figure}{median fitness of 20 runs over 1000 generations - frosen 12D}
-            \label{fig:median}
-        \end{minipage}
+    \end{figure}
+
+    \begin{figure}[H]
+    \centering
+    \begin{minipage}{\textwidth}
+        \centering
+        \includegraphics[width=.95\linewidth]{t3-funcMin-fitnessandbox-frosen12d}
+        \captionof{figure}{median fitness and distribution of best children over 20 runs of 150 generations - frosen 12D}
+        \label{fig:frosen12d}
+    \end{minipage}%
     \end{figure}
 
     \begin{figure}[H]
         \centering
-        \begin{minipage}{.8\textwidth}
+        \begin{minipage}{\textwidth}
             \centering
-            \includegraphics[width=.95\linewidth]{t3-funcMin-fitness-frastrigin2D}
-            \captionof{figure}{median fitness of 20 runs over 1000 generations - frastrigin 2D}
-            \label{fig:boxplot}
+            \includegraphics[width=.95\linewidth]{t3-funcMin-fitnessandbox-frastrigin2d}
+            \captionof{figure}{median fitness and distribution of best children over 20 runs of 150 generations - frastrigin 2D}
+            \label{fig:frastrigin2d}
         \end{minipage}%
-        \linebreak
-        \begin{minipage}{.8\textwidth}
-            \centering
-            \includegraphics[width=.95\linewidth]{t3-funcMin-fitness-frastrigin12D}
-            \captionof{figure}{median fitness of 20 runs over 1000 generations - frastrigin 12D}
-            \label{fig:median}
-        \end{minipage}
-    \end{figure}
-
-    The following box plot shows the fitness distribution of the best children after 20 runs of 1000 generations each.
-
-    \begin{figure}[H]
-        \centering
-        \begin{minipage}{.8\textwidth}
-            \centering
-            \includegraphics[width=.95\linewidth]{t3-funcMin-box-frosen2D}
-            \captionof{figure}{Box plot for the distribution of fitness of the best children over 20 runs - frosen 2D}
-            \label{fig:boxplot}
-        \end{minipage}%
-        \linebreak
-        \begin{minipage}{.8\textwidth}
-            \centering
-            \includegraphics[width=.95\linewidth]{t3-funcMin-box-frosen12D}
-            \captionof{figure}{Median fitness progression over 60 generations of 20 runs - frosen 12D}
-            \label{fig:median}
-        \end{minipage}
     \end{figure}
 
     \begin{figure}[H]
         \centering
-        \begin{minipage}{.8\textwidth}
+        \begin{minipage}{\textwidth}
             \centering
-            \includegraphics[width=.95\linewidth]{t3-funcMin-box-frastrigin2D}
-            \captionof{figure}{Box plot for the distribution of fitness of the best children over 20 runs - frastrigin 2D}
-            \label{fig:boxplot}
+            \includegraphics[width=.95\linewidth]{t3-funcMin-fitnessandbox-frastrigin12d}
+            \captionof{figure}{Box plot for the distribution of fitness of the best children over 20 runs - frastrigin 12D}
+            \label{fig:frastrigin12d}
         \end{minipage}%
-        \linebreak
-        \begin{minipage}{.8\textwidth}
-            \centering
-            \includegraphics[width=.95\linewidth]{t3-funcMin-box-frastrigin12D}
-            \captionof{figure}{Median fitness progression over 60 generations of 20 runs - frastrigin 12D}
-            \label{fig:median}
-        \end{minipage}
     \end{figure}
 
 \end{document}
