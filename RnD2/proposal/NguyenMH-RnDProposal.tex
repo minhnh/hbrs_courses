@@ -10,6 +10,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{enumitem}
+\usepackage{todonotes}
 
 %%% Custom colors & commands
 \newcommand{\HRule}[1]{\rule{\linewidth}{#1}}   % Horizontal rule
@@ -18,13 +19,14 @@
 %   COMMON INFO
 %-------------------------------------------------
 \newcommand{\hmwkTitle}{R \& D Proposal}
-\newcommand{\hmwkTopic}{Detecting Outliers in Physiological Data for Modeling Cardiovascular Response in Sport Exercises}
-\newcommand{\hmwkDueDate}{May 15, 2016}
+\newcommand{\hmwkTopic}{Transfer Learning for Object Grasping}
+\newcommand{\hmwkDueDate}{December 15, 2017}
 \newcommand{\hmwkClass}{Research and Development}
 \newcommand{\hmwkAuthorName}{Minh H. Nguyen}
 \newcommand{\hmwkAuthorSchool}{Bonn-Rhein-Sieg University of Applied Sciences}
-\newcommand{\hmwkAdvisorFirst}{Prof. Dr. Erwin Prassler}
-\newcommand{\hmwkAdvisorSecond}{Matthias F{\"u}ller}
+\newcommand{\hmwkAdvisorFirst}{Prof. Dr. Paul G. Pl\"{o}ger}
+\newcommand{\hmwkAdvisorSecond}{Alex Mitrevski}
+\newcommand{\hmwkAdvisorThird}{Maximilian Sch\"{o}bel}
 
 \graphicspath{{../images/}}
 
@@ -37,8 +39,6 @@
 \textwidth=16.0cm
 \textheight=22.0cm
 \headsep=0.6cm
-
-\linespread{1.1} % Line spacing
 
 %-------------------------------------------------
 %   HEADERS & FOOTERS
@@ -81,6 +81,7 @@
     Advisors:\\
     \hmwkAdvisorFirst\\
     \hmwkAdvisorSecond\\
+    \hmwkAdvisorThird\\
 }
 
 \date{}
@@ -91,7 +92,7 @@
 \usepackage[english]{babel}
 \usepackage[backend=biber]{biblatex}
 \addbibresource{../RnD.bib}
-\addbibresource{proposal.bib}
+%\addbibresource{proposal.bib}
 
 %-------------------------------------------------
 %   BEGIN
@@ -107,40 +108,45 @@
 
     %---------------------------------------------
     \subsection{Motivation}
-
-    Significance of heart rate prediction:
     \begin{itemize}
-        \item Health benefits of exercise can be improved by better understanding of how the heart react to different forms of physical exertion.
-        \item Machine learning has shown promising results in modeling heart rates for running exercises \autocite{Fueller2015}
+        \item Grasp planning is generally divided into analytical and empirical approaches \cite{Bohg2014}.
+        \item Analytic methods often optimize some metrics which measure one or multiple properties of a robotic hand, namely dexterity, equilibrium, stability or ability to exhibit a certain dynamic behavior \cite{Bohg2014}. However, these methods often make assumptions about the object (i.e. shapes or poses) and therefore are prone to errors and does not generalize well to novel objects, while taking more time to match point clouds to known models \cite{Goldfeder2011}.
+        \item Empirical or data-driven approaches generally sample from several grasp candidates and rank them according to a specific metric \cite{Bohg2014}. \todo{problem with these approaches}
+        \item Mahler et al. \cite{mahler2017} proposed Grasp Quality Convolutional Neural Network (GQ-CNN) as a model to rapidly predict probability of successful grasp from depth image. Despite achieving high precision in successful grasp prediction, the model is limited in how grasps are represented: the grasp's approach vector and camera view point is presumed to be perpendicular to the table, while the gripper configuration and wrist orientation used as training input are simplified to the angle of the parallel-jaw grasp axis with respect to the table. The model is therefore insufficient in generalizing for use with mobile robots, where the camera pose often changes as the robot moves, and the grasp approach vector is not known beforehand.
+        \item This research aims to extend the work by Mahler et al. \cite{mahler2017} for use with mobile robotics, specifically on the Care-O-bot 3 platform \todo{COB link footnote}, through synthesizing a new dataset using a more general grasp representation and training a new CNN model on this dataset. \todo{align motivation with project description slides}
     \end{itemize}
 
-    Physiological data recorded using \underline{hand-held} (better term?) devices (i.e. the Polar H7 sensor) can sometimes contain invalid data due to low battery level, external electromagnetic influences \underline{(citation needed)}.
-    \begin{itemize}
-        \item Such unreliability can impair generalization ability of heart rate modeling techniques \underline{(citation needed)}
-        \item Automatic removal of such outliers in the larger datasets can improve performance of existing models.
-        \item Anomaly models for temporal data can vary greatly depending on the specific data type and scenario, therefore need to be designed for the particular problem \autocite{Gupta2013}.
-    \end{itemize}
-
-    This project aims to survey existing outlier detection techniques for temporal data, to find a suitable outlier model for physiological data used in the heart rate prediction task.
 
     %---------------------------------------------
     \subsection{Prior Work}
     \begin{figure}[h!]
         \centering
-        \includegraphics[width=0.9\linewidth]{gupta2014-mind_map.png}
-        \caption{Outlier detection mind map \autocite{Gupta2013}}
+        \missingfigure{mind map}
+        \caption{TODO mind map}
         \label{fig:mindmap}
     \end{figure}
-    Detecting anomaly in temporal data can involve a wide variety of tasks as shown in the mind map in figure \ref{fig:mindmap} proposed by Gupta et al. For the heart rate prediction task, outlier models for time series are most relevant. Since the data set contains a large number of relatively short time series, this paper will focus on finding anomalies in the whole database, as opposed to abnormalities within individual time series.
 
-    Following the categorization by Gupta et al., detection of abnormal time series sequences within a database can be done directly, through identifying anomalous time windows or through finding outlier subsequences in a test time series.
-    \subsubsection{Direct detection}
-    \subsubsection{Window-based detection}
-    \subsubsection{Outlier subsequence detection}
+	\subsubsection{Grasp representation}
+	Bohg et al. \cite{Bohg2014} parameterize grasps as
+	\begin{itemize}
+		\item the \emph{grasping point} of the object where the gripper should be aligned,
+		\item an \emph{approach vector} from which the gripper shall approach the \emph{grasping point},
+		\item the \emph{wrist orientation} of the robotic hand,
+		\item and an \emph{initial gripper configuration}.
+	\end{itemize}
+
+    \subsubsection{Grasp quality evaluation}
+
+    \subsubsection{Convolutional Neural Network as feature extractor for point clouds}
+
+    \subsubsection{Dex-Net 2.0 Data Generation}
 
     %---------------------------------------------
     \subsection{Approach}
-
+	\begin{itemize}
+		\item define grasp plan representation in 3D.
+		\item generate synthesis point cloud data based on this representation following the Dex-Net 2.0 data generation process \cite{mahler2017}
+	\end{itemize}
 
     %---------------------------------------------
     \subsection{Expected Results}
@@ -154,7 +160,7 @@
 
     %---------------------------------------------
     \subsection{Work Schedule}
-    %\includepdf[pages={1}]{rnd_nguyen_workschedule_gannt.pdf}
+    \missingfigure{TODO Grannt chart}
 
 \printbibliography
 
