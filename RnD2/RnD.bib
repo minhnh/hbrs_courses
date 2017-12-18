@@ -2,20 +2,29 @@
 % Encoding: UTF-8
 
 
+@Misc{vanBeek17,
+  Title                    = {RoboCup@Home 2017: Rules and Regulations},
+  Author                   = {Loy van Beek and Dirk Holz and Mauricio Matamoros and Caleb Rascon and Sven Wachsmuth},
+  Date                     = {2017-06-11},
+  Year                     = {2017},
+  Url                      = {http://www.robocupathome.org/rules/2017_rulebook.pdf}
+}
+
 @Article{Bohg2014,
   Title                    = {Data-Driven Grasp Synthesis: A Survey},
   Author                   = {J. Bohg and A. Morales and T. Asfour and D. Kragic},
-  Journal                  = {IEEE Transactions on Robotics},
+  Date                     = {2014-04-02},
+  Journaltitle             = {IEEE Transactions on Robotics},
   Year                     = {2014},
-
+  Doi                      = {10.1109/TRO.2013.2289018},
+  ISSN                     = {1552-3098},
   Month                    = {April},
   Number                   = {2},
   Pages                    = {289-309},
   Volume                   = {30},
 
   Abstract                 = {We review the work on data-driven grasp synthesis and the methodologies for sampling and ranking candidate grasps. We divide the approaches into three groups based on whether they synthesize grasps for known, familiar, or unknown objects. This structure allows us to identify common object representations and perceptual processes that facilitate the employed data-driven grasp synthesis technique. In the case of known objects, we concentrate on the approaches that are based on object recognition and pose estimation. In the case of familiar objects, the techniques use some form of a similarity matching to a set of previously encountered objects. Finally, for the approaches dealing with unknown objects, the core part is the extraction of specific features that are indicative of good grasps. Our survey provides an overview of the different methodologies and discusses open problems in the area of robot grasping. We also draw a parallel to the classical approaches that rely on analytic formulations.},
-  Doi                      = {10.1109/TRO.2013.2289018},
-  ISSN                     = {1552-3098},
+  Journal                  = {IEEE Transactions on Robotics},
   Keywords                 = {feature extraction;grippers;image matching;object recognition;pose estimation;sampling methods;candidate grasp ranking;candidate grasp sampling;common object representations;data-driven grasp synthesis technique;feature extraction;object recognition;perceptual processes;pose estimation;robot grasping;similarity matching;Databases;Feature extraction;Grasping;Measurement;Robot sensing systems;Grasp planning;grasp synthesis;object grasping and manipulation;object recognition and classification;visual perception;visual representations}
 }
 
@@ -23,19 +32,20 @@
   Title                    = {Data-driven grasping},
   Author                   = {Goldfeder, Corey
 and Allen, Peter K.},
-  Journal                  = {Autonomous Robots},
+  Date                     = {2011-07-01},
+  Journaltitle             = {Autonomous Robots},
   Year                     = {2011},
-
+  Doi                      = {10.1007/s10514-011-9228-1},
+  ISSN                     = {1573-7527},
   Month                    = {Jul},
   Number                   = {1},
   Pages                    = {1--20},
+  Url                      = {https://doi.org/10.1007/s10514-011-9228-1},
   Volume                   = {31},
 
   Abstract                 = {This paper propose a novel framework for a data driven grasp planner that indexes partial sensor data into a database of 3D models with known grasps and transfers grasps from those models to novel objects. We show how to construct such a database and also demonstrate multiple methods for matching into it, aligning the matched models with the known sensor data of the object to be grasped, and selecting an appropriate grasp to use. Our approach is experimentally validated in both simulated trials and trials with robots.},
   Day                      = {01},
-  Doi                      = {10.1007/s10514-011-9228-1},
-  ISSN                     = {1573-7527},
-  Url                      = {https://doi.org/10.1007/s10514-011-9228-1}
+  Journal                  = {Autonomous Robots}
 }
 
 @Article{mahler2017,
@@ -49,18 +59,19 @@ and Allen, Peter K.},
  Xinyu Liu and
  Juan Aparicio Ojea and
  Ken Goldberg},
-  Journal                  = {CoRR},
+  Journaltitle             = {CoRR},
   Year                     = {2017},
+  Eprint                   = {1703.09312},
+  Url                      = {http://arxiv.org/abs/1703.09312},
   Volume                   = {abs/1703.09312},
 
   Abstract                 = {To reduce data collection time for deep learning of robust robotic grasp plans, we explore training from a synthetic dataset of 6.7 million point clouds, grasps, and analytic grasp metrics generated from thousands of 3D models from Dex-Net 1.0 in randomized poses on a table. We use the resulting dataset, Dex-Net 2.0, to train a Grasp Quality Convolutional Neural Network (GQ-CNN) model that rapidly predicts the probability of success of grasps from depth images, where grasps are specified as the planar position, angle, and depth of a gripper relative to an RGB-D sensor. Experiments with over 1,000 trials on an ABB YuMi comparing grasp planning methods on singulated objects suggest that a GQ-CNN trained with only synthetic data from Dex-Net 2.0 can be used to plan grasps in 0.8sec with a success rate of 93\% on eight known objects with adversarial geometry and is 3x faster than registering point clouds to a precomputed dataset of objects and indexing grasps. The Dex-Net 2.0 grasp planner also has the highest success rate on a dataset of 10 novel rigid objects and achieves 99\% precision (one false positive out of 69 grasps classified as robust) on a dataset of 40 novel household objects, some of which are articulated or deformable. Code, datasets, videos, and supplementary material are available at http://berkeleyautomation.github.io/dex-net.},
   Archiveprefix            = {arXiv},
-  Eprint                   = {1703.09312},
-  Timestamp                = {Wed, 07 Jun 2017 14:41:15 +0200},
-  Url                      = {http://arxiv.org/abs/1703.09312}
+  Journal                  = {CoRR},
+  Timestamp                = {Wed, 07 Jun 2017 14:41:15 +0200}
 }
 
-@InProceedings{mahler2016,
+@Inproceedings{mahler2016,
   Title                    = {Dex-net 1.0: A cloud-based network of 3d objects for robust grasp planning using a multi-armed bandit model with correlated rewards},
   Author                   = {Mahler, Jeffrey and Pokorny, Florian T and Hou, Brian and Roderick, Melrose and Laskey, Michael and Aubry, Mathieu and Kohlhoff, Kai and Kr{\"o}ger, Torsten and Kuffner, James and Goldberg, Ken},
   Booktitle                = {IEEE International Conference on Robotics and Automation (ICRA)},
@@ -74,53 +85,65 @@ and Allen, Peter K.},
 @Article{Roa2015,
   Title                    = {Grasp Quality Measures: Review and Performance},
   Author                   = {Roa, M\'{a}ximo A. and Su\'{a}rez, Ra\'{u}l},
-  Journal                  = {Auton. Robots},
+  Date                     = {2015-01-01},
+  Journaltitle             = {Autonomous Robots},
   Year                     = {2015},
-
+  Doi                      = {10.1007/s10514-014-9402-3},
+  ISSN                     = {0929-5593},
   Month                    = jan,
   Number                   = {1},
   Pages                    = {65--88},
+  Url                      = {http://dx.doi.org/10.1007/s10514-014-9402-3},
   Volume                   = {38},
 
   Abstract                 = {The correct grasp of objects is a key aspect for the right fulfillment of a given task. Obtaining a good grasp requires algorithms to automatically determine proper contact points on the object as well as proper hand configurations, especially when dexterous manipulation is desired, and the quantification of a good grasp requires the definition of suitable grasp quality measures. This article reviews the quality measures proposed in the literature to evaluate grasp quality. The quality measures are classified into two groups according to the main aspect they evaluate: location of contact points on the object and hand configuration. The approaches that combine different measures from the two previous groups to obtain a global quality measure are also reviewed, as well as some measures related to human hand studies and grasp performance. Several examples are presented to illustrate and compare the performance of the reviewed measures.},
   Acmid                    = {2720569},
   Address                  = {Hingham, MA, USA},
-  Doi                      = {10.1007/s10514-014-9402-3},
-  ISSN                     = {0929-5593},
   Issue_date               = {January 2015},
+  Journal                  = {Autonomous Robots},
   Keywords                 = {Grasp quality, Grasping, Manipulation, Robotic hands},
   Numpages                 = {24},
-  Publisher                = {Kluwer Academic Publishers},
-  Url                      = {http://dx.doi.org/10.1007/s10514-014-9402-3}
+  Publisher                = {Kluwer Academic Publishers}
 }
 
 @Article{Sahbani2012,
   Title                    = {An Overview of 3D Object Grasp Synthesis Algorithms},
   Author                   = {Sahbani, A. and El-Khoury, S. and Bidaud, P.},
-  Journal                  = {Robot. Auton. Syst.},
+  Date                     = {2012-03-01},
+  Journaltitle             = {Robotics and Autonomous Systems},
   Year                     = {2012},
-
+  Doi                      = {10.1016/j.robot.2011.07.016},
+  ISSN                     = {0921-8890},
   Month                    = mar,
   Number                   = {3},
   Pages                    = {326--336},
+  Url                      = {http://dx.doi.org/10.1016/j.robot.2011.07.016},
   Volume                   = {60},
 
   Abstract                 = {This overview presents computational algorithms for generating 3D object grasps with autonomous multi-fingered robotic hands. Robotic grasping has been an active research subject for decades, and a great deal of effort has been spent on grasp synthesis algorithms. Existing papers focus on reviewing the mechanics of grasping and the finger-object contact interactions Bicchi and Kumar (2000) [12] or robot hand design and their control Al-Gallaf et al. (1993) [70]. Robot grasp synthesis algorithms have been reviewed in Shimoga (1996) [71], but since then an important progress has been made toward applying learning techniques to the grasping problem. This overview focuses on analytical as well as empirical grasp synthesis approaches.},
   Acmid                    = {2109859},
   Address                  = {Amsterdam, The Netherlands, The Netherlands},
-  Doi                      = {10.1016/j.robot.2011.07.016},
-  ISSN                     = {0921-8890},
   Issue_date               = {March, 2012},
+  Journal                  = {Robotics and Autonomous Systems},
   Keywords                 = {Force-closure, Grasp synthesis, Learning by demonstration, Task modeling},
   Numpages                 = {11},
-  Publisher                = {North-Holland Publishing Co.},
-  Url                      = {http://dx.doi.org/10.1016/j.robot.2011.07.016}
+  Publisher                = {North-Holland Publishing Co.}
 }
 
 @Book{suarez2006,
   Title                    = {Grasp quality measures},
   Author                   = {Su{\'a}rez, Ra{\'u}l and Cornella, Jordi and Garz{\'o}n, M{\'a}ximo Roa},
-  Publisher                = {Institut d'Organitzaci{\'o} i Control de Sistemes Industrials},
-  Year                     = {2006}
+  Year                     = {2006},
+  Publisher                = {Institut d'Organitzaci{\'o} i Control de Sistemes Industrials}
+}
+
+@Book{Yoshikawa1990,
+  Title                    = {Foundations of Robotics: Analysis and Control},
+  Author                   = {Yoshikawa, Tsuneo},
+  Year                     = {1990},
+  ISBN                     = {0-262-24028-9},
+  Publisher                = {MIT Press},
+
+  Address                  = {Cambridge, MA, USA}
 }
 
