@@ -24,7 +24,7 @@
 %   COMMON INFO
 %-------------------------------------------------
 \newcommand{\hmwkTitle}{R \& D Proposal}
-\newcommand{\hmwkTopic}{Transfer Learning for Object Grasping}
+\newcommand{\hmwkTopic}{Synthesizing Point Clouds for Training A Grasp Planner}
 \newcommand{\hmwkDueDate}{December 15, 2017}
 \newcommand{\hmwkClass}{Research and Development}
 \newcommand{\hmwkAuthorName}{Minh H. Nguyen}
@@ -115,13 +115,13 @@
     %---------------------------------------------
     \subsection{Motivation}
     \begin{itemize}
-        \item Grasp synthesis is generally divided into analytical and empirical approaches \cite{Bohg2014,Sahbani2012}.
+        \item Finding a suitable grasp strategy for a given object is a challenging problem, especially in the area of service robotics where the query objects are usually unknown or not fully known beforehand, the viewing point of objects changes as the robot moves, and objects oftentimes need to be grasped in a certain way to perform specific tasks. Grasp synthesis is generally divided into analytical and empirical approaches \cite{Bohg2014,Sahbani2012}.
         \begin{itemize}
-            \item Analytic methods often optimize some metrics which measure one or multiple properties of a robotic hand, namely dexterity, equilibrium, stability or ability to exhibit a certain dynamic behavior \cite{Bohg2014}. However, these methods often make assumptions about the object (i.e. shapes or poses) and therefore are prone to errors and does not generalize well to novel objects, while taking more time to match point clouds to known models \cite{Goldfeder2011}.
-            \item Empirical or data-driven approaches generally sample from several grasp candidates and rank them according to a specific metric, which can be found heuristically or generated in simulation and on real robots \cite{Bohg2014}. However, data collection for these methods is often tedious and costly \cite{mahler2017}.
+            \item Analytic methods often optimize some metrics which measure one or multiple properties of a robotic hand, namely dexterity, object equilibrium and stability, or the ability to exhibit a certain dynamic behavior \cite{Bohg2014}. However, these methods often make assumptions about the object (i.e. shapes or poses) and therefore are prone to errors and do not generalize well to novel objects, while taking more time to match point clouds to known models \cite{Goldfeder2011}.
+            \item Empirical or data-driven approaches generally sample from several grasp candidates and rank them according to a specific metric, which can be found heuristically or generated in simulation and on real robots \cite{Bohg2014}. These approaches do not rely on objects' physical model and therefore can generalize better to familiar or unknown objects compared to analytical approaches. Furthermore, learning to grasp via mimicking human grasping eliminates the need for task modeling. However, data collection for these methods is often tedious and costly \cite{mahler2017}.
         \end{itemize}
-        \item Mahler et al. \cite{mahler2017} proposed a pipeline to generate synthetic data (Dex-net 2.0) for training Grasp Quality Convolutional Neural Network (GQ-CNN), a model which can rapidly predict probability of successful grasp from depth image. Despite achieving high precision in successful grasp prediction, the model is limited in how grasps are represented: the grasp's approach vector and camera view point is presumed to be perpendicular to the table, while the gripper configuration and wrist orientation used as training input are simplified to the angle of the parallel-jaw grasp axis with respect to the table. The model is therefore insufficient in generalizing for use with mobile robots, where the camera pose often changes as the robot moves, and the grasp approach vector is not known beforehand.
-        \item This research aims to extend the work by Mahler et al. \cite{mahler2017} for use with mobile robotics, specifically on the Care-O-bot 3 platform \footnote{\url{https://www.care-o-bot.de/en/care-o-bot-3.html}}, through synthesizing a new dataset using a more general grasp representation and training a new CNN model on this dataset.
+        \item Mahler et al. \cite{mahler2017} proposed a pipeline to generate synthetic data (Dex-net 2.0) for training Grasp Quality Convolutional Neural Network (GQ-CNN), a model which can rapidly predict probability of successful grasp from depth image. Despite achieving high precision in successful grasp prediction, the model is limited in how grasps are represented: the grasp's approach vector and camera view point is presumed to be perpendicular to the table, while the gripper configuration and wrist orientation used as training input are simplified to the angle of the parallel-jaw grasp axis with respect to the table. The model is therefore insufficient for use with mobile robots, where the camera pose often changes as the robot moves, and the grasp approach vector is not known beforehand.
+        \item This research aims to extend the work by Mahler et al. \cite{mahler2017} for use in mobile robotics, specifically on the Care-O-bot 3 platform \footnote{\url{https://www.care-o-bot.de/en/care-o-bot-3.html}}, through synthesizing a new dataset using a more general grasp representation and training a new CNN model on this dataset.
     \end{itemize}
 
     %---------------------------------------------
@@ -201,7 +201,7 @@
 
     %---------------------------------------------
     \subsection{Hardware Specification} \label{hw-spec}
-    The goal of this project is to implement a grasp planner on the Care-o-bot 3 robot platform, mounted with a Schunk SDH \footnote{\url{https://schunk.com/de_en/gripping-systems/series/sdh/}} gripper and an ASUS Xtion PRO RGB-D camera \footnote{\url{https://www.asus.com/3D-Sensor/Xtion_PRO/}}.
+    The robot platform to be used for experimentation is the Care-o-bot 3 from Fraunhofer Institute for Manufacturing Engineering and Automation \footnote{\url{https://www.ipa.fraunhofer.de/}}, mounted with a Schunk SDH \footnote{\url{https://schunk.com/de_en/gripping-systems/series/sdh/}} gripper and an ASUS Xtion PRO RGB-D camera \footnote{\url{https://www.asus.com/3D-Sensor/Xtion_PRO/}}.
 
     \begin{table}[H]
         \centering
@@ -254,10 +254,11 @@
     %---------------------------------------------
     \subsection{Approach}
     \begin{itemize}
-        \item define grasp plan representation in 3D.
-        \item choose a (or several) grasp synthesis strategy to generate grasp candidates
-        \item choose a grasp quality metric for rating synthesized grasp candidates.
-        \item generate synthesis point cloud data with grasp based on defined representation following the Dex-Net 2.0 data generation process \cite{mahler2017}
+        \item Define grasp plan representation in 3D.
+        \item Choose a (or several) grasp synthesis strategy to generate grasp candidates.
+        \item Choose a grasp quality metric for rating synthesized grasp candidates.
+        \item Generate synthesis point cloud data with grasp based on defined representation following the Dex-Net 2.0 data generation process \cite{mahler2017}.
+        \item Train a neural networks model on the synthesized data to calculate a quality measure for possible grasp candidates given an object.
     \end{itemize}
 
     %---------------------------------------------
