@@ -1,4 +1,4 @@
-\usepackage[latin1]{inputenc} 
+\usepackage[utf8]{inputenc} 
 \usepackage{graphics}
 \usepackage{url}
 
@@ -10,6 +10,7 @@
 \usepackage{setspace}
 \usepackage{epsfig}
 \usepackage{float}
+\usepackage{todonotes}
 \usepackage{subcaption}
 
 %\usepackage{footmisc}
@@ -26,3 +27,12 @@
    pdfkeywords={ \Paperkeywords },
    bookmarksopen=true
 }
+
+\graphicspath{{../images/}}
+
+%-------------------------------------------------
+%   BIBLIOGRAPHY
+%-------------------------------------------------
+\usepackage[english]{babel}
+\usepackage[backend=biber]{biblatex}
+\addbibresource{../RnD.bib}

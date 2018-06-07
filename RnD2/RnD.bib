@@ -28,6 +28,67 @@
   Keywords                 = {feature extraction;grippers;image matching;object recognition;pose estimation;sampling methods;candidate grasp ranking;candidate grasp sampling;common object representations;data-driven grasp synthesis technique;feature extraction;object recognition;perceptual processes;pose estimation;robot grasping;similarity matching;Databases;Feature extraction;Grasping;Measurement;Robot sensing systems;Grasp planning;grasp synthesis;object grasping and manipulation;object recognition and classification;visual perception;visual representations}
 }
 
+@Inproceedings{Detry2009,
+  Title                    = {Learning object-specific grasp affordance densities},
+  Author                   = {R. Detry and E. Baseski and M. Popovic and Y. Touati and N. Kruger and O. Kroemer and J. Peters and J. Piater},
+  Booktitle                = {2009 IEEE 8th International Conference on Development and Learning},
+  Date                     = {2009-06},
+  Editor                   = {Zhengyou Zhang},
+  Year                     = {2009},
+  Doi                      = {10.1109/DEVLRN.2009.5175520},
+  Month                    = {June},
+  Pages                    = {1-7},
+
+  Abstract                 = {This paper addresses the issue of learning and representing object grasp affordances, i.e. object-gripper relative configurations that lead to successful grasps. The purpose of grasp affordances is to organize and store the whole knowledge that an agent has about the grasping of an object, in order to facilitate reasoning on grasping solutions and their achievability. The affordance representation consists in a continuous probability density function defined on the 6D gripper pose space-3D position and orientation-, within an object-relative reference frame. Grasp affordances are initially learned from various sources, e.g. from imitation or from visual cues, leading to grasp hypothesis densities. Grasp densities are attached to a learned 3D visual object model, and pose estimation of the visual model allows a robotic agent to execute samples from a grasp hypothesis density under various object poses. Grasp outcomes are used to learn grasp empirical densities, i.e. grasps that have been confirmed through experience. We show the result of learning grasp hypothesis densities from both imitation and visual cues, and present grasp empirical densities learned from physical experience by a robot.},
+  Keywords                 = {intelligent robots;learning systems;manipulators;multi-agent systems;object recognition;pose estimation;robot vision;3D orientation;3D position;6D gripper pose space;affordance representation;continuous probability density function;grasp empirical densities;grasp hypothesis densities;grasping solutions;learned 3D visual object model;object grasp affordances;object-gripper relative configurations;object-relative reference frame;pose estimation;robotic agent;Autonomous agents;Biological system modeling;Density functional theory;Encoding;Grippers;Humans;Kernel;Probability density function;Robots;Solid modeling}
+}
+
+@Inproceedings{Detry2012,
+  Title                    = {Generalizing grasps across partly similar objects},
+  Author                   = {R. Detry and C. H. Ek and M. Madry and J. Piater and D. Kragic},
+  Booktitle                = {2012 IEEE International Conference on Robotics and Automation},
+  Date                     = {2012-05},
+  Editor                   = {Antonio Bicchi},
+  Year                     = {2012},
+  Doi                      = {10.1109/ICRA.2012.6224992},
+  Month                    = {May},
+  Pages                    = {3791-3797},
+
+  Abstract                 = {The paper starts by reviewing the challenges associated to grasp planning, and previous work on robot grasping. Our review emphasizes the importance of agents that generalize grasping strategies across objects, and that are able to transfer these strategies to novel objects. In the rest of the paper, we then devise a novel approach to the grasp transfer problem, where generalization is achieved by learning, from a set of grasp examples, a dictionary of object parts by which objects are often grasped. We detail the application of dimensionality reduction and unsupervised clustering algorithms to the end of identifying the size and shape of parts that often predict the application of a grasp. The learned dictionary allows our agent to grasp novel objects which share a part with previously seen objects, by matching the learned parts to the current view of the new object, and selecting the grasp associated to the best-fitting part. We present and discuss a proof-of-concept experiment in which a dictionary is learned from a set of synthetic grasp examples. While prior work in this area focused primarily on shape analysis (parts identified, e.g., through visual clustering, or salient structure analysis), the key aspect of this work is the emergence of parts from both object shape and grasp examples. As a result, parts intrinsically encode the intention of executing a grasp.},
+  ISSN                     = {1050-4729},
+  Keywords                 = {image matching;manipulators;robot vision;unsupervised learning;dictionary;dimensionality reduction;generalize grasping strategies;grasp planning;grasp transfer problem;learning;object matching;object parts;proof-of-concept experiment;robot grasping;similar objects;unsupervised clustering algorithms;Covariance matrix;Databases;Dictionaries;Grasping;Grippers;Planning;Shape}
+}
+
+@Inproceedings{Eitel2015,
+  Title                    = {Multimodal deep learning for robust RGB-D object recognition},
+  Author                   = {A. Eitel and J. T. Springenberg and L. Spinello and M. Riedmiller and W. Burgard},
+  Booktitle                = {2015 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  Date                     = {2015-09},
+  Editor                   = {Wolfram Burgard},
+  Year                     = {2015},
+  Doi                      = {10.1109/IROS.2015.7353446},
+  Month                    = {Sept},
+  Pages                    = {681-687},
+
+  Abstract                 = {Robust object recognition is a crucial ingredient of many, if not all, real-world robotics applications. This paper leverages recent progress on Convolutional Neural Networks (CNNs) and proposes a novel RGB-D architecture for object recognition. Our architecture is composed of two separate CNN processing streams - one for each modality - which are consecutively combined with a late fusion network. We focus on learning with imperfect sensor data, a typical problem in real-world robotics tasks. For accurate learning, we introduce a multi-stage training methodology and two crucial ingredients for handling depth data with CNNs. The first, an effective encoding of depth information for CNNs that enables learning without the need for large depth datasets. The second, a data augmentation scheme for robust learning with depth images by corrupting them with realistic noise patterns. We present state-of-the-art results on the RGB-D object dataset [15] and show recognition in challenging RGB-D real-world noisy settings.},
+  Keywords                 = {feedforward neural nets;image colour analysis;image fusion;learning (artificial intelligence);object recognition;robot vision;CNN;RGB-D architecture;RGB-D object dataset;RGB-D real-world noisy settings;accurate learning;convolutional neural networks;data augmentation scheme;fusion network;imperfect sensor data;multimodal deep learning;multistage training methodology;real-world robotics applications;real-world robotics tasks;realistic noise patterns;robust RGB-D object recognition;robust learning;Feature extraction;Image coding;Object recognition;Robot sensing systems;Robustness;Streaming media;Training}
+}
+
+@Inproceedings{Fawzi2016,
+  Title                    = {Adaptive data augmentation for image classification},
+  Author                   = {A. Fawzi and H. Samulowitz and D. Turaga and P. Frossard},
+  Booktitle                = {2016 IEEE International Conference on Image Processing (ICIP)},
+  Date                     = {2016-09},
+  Editor                   = {Lina Karam},
+  Year                     = {2016},
+  Doi                      = {10.1109/ICIP.2016.7533048},
+  Month                    = {Sept},
+  Pages                    = {3688-3692},
+
+  Abstract                 = {Data augmentation is the process of generating samples by transforming training data, with the target of improving the accuracy and robustness of classifiers. In this paper, we propose a new automatic and adaptive algorithm for choosing the transformations of the samples used in data augmentation. Specifically, for each sample, our main idea is to seek a small transformation that yields maximal classification loss on the transformed sample. We employ a trust-region optimization strategy, which consists of solving a sequence of linear programs. Our data augmentation scheme is then integrated into a Stochastic Gradient Descent algorithm for training deep neural networks. We perform experiments on two datasets, and show that that the proposed scheme outperforms random data augmentation algorithms in terms of accuracy and robustness, while yielding comparable or superior results with respect to existing selective sampling approaches.},
+  Keywords                 = {data handling;gradient methods;image classification;linear programming;neural nets;stochastic processes;adaptive data augmentation;deep neural networks;image classification;linear program sequence;stochastic gradient descent algorithm;trust-region optimization strategy;Approximation algorithms;Neural networks;Optimization;Robustness;Training;Training data;Transforms;Data augmentation;image robustness;transformation invariance;trust-region optimization}
+}
+
 @Article{Goldfeder2011,
   Title                    = {Data-driven grasping},
   Author                   = {Goldfeder, Corey
@@ -48,9 +109,84 @@ and Allen, Peter K.},
   Journal                  = {Autonomous Robots}
 }
 
+@Inproceedings{Gupta2014RGBDFeatures,
+  Title                    = {Learning Rich Features from RGB-D Images for Object Detection and Segmentation},
+  Author                   = {Gupta, Saurabh
+and Girshick, Ross
+and Arbel{\'a}ez, Pablo
+and Malik, Jitendra},
+  Booktitle                = {Computer Vision -- ECCV 2014},
+  Date                     = {2014},
+  Editor                   = {Fleet, David
+and Pajdla, Tomas
+and Schiele, Bernt
+and Tuytelaars, Tinne},
+  Year                     = {2014},
+  ISBN                     = {978-3-319-10584-0},
+  Pages                    = {345--360},
+  Publisher                = {Springer International Publishing},
+
+  Abstract                 = {In this paper we study the problem of object detection for RGB-D images using semantically rich image and depth features. We propose a new geocentric embedding for depth images that encodes height above ground and angle with gravity for each pixel in addition to the horizontal disparity. We demonstrate that this geocentric embedding works better than using raw depth images for learning feature representations with convolutional neural networks. Our final object detection system achieves an average precision of 37.3{\%}, which is a 56{\%} relative improvement over existing methods. We then focus on the task of instance segmentation where we label pixels belonging to object instances found by our detector. For this task, we propose a decision forest approach that classifies pixels in the detection window as foreground or background using a family of unary and binary tests that query shape and geocentric pose features. Finally, we use the output from our object detectors in an existing superpixel classification framework for semantic scene segmentation and achieve a 24{\%} relative improvement over current state-of-the-art for the object categories that we study. We believe advances such as those represented in this paper will facilitate the use of perception in fields like robotics.},
+  Address                  = {Cham}
+}
+
+@Inproceedings{jiang2011,
+  Title                    = {Efficient grasping from RGBD images: Learning using a new rectangle representation},
+  Author                   = {Yun Jiang and S. Moseson and A. Saxena},
+  Booktitle                = {IEEE International Conference on Robotics and Automation (ICRA)},
+  Date                     = {2011-05-01},
+  Editor                   = {Antonio Bicchi},
+  Year                     = {2011},
+  Doi                      = {10.1109/ICRA.2011.5980145},
+  Month                    = {May},
+  Pages                    = {3304-3311},
+
+  Abstract                 = {Given an image and an aligned depth map of an object, our goal is to estimate the full 7-dimensional gripper configuration-its 3D location, 3D orientation and the gripper opening width. Recently, learning algorithms have been successfully applied to grasp novel objects-ones not seen by the robot before. While these approaches use low-dimensional representations such as a `grasping point' or a `pair of points' that are perhaps easier to learn, they only partly represent the gripper configuration and hence are sub-optimal. We propose to learn a new `grasping rectangle' representation: an oriented rectangle in the image plane. It takes into account the location, the orientation as well as the gripper opening width. However, inference with such a representation is computationally expensive. In this work, we present a two step process in which the first step prunes the search space efficiently using certain features that are fast to compute. For the remaining few cases, the second step uses advanced features to accurately select a good grasp. In our extensive experiments, we show that our robot successfully uses our algorithm to pick up a variety of novel objects.},
+  ISSN                     = {1050-4729},
+  Keywords                 = {grippers;image representation;robot vision;solid modelling;3D location;3D oriented rectangle;7-dimensional gripper configuration;RGBD image grasping rectangle;gripper opening width;image plane;learning algorithm;low-dimensional rectangle representation;search space;Complexity theory;Grasping;Grippers;Histograms;Image edge detection;Robots;Three dimensional displays}
+}
+
+@Inproceedings{Kappler2015,
+  Title                    = {Leveraging big data for grasp planning},
+  Author                   = {D. Kappler and J. Bohg and S. Schaal},
+  Booktitle                = {IEEE International Conference on Robotics and Automation (ICRA)},
+  Date                     = {2015-05},
+  Editor                   = {Allison Okamura},
+  Year                     = {2015},
+  Doi                      = {10.1109/ICRA.2015.7139793},
+  Month                    = {May},
+  Pages                    = {4304-4311},
+
+  Abstract                 = {We propose a new large-scale database containing grasps that are applied to a large set of objects from numerous categories. These grasps are generated in simulation and are annotated with different grasp stability metrics. We use a descriptive and efficient representation of the local object shape at which each grasp is applied. Given this data, we present a two-fold analysis: (i) We use crowdsourcing to analyze the correlation of the metrics with grasp success as predicted by humans. The results show that the metric based on physics simulation is a more consistent predictor for grasp success than the standard υ-metric. The results also support the hypothesis that human labels are not required for good ground truth grasp data. Instead the physics-metric can be used to generate datasets in simulation that may then be used to bootstrap learning in the real world. (ii) We apply a deep learning method and show that it can better leverage the large-scale database for prediction of grasp success compared to logistic regression. Furthermore, the results suggest that labels based on the physics-metric are less noisy than those from the υ-metric and therefore lead to a better classification performance.},
+  ISSN                     = {1050-4729},
+  Keywords                 = {Big Data;control engineering computing;database management systems;grippers;planning (artificial intelligence);Big Data;grasp planning;large-scale database;learning method;logistic regression;physics simulation;physics-metric;Databases;Noise measurement;Robots;Shape;Stability analysis;Three-dimensional displays}
+}
+
+@Article{lenz2015,
+  Title                    = {Deep learning for detecting robotic grasps},
+  Author                   = {Ian Lenz and Honglak Lee and Ashutosh Saxena},
+  Date                     = {2015-03-16},
+  Journaltitle             = {The International Journal of Robotics Research},
+  Year                     = {2015},
+  Doi                      = {10.1177/0278364914549607},
+  Eprint                   = { 
+ https://doi.org/10.1177/0278364914549607
+ 
+},
+  Number                   = {4-5},
+  Pages                    = {705-724},
+  Url                      = { 
+ https://doi.org/10.1177/0278364914549607
+ 
+},
+  Volume                   = {34},
+
+  Abstract                 = {We consider the problem of detecting robotic grasps in an RGB-D view of a scene containing objects. In this work, we apply a deep learning approach to solve this problem, which avoids time-consuming hand-design of features. This presents two main challenges. First, we need to evaluate a huge number of candidate grasps. In order to make detection fast and robust, we present a two-step cascaded system with two deep networks, where the top detections from the first are re-evaluated by the second. The first network has fewer features, is faster to run, and can effectively prune out unlikely candidate grasps. The second, with more features, is slower but has to run only on the top few detections. Second, we need to handle multimodal inputs effectively, for which we present a method that applies structured regularization on the weights based on multimodal group regularization. We show that our method improves performance on an RGBD robotic grasping dataset, and can be used to successfully execute grasps on two different robotic platforms.},
+  Journal                  = {The International Journal of Robotics Research}
+}
+
 @Article{mahler2017,
-  Title                    = {Dex-Net 2.0: Deep Learning to Plan Robust Grasps with Synthetic Point
- Clouds and Analytic Grasp Metrics},
+  Title                    = {Dex-Net 2.0: Deep Learning to Plan Robust Grasps with Synthetic Point Clouds and Analytic Grasp Metrics},
   Author                   = {Jeffrey Mahler and
  Jacky Liang and
  Sherdil Niyaz and
@@ -59,7 +195,8 @@ and Allen, Peter K.},
  Xinyu Liu and
  Juan Aparicio Ojea and
  Ken Goldberg},
-  Journaltitle             = {CoRR},
+  Date                     = {2017-03-01},
+  Journaltitle             = {Robotics: Science and Systems (RSS)},
   Year                     = {2017},
   Eprint                   = {1703.09312},
   Url                      = {http://arxiv.org/abs/1703.09312},
@@ -75,6 +212,8 @@ and Allen, Peter K.},
   Title                    = {Dex-net 1.0: A cloud-based network of 3d objects for robust grasp planning using a multi-armed bandit model with correlated rewards},
   Author                   = {Mahler, Jeffrey and Pokorny, Florian T and Hou, Brian and Roderick, Melrose and Laskey, Michael and Aubry, Mathieu and Kohlhoff, Kai and Kr{\"o}ger, Torsten and Kuffner, James and Goldberg, Ken},
   Booktitle                = {IEEE International Conference on Robotics and Automation (ICRA)},
+  Date                     = {2016-05},
+  Editor                   = {Allison Okamura},
   Year                     = {2016},
   Organization             = {IEEE},
   Pages                    = {1957--1964},
@@ -106,6 +245,21 @@ and Allen, Peter K.},
   Publisher                = {Kluwer Academic Publishers}
 }
 
+@Inproceedings{Rubert2017,
+  Title                    = {On the relevance of grasp metrics for predicting grasp success},
+  Author                   = {C. Rubert and D. Kappler and A. Morales and S. Schaal and J. Bohg},
+  Booktitle                = {2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  Date                     = {2017-09},
+  Editor                   = {Tony Maciejewski},
+  Year                     = {2017},
+  Doi                      = {10.1109/IROS.2017.8202167},
+  Month                    = {Sept},
+  Pages                    = {265-272},
+
+  Abstract                 = {We aim to reliably predict whether a grasp on a known object is successful before it is executed in the real world. There is an entire suite of grasp metrics that has already been developed which rely on precisely known contact points between object and hand. However, it remains unclear whether and how they may be combined into a general purpose grasp stability predictor. In this paper, we analyze these questions by leveraging a large scale database of simulated grasps on a wide variety of objects. For each grasp, we compute the value of seven metrics. Each grasp is annotated by human subjects with ground truth stability labels. Given this data set, we train several classification methods to find out whether there is some underlying, non-trivial structure in the data that is difficult to model manually but can be learned. Quantitative and qualitative results show the complexity of the prediction problem. We found that a good prediction performance critically depends on using a combination of metrics as input features. Furthermore, non-parametric and non-linear classifiers best capture the structure in the data.},
+  Keywords                 = {grippers;pattern classification;classification methods;contact points;general purpose grasp stability predictor;grasp metrics;grasp success prediction;ground truth stability labels;large scale database;nonlinear classifiers;nonparametric classifiers;prediction performance;prediction problem complexity;Computational modeling;Databases;Labeling;Measurement;Physics;Robots;Stability analysis}
+}
+
 @Article{Sahbani2012,
   Title                    = {An Overview of 3D Object Grasp Synthesis Algorithms},
   Author                   = {Sahbani, A. and El-Khoury, S. and Bidaud, P.},
@@ -130,16 +284,73 @@ and Allen, Peter K.},
   Publisher                = {North-Holland Publishing Co.}
 }
 
+@Article{Shimoga1996,
+  Title                    = {Robot Grasp Synthesis Algorithms: A Survey},
+  Author                   = {K.B. Shimoga},
+  Date                     = {1996-06-01},
+  Journaltitle             = {The International Journal of Robotics Research},
+  Year                     = {1996},
+  Doi                      = {10.1177/027836499601500302},
+  Eprint                   = { 
+ https://doi.org/10.1177/027836499601500302
+ 
+},
+  Number                   = {3},
+  Pages                    = {230-266},
+  Url                      = { 
+ https://doi.org/10.1177/027836499601500302
+ 
+},
+  Volume                   = {15},
+
+  Abstract                 = { This article presents a survey of the existing computational algorithms meant for achieving four important properties in autonomous multifingered robotic hands. The four properties are: dexterity, equilibrium, stability, and dynamic behavior The multifingered robotic hands must be controlled so as to possess these properties and hence be able to autonomously perform complex tasks in a way similar to human hands.Existing algorithms to achieve dexterity primarily involve solving an unconstrained linear programming problem where an objective function can be chosen to represent one or more of the currently known dexterity measures. Algorithms to achieve equilibrium also constitute solving a linear program ming problem wherein the positivity, friction, and joint torque constraints of all fingers are accounted for while optimizing the internal grasping forces. Stability algorithms aim at achiev ing positive definite grasp impedance matrices by solving for the required fingertip impedances. This problem reduces to a nonlinear programming problem. Dynamic behavior algorithms determine fingertip impedances, which, when achieved, lead to a desired dynamic behavior. This problem, too, becomes a linear programming problem.If a robotic hand has to acquire any or all of these proper ties, the corresponding algorithms should become integral parts of the hand control system. These algorithms are collectively referred to in this article as robot grasp synthesis algorithms. },
+  Journal                  = {The International Journal of Robotics Research}
+}
+
+@Inproceedings{Shrivastava2017,
+  Title                    = {Learning from Simulated and Unsupervised Images through Adversarial Training},
+  Author                   = {A. Shrivastava and T. Pfister and O. Tuzel and J. Susskind and W. Wang and R. Webb},
+  Booktitle                = {2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  Date                     = {2017-07},
+  Editor                   = {Lisa O’Conner},
+  Year                     = {2017},
+  Doi                      = {10.1109/CVPR.2017.241},
+  Month                    = {July},
+  Pages                    = {2242-2251},
+
+  Abstract                 = {With recent progress in graphics, it has become more tractable to train models on synthetic images, potentially avoiding the need for expensive annotations. However, learning from synthetic images may not achieve the desired performance due to a gap between synthetic and real image distributions. To reduce this gap, we propose Simulated+Unsupervised (S+U) learning, where the task is to learn a model to improve the realism of a simulators output using unlabeled real data, while preserving the annotation information from the simulator. We develop a method for S+U learning that uses an adversarial network similar to Generative Adversarial Networks (GANs), but with synthetic images as inputs instead of random vectors. We make several key modifications to the standard GAN algorithm to preserve annotations, avoid artifacts, and stabilize training: (i) a self-regularization term, (ii) a local adversarial loss, and (iii) updating the discriminator using a history of refined images. We show that this enables generation of highly realistic images, which we demonstrate both qualitatively and with a user study. We quantitatively evaluate the generated images by training models for gaze estimation and hand pose estimation. We show a significant improvement over using synthetic images, and achieve state-of-the-art results on the MPIIGaze dataset without any labeled real data.},
+  ISSN                     = {1063-6919},
+  Keywords                 = {pose estimation;realistic images;unsupervised learning;Generative Adversarial Networks;MPIIGaze dataset;Simulated+Unsupervised learning;gaze estimation;hand pose estimation;synthetic image distributions;Computational modeling;Data models;Gallium nitride;Neural networks;Pose estimation;Training}
+}
+
 @Book{suarez2006,
   Title                    = {Grasp quality measures},
   Author                   = {Su{\'a}rez, Ra{\'u}l and Cornella, Jordi and Garz{\'o}n, M{\'a}ximo Roa},
+  Date                     = {2006},
   Year                     = {2006},
   Publisher                = {Institut d'Organitzaci{\'o} i Control de Sistemes Industrials}
+}
+
+@Inproceedings{WeiszAllen2012,
+  Title                    = {Pose error robust grasping from contact wrench space metrics},
+  Author                   = {J. Weisz and P. K. Allen},
+  Booktitle                = {2012 IEEE International Conference on Robotics and Automation},
+  Date                     = {2012-05},
+  Editor                   = {Antonio Bicchi},
+  Year                     = {2012},
+  Doi                      = {10.1109/ICRA.2012.6224697},
+  Month                    = {May},
+  Pages                    = {557-562},
+
+  Abstract                 = {Grasp quality metrics which analyze the contact wrench space are commonly used to synthesize and analyze preplanned grasps. Preplanned grasping approaches rely on the robustness of stored solutions. Analyzing the robustness of such solutions for large databases of preplanned grasps is a limiting factor for the applicability of data driven approaches to grasping. In this work, we will focus on the stability of the widely used grasp wrench space epsilon quality metric over a large range of poses in simulation. We examine a large number of grasps from the Columbia Grasp Database for the Barrett hand. We find that in most cases the grasp with the most robust force closure with respect to pose error for a particular object is not the grasp with the highest epsilon quality. We demonstrate that grasps can be reranked by an estimate of the stability of their epsilon quality. We find that the grasps ranked best by this method are successful more often in physical experiments than grasps ranked best by the epsilon quality.},
+  ISSN                     = {1050-4729},
+  Keywords                 = {grippers;robust control;Barrett hand;Columbia grasp database;contact wrench space metrics;data driven approach;grasp wrench space epsilon quality metric;pose error robust grasping;robust force closure;robustness analysis;Databases;Force;Grasping;Joints;Measurement;Robustness;Uncertainty}
 }
 
 @Book{Yoshikawa1990,
   Title                    = {Foundations of Robotics: Analysis and Control},
   Author                   = {Yoshikawa, Tsuneo},
+  Date                     = {1990},
   Year                     = {1990},
   ISBN                     = {0-262-24028-9},
   Publisher                = {MIT Press},
