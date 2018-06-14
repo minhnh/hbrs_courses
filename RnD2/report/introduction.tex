@@ -1,5 +1,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
 \section{Introduction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Motivation}
+\todo{why is grasping important}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Use Case}
+\todo{describe Robocup use case}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{An overview of robotic grasping research}
 
 Synthesizing an optimal grasp from perceptual data is a challenging problem and is frequently addressed in
 robotic research, resulting a myriad of approaches. Sahbani et al. \cite{Sahbani2012} classify grasp synthesis
@@ -56,15 +68,58 @@ synthesizing the gripper configuration, RGB-D is often preferred over images as 
 \cite{Eitel2015,Gupta2014RGBDFeatures} proposes approaches to augmenting RGB-D data, whereas Mahler et al.
 \cite{mahler2017} generates synthetic data to train a grasp quality predictor.
 
-\todo{describe approach, limit to Robocup use case}
+\todo{narrow to empirical techniques using labeled data}
 
 \todo{layout of the report}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagebreak
 \section{Related Work}
-Empirical grasp synthesis techniques vary mainly in how object-grasp representation is formulated, what type of
-perceptual data is taken into consideration, and how grasps are evaluated. This section will review these aspects
-are handled in recent methods, as well as approaches to augment and synthesize data relevant to grasping.
+Empirical grasp synthesis techniques based on labeled data vary mainly in what type of perceptual data is taken into
+consideration, how object-grasp representation is formulated based on such perceptual data, and how grasps are
+evaluated. This section will review these aspects are handled in recent methods, as well as approaches to augment and
+synthesize data relevant to grasping.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Extracting features from perceptual data for grasping}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{Eitel_et_al-2015-depth_color_encodings}
+    \caption{Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface normals
+        \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed by Eitel et al.
+        \cite{Eitel2015}.}
+    \label{fig:depth-encodings}
+\end{figure}
+
+As RGB-D cameras become more accessible and affordable, they are often chosen in robotic systems as the primary
+perception sensor. While RGB-D data has been shown to provide richer features compared to pure 2D images for various
+perception tasks \cite{lenz2015,Eitel2015,Gupta2014RGBDFeatures,jiang2011}, it is often unclear how to handle the
+multi-modality of color and depth information.
+
+Lenz et al. \cite{lenz2015} used deep auto-encoders to build a representation for each feature channel, reducing its data
+dimensions. To handle the multi-modality of RGB and depth data, the authors also introduced a structured regularization
+technique. Each modality (i.e. RGB and depth/surface normal) has a regularization term which will be added to each
+hidden unit. In case of a $p-norm$, with $K$ hidden units, $R$ modalities, and N visible units, the regularization term
+would be
+\[f(W) = \sum\limits^K_{j=1} \sum\limits^R_{r=1} \left( \sum\limits^N_{i=1} S_{r,i} \lvert W^p_{i,j} \rvert \right)
+^{1/p}, \]
+where $S_{r,i}$ is $1$ if feature $i$ belongs to modality $r$ and $0$ otherwise.
+
+Bo et al. \cite{Bo2013} built sparse coding dictionaries for RGB-D data using the K-SVD algorithm, and proposed to use
+hierarchical matching pursuit (HMP) to compute a feature hierarchy for new RGB-D images. Each entry in the dictionaries
+contain 8 channels calculated from RGB-D data: grayscale intensity, RGB, depth and surface normals in three axes.
+
+In order to leverage the success of Convolutional Neural Networks (CNN) in capturing 2D features \cite{Gu2018}, several
+multi-modal approaches convert depth data into three-channel images during the preprocessing step
+\cite{Eitel2015,Gupta2014RGBDFeatures}. Gupta et al. \cite{Gupta2014RGBDFeatures} proposes the HHA representation, which
+encode the depth each pixel of the depth image with horizontal disparity, height above ground, and the angle between the
+local surface normal and direction of gravity. Eitel et al. \cite{Eitel2015} proposes to use convert the depth value
+directly into RGB values using a jet color mapping. Examples of the different depth encodings can be seen in figure
+\ref{fig:depth-encodings}. Two CNN models of the same architecture are then trained independently using depth and RGB
+images to classify objects. Finally, features learned from the two models (the networks up until before the
+classification layer) are concatenated as inputs to a fully connected layer which learns to combine them to recognize
+objects. The paper showed that while surface normals proved to give better classification performance using depth
+information alone, they require additional calculation on the input data and does not improve on results when combining
+both RGB and depth images compared to the proposed color map encoding.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Object-Grasp representation}
@@ -80,7 +135,6 @@ As illustrated in figure \ref{fig:dexnet-data-gen}, Mahler et al. represent gras
 center to the gripper central point and the image's middle row to the grasp axis \cite{mahler2017}. The grasp is assumed
 to have an approach vector perpendicular to the table, and hence is characterized by the gripper center and the angle of
 the gripper axis with respect to the table.
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{mahler_et_al-2017-dexnet_2-dataset_generation.png}
@@ -88,18 +142,31 @@ the gripper axis with respect to the table.
     \label{fig:dexnet-data-gen}
 \end{figure}
 
-Eigengrasps \cite{Goldfeder2011} \todo{fill approach}
+Several methods use eigengrasps to represent the object-grasp relation in free space \cite{Goldfeder2011,Ciocarlie2009}.
+Ciocarlie and Allen \cite{Ciocarlie2009} introduced eigengrasps and defined them as principal components of the dataset
+of human hand configurations. Using this low-dimensional representation, the robot hand receive adjustments from a human
+operator during grasp execution. The proposed Eigengrasp planner uses a simulated annealing algorithm to maximize a
+quality metric $Q$ calculated from robot hand's posture and pose, where posture is represented using an eigengrasp.
+Specifically,
+\[ Q = \Sigma_i (1 - \delta_i) \]
+for all desired contacts $i$, where
+\[
+\delta_i = \cfrac{|\mathbf{o_i}|}{\alpha}
++ \left(1 - \cfrac{\mathbf{\hat{n}_i} \cdot \mathbf{o_i}}{|\mathbf{o_i}|} \right)
+\]
+, in which the local surface normal $\mathbf{\hat{n}_i}$ and the distance between desired contact location and the
+object $\mathbf{o_i}$ is related to the eigengrasp and hand position. $\alpha$ is a scaling factor make the first term
+comparable to the second in the latter equation. Goldfeder and Allen \cite{Goldfeder2011} used the Eigengrasp planner
+to generate the Columbia Grasp Database. Grasp planning is then done by matching the query object to one in the
+database, then executing the best indexed grasp for the matched object.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Techniques based on local features}
+\subsubsection*{Techniques based on local features} \label{subsub:object_grasp_local}
 
 Several methods represent grasp candidates as rectangles positioned in RGB and/or depth images \cite{lenz2015,jiang2011},
 corresponding with a bipedal gripper. The RGB-D image region within these rectangles is then used to score the
-respective grasp using machine learning methods. Lenz et al. \cite{lenz2015} used deep autoencoders to build a
-representation for each feature channel, reducing its data dimensions. To handle the multi-modality of RGB and
-depth data, the authors also introduced a structured regularization technique. Each modality (i.e. RGB and depth/surface
-normal) has a regularization term which will be added to each hidden unit. For a norm $p$
-\todo{add normalization equation for clarity}
+respective grasp using machine learning methods.
 
 Kappler et al. \cite{Kappler2015} extracts local shape representations (or templates) of objects from point clouds
 generated from object meshes at various camera view points. The templates are grids with predefined resolution
@@ -122,6 +189,8 @@ Detry et al. \cite{Detry2012} \todo{fill approach}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Grasp evaluation}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Quick overview of classical grasp metrics}
 \begin{table}[H]
     \includegraphics[width=\textwidth]{roa_suarez-2015-grasp_metrics}
     \caption{Grasp quality measures \cite{Roa2015}.}
@@ -136,18 +205,42 @@ Roa and Su{\'a}rez group grasp quality measures into approaches focusing on cont
 \end{itemize}
 Table \ref{table:grasp_metric} illustrates how contact point and hand configuration related approaches can be further categorized into subgroups, and include metrics based on bio-mechanical fatigue and deviation of object pose which are not encapsulated by the aforementioned groups.
 
-\subsubsection{Learning to predict grasp quality}
+\todo{$\epsilon$-metric}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Learning to predict grasp quality}
+Learning rectangles \cite{mahler2017,jiang2011,lenz2015}
+Kappler et al. \cite{Kappler2015}
+
 \todo{to be filled}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Data augmentation for grasp success prediction}
+\subsection{Generating data for grasp success prediction}
 
-\subsubsection{Dex-Net 2.0 Data Generation} \label{dexnet-generation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Data synthesis}
+Several grasp synthesis approaches generate RGB-D images from object meshes at different viewpoints
+\cite{mahler2017,Gupta2014RGBDFeatures,Kappler2015} for constructing a grasp knowledge database. These approaches
+usually differ in how to \todo{to be filled}
+
+Dex-net \todo{reorganize with other approaches}
 \begin{itemize}
-    \item Compute stable object poses from 3D mesh models from Dex-Net 1.0 \cite{mahler2016}, object meshes are rescaled to fit within the gripper physical constraints, and store poses with probability of occurrence above a threshold.
-    \item Grasps are sampled using rejection sampling to ensure coverage of the object surface, ranked and selected using a grasp quality metric.
-    \item 2D images are generated from grasp candidates as training data with the antipodal axis aligned to the middle row of the image.
+    \item Compute stable object poses from 3D mesh models from Dex-Net 1.0 \cite{mahler2016}, object meshes are rescaled
+    to fit within the gripper physical constraints, and store poses with probability of occurrence above a threshold.
+    \item Grasps are sampled using rejection sampling to ensure coverage of the object surface, ranked and selected
+    using a grasp quality metric.
+    \item 2D images are generated from grasp candidates as training data with the antipodal axis aligned to the middle
+    row of the image.
 \end{itemize}
+
+Kappler et al. \cite{Kappler2015}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Data augmentation}
+Eitel et al \cite{Eitel2015}
+
+\cite{Gupta2014RGBDFeatures}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subsection{Task Compatibility}
