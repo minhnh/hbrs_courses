@@ -4,15 +4,52 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Motivation}
-\todo{why is grasping important}
+Automation has been instrumental to industrial manufacturing since the 1950s, replacing human workers from tasks
+requiring high precision, speed and endurance. Notable breakthroughs in this period include the remotely controlled
+mechanical manipulators called ``teleoperators'', developed at Argonne and Oak Ridge National Laboratories for handling
+radioactive material, and the programmable Computer Numerically Controlled (CNC) machine tools. Built upon these
+inventions, George Devol developed one of the earliest realization of industrial automation, replacing the human
+operator of ``teleoperators'' with the CNC controller, creating the first robotic manipulators \cite{Murray1994}.
+
+The end effector is the device at the end of the robotic manipulator, which directly interacts with the manipulated
+object. Traditionally in industry the end effector is a simple gripper. Any object movement in this case requires
+manipulating the whole arm, which is effective for transferring objects over large motion ranges but can be intractable
+for tasks requiring precise movements. The recent vacuum based effectors face similar problems in object manipulation.
+To handle finer motions, the common solutions in industry are either using custom designed end-effector or multi-finger
+robot hands. The problem of robotic grasping typically refer to the use of gripper and multi-finger end effector to
+manipulate objects. 70 years after the conception of the first robot arm, a general solution to finding a suitable grasp
+for objects is still a challenging problem and an area of active research.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Use Case}
-\todo{describe Robocup use case}
+\picHereWidth{robocup_typical_objects}
+{Typical objects in the Robocup@Home competition \cite{robocupRulebook2018}.}
+{fig:robocup_objects}{0.9\textwidth}
+
+This project focuses on the use cases of robotic grasping in the
+\footnoteHref{http://www.robocupathome.org/}{Robocup @Home} league. The tasks in this competition are designed to
+evaluate performance of autonomous robots in service robotic applications in a domestic environment. The objects to be
+manipulated are ones that can be found in a typical household setting. Some examples of such objects can be seen in
+figure \ref{fig:robocup_objects}. These objects can be placed on tables, shelves or in a dishwasher, whose locations
+can be anywhere in an simulated apartment. Grasping tasks in such an environment is challenging than because of various
+factors, including the variety of object shapes, the uncertainty of the robot manipulator and objects' locations,
+and the many noise/disturbance sources which can interfere with the robot's perceptual sensors such as lighting
+condition or object occlusion.
+
+The platform used for the project's experiments is the robot chosen for the standard platform for the Robocup@Home
+league, the
+\footnoteHref{http://www.toyota-global.com/innovation/partner\_robot/robot/\#link02}{Toyota Human Support Robot (HSR)}
+\cite{robocupRulebook2018}. The robot is equipped with a RGB-D sensor
+(\footnoteHref{https://www.asus.com/3D-Sensor/Xtion\_PRO\_LIVE/}{Xtion PRO LIVE}), stereo camera and a wide angle camera
+on the robot head, as well as a wide angle camera mounted on the two-finger gripper. The gripper also has a potentiometer
+and a force sensor.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{An overview of robotic grasping research}
 
+\picHereWidth{bohg14-grasp_synthesis_mind_map}
+             {Aspects which may influence generation of grasp hypotheses \cite{Bohg2014}.}
+             {fig:grasp_synthesis_mind_map}{0.9\textwidth}
 Synthesizing an optimal grasp from perceptual data is a challenging problem and is frequently addressed in
 robotic research, resulting a myriad of approaches. Sahbani et al. \cite{Sahbani2012} classify grasp synthesis
 into analytical and empirical approaches. Analytical methods consider mechanical properties of the contact
@@ -46,20 +83,13 @@ the importance of perception in the process. In addition to the above classifica
 also identify principal factors that may influence a grasp hypothesis, as shown in the mind map in figure
 \ref{fig:grasp_synthesis_mind_map}.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{bohg14-grasp_synthesis_mind_map}
-    \caption{Aspects which may influence generation of grasp hypotheses \cite{Bohg2014}.}
-    \label{fig:grasp_synthesis_mind_map}
-\end{figure}
-
 Analytical approaches to synthesizing grasps generally rely on knowledge of the object, the gripper model and the
 contact location of the fingers. These information is often inaccurate or unavailable in the real environment
 because of noisy sensors as well as imprecise manipulator/gripper actuation. Indeed, analytical methods have been
 shown to be unreliable in synthesizing stable grasps when applied on real robots
 \cite{Kappler2015, Rubert2017, WeiszAllen2012}. Empirical approaches, however, as with other supervised machine
-learning methods, demand data. Generating a sufficiently large grasp experience knowledge base is often time-consuming
-and expensive, while grasp simulation may not be close enough to the real world.
+learning methods, demand labeled data. Generating a sufficiently large grasp experience knowledge base is often
+time-consuming and expensive, while grasp simulation may not be close enough to the real world.
 
 Data augmentation, the process of generating new samples by transforming real data, and data synthesis are popular
 solutions to supplementing limited training data \cite{Fawzi2016, Shrivastava2017}, especially when applying deep
@@ -68,7 +98,9 @@ synthesizing the gripper configuration, RGB-D is often preferred over images as 
 \cite{Eitel2015,Gupta2014RGBDFeatures} proposes approaches to augmenting RGB-D data, whereas Mahler et al.
 \cite{mahler2017} generates synthetic data to train a grasp quality predictor.
 
-\todo{narrow to empirical techniques using labeled data}
+In order to leverage the successes of deep learning for various perception and grasping tasks, which are in general
+supervised techniques, this project shall focus on data generation and augmentation for empirical approaches to grasp
+synthesis using labeled data.
 
 \todo{layout of the report}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,14 +113,11 @@ synthesize data relevant to grasping.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Extracting features from perceptual data for grasping}
-\begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{Eitel_et_al-2015-depth_color_encodings}
-    \caption{Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface normals
-        \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed by Eitel et al.
-        \cite{Eitel2015}.}
-    \label{fig:depth-encodings}
-\end{figure}
+\picHereWidth{Eitel_et_al-2015-depth_color_encodings}
+             {Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
+                 normals \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed
+                 by Eitel et al. \cite{Eitel2015}.}
+             {fig:depth-encodings}{\linewidth}
 
 As RGB-D cameras become more accessible and affordable, they are often chosen in robotic systems as the primary
 perception sensor. While RGB-D data has been shown to provide richer features compared to pure 2D images for various
@@ -135,12 +164,9 @@ As illustrated in figure \ref{fig:dexnet-data-gen}, Mahler et al. represent gras
 center to the gripper central point and the image's middle row to the grasp axis \cite{mahler2017}. The grasp is assumed
 to have an approach vector perpendicular to the table, and hence is characterized by the gripper center and the angle of
 the gripper axis with respect to the table.
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{mahler_et_al-2017-dexnet_2-dataset_generation.png}
-    \caption{Dex-net 2.0 data generation pipeline \cite{mahler2017}.}
-    \label{fig:dexnet-data-gen}
-\end{figure}
+\picHereWidth{mahler_et_al-2017-dexnet_2-dataset_generation}
+             {Dex-net 2.0 data generation pipeline \cite{mahler2017}.}
+             {fig:dexnet-data-gen}{\textwidth}
 
 Several methods use eigengrasps to represent the object-grasp relation in free space \cite{Goldfeder2011,Ciocarlie2009}.
 Ciocarlie and Allen \cite{Ciocarlie2009} introduced eigengrasps and defined them as principal components of the dataset
@@ -150,16 +176,15 @@ quality metric $Q$ calculated from robot hand's posture and pose, where posture 
 Specifically,
 \[ Q = \Sigma_i (1 - \delta_i) \]
 for all desired contacts $i$, where
-\[
-\delta_i = \cfrac{|\mathbf{o_i}|}{\alpha}
-+ \left(1 - \cfrac{\mathbf{\hat{n}_i} \cdot \mathbf{o_i}}{|\mathbf{o_i}|} \right)
-\]
-, in which the local surface normal $\mathbf{\hat{n}_i}$ and the distance between desired contact location and the
+\[ \delta_i = \cfrac{|\mathbf{o_i}|}{\alpha}
+              + \left(1 - \cfrac{\mathbf{\hat{n}_i} \cdot \mathbf{o_i}}{|\mathbf{o_i}|} \right), \]
+in which the local surface normal $\mathbf{\hat{n}_i}$ and the distance between desired contact location and the
 object $\mathbf{o_i}$ is related to the eigengrasp and hand position. $\alpha$ is a scaling factor make the first term
 comparable to the second in the latter equation. Goldfeder and Allen \cite{Goldfeder2011} used the Eigengrasp planner
 to generate the Columbia Grasp Database. Grasp planning is then done by matching the query object to one in the
 database, then executing the best indexed grasp for the matched object.
 
+\todo{need 1 more approach}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Techniques based on local features} \label{subsub:object_grasp_local}

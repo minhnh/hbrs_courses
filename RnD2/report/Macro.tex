@@ -1,29 +1,38 @@
+% #1 - image path, #2 - caption, #3 - label
 \newcommand{\picHere}[3] { %
 \begin{figure}[htp] %
 \begin{center} %
-\resizebox{!}{!}{\includegraphics{pictures/#1}} %
+\resizebox{!}{!}{\includegraphics{#1}} %
 \caption{{\small#2}} %
 \label{#3} %
 \end{center} %
 \end{figure} %
 }
 
+% #1 - image path, #2 - caption, #3 - label, #4 - figure width
 \newcommand{\picHereWidth}[4] { %
-\begin{figure}[htp] %
+\begin{figure}[htb] %
 \begin{center} %
-\resizebox{!}{!}{\includegraphics[#4]{pictures/#1}} %
-\caption{{\small#2}} %
+\resizebox{!}{!}{\includegraphics[width=#4]{#1}} %
+\caption{{\small #2}} %
 \label{#3} %
 \end{center} %
 \end{figure} %
 }
 
+% #1 - image path, #2 - caption, #3 - label
 \newcommand{\picHereRes}[3] { %
 \begin{figure}[htp] %
 \begin{center} %
-\resizebox{!}{!}{\includegraphics[totalheight=0.8\textheight]{pictures/#1}} %
+\resizebox{!}{!}{\includegraphics[totalheight=0.8\textheight]{#1}} %
 \caption{#2} %
 \label{#3} %
 \end{center} % 
 \end{figure} %
 }
+
+% #1 - link, #2 - display text, #3 - display link
+\newcommand{\footnoteHrefSpecial}[3]{\href{#1}{#2 \footnote{\href{#1}{#3}}}}
+
+% #1 - link, #2 - display text (display link = link)
+\newcommand{\footnoteHref}[2]{\footnoteHrefSpecial{#1}{#2}{#1}}
