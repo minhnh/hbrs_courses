@@ -67,7 +67,7 @@ candidates. Sahbani et al. \cite{Sahbani2012} group empirical approaches based o
 or objects. The first group of methods teach a robotic system to observe a human operator via different forms of
 descriptors, then to reproduce the same grasp. These techniques are also known as learning by demonstration.
 Methods focusing on object observation in general learn the association between object characteristics and gripper
-configurations. The survey by Bohg et al. \cite{Bohg2014} argues instead to classify data-driven methods based on how
+configurations. The survey by Bohg et al. \cite{Bohg2014} argue instead to classify data-driven methods based on how
 much information is assumed about the query object, specifically:
 \begin{itemize}
     \item Approaches dealing with \emph{known objects} rely on a grasp experience database which contain suitable grasps
@@ -113,18 +113,14 @@ synthesize data relevant to grasping.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Extracting features from perceptual data for grasping}
-\picHereWidth{Eitel_et_al-2015-depth_color_encodings}
-             {Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
-                 normals \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed
-                 by Eitel et al. \cite{Eitel2015}.}
-             {fig:depth-encodings}{\linewidth}
+Qi et al. \cite{Qi2016}, Porzi et al. \cite{Porzi2017} \todo{fill approaches}
 
 As RGB-D cameras become more accessible and affordable, they are often chosen in robotic systems as the primary
 perception sensor. While RGB-D data has been shown to provide richer features compared to pure 2D images for various
 perception tasks \cite{lenz2015,Eitel2015,Gupta2014RGBDFeatures,jiang2011}, it is often unclear how to handle the
 multi-modality of color and depth information.
 
-Lenz et al. \cite{lenz2015} used deep auto-encoders to build a representation for each feature channel, reducing its data
+Lenz et al. \cite{lenz2015} use deep auto-encoders to build a representation for each feature channel, reducing its data
 dimensions. To handle the multi-modality of RGB and depth data, the authors also introduced a structured regularization
 technique. Each modality (i.e. RGB and depth/surface normal) has a regularization term which will be added to each
 hidden unit. In case of a $p-norm$, with $K$ hidden units, $R$ modalities, and N visible units, the regularization term
@@ -133,15 +129,21 @@ would be
 ^{1/p}, \]
 where $S_{r,i}$ is $1$ if feature $i$ belongs to modality $r$ and $0$ otherwise.
 
-Bo et al. \cite{Bo2013} built sparse coding dictionaries for RGB-D data using the K-SVD algorithm, and proposed to use
+Bo et al. \cite{Bo2013} build sparse coding dictionaries for RGB-D data using the K-SVD algorithm, and proposed to use
 hierarchical matching pursuit (HMP) to compute a feature hierarchy for new RGB-D images. Each entry in the dictionaries
 contain 8 channels calculated from RGB-D data: grayscale intensity, RGB, depth and surface normals in three axes.
 
+\picHereWidth{Eitel_et_al-2015-depth_color_encodings}
+{Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
+    normals \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed
+    by Eitel et al. \cite{Eitel2015}.}
+{fig:depth-encodings}{\linewidth}
+
 In order to leverage the success of Convolutional Neural Networks (CNN) in capturing 2D features \cite{Gu2018}, several
 multi-modal approaches convert depth data into three-channel images during the preprocessing step
-\cite{Eitel2015,Gupta2014RGBDFeatures}. Gupta et al. \cite{Gupta2014RGBDFeatures} proposes the HHA representation, which
+\cite{Eitel2015,Gupta2014RGBDFeatures}. Gupta et al. \cite{Gupta2014RGBDFeatures} propose the HHA representation, which
 encode the depth each pixel of the depth image with horizontal disparity, height above ground, and the angle between the
-local surface normal and direction of gravity. Eitel et al. \cite{Eitel2015} proposes to use convert the depth value
+local surface normal and direction of gravity. Eitel et al. \cite{Eitel2015} propose to use convert the depth value
 directly into RGB values using a jet color mapping. Examples of the different depth encodings can be seen in figure
 \ref{fig:depth-encodings}. Two CNN models of the same architecture are then trained independently using depth and RGB
 images to classify objects. Finally, features learned from the two models (the networks up until before the
@@ -152,7 +154,7 @@ both RGB and depth images compared to the proposed color map encoding.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Object-Grasp representation}
-Bohg et al. \cite{Bohg2014} parameterized grasps by (1) the \emph{grasping point} of the object where the gripper
+Bohg et al. \cite{Bohg2014} parameterize grasps by (1) the \emph{grasping point} of the object where the gripper
 should be aligned, (2) an \emph{approach vector} from which the gripper shall approach the \emph{grasping point},
 (3) the \emph{wrist orientation} of the robotic hand, and (4) an \emph{initial gripper configuration}.
 The article also categorized object-grasp representation approaches into ones which extract local (i.e. curvature,
@@ -160,10 +162,10 @@ contact area with the hand) or global features (center of mass, bounding box).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Techniques based on global features}
-As illustrated in figure \ref{fig:dexnet-data-gen}, Mahler et al. represent grasps in 2D images by aligning the image
-center to the gripper central point and the image's middle row to the grasp axis \cite{mahler2017}. The grasp is assumed
-to have an approach vector perpendicular to the table, and hence is characterized by the gripper center and the angle of
-the gripper axis with respect to the table.
+As illustrated in figure \ref{fig:dexnet-data-gen}, Mahler et al. \cite{mahler2017} represent grasps in 2D images by
+aligning the image center to the gripper central point and the image's middle row to the grasp axis. The grasp is
+assumed to have an approach vector perpendicular to the table, and hence is characterized by the gripper center and the
+angle of the gripper axis with respect to the table.
 \picHereWidth{mahler_et_al-2017-dexnet_2-dataset_generation}
              {Dex-net 2.0 data generation pipeline \cite{mahler2017}.}
              {fig:dexnet-data-gen}{\textwidth}
@@ -189,11 +191,30 @@ database, then executing the best indexed grasp for the matched object.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Techniques based on local features} \label{subsub:object_grasp_local}
 
+\picHereWidth{detry_et_al-2012-fig3-part_candidates}
+{Generating part candidates with box-shaped region of interests \cite{Detry2012}.}
+{fig:part_candidates}{0.7\textwidth}
+
+Detry et al. \cite{Detry2012} attempt to apply grasp experience demonstrated on known objects to novel ones by finding
+similar graspable regions. As illustrated in figure \ref{fig:part_candidates}, the part candidates are point clouds
+extracted from applying a set of predefined region of interest (ROI) boxes on a known grasp from the database. Then a
+the authors defined a distance metric for clustering similar candidate parts, and a dictionary of candidate parts is
+created using only the central points of these clusters. Part candidates for new object are then matched against this
+dictionary to find possible grasps for the familiar object part.
+
+\todo{add illustration of rectangle method}
 Several methods represent grasp candidates as rectangles positioned in RGB and/or depth images \cite{lenz2015,jiang2011},
 corresponding with a bipedal gripper. The RGB-D image region within these rectangles is then used to score the
-respective grasp using machine learning methods.
+respective grasp using machine learning methods. These approaches are naturally limited in their ability to represent
+the robot hand's approach vector, since rectangles in the images can only correspond with grasps roughly orthogonal with
+the plane of the RGB-D camera \cite{Gualtieri2016}.
 
-Kappler et al. \cite{Kappler2015} extracts local shape representations (or templates) of objects from point clouds
+\picHereWidth{kappler_et_al-2015-fig8-local_shape_diff_viewpoints}
+             {Local shape representations with different camera view points of the same grasp. Cyan lines represents the
+              approach vectors while pink lines represent the camera viewpoint \cite{Kappler2015}.}
+             {fig:local_shape_viewpoints}{0.8\textwidth}
+
+Kappler et al. \cite{Kappler2015} extract local shape representations (or templates) of objects from point clouds
 generated from object meshes at various camera view points. The templates are grids with predefined resolution
 aligned with the plane tangent to the object surface at intersection point between grasp approach vector and the
 object. Each point cloud will be projected onto the grid, where the grid cells with corresponding projected points
@@ -201,15 +222,17 @@ object. Each point cloud will be projected onto the grid, where the grid cells w
 (with height depends on the camera angle) or free space (with fixed height). Figure \ref{fig:local_shape_viewpoints}
 illustrates how the local shape representations capture the different camera viewpoints.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.8\textwidth]{kappler_et_al-2015-fig8-local_shape_diff_viewpoints.png}
-    \caption{Local shape representations with different camera view points of the same grasp. Cyan lines
-        represents the approach vectors while pink lines represent the camera viewpoint \cite{Kappler2015}.}
-    \label{fig:local_shape_viewpoints}
-\end{figure}
-
-Detry et al. \cite{Detry2012} \todo{fill approach}
+Gualtieri et al \cite{Gualtieri2016} propose to represent a grasp candidate by the cuboid swept out by a two-fingered
+gripper as it closes on the object, extracting the observed points from RGB-D clouds and sampling points unobserved by
+all sensors within the region. In order to reduce dimensionality, the points in this cuboid region are then voxelized
+into $60 \times 60 \times 60$ grid, then projected onto the three planes corresponding with the cuboid's principal axes.
+For each projection, three images are generated: the average height maps of the occupied points ($60 \times 60$) and
+unobserved region ($60 \times 60$), as well as the average surface normals ($60 \times 60 \times 3$), whose three
+dimensions are interpreted as three channels in the image. These result in a total of 15 channels representing each
+candidate grasp. In their experiments, this approach performs better than the above approach proposed by Kappler et al
+\cite{Kappler2015}, but does not improve significantly over their previous approach, which used only three channels from
+the surface normals for each projection. This approach did not consider RGB data, arguing that the improvement would be
+insignificant considering the results from \cite{lenz2015}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Grasp evaluation}
@@ -230,6 +253,7 @@ Roa and Su{\'a}rez group grasp quality measures into approaches focusing on cont
 \end{itemize}
 Table \ref{table:grasp_metric} illustrates how contact point and hand configuration related approaches can be further categorized into subgroups, and include metrics based on bio-mechanical fatigue and deviation of object pose which are not encapsulated by the aforementioned groups.
 
+Weisz and Allen \cite{WeiszAllen2012}
 \todo{$\epsilon$-metric}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -243,29 +267,70 @@ Kappler et al. \cite{Kappler2015}
 \subsection{Generating data for grasp success prediction}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Data synthesis}
-Several grasp synthesis approaches generate RGB-D images from object meshes at different viewpoints
-\cite{mahler2017,Gupta2014RGBDFeatures,Kappler2015} for constructing a grasp knowledge database. These approaches
-usually differ in how to \todo{to be filled}
+\subsubsection{Data synthesis for robot grasping}
 
-Dex-net \todo{reorganize with other approaches}
-\begin{itemize}
-    \item Compute stable object poses from 3D mesh models from Dex-Net 1.0 \cite{mahler2016}, object meshes are rescaled
-    to fit within the gripper physical constraints, and store poses with probability of occurrence above a threshold.
-    \item Grasps are sampled using rejection sampling to ensure coverage of the object surface, ranked and selected
-    using a grasp quality metric.
-    \item 2D images are generated from grasp candidates as training data with the antipodal axis aligned to the middle
-    row of the image.
-\end{itemize}
+The earlier approaches to grasp knowledge synthesis often generate geometrically sound grasps for known object models.
+The agent then learns to match detected objects with these object models to find suitable grasps to execute. Notably
+Goldfeder et al. \cite{Goldfeder2009CGDB} generate a database of form-closure grasps for 3D object models, in which each
+grasp entry is represented by a pregrasp in the form of a two-dimensional eigengrasp \cite{Ciocarlie2009}, and the final
+grasp pose. Grasps are sampled from a subspace of each robot hand's degree-of-freedom (DOF) space. The authors then used
+a nearest neighbor algorithm to match each detected object to a model in this database \cite{Goldfeder2011} to find
+grasp candidates.
 
-Kappler et al. \cite{Kappler2015}
+Several grasp synthesis approaches generate perceptual data from object meshes at different viewpoints
+\cite{mahler2017,Gualtieri2016,Kappler2015} for constructing a grasp knowledge database. Mahler et al. \cite{mahler2017}
+use 3D mesh models from Dex-Net 1.0 \cite{mahler2016}, rescaling them to fit within the gripper's physical constraints.
+Stable poses are computed for each object, and poses with probability of occurrence above a threshold are stored.
+For each stable pose a set of grasps is sampled perpendicular to the table and collision-free. Rejection sampling
+is used during grasp generation to ensure coverage of the object surface. Grasps are then ranked and selected using
+a trained grasp quality metric. Finally, 2D images are generated from these grasp candidates as training data with the
+antipodal axis aligned to the middle row of the image. Figure \ref{fig:dexnet-data-gen} provides a visualization of this
+data generation process.
+
+Kappler et al. \cite{Kappler2015} generate data using the \footnoteHref{http://openrave.org/}{OpenRAVE}
+\cite{Diankov2010} simulator. Reference grasps are sampled using the geometric strategy available in OpenRAVE, where the
+contact points are approach points, and the surface normals are approach vectors. For each approach point, 8 wrist
+rotations around the approach vector and two translation offsets are applied, resulting in 16 candidate grasps per
+reference grasp. Data points are then generated for each grasp using the local shape representation described in
+subsection \ref{subsub:object_grasp_local}. A set of metrics is then applied to evaluate candidate grasps, creating the
+data labels.
+
+As robots can rarely acquire the comprehensive model of their environment from perceptual sensors, training data for
+robot learning should reflect what is normally available to the robot's perception pipeline. As a result, this project
+will focus on data synthesis approaches which generate grasp knowledge databases synthesizing and labeling perceptual
+data.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Data augmentation}
-Eitel et al \cite{Eitel2015}
 
-\cite{Gupta2014RGBDFeatures}
+For learned models to become robust to noise in real world sensors and to alleviate the scarcity of real data,
+augmentation techniques are often applied to available data before training
+\cite{Eitel2015,Kappler2015,Gupta2014RGBDFeatures}. As defined in \cite{Gu2018}, data augmentation refer to transforming
+existing data ``without altering their natures.'' Which features exactly should be preserved during the augmentation
+process depend on the data type.
 
+With the relatively recent popularization of RGB-D sensors, few approaches exist to augment depth data. Eitel et al.
+\cite{Eitel2015} sample noise patches of fixed size from real RGB-D data and divide them into five groups depending on
+the number of missing depth reading in each patch. To create a final noise pattern, a pair of patches are sampled at
+random from two different groups, then randomly added or subtracted with each other and optionally inverted. This
+process is repeated until a specific number of patterns is generated. During training, at a predefined probability,
+a noise pattern will be randomly selected from this set and applied to the depth sample to create the noised input.
+Kappler at al \cite{Kappler2015} introduces noise to the object poses while sampling for reference grasps, before
+generating each data point. Specifically, at the grasp approach point, the object is rotated around a random axis, then
+a random offset is added to the surface pose. This variations of the object pose are intended to capture the errors in
+calculating the surface normals and the surface noise during the reconstruction as described in subsection
+\ref{subsub:object_grasp_local}. Gupta et al. \cite{Gupta2014RGBDFeatures} have a simpler approach, only adding a low
+frequency white noise to the disparity images to augment the depth information.
+
+In contrast many augmentation approaches have been developed for images. Several involves simple geometric
+transformations such as mirroring, rotating, shifting \cite{Gu2018} or photometric such as color scaling, contrasting
+\cite{Eigen2015}. Hauberg et al. \cite{Hauberg2016Diffeomorphism} propose an elegant method to learn these
+transformations using diffeomorphisms. The authors first estimate the transformations for image pairs in each class.
+These transformations are then used as observations to build a class-wise statistical model of transformations.
+New transformations are then sampled from this model and applied to input images.
+\todo{which of this can be applied to depth}
+
+\todo{should adversarial approaches be included?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\subsection{Task Compatibility}

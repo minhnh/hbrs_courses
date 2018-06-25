@@ -49,19 +49,13 @@ and Kumar, Vijay},
   Journaltitle             = {The International Journal of Robotics Research},
   Year                     = {2009},
   Doi                      = {10.1177/0278364909105606},
-  Eprint                   = { 
- https://doi.org/10.1177/0278364909105606
- 
-},
+  Eprint                   = {https://doi.org/10.1177/0278364909105606},
   Number                   = {7},
   Pages                    = {851-867},
-  Url                      = { 
- https://doi.org/10.1177/0278364909105606
- 
-},
+  Url                      = {https://doi.org/10.1177/0278364909105606},
   Volume                   = {28},
 
-  Abstract                 = { In this paper we focus on the concept of low-dimensional posture subspaces for artificial hands. We begin by discussing the applicability of a hand configuration subspace to the problem of automated grasp synthesis; our results show that low-dimensional optimization can be instrumental in deriving effective pre-grasp shapes for a number of complex robotic hands. We then show that the computational advantages of using a reduced dimensionality framework enable it to serve as an interface between the human and automated components of an interactive grasping system. We present an on-line grasp planner that allows a human operator to perform dexterous grasping tasks using an artificial hand. In order to achieve the computational rates required for effective user interaction, grasp planning is performed in a hand posture subspace of highly reduced dimensionality. The system also uses real-time input provided by the operator, further simplifying the search for stable grasps to the point where solutions can be found at interactive rates. We demonstrate our approach on a number of different hand models and target objects, in both real and virtual environments. },
+  Abstract                 = {In this paper we focus on the concept of low-dimensional posture subspaces for artificial hands. We begin by discussing the applicability of a hand configuration subspace to the problem of automated grasp synthesis; our results show that low-dimensional optimization can be instrumental in deriving effective pre-grasp shapes for a number of complex robotic hands. We then show that the computational advantages of using a reduced dimensionality framework enable it to serve as an interface between the human and automated components of an interactive grasping system. We present an on-line grasp planner that allows a human operator to perform dexterous grasping tasks using an artificial hand. In order to achieve the computational rates required for effective user interaction, grasp planning is performed in a hand posture subspace of highly reduced dimensionality. The system also uses real-time input provided by the operator, further simplifying the search for stable grasps to the point where solutions can be found at interactive rates. We demonstrate our approach on a number of different hand models and target objects, in both real and virtual environments. },
   Journal                  = {The International Journal of Robotics Research}
 }
 
@@ -94,6 +88,29 @@ and Kumar, Vijay},
   Abstract                 = {The paper starts by reviewing the challenges associated to grasp planning, and previous work on robot grasping. Our review emphasizes the importance of agents that generalize grasping strategies across objects, and that are able to transfer these strategies to novel objects. In the rest of the paper, we then devise a novel approach to the grasp transfer problem, where generalization is achieved by learning, from a set of grasp examples, a dictionary of object parts by which objects are often grasped. We detail the application of dimensionality reduction and unsupervised clustering algorithms to the end of identifying the size and shape of parts that often predict the application of a grasp. The learned dictionary allows our agent to grasp novel objects which share a part with previously seen objects, by matching the learned parts to the current view of the new object, and selecting the grasp associated to the best-fitting part. We present and discuss a proof-of-concept experiment in which a dictionary is learned from a set of synthetic grasp examples. While prior work in this area focused primarily on shape analysis (parts identified, e.g., through visual clustering, or salient structure analysis), the key aspect of this work is the emergence of parts from both object shape and grasp examples. As a result, parts intrinsically encode the intention of executing a grasp.},
   ISSN                     = {1050-4729},
   Keywords                 = {image matching;manipulators;robot vision;unsupervised learning;dictionary;dimensionality reduction;generalize grasping strategies;grasp planning;grasp transfer problem;learning;object matching;object parts;proof-of-concept experiment;robot grasping;similar objects;unsupervised clustering algorithms;Covariance matrix;Databases;Dictionaries;Grasping;Grippers;Planning;Shape}
+}
+
+@Phdthesis{Diankov2010,
+  Title                    = {Automated Construction of Robotic Manipulation Programs},
+  Author                   = {Rosen Diankov},
+  Date                     = {2010-08-26},
+  Institution              = {Carnegie Mellon University},
+  Year                     = {2010}
+}
+
+@Inproceedings{Eigen2015,
+  Title                    = {Predicting Depth, Surface Normals and Semantic Labels with a Common Multi-scale Convolutional Architecture},
+  Author                   = {D. Eigen and R. Fergus},
+  Booktitle                = {2015 IEEE International Conference on Computer Vision (ICCV)},
+  Date                     = {2015-12},
+  Editor                   = {Katsushi Ikeuchi and Christoph Schnörr and Josef Sivic and René Vidal},
+  Year                     = {2015},
+  Doi                      = {10.1109/ICCV.2015.304},
+  Month                    = {Dec},
+  Pages                    = {2650-2658},
+
+  Abstract                 = {In this paper we address three different computer vision tasks using a single basic architecture: depth prediction, surface normal estimation, and semantic labeling. We use a multiscale convolutional network that is able to adapt easily to each task using only small modifications, regressing from the input image to the output map directly. Our method progressively refines predictions using a sequence of scales, and captures many image details without any superpixels or low-level segmentation. We achieve state-of-the-art performance on benchmarks for all three tasks.},
+  Keywords                 = {computer vision;convolution;prediction theory;computer vision tasks;depth prediction;multiscale convolutional architecture;multiscale convolutional network;semantic labeling;surface normal estimation;Adaptation models;Estimation;Image segmentation;Labeling;Semantics;Spatial resolution}
 }
 
 @Inproceedings{Eitel2015,
@@ -146,6 +163,22 @@ and Allen, Peter K.},
   Journal                  = {Autonomous Robots}
 }
 
+@Inproceedings{Goldfeder2009CGDB,
+  Title                    = {The Columbia grasp database},
+  Author                   = {C. Goldfeder and M. Ciocarlie and Hao Dang and P. K. Allen},
+  Booktitle                = {2009 IEEE International Conference on Robotics and Automation},
+  Date                     = {2009-05},
+  Editor                   = {Antonio Bicchi},
+  Year                     = {2009},
+  Doi                      = {10.1109/ROBOT.2009.5152709},
+  Month                    = {May},
+  Pages                    = {1710-1716},
+
+  Abstract                 = {Collecting grasp data for learning and benchmarking purposes is very expensive. It would be helpful to have a standard database of graspable objects, along with a set of stable grasps for each object, but no such database exists. In this work we show how to automate the construction of a database consisting of several hands, thousands of objects, and hundreds of thousands of grasps. Using this database, we demonstrate a novel grasp planning algorithm that exploits geometric similarity between a 3D model and the objects in the database to synthesize form closure grasps. Our contributions are this algorithm, and the database itself, which we are releasing to the community as a tool for both grasp planning and benchmarking.},
+  ISSN                     = {1050-4729},
+  Keywords                 = {database management systems;dexterous manipulators;intelligent robots;learning (artificial intelligence);planning (artificial intelligence);3D model;Columbia grasp database;dexterous robotic grasping;geometric similarity;grasp planning algorithm;machine learning;robot hand;Computational geometry;Computational modeling;Data gloves;Humans;Large-scale systems;Robotics and automation;Robots;Solid modeling;Spatial databases;Training data}
+}
+
 @Article{Gu2018,
   Title                    = {Recent advances in convolutional neural networks},
   Author                   = {Jiuxiang Gu and Zhenhua Wang and Jason Kuen and Lianyang Ma and Amir Shahroudy and Bing Shuai and Ting Liu and Xingxing Wang and Gang Wang and Jianfei Cai and Tsuhan Chen},
@@ -161,6 +194,21 @@ and Allen, Peter K.},
   Abstract                 = {In the last few years, deep learning has led to very good performance on a variety of problems, such as visual recognition, speech recognition and natural language processing. Among different types of deep neural networks, convolutional neural networks have been most extensively studied. Leveraging on the rapid growth in the amount of the annotated data and the great improvements in the strengths of graphics processor units, the research on convolutional neural networks has been emerged swiftly and achieved state-of-the-art results on various tasks. In this paper, we provide a broad survey of the recent advances in convolutional neural networks. We detailize the improvements of CNN on different aspects, including layer design, activation function, loss function, regularization, optimization and fast computation. Besides, we also introduce various applications of convolutional neural networks in computer vision, speech and natural language processing.},
   Journal                  = {Pattern Recognition},
   Keywords                 = {Convolutional neural network, Deep learning}
+}
+
+@Inproceedings{Gualtieri2016,
+  Title                    = {High precision grasp pose detection in dense clutter},
+  Author                   = {Marcus Gualtieri and Andreas ten Pas and Kate Saenko and Robert Platt},
+  Booktitle                = {2016 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  Date                     = {2016-10},
+  Editor                   = {Wolfram Burgard et al.},
+  Year                     = {2016},
+  Doi                      = {10.1109/IROS.2016.7759114},
+  Month                    = {Oct},
+  Pages                    = {598-605},
+
+  Abstract                 = {This paper considers the problem of grasp pose detection in point clouds. We follow a general algorithmic structure that first generates a large set of 6-DOF grasp candidates and then classifies each of them as a good or a bad grasp. Our focus in this paper is on improving the second step by using depth sensor scans from large online datasets to train a convolutional neural network. We propose two new representations of grasp candidates, and we quantify the effect of using prior knowledge of two forms: instance or category knowledge of the object to be grasped, and pretraining the network on simulated depth data obtained from idealized CAD models. Our analysis shows that a more informative grasp candidate representation as well as pretraining and prior knowledge significantly improve grasp detection. We evaluate our approach on a Baxter Research Robot and demonstrate an average grasp success rate of 93\% in dense clutter. This is a 20\% improvement compared to our prior work.},
+  Keywords                 = {image classification;image sensors;learning (artificial intelligence);motion control;neurocontrollers;object detection;robot vision;Baxter Research Robot;CAD models;category knowledge;computer aided design models;convolutional neural network training;depth sensor scan;grasp classification;high precision grasp pose detection;instance knowledge;point clouds;Geometry;Grasping;Grippers;Robot sensing systems;Solid modeling;Three-dimensional displays}
 }
 
 @Inproceedings{Gupta2014RGBDFeatures,
@@ -182,6 +230,25 @@ and Tuytelaars, Tinne},
 
   Abstract                 = {In this paper we study the problem of object detection for RGB-D images using semantically rich image and depth features. We propose a new geocentric embedding for depth images that encodes height above ground and angle with gravity for each pixel in addition to the horizontal disparity. We demonstrate that this geocentric embedding works better than using raw depth images for learning feature representations with convolutional neural networks. Our final object detection system achieves an average precision of 37.3{\%}, which is a 56{\%} relative improvement over existing methods. We then focus on the task of instance segmentation where we label pixels belonging to object instances found by our detector. For this task, we propose a decision forest approach that classifies pixels in the detection window as foreground or background using a family of unary and binary tests that query shape and geocentric pose features. Finally, we use the output from our object detectors in an existing superpixel classification framework for semantic scene segmentation and achieve a 24{\%} relative improvement over current state-of-the-art for the object categories that we study. We believe advances such as those represented in this paper will facilitate the use of perception in fields like robotics.},
   Address                  = {Cham}
+}
+
+@Inproceedings{Hauberg2016Diffeomorphism,
+  Title                    = {Dreaming More Data: Class-dependent Distributions over Diffeomorphisms for Learned Data Augmentation},
+  Author                   = {Søren Hauberg and Oren Freifeld and Anders Boesen Lindbo Larsen and John Fisher and Lars Hansen},
+  Booktitle                = {Proceedings of the 19th International Conference on Artificial Intelligence and Statistics},
+  Date                     = {2016-05},
+  Editor                   = {Arthur Gretton and Christian C. Robert},
+  Year                     = {2016},
+  Month                    = {09--11 May},
+  Pages                    = {342--350},
+  Publisher                = {PMLR},
+  Series                   = {Proceedings of Machine Learning Research},
+  Url                      = {http://proceedings.mlr.press/v51/hauberg16.html},
+  Volume                   = {51},
+
+  Abstract                 = {Data augmentation is a key element in training high-dimensional models. In this approach, one synthesizes new observations by applying pre-specified transformations to the original training data; e.g. new images are formed by rotating old ones. Current augmentation schemes, however, rely on manual specification of the applied transformations, making data augmentation an implicit form of feature engineering. With an eye towards true end-to-end learning, we suggest learning the applied transformations on a per-class basis. Particularly, we align image pairs within each class under the assumption that the spatial transformation between images belongs to a large class of diffeomorphisms. We then learn a class-specific probabilistic generative models of the transformations in a Riemannian submanifold of the Lie group of diffeomorphisms. We demonstrate significant performance improvements in training deep neural nets over manually-specified augmentation schemes. Our code and augmented datasets are available online.},
+  Address                  = {Cadiz, Spain},
+  File                     = {hauberg16.pdf:http\://proceedings.mlr.press/v51/hauberg16.pdf:PDF}
 }
 
 @Inproceedings{jiang2011,
@@ -229,10 +296,7 @@ and Tuytelaars, Tinne},
 },
   Number                   = {4-5},
   Pages                    = {705-724},
-  Url                      = { 
- https://doi.org/10.1177/0278364914549607
- 
-},
+  Url                      = {https://doi.org/10.1177/0278364914549607},
   Volume                   = {34},
 
   Abstract                 = {We consider the problem of detecting robotic grasps in an RGB-D view of a scene containing objects. In this work, we apply a deep learning approach to solve this problem, which avoids time-consuming hand-design of features. This presents two main challenges. First, we need to evaluate a huge number of candidate grasps. In order to make detection fast and robust, we present a two-step cascaded system with two deep networks, where the top detections from the first are re-evaluated by the second. The first network has fewer features, is faster to run, and can effectively prune out unlikely candidate grasps. The second, with more features, is slower but has to run only on the top few detections. Second, we need to handle multimodal inputs effectively, for which we present a method that applies structured regularization on the weights based on multimodal group regularization. We show that our method improves performance on an RGBD robotic grasping dataset, and can be used to successfully execute grasps on two different robotic platforms.},
@@ -294,6 +358,55 @@ Holz, Dirk AND van Beek, Loy},
   Publisher                = {CRC Press, Inc.},
 
   Address                  = {Boca Raton, FL, USA}
+}
+
+@Article{Pas2017,
+  Title                    = {Grasp Pose Detection in Point Clouds},
+  Author                   = {Andreas ten Pas and Marcus Gualtieri and Kate Saenko and Robert Platt},
+  Date                     = {2017-10-30},
+  Journaltitle             = {The International Journal of Robotics Research},
+  Year                     = {2017},
+  Doi                      = {10.1177/0278364917735594},
+  Eprint                   = {https://doi.org/10.1177/0278364917735594},
+  Number                   = {13-14},
+  Pages                    = {1455-1473},
+  Url                      = {https://doi.org/10.1177/0278364917735594},
+  Volume                   = {36},
+
+  Abstract                 = {Recently, a number of grasp detection methods have been proposed that can be used to localize robotic grasp configurations directly from sensor data without estimating object pose. The underlying idea is to treat grasp perception analogously to object detection in computer vision. These methods take as input a noisy and partially occluded RGBD image or point cloud and produce as output pose estimates of viable grasps, without assuming a known CAD model of the object. Although these methods generalize grasp knowledge to new objects well, they have not yet been demonstrated to be reliable enough for wide use. Many grasp detection methods achieve grasp success rates (grasp successes as a fraction of the total number of grasp attempts) between 75\% and 95\% for novel objects presented in isolation or in light clutter. Not only are these success rates too low for practical grasping applications, but the light clutter scenarios that are evaluated often do not reflect the realities of real-world grasping. This paper proposes a number of innovations that together result in an improvement in grasp detection performance. The specific improvement in performance due to each of our contributions is quantitatively measured either in simulation or on robotic hardware. Ultimately, we report a series of robotic experiments that average a 93\% end-to-end grasp success rate for novel objects presented in dense clutter. },
+  Journal                  = {The International Journal of Robotics Research}
+}
+
+@Article{Porzi2017,
+  Title                    = {Learning Depth-Aware Deep Representations for Robotic Perception},
+  Author                   = {L. Porzi and S. R. Buló and A. Penate-Sanchez and E. Ricci and F. Moreno-Noguer},
+  Date                     = {2017-04},
+  Journaltitle             = {IEEE Robotics and Automation Letters},
+  Year                     = {2017},
+  Doi                      = {10.1109/LRA.2016.2637444},
+  Month                    = {April},
+  Number                   = {2},
+  Pages                    = {468-475},
+  Volume                   = {2},
+
+  Abstract                 = {Exploiting RGB-D data by means of convolutional neural networks (CNNs) is at the core of a number of robotics applications, including object detection, scene semantic segmentation, and grasping. Most existing approaches, however, exploit RGB-D data by simply considering depth as an additional input channel for the network. In this paper we show that the performance of deep architectures can be boosted by introducing DaConv, a novel, general-purpose CNN block which exploits depth to learn scale-aware feature representations. We demonstrate the benefits of DaConv on a variety of robotics oriented tasks, involving affordance detection, object coordinate regression, and contour detection in RGB-D images. In each of these experiments we show the potential of the proposed block and how it can be readily integrated into existing CNN architectures.},
+  Journal                  = {IEEE Robotics and Automation Letters},
+  Keywords                 = {convolution;image colour analysis;image representation;image segmentation;neural net architecture;object detection;regression analysis;robot vision;CNN architectures;DaConv;RGB-D data;RGB-D images;affordance detection;contour detection;convolutional neural networks;deep architectures;depth-aware deep representations;general-purpose CNN block;grasping;object coordinate regression;object detection;robotic perception;scale-aware feature representations;scene semantic segmentation;Computer architecture;Convolution;Kernel;Robot kinematics;Standards;Three-dimensional displays;RGB-D perception;visual learning}
+}
+
+@Inproceedings{Qi2016,
+  Title                    = {Volumetric and Multi-view CNNs for Object Classification on 3D Data},
+  Author                   = {C. R. Qi and H. Su and M. Nießner and A. Dai and M. Yan and L. J. Guibas},
+  Booktitle                = {2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  Date                     = {2016-06},
+  Editor                   = {Lourdes Agapito and Tamara Berg and Jana Kosecka and Lihi Zelnik-Manor},
+  Year                     = {2016},
+  Doi                      = {10.1109/CVPR.2016.609},
+  Month                    = {June},
+  Pages                    = {5648-5656},
+
+  Abstract                 = {3D shape models are becoming widely available and easier to capture, making available 3D information crucial for progress in object classification. Current state-of-theart methods rely on CNNs to address this problem. Recently, we witness two types of CNNs being developed: CNNs based upon volumetric representations versus CNNs based upon multi-view representations. Empirical results from these two types of CNNs exhibit a large gap, indicating that existing volumetric CNN architectures and approaches are unable to fully exploit the power of 3D representations. In this paper, we aim to improve both volumetric CNNs and multi-view CNNs according to extensive analysis of existing approaches. To this end, we introduce two distinct network architectures of volumetric CNNs. In addition, we examine multi-view CNNs, where we introduce multiresolution filtering in 3D. Overall, we are able to outperform current state-of-the-art methods for both volumetric CNNs and multi-view CNNs. We provide extensive experiments designed to evaluate underlying design choices, thus providing a better understanding of the space of methods available for object classification on 3D data.},
+  Keywords                 = {image classification;neural nets;stereo image processing;3D data;3D multiresolution filtering;3D representations;3D shape models;multi-view representations;multiview CNN;network architectures;object classification;volumetric CNN;volumetric representations;Computer architecture;Rendering (computer graphics);Shape;Solid modeling;Three-dimensional displays;Training;Two dimensional displays}
 }
 
 @Article{Roa2015,
@@ -372,10 +485,7 @@ Holz, Dirk AND van Beek, Loy},
 },
   Number                   = {3},
   Pages                    = {230-266},
-  Url                      = { 
- https://doi.org/10.1177/027836499601500302
- 
-},
+  Url                      = {https://doi.org/10.1177/027836499601500302},
   Volume                   = {15},
 
   Abstract                 = { This article presents a survey of the existing computational algorithms meant for achieving four important properties in autonomous multifingered robotic hands. The four properties are: dexterity, equilibrium, stability, and dynamic behavior The multifingered robotic hands must be controlled so as to possess these properties and hence be able to autonomously perform complex tasks in a way similar to human hands.Existing algorithms to achieve dexterity primarily involve solving an unconstrained linear programming problem where an objective function can be chosen to represent one or more of the currently known dexterity measures. Algorithms to achieve equilibrium also constitute solving a linear program ming problem wherein the positivity, friction, and joint torque constraints of all fingers are accounted for while optimizing the internal grasping forces. Stability algorithms aim at achiev ing positive definite grasp impedance matrices by solving for the required fingertip impedances. This problem reduces to a nonlinear programming problem. Dynamic behavior algorithms determine fingertip impedances, which, when achieved, lead to a desired dynamic behavior. This problem, too, becomes a linear programming problem.If a robotic hand has to acquire any or all of these proper ties, the corresponding algorithms should become integral parts of the hand control system. These algorithms are collectively referred to in this article as robot grasp synthesis algorithms. },
