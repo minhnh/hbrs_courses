@@ -4,21 +4,17 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Motivation}
-Automation has been instrumental to industrial manufacturing since the 1950s, replacing human workers from tasks
-requiring high precision, speed and endurance. Notable breakthroughs in this period include the remotely controlled
-mechanical manipulators called ``teleoperators'', developed at Argonne and Oak Ridge National Laboratories for handling
-radioactive material, and the programmable Computer Numerically Controlled (CNC) machine tools. Built upon these
-inventions, George Devol developed one of the earliest realization of industrial automation, replacing the human
-operator of ``teleoperators'' with the CNC controller, creating the first robotic manipulators \cite{Murray1994}.
-
-The end effector is the device at the end of the robotic manipulator, which directly interacts with the manipulated
-object. Traditionally in industry the end effector is a simple gripper. Any object movement in this case requires
-manipulating the whole arm, which is effective for transferring objects over large motion ranges but can be intractable
-for tasks requiring precise movements. The recent vacuum based effectors face similar problems in object manipulation.
-To handle finer motions, the common solutions in industry are either using custom designed end-effector or multi-finger
-robot hands. The problem of robotic grasping typically refer to the use of gripper and multi-finger end effector to
-manipulate objects. 70 years after the conception of the first robot arm, a general solution to finding a suitable grasp
-for objects is still a challenging problem and an area of active research.
+Manipulation is an important functionality for applied robotics. Manipulating objects involves moving an end effector
+to the desired object's location and using this end effector to interact with the manipulated object to execute a
+specific task. The task can be simply moving the object to another location or can require more complicated maneuvers
+of the object (i.e. moving a handle to open doors or moving a bottle to pour water). Traditionally the end effector in
+industry is a two-fingered gripper. Any object movement in this case requires manipulating the whole arm, which is
+effective for transferring objects over large motion ranges but can be intractable for tasks requiring more precise
+movements. The recent vacuum based effectors face similar problems in object manipulation. To handle finer motions, the
+common solutions in industry are either using custom designed end-effector or multi-finger robot hands. The problem of
+robotic grasping typically refer to the use of gripper and multi-finger end effector to manipulate objects. 70 years after
+the conception of the first robot arm, a general solution to finding a suitable grasp for objects is still a challenging
+problem and an area of active research.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Use Case}
@@ -113,12 +109,16 @@ synthesize data relevant to grasping.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Extracting features from perceptual data for grasping}
-Qi et al. \cite{Qi2016}, Porzi et al. \cite{Porzi2017} \todo{fill approaches}
+Qi et al. \cite{Qi2016}\todo{fill approaches}
 
 As RGB-D cameras become more accessible and affordable, they are often chosen in robotic systems as the primary
 perception sensor. While RGB-D data has been shown to provide richer features compared to pure 2D images for various
 perception tasks \cite{lenz2015,Eitel2015,Gupta2014RGBDFeatures,jiang2011}, it is often unclear how to handle the
 multi-modality of color and depth information.
+
+Bo et al. \cite{Bo2013} build sparse coding dictionaries for RGB-D data using the K-SVD algorithm, and proposed to use
+hierarchical matching pursuit (HMP) to compute a feature hierarchy for new RGB-D images. Each entry in the dictionaries
+contain 8 channels calculated from RGB-D data: grayscale intensity, RGB, depth and surface normals in three axes.
 
 Lenz et al. \cite{lenz2015} use deep auto-encoders to build a representation for each feature channel, reducing its data
 dimensions. To handle the multi-modality of RGB and depth data, the authors also introduced a structured regularization
@@ -128,10 +128,6 @@ would be
 \[f(W) = \sum\limits^K_{j=1} \sum\limits^R_{r=1} \left( \sum\limits^N_{i=1} S_{r,i} \lvert W^p_{i,j} \rvert \right)
 ^{1/p}, \]
 where $S_{r,i}$ is $1$ if feature $i$ belongs to modality $r$ and $0$ otherwise.
-
-Bo et al. \cite{Bo2013} build sparse coding dictionaries for RGB-D data using the K-SVD algorithm, and proposed to use
-hierarchical matching pursuit (HMP) to compute a feature hierarchy for new RGB-D images. Each entry in the dictionaries
-contain 8 channels calculated from RGB-D data: grayscale intensity, RGB, depth and surface normals in three axes.
 
 \picHereWidth{Eitel_et_al-2015-depth_color_encodings}
 {Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
@@ -151,6 +147,16 @@ classification layer) are concatenated as inputs to a fully connected layer whic
 objects. The paper showed that while surface normals proved to give better classification performance using depth
 information alone, they require additional calculation on the input data and does not improve on results when combining
 both RGB and depth images compared to the proposed color map encoding.
+
+More recently, Porzi et al. \cite{Porzi2017} introduce a novel convolutional block called \emph{DaConv} to learn scale
+awareness using depth information. Each \emph{DaConv} block consists of two networks, namely \emph{PredictionNet} and
+\emph{DepthNet}. In \emph{PredictionNet} different scales of the input features are simulated using dilated convolutions
+\cite{YuKoltun2016} with different dilation factors $ \{ \ell_1,...,\ell_d \} $. An $ \ell $-dilated convolution can be
+obtained by adding $ \ell - 1 $ zeros between adjacent elements of the convolutional kernel. \emph{DepthNet} use only
+the depth information to produce a vector of probabilities $ \{ a_1,...,a_d \} $ representing how likely a dilation
+factor is chosen for a specific spatial location, captured by each convolutional kernel. The outputs of the dilated
+convolutions are then linearly combined using this probability vector to produce the final output of the \emph{DaConv}
+block.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Object-Grasp representation}
