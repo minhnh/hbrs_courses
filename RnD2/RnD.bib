@@ -24,6 +24,22 @@ and Kumar, Vijay},
   Address                  = {Heidelberg}
 }
 
+@Inproceedings{Bohg2011MindTheGap,
+  Title                    = {Mind the gap - robotic grasping under incomplete observation},
+  Author                   = {J. Bohg and M. Johnson-Roberson and B. León and J. Felip and X. Gratal and N. Bergström and D. Kragic and A. Morales},
+  Booktitle                = {2011 IEEE International Conference on Robotics and Automation},
+  Date                     = {2011-05},
+  Editor                   = {Yuan F. Zheng},
+  Year                     = {2011},
+  Doi                      = {10.1109/ICRA.2011.5980354},
+  Month                    = {May},
+  Pages                    = {686-693},
+
+  Abstract                 = {We consider the problem of grasp and manipulation planning when the state of the world is only partially observable. Specifically, we address the task of picking up unknown objects from a table top. The proposed approach to object shape prediction aims at closing the knowledge gaps in the robot's understanding of the world. A completed state estimate of the environment can then be provided to a simulator in which stable grasps and collision-free movements are planned. The proposed approach is based on the observation that many objects commonly in use in a service robotic scenario possess symmetries. We search for the optimal parameters of these symmetries given visibility constraints. Once found, the point cloud is completed and a surface mesh reconstructed. Quantitative experiments show that the predictions are valid approximations of the real object shape. By demonstrating the approach on two very different robotic platforms its generality is emphasized.},
+  ISSN                     = {1050-4729},
+  Keywords                 = {mesh generation;robots;collision-free movements;gap robotic grasping;incomplete observation;manipulation planning;mesh reconstruction;object shape prediction;Approximation methods;Grasping;Image reconstruction;Planning;Robots;Shape;Surface reconstruction}
+}
+
 @Article{Bohg2014,
   Title                    = {Data-Driven Grasp Synthesis: A Survey},
   Author                   = {J. Bohg and A. Morales and T. Asfour and D. Kragic},
@@ -141,6 +157,29 @@ and Kumar, Vijay},
 
   Abstract                 = {Data augmentation is the process of generating samples by transforming training data, with the target of improving the accuracy and robustness of classifiers. In this paper, we propose a new automatic and adaptive algorithm for choosing the transformations of the samples used in data augmentation. Specifically, for each sample, our main idea is to seek a small transformation that yields maximal classification loss on the transformed sample. We employ a trust-region optimization strategy, which consists of solving a sequence of linear programs. Our data augmentation scheme is then integrated into a Stochastic Gradient Descent algorithm for training deep neural networks. We perform experiments on two datasets, and show that that the proposed scheme outperforms random data augmentation algorithms in terms of accuracy and robustness, while yielding comparable or superior results with respect to existing selective sampling approaches.},
   Keywords                 = {data handling;gradient methods;image classification;linear programming;neural nets;stochastic processes;adaptive data augmentation;deep neural networks;image classification;linear program sequence;stochastic gradient descent algorithm;trust-region optimization strategy;Approximation algorithms;Neural networks;Optimization;Robustness;Training;Training data;Transforms;Data augmentation;image robustness;transformation invariance;trust-region optimization}
+}
+
+@Inproceedings{FerrariCanny1992,
+  Title                    = {Planning optimal grasps},
+  Author                   = {C. Ferrari and J. Canny},
+  Booktitle                = {Proceedings 1992 IEEE International Conference on Robotics and Automation},
+  Date                     = {1992-05},
+  Editor                   = {Giuseppe Menga
+
+Giuseppe Menga
+
+Giuseppe Menga
+
+Giuseppe Menga
+
+Giuseppe Menga},
+  Year                     = {1992},
+  Doi                      = {10.1109/ROBOT.1992.219918},
+  Month                    = {May},
+  Pages                    = {2290-2295 vol.3},
+
+  Abstract                 = {The authors address the problem of planning optimal grasps. Two general optimality criteria that consider the total finger force and the maximum finger force are introduced and discussed. Their formalization using various metrics on a space of generalized forces is detailed. The geometric interpretation of the two criteria leads to an efficient planning algorithm. An example of its use in a robotic environment equipped with two-jaw and three-jaw is described.<<ETX>>},
+  Keywords                 = {computational geometry;force control;manipulators;optimisation;planning (artificial intelligence);optimal grasp planning;robotics;manipulators;optimality criteria;total finger force;maximum finger force;geometric interpretation;Grippers;Robots;Fingers;Extraterrestrial measurements;Orbital robotics;Actuators;Manipulators;Grasping;Assembly systems;Computer science}
 }
 
 @Article{Goldfeder2011,
@@ -508,12 +547,42 @@ Holz, Dirk AND van Beek, Loy},
   Keywords                 = {pose estimation;realistic images;unsupervised learning;Generative Adversarial Networks;MPIIGaze dataset;Simulated+Unsupervised learning;gaze estimation;hand pose estimation;synthetic image distributions;Computational modeling;Data models;Gallium nitride;Neural networks;Pose estimation;Training}
 }
 
+@Inproceedings{Su2015,
+  Title                    = {Multi-view Convolutional Neural Networks for 3D Shape Recognition},
+  Author                   = {H. Su and S. Maji and E. Kalogerakis and E. Learned-Miller},
+  Booktitle                = {2015 IEEE International Conference on Computer Vision (ICCV)},
+  Date                     = {2015-12},
+  Editor                   = {Katsushi Ikeuchi and Christoph Schnörr and Josef Sivic and Rene Vidal},
+  Year                     = {2015},
+  Doi                      = {10.1109/ICCV.2015.114},
+  Month                    = {Dec},
+  Pages                    = {945-953},
+
+  Abstract                 = {A longstanding question in computer vision concerns the representation of 3D shapes for recognition: should 3D shapes be represented with descriptors operating on their native 3D formats, such as voxel grid or polygon mesh, or can they be effectively represented with view-based descriptors? We address this question in the context of learning to recognize 3D shapes from a collection of their rendered views on 2D images. We first present a standard CNN architecture trained to recognize the shapes' rendered views independently of each other, and show that a 3D shape can be recognized even from a single view at an accuracy far higher than using state-of-the-art 3D shape descriptors. Recognition rates further increase when multiple views of the shapes are provided. In addition, we present a novel CNN architecture that combines information from multiple views of a 3D shape into a single and compact shape descriptor offering even better recognition performance. The same architecture can be applied to accurately recognize human hand-drawn sketches of shapes. We conclude that a collection of 2D views can be highly informative for 3D shape recognition and is amenable to emerging CNN architectures and their derivatives.},
+  Keywords                 = {computer vision;convolution;image representation;learning (artificial intelligence);mesh generation;neural nets;rendering (computer graphics);shape recognition;2D images;3D shape descriptors;3D shape recognition;3D shape representation;computer vision;hand-drawn shape sketch recognition;learning;multiview convolutional neural networks;polygon mesh;shape rendered views;view-based descriptors;voxel grid;Cameras;Computer architecture;Computer vision;Image recognition;Shape;Solid modeling;Three-dimensional displays}
+}
+
 @Book{suarez2006,
   Title                    = {Grasp quality measures},
   Author                   = {Su{\'a}rez, Ra{\'u}l and Cornella, Jordi and Garz{\'o}n, M{\'a}ximo Roa},
   Date                     = {2006},
   Year                     = {2006},
   Publisher                = {Institut d'Organitzaci{\'o} i Control de Sistemes Industrials}
+}
+
+@Inproceedings{Varley2017,
+  Title                    = {Shape completion enabled robotic grasping},
+  Author                   = {J. Varley and C. DeChant and A. Richardson and J. Ruales and P. Allen},
+  Booktitle                = {2017 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  Date                     = {2017-09},
+  Editor                   = {Tony Maciejewski},
+  Year                     = {2017},
+  Doi                      = {10.1109/IROS.2017.8206060},
+  Month                    = {Sept},
+  Pages                    = {2442-2447},
+
+  Abstract                 = {This work provides an architecture to enable robotic grasp planning via shape completion. Shape completion is accomplished through the use of a 3D convolutional neural network (CNN). The network is trained on our own new open source dataset of over 440,000 3D exemplars captured from varying viewpoints. At runtime, a 2.5D pointcloud captured from a single point of view is fed into the CNN, which fills in the occluded regions of the scene, allowing grasps to be planned and executed on the completed object. Runtime shape completion is very rapid because most of the computational costs of shape completion are borne during offline training. We explore how the quality of completions vary based on several factors. These include whether or not the object being completed existed in the training data and how many object models were used to train the network. We also look at the ability of the network to generalize to novel objects allowing the system to complete previously unseen objects at runtime. Finally, experimentation is done both in simulation and on actual robotic hardware to explore the relationship between completion quality and the utility of the completed mesh model for grasping.},
+  Keywords                 = {learning (artificial intelligence);mesh generation;neural nets;object recognition;robot programming;solid modelling;3D CNN training;3D convolutional neural network;completed object;completion quality;mesh model;robotic grasp planning;runtime shape completion;Databases;Planning;Robots;Runtime;Shape;Three-dimensional displays;Training}
 }
 
 @Inproceedings{WeiszAllen2012,
