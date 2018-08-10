@@ -41,11 +41,11 @@ on the robot head, as well as a wide angle camera mounted on the two-finger grip
 potentiometer and a force sensor.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{An overview of robotic grasping research}
+\subsection{An overview of robotic grasping research} \label{sub:overview}
 
 \picHereWidth{bohg14-grasp_synthesis_mind_map}
              {Aspects which may influence generation of grasp hypotheses \cite{Bohg2014}.}
-             {fig:grasp_synthesis_mind_map}{0.9\textwidth}
+             {fig:grasp_synthesis_mind_map}{\textwidth}
 Synthesizing an optimal grasp from perceptual data is a challenging problem and is frequently addressed in robotic
 research, resulting in a myriad of approaches. Sahbani et al. \cite{Sahbani2012} classify grasp synthesis into
 analytical and empirical approaches. Analytical methods consider mechanical properties of the contact points between
@@ -134,11 +134,11 @@ where $S_{r,i}$ is $1$ if feature $i$ belongs to modality $r$ and $0$ otherwise.
     by Eitel et al. \cite{Eitel2015}.}
 {fig:depth-encodings}{\linewidth}
 
-In order to leverage the success of Convolutional Neural Networks (CNN) in capturing 2D features \cite{Gu2018}, several
+Building upon the success of Convolutional Neural Networks (CNN) in capturing 2D features \cite{Gu2018}, several
 multi-modal approaches convert depth data into three-channel images during the preprocessing step
 \cite{Eitel2015,Gupta2014RGBDFeatures}. Gupta et al. \cite{Gupta2014RGBDFeatures} propose the HHA representation, which
-encodes the depth each pixel of the depth image with horizontal disparity, height above ground, and the angle between the
-local surface normal and direction of gravity. Eitel et al. \cite{Eitel2015} propose to use convert the depth value
+encodes the depth each pixel of the depth image with horizontal disparity, height above ground, and the angle between
+the local surface normal and direction of gravity. Eitel et al. \cite{Eitel2015} propose to use convert the depth value
 directly into RGB values using a jet color mapping. Examples of the different depth encodings can be seen in figure
 \ref{fig:depth-encodings}. Two CNN models of the same architecture are then trained independently using depth and RGB
 images to classify objects. Finally, features learned from the two models (the networks up until before the
@@ -213,8 +213,6 @@ comparable to the second in the latter equation. Goldfeder and Allen \cite{Goldf
 to generate the Columbia Grasp Database. Grasp planning is then done by matching the query object to one in the
 database, then executing the best indexed grasp for the matched object.
 
-\todo{need 1 more approach}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Techniques based on local features} \label{subsub:object_grasp_local}
 
@@ -229,12 +227,11 @@ authors defined a distance metric for clustering similar candidate parts, and a 
 using only the central points of these clusters. Part candidates for new object are then matched against this dictionary
 to find possible grasps for the familiar object part.
 
-\todo{add illustration of rectangle method}
-Several methods represent grasp candidates as rectangles positioned in RGB and/or depth images \cite{lenz2015,jiang2011},
-corresponding with a bipedal gripper. The RGB-D image region within these rectangles is then used to score the
-respective grasp using machine learning methods. These approaches are naturally limited in their ability to represent
-the robot hand's approach vector since rectangles in images can only correspond to grasps roughly parallel with
-the RGB-D camera's optical axis \cite{Gualtieri2016}.
+Several methods represent grasp candidates as rectangles positioned in RGB and/or depth images
+\cite{lenz2015,jiang2011}, corresponding with a bipedal gripper. The RGB-D image region within these rectangles is then
+used to score the respective grasp using machine learning methods. These approaches are naturally limited in their
+ability to represent the robot hand's approach vector since rectangles in images can only correspond to grasps roughly
+parallel with the RGB-D camera's optical axis \cite{Gualtieri2016}.
 
 \picHereWidth{kappler_et_al-2015-fig8-local_shape_diff_viewpoints}
 {Local shape representations with different camera viewpoints of the same grasp. Cyan lines represent the
@@ -377,24 +374,96 @@ that the calculation of the metric is intractable in real time, taking hours in 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Learning to predict grasp quality}
-Learning rectangles \cite{mahler2017,jiang2011,lenz2015}
-Kappler et al. \cite{Kappler2015}
 
-\todo{to be filled}
+\begin{table}[h!]
+    \small
+    \begin{tabularx}{\textwidth}{L{0.12\textwidth}L{0.26\textwidth}L{0.33\textwidth}L{0.26\textwidth}}
+    \cmidrule[0.08em](){1-4}
+    Approach                              & Object-grasp representation & Feature extraction \& learning method
+                                                                        & Dataset generation
+    \\ \cmidrule[0.08em](){1-4}
+    Jiang et al. \cite{jiang2011}         & Rectangle in RGB-D image
+                                          & Histograms of hand-crafted filters of RGB-D images
+                                            \linebreak Model: SVM
+                                          & Rectangles manually annotated on object images
+                                          \\ \cmidrule[0.01em](){1-4}
+    Lenz et al. \cite{lenz2015}           & Rectangle in RGB-D image
+                                          & Auto-encoders used to initialize weights, structured regularization used
+                                            to combine depth and RGB data
+                                            \linebreak Model: MLP
+                                          & Extended version of the dataset used in Jiang et al. \cite{jiang2011}
+                                          \\ \cmidrule[0.01em](){1-4}
+    Kappler et al. \cite{Kappler2015}     & Template grid at intersection of object surface and approach vector
+                                          & RGB rendering of the template grid
+                                            \linebreak Model: LeNet CNN
+                                          & Grasps and quality values are generated for object meshes in simulation
+                                            then verified by crowd- sourcing
+                                          \\ \cmidrule[0.01em](){1-4}
+    Gualtieri et al. \cite{Gualtieri2016} & Rectangle cuboid region swept out by the gripper fingers, containing
+                                            observed depth data and points sampled from the occluded volume
+                                          & Different filters of the cuboid region are projected onto three orthogonal
+                                            planes, creating 15 image channels
+                                            \linebreak Model: LeNet CNN
+                                          & Grasp candidates sampled for object models are labeled using force-closure
+                                            property
+                                          \\ \cmidrule[0.01em](){1-4}
+    Mahler et al. \cite{mahler2017}       & Two gripper plates visualized in depth images
+                                          & Depth images are cropped and aligned to the gripper
+                                            \linebreak Model: CNN combined with single layer neural networks
+                                          & Grasp candidates sampled for object models are labeled using a variant
+                                            of the robust $ \epsilon $-metric from \cite{WeiszAllen2012}
+    \\ \cmidrule[0.08em](){1-4}
+    \end{tabularx}
+    \caption{\small Recent machine learning approaches to grasp quality prediction. Details of the different
+             object-grasp representations and feature extraction techniques can be found in subsection
+             \ref{subsub:object_grasp_local}, while data synthesis methods are examined more closely in subsection
+             \ref{subsub:data_synthesis}.}
+    \label{table:grasp_quality_approaches}
+\end{table}
+
+Table \ref{table:grasp_quality_approaches} lists recent and prominent empirical approaches to predicting grasp quality.
+Earlier techniques often rely on carefully designed features. Jiang et al.'s \cite{jiang2011} calculate spatial
+histograms for 17 different filters of each pixel in each RGB-D input image. These features are linearly combined using
+a weight matrix, creating a score value for each pixel. Three such weight matrices are initialized, creating three
+pixel-wise score matrices. For each bipedal grasp, the aforementioned rectangle representation is divided into three
+regions. For each region, the respective score values are extracted from one of the three score matrices. The final
+score for grasp is the sum of all the extracted pixel scores. A Support Vector Machine (SVM) algorithm is used to learn
+the weight matrices. Lenz et al \cite{lenz2015} train auto-encoders to extract features from the rectangles
+representing grasps in RGB-D images. Weights from these auto-encoders are used to initialize multilayer-perceptron
+(MLP) models, which are then trained to predict the probability of success of given grasps.
+
+More recent approaches project local features at contact locations onto 2D representations then apply CNN methods in a
+similar manner with RGB images to learn the grasp rating directly \cite{Gualtieri2016,mahler2017,Kappler2015}. These
+methods mainly differ in the representations their CNN models take as input, as described in subsection
+\ref{subsub:object_grasp_local}. While \cite{Gualtieri2016,Kappler2015} implement a pure LeNet CNN model \cite{Gu2018}
+to learn the grasp quality directly, Mahler et al \cite{mahler2017} also include a single-layer fully connected network
+which takes the distance between the camera and the gripper as input. The outputs of the CNN and the fully-connected
+network are then combined using more fully-connected layers to produce a final grasp success probability prediction.
+
+Methods trying to learn grasp quality are highly dependent on the dataset on which their models are trained. Humans
+are still the most versatile and dexterous manipulators known, but data containing human grasp experience is difficult
+and costly to collect. Of the approaches listed in table \ref{table:grasp_quality_approaches}, Jiang et al.'s
+\cite{jiang2011} train their model on a human-labeled dataset, which only has around 300 data points for both training
+and testing. The extended version of this dataset, used by Lenz et al. \cite{lenz2015}, also has only around 1000 data
+points. Because of this scarcity, synthesizing data for training grasp evaluation models has become popular in the more
+recent approaches \cite{Kappler2015,Gualtieri2016,mahler2017}. A review of data synthesis techniques for grasping will
+be included in the next section. The introduction of a new large-scale human grasp experience dataset by Saudabayev et
+al. \cite{Saudabayev2018}, however, may open up new possibilities for direct training of grasp evaluation models on
+human grasp experience.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Generating data for grasp success prediction}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Data synthesis for robot grasping}
+\subsubsection{Data synthesis for robot grasping} \label{subsub:data_synthesis}
 
-The earlier approaches to grasp knowledge synthesis often generate geometrically sound grasps for known object models.
-The agent then learns to match detected objects with these object models to find suitable grasps to execute. Notably
-Goldfeder et al. \cite{Goldfeder2009CGDB} generate a database of form-closure grasps for 3D object models, in which each
-grasp entry is represented by a pregrasp in the form of a two-dimensional eigengrasp \cite{Ciocarlie2009}, and the final
-grasp pose. Grasps are sampled from a subspace of each robot hand's degree-of-freedom (DOF) space. The authors then used
-a nearest-neighbor algorithm to match each detected object to a model in this database \cite{Goldfeder2011} to find
-grasp candidates.
+Most approaches to synthesize data for grasp evaluation models generate training samples from object meshes. Earlier
+methods then learn to match detected objects with these object models to find suitable grasps to execute. Notably
+Goldfeder et al. \cite{Goldfeder2009CGDB} generate a database of form-closure grasps for 3D object models, in which
+each grasp entry is represented by a pregrasp in the form of a two-dimensional eigengrasp \cite{Ciocarlie2009}, and the
+final grasp pose. Grasps are sampled from a subspace of each robot hand's degree-of-freedom (DOF) space. The authors
+then used a nearest-neighbor algorithm to match each detected object to a model in this database \cite{Goldfeder2011}
+to find grasp candidates.
 
 Several grasp synthesis approaches generate perceptual data from object meshes at different viewpoints
 \cite{mahler2017,Gualtieri2016,Kappler2015} for constructing a grasp knowledge database. Mahler et al. \cite{mahler2017}
@@ -414,10 +483,11 @@ reference grasp. Data points are then generated for each grasp using the local s
 subsection \ref{subsub:object_grasp_local}. A set of metrics is then applied to evaluate candidate grasps, creating the
 data labels.
 
-As robots can rarely acquire the comprehensive model of their environment from perceptual sensors, training data for
-robot learning should reflect what is normally available to the robot's perception pipeline. As a result, this project
-will focus on data synthesis approaches which generate grasp knowledge databases synthesizing and labeling perceptual
-data.
+All these approaches, however, still rely on analytical metrics to label grasp candidates. These metrics, as mentioned
+in subsection \ref{sub:overview}, can be unreliable when tested on real systems. As robots can rarely acquire the
+comprehensive model of their environment from perceptual sensors, training data for robot learning should reflect what
+is normally available to the robot's perception pipeline. As a result, this project will focus on data synthesis
+approaches which generate grasp knowledge databases synthesizing and labeling perceptual data.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Data augmentation}
@@ -452,7 +522,3 @@ New transformations are then sampled from this model and applied to input images
 Qi et al \cite{Qi2016}\todo{add approach}
 
 \todo{should adversarial approaches be included?}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsection{Task Compatibility}
-%    In addition to stability, a successful grasping strategy also has to take into account the task to be performed with the grasped object. However, Sahbani et al. \cite{Sahbani2012} points out that incorporating task compatibility in to grasp synthesis, is still an open challenge because of the difficulty in modeling a task and the computational cost of finding a suitable grasp once a task is defined. These challenges are particularly relevant to analytic grasp synthesis, but is also not solved by empirical approaches. Methods which mimic human grasping alleviate the need for modeling tasks but is not fully automatic when facing new objects, while methods based on object observations have to generate many grasp candidates and face the same difficulty of task modeling as analytical approaches. One possible approach suggested by the article is to directly identify object features that are relevant to the requested tasks. Approaches to task modeling include methods based on manipulability ellipsoids \cite{Yoshikawa1990} and task space polytopes \cite{lee1997}, or building a task compatibility index measuring the similarity between the optimal directions of the manipulator and the movements required by a specific task \cite{chiu1988}.
