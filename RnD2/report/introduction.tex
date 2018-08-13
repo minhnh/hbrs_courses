@@ -19,8 +19,8 @@ challenging problem and an area of active research.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Use Case}
 \picHereWidth{robocup_typical_objects}
-{Typical objects in the Robocup@Home competition \cite{robocupRulebook2018}.}
-{fig:robocup_objects}{0.9\textwidth}
+             {Typical objects in the Robocup@Home competition \cite{robocupRulebook2018}.}
+             {fig:robocup_objects}{0.9\textwidth}
 
 This project focuses on the use cases of robotic grasping in the
 \footnoteHref{http://www.robocupathome.org/}{Robocup @Home} league. The tasks in this competition are designed to
@@ -34,7 +34,7 @@ condition or object occlusion.
 
 The platform used for the project's experiments is the robot chosen for the standard platform for the Robocup@Home
 league, the
-\footnoteHref{http://www.toyota-global.com/innovation/partner\_robot/robot/\#link02}{Toyota Human Support Robot (HSR)}
+\footnoteHref{https://www.toyota-global.com/innovation/partner\_robot/robot/\#link02}{Toyota Human Support Robot (HSR)}
 \cite{robocupRulebook2018}. The robot is equipped with an RGB-D sensor
 (\footnoteHref{https://www.asus.com/3D-Sensor/Xtion\_PRO\_LIVE/}{Xtion PRO LIVE}), stereo camera and a wide-angle camera
 on the robot head, as well as a wide angle camera mounted on the two-finger gripper. The gripper also has a
@@ -129,10 +129,10 @@ would be
 where $S_{r,i}$ is $1$ if feature $i$ belongs to modality $r$ and $0$ otherwise.
 
 \picHereWidth{Eitel_et_al-2015-depth_color_encodings}
-{Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
-    normals \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed
-    by Eitel et al. \cite{Eitel2015}.}
-{fig:depth-encodings}{\linewidth}
+             {Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
+              normals \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed
+              by Eitel et al. \cite{Eitel2015}.}
+             {fig:depth-encodings}{\linewidth}
 
 Building upon the success of Convolutional Neural Networks (CNN) in capturing 2D features \cite{Gu2018}, several
 multi-modal approaches convert depth data into three-channel images during the preprocessing step
@@ -194,8 +194,8 @@ aligning the image center to the gripper central point and the image's middle ro
 assumed to have an approach vector perpendicular to the table and hence is characterized by the gripper center and the
 angle of the gripper axis with respect to the table.
 \picHereWidth{mahler_et_al-2017-dexnet_2-dataset_generation}
-{Dex-net 2.0 data generation pipeline \cite{mahler2017}.}
-{fig:dexnet-data-gen}{\textwidth}
+             {Dex-net 2.0 data generation pipeline \cite{mahler2017}.}
+             {fig:dexnet-data-gen}{\textwidth}
 
 Several methods use eigengrasps to represent the object-grasp relation in free space \cite{Goldfeder2011,Ciocarlie2009}.
 Ciocarlie and Allen \cite{Ciocarlie2009} introduced eigengrasps and defined them as principal components of the dataset
@@ -217,8 +217,8 @@ database, then executing the best indexed grasp for the matched object.
 \subsubsection*{Techniques based on local features} \label{subsub:object_grasp_local}
 
 \picHereWidth{detry_et_al-2012-fig3-part_candidates}
-{Generating part candidates with box-shaped region of interests \cite{Detry2012}.}
-{fig:part_candidates}{0.7\textwidth}
+             {Generating part candidates with box-shaped region of interests \cite{Detry2012}.}
+             {fig:part_candidates}{0.7\textwidth}
 
 Detry et al. \cite{Detry2012} attempt to apply grasp experience demonstrated on known objects to novel ones by finding
 similar graspable regions. As illustrated in figure \ref{fig:part_candidates}, part candidates are point clouds
@@ -234,9 +234,9 @@ ability to represent the robot hand's approach vector since rectangles in images
 parallel with the RGB-D camera's optical axis \cite{Gualtieri2016}.
 
 \picHereWidth{kappler_et_al-2015-fig8-local_shape_diff_viewpoints}
-{Local shape representations with different camera viewpoints of the same grasp. Cyan lines represent the
-    approach vectors while pink lines represent the camera viewpoint \cite{Kappler2015}.}
-{fig:local_shape_viewpoints}{0.8\textwidth}
+             {Local shape representations with different camera viewpoints of the same grasp. Cyan lines represent the
+              approach vectors while pink lines represent the camera viewpoint \cite{Kappler2015}.}
+             {fig:local_shape_viewpoints}{0.8\textwidth}
 
 Kappler et al. \cite{Kappler2015} extract local shape representations (or templates) of objects from point clouds
 generated from object meshes at various camera viewpoints. The templates are grids with predefined resolution
@@ -264,8 +264,8 @@ insignificant considering the results from \cite{lenz2015}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Background and terminology}
 \picHereWidth{roa_suarez-2015-grasp_relations}
-{Relationships between velocities and forces, torques for multi-fingered grasping \cite{Roa2015}.}
-{fig:grasp_relations}{0.7\textwidth}
+             {Relationships between velocities and forces, torques for multi-fingered grasping \cite{Roa2015}.}
+             {fig:grasp_relations}{0.7\textwidth}
 
 Many classical grasp evaluation approaches follow Murray et al \cite{Murray1994}'s definition of grasp planning as the
 problem of finding a set of contact locations between a rigid-body object and the end-effector's fingers, mounted on a
@@ -517,8 +517,5 @@ transformations such as mirroring, rotating, shifting \cite{Gu2018} or photometr
 transformations using diffeomorphisms. The authors first estimate the transformations for image pairs in each class.
 These transformations are then used as observations to build a class-wise statistical model of transformations.
 New transformations are then sampled from this model and applied to input images.
-\todo{which of this can be applied to depth}
-
-Qi et al \cite{Qi2016}\todo{add approach}
 
 \todo{should adversarial approaches be included?}
