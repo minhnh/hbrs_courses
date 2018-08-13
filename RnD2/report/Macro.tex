@@ -1,6 +1,6 @@
 % #1 - image path, #2 - caption, #3 - label
 \newcommand{\picHere}[3] { %
-\begin{figure}[htp] %
+\begin{figure}[h!] %
 \begin{center} %
 \resizebox{!}{!}{\includegraphics{#1}} %
 \caption{{\small#2}} %
@@ -11,7 +11,7 @@
 
 % #1 - image path, #2 - caption, #3 - label, #4 - figure width
 \newcommand{\picHereWidth}[4] { %
-\begin{figure}[htb] %
+\begin{figure}[h!] %
 \begin{center} %
 \resizebox{!}{!}{\includegraphics[width=#4]{#1}} %
 \caption{{\small #2}} %
@@ -22,7 +22,7 @@
 
 % #1 - image path, #2 - caption, #3 - label
 \newcommand{\picHereRes}[3] { %
-\begin{figure}[htp] %
+\begin{figure}[h!] %
 \begin{center} %
 \resizebox{!}{!}{\includegraphics[totalheight=0.8\textheight]{#1}} %
 \caption{#2} %

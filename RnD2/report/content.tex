@@ -56,14 +56,13 @@ where $ x $ is a chosen default box, $ c $ is the predicted confidence, $ l $ is
 ground truth box. Detection training is applied to multiple resolutions of the feature map (illustrated in figure
 \ref{fig:ssd_arch}) for the network to learn scale awareness.
 
-The implementation of SSD by Pierluigi Ferrari \footnote{GitHub link for source code: 
-    \url{https://github.com/pierluigiferrari/ssd_keras}} is integrated to work with ROS and the Robocup@Home perception
-software structure. \todo{class diagram or perception libs structure?}
-Figure \ref{fig:detection_example} shows a sample detection result from the integrated SSD architecture for the objects
-partially invisible in point clouds in figure \ref{fig:bad_objects}.
+\picHereWidth{detection_example}{Example of SSD detection using a model trained on the COCO dataset.}
+{fig:detection_example}{0.7\textwidth}
 
-\picHereWidth{detection_example}
-             {Example of SSD detection using a model trained on the COCO dataset.}{fig:detection_example}{0.8\textwidth}
+Figure \ref{fig:detection_example} shows a sample detection result from the integrated SSD architecture for the objects
+partially invisible in point clouds in figure \ref{fig:bad_objects}. The implementation by Pierluigi Ferrari
+\footnote{GitHub link for source code: \url{https://github.com/pierluigiferrari/ssd_keras}} is extended to work with
+ROS and the Robocup@Home perception software structure. \todo{class diagram or perception libs structure?}
 
 \subsection{Pose estimation and grasp planning}
 
@@ -72,7 +71,28 @@ estimation algorithms are implemented as the baseline grasp planning method. Nex
 by Mahler et al. \cite{mahler2017} is integrated for comparison.
 
 \subsubsection*{Pose estimation for detected objects}
-For the baseline method, the approach vector
+
+\begin{figure}[h!]
+    \centering
+    \small
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{grasp_plan_pose_estimation}
+        \caption{Pose estimation}
+        \label{fig:grasp_plan_pose_estimation}
+    \end{subfigure}
+    \hfill  % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+            % (or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.55\textwidth}
+        \includegraphics[width=\textwidth]{grasp_plan_gqcnn}
+        \caption{GQCNN \cite{mahler2017}}
+        \label{fig:grasp_plan_gqcnn}
+    \end{subfigure}
+    \caption{Pipelines of the two integrated approaches for planning grasps.}\label{fig:grasp_planners}
+\end{figure}
+
+For the baseline method, the grasp approach vector is assumed to align with the $ x $-axis of the robot base coordinate
+frame, as illustrate in figure \ref{fig:base_link_frame}. This assumption reduces the 6-DOF grasp pose finding problem
+to finding the 3D coordinates of the object.
 
 \subsubsection*{Grasp detection with GQCNN}
 
@@ -95,8 +115,7 @@ For the baseline method, the approach vector
         \caption{A white styrofoam ball}
         \label{fig:object_ball}
     \end{subfigure}
-    \hfill  % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
-            % (or a blank line to force the subfigure onto a new line)
+    \hfill
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{object_duct_tape}
         \caption{A roll of duct tape}
