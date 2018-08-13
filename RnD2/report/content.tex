@@ -63,15 +63,16 @@ Figure \ref{fig:detection_example} shows a sample detection result from the inte
 partially invisible in point clouds in figure \ref{fig:bad_objects}.
 
 \picHereWidth{detection_example}
-             {Example of SSD detection using a model trained on the COCO dataset.}{fig:detection_example}{0.7\textwidth}
+             {Example of SSD detection using a model trained on the COCO dataset.}{fig:detection_example}{0.8\textwidth}
 
 \subsection{Pose estimation and grasp planning}
 
 This section describes how grasp poses are inferred from the objects detected in RGB images. First, simple pose
-estimation algorithms are implemented as baseline. Next, the GQCNN grasp planner introduced by Mahler et al.
-\cite{mahler2017} trained on their synthetic DexNet 2.0 dataset is integrated for comparison.
+estimation algorithms are implemented as the baseline grasp planning method. Next, the GQCNN grasp planner introduced
+by Mahler et al. \cite{mahler2017} is integrated for comparison.
 
 \subsubsection*{Pose estimation for detected objects}
+For the baseline method, the approach vector
 
 \subsubsection*{Grasp detection with GQCNN}
 
@@ -80,6 +81,41 @@ estimation algorithms are implemented as baseline. Next, the GQCNN grasp planner
 \pagebreak
 \section{Experiment}
 
+\picHereWidth{base_link_frame}{\texttt{base\_link} coordinate frame.}{fig:base_link_frame}{0.8\textwidth}
+
+\picHereWidth{experimental_setup}
+             {Experiment setup: the robot has the same starting pose facing the table before each grasp.}
+             {fig:experiment_setup}{\textwidth}
+
+\begin{figure}[htb]
+    \centering
+    \small
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{object_ball}
+        \caption{A white styrofoam ball}
+        \label{fig:object_ball}
+    \end{subfigure}
+    \hfill  % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
+            % (or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{object_duct_tape}
+        \caption{A roll of duct tape}
+        \label{fig:object_duct_tape}
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{object_noodle_box}
+        \caption{A cup noodles box}
+        \label{fig:object_noodle_box}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+    \includegraphics[width=\textwidth]{object_salt}
+    \caption{A salt container}
+    \label{fig:object_salt}
+    \end{subfigure}
+    \caption{Objects selected for the experiments.}\label{fig:objects}
+\end{figure}
 
 \subsection{Experiment setup}
 
