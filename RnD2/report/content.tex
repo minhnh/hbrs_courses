@@ -74,49 +74,78 @@ model trained on the COCO dataset.
 
 \subsection{Pose estimation and grasp planning}
 
-\begin{figure}[h!]
-    \centering
-    \small
-    \begin{subfigure}[b]{0.25\textwidth}
-        \includegraphics[width=\textwidth]{grasp_plan_pose_estimation}
-        \caption{Pose estimation}
-        \label{fig:grasp_plan_pose_estimation}
-    \end{subfigure}
-    \hfill  % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
-    % (or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.6\textwidth}
-        \includegraphics[width=\textwidth]{grasp_plan_gqcnn}
-        \caption{GQCNN \cite{mahler2017}}
-        \label{fig:grasp_plan_gqcnn}
-    \end{subfigure}
-    \caption{Pipelines of the two approaches for planning grasps.} \label{fig:grasp_planners}
-\end{figure}
-
 This section describes how grasp poses are inferred from the objects detected in RGB images. First, simple pose
 estimation algorithms are implemented as the baseline grasp planning method. Next, the GQCNN grasp planner introduced
-by Mahler et al. \cite{mahler2017} is integrated for comparison. Figure \ref{fig:grasp_planners} illustrates the
-software structures of the two approaches.
+by Mahler et al. \cite{mahler2017} is integrated for comparison.
+
+\picHereWidth{base_link_frame}{\texttt{base\_link} coordinate frame. The $ z $-axis points upward into the robot.}
+{fig:base_link_frame}{0.5\textwidth}
 
 \subsubsection*{Pose estimation for detected objects}
 
+\picHereWidth{grasp_plan_pose_estimation}{Flowchart for the pose estimation pipeline.}
+             {fig:grasp_plan_pose_estimation}{\textwidth}
+
 For the baseline method, the grasp approach vector is assumed to align with the $ x $-axis of the robot base coordinate
-frame, as illustrate in figure \ref{fig:base_link_frame}. This assumption reduces the 6-DOF grasp pose finding problem
+frame, as illustrated in figure \ref{fig:base_link_frame}. This assumption reduces the 6-DOF grasp-pose-finding problem
 to finding the 3D coordinates of the object. As shown in figure \ref{fig:grasp_plan_pose_estimation}, the RGB image is
-extracted from the point cloud for detection.
+extracted from the point cloud for detection. After the image detection service responded with 2D bounding boxes of the
+objects, point clouds are transformed to the robot's base frame, and points within the detected regions are extracted
+from the transformed clouds. This step relies on the second assumption that the point clouds are organized: the points
+resemble an image or a 2D matrix where data is organized into rows and columns. This allows direct projection of pixel
+coordinates to points in the point cloud. As PCL is implemented in \texttt{C++}, while the SSD implementation is
+written in \texttt{Python}, interfaces between the two languages are developed for functions processing point clouds
+using the \footnoteHref{https://www.boost.org/doc/libs/1\_68\_0/libs/python/}{Boost Python} library. The grasping
+position $ \mathbf{p} = (x, y, z) $ is calculated from the extracted 3D coordinates. If matrix $ B $ of shape
+$ M \times 3 $ contains all the 3D coordinates extracted using the detected object's bounding box, we either take the 
+closest point along the $ x $-axis of the base frame:
+\[ p = \left( \begin{matrix}
+x \\ y \\ z
+\end{matrix} \right) =
+\left( \begin{matrix}
+\min_{i = 1}^M B_{i,1} \\
+\cfrac{1}{M} \sum_{i = 1}^{M} B_{i,2} \\
+\cfrac{1}{M} \sum_{i = 1}^{M} B_{i,3}
+\end{matrix} \right) \],
+or the mean along all three axes:
+\[ p_j = \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,j} \],
+for $ j = 1, 2, 3 $.
 
 \subsubsection*{Grasp detection with GQCNN}
+
+\picHereWidth{grasp_plan_gqcnn}{Flowchart for the GQCNN pipeline.}
+             {fig:grasp_plan_gqcnn}{0.55\textwidth}
+
+The GQCNN grasp planner introduced by Mahler et al. \footnote{GitHub link:
+\url{https://github.com/BerkeleyAutomation/gqcnn}} \cite{mahler2017} is integrated into ROS as a grasp detection
+service, which takes in a color, a depth image, and the detected object's bounding box. After planning it returns a
+pregrasp pose and a probability of grasp success. The planner first combines the image pair into a single 4-channel
+matrix and uses the 2D bounding box to crop out the relevant region. Bipedal grasp candidates, characterized by the
+pixel coordinates of the grasp center and the gripper's angle in the image plane, are then sampled for the cropped
+matrix. Corresponding local representations (as described in \ref{subsub:object_grasp_local}) are extracted for each
+grasp as input for the GQCNN model. The output success probability scores are compared to find the optimal grasp. To
+calculate the 3D grasp pose, the provided planner assume that the approach vector to align with the camera axis. The
+returned pose is 10cm away from the object's surface along this axis.
+
+\picHereWidth{grasp_gqcnn_result}{An example grasp pose returned from the GQCNN grasp planner.}
+             {fig:grasp_gqcnn_result}{\textwidth}
+
+For this project, the GQCNN model trained on the full Dex-Net 2.0 dataset containing 6.7 million synthetic data points
+\cite{mahler2017} is integrated. Figure \ref{fig:grasp_gqcnn_result} shows an example of grasp poses returned from the
+grasp planner using this model. Out of the four objects selected for experiments (shown in figure \ref{fig:objects}),
+the integrated planner was only able to detect grasps for the noodle box at very low confidence. The planner's
+unreliability in grasp detection and its long planning time (from 10 to 20 seconds per detected object) discourage from
+including them in the grasp experiments performed. This can be attributed to the experimental setup, which is different
+from the statically mounted RGB-D camera with its principal axis perpendicular to the grasp surface (e.g. a table) as
+described in the original paper. However, for a mobile robot like the HSR, such a setup is often impractical.
 
 \subsection{Grasp execution}
 
 \pagebreak
 \section{Experiment}
 
-\picHereWidth{base_link_frame}{\texttt{base\_link} coordinate frame. The $ z $-axis points upward into the robot model.}
-             {fig:base_link_frame}{0.6\textwidth}
-
-\picHereWidth{experimental_setup}
-             {Experiment setup: the robot has the same starting pose facing the table before each grasp.}
-             {fig:experiment_setup}{0.8\textwidth}
+\picHereWidth{experimental_setup}{Experiment setup: the robot assumes the same pose before each grasp.}
+             {fig:experiment_setup}{0.7\textwidth}
 
 \begin{figure}[htb]
     \centering
@@ -149,6 +178,7 @@ extracted from the point cloud for detection.
 
 \subsection{Experiment setup}
 
+\subsection{Results}
 
-\section{Results}
-
+\pagebreak
+\section{Discussion and future work}
