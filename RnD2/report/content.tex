@@ -56,43 +56,53 @@ where $ x $ is a chosen default box, $ c $ is the predicted confidence, $ l $ is
 ground truth box. Detection training is applied to multiple resolutions of the feature map (illustrated in figure
 \ref{fig:ssd_arch}) for the network to learn scale awareness.
 
+\picHereWidth{image_detection_class_structure}{Class diagram for the image detection implementation.}
+             {fig:detection_class_diagram}{0.9\textwidth}
+
+The SSD implementation by Pierluigi Ferrari \footnote{GitHub link for source code:
+\url{https://github.com/pierluigiferrari/ssd_keras}} is extended to work with ROS and the Robocup@Home perception
+software structure. To allow for easy adaptation to different image detection architectures and implementations in the
+future, an abstraction layer for the image detection service was created, as illustrated in figure
+\ref{fig:detection_class_diagram}. The \texttt{ImageDetectionService} class loads the specific realization of
+\texttt{ImageDetector} class and its configurations at launch via constructor parameters and uses its instantiation to
+handle detection service requests from other ROS nodes during runtime. Figure \ref{fig:detection_example} shows a
+sample detection result from the integrated SSD architecture. For detecting RoboCup@Home objects, we use a provided
+model trained on the COCO dataset.
+
 \picHereWidth{detection_example}{Example of SSD detection using a model trained on the COCO dataset.}
 {fig:detection_example}{0.7\textwidth}
 
-Figure \ref{fig:detection_example} shows a sample detection result from the integrated SSD architecture for the objects
-partially invisible in point clouds in figure \ref{fig:bad_objects}. The implementation by Pierluigi Ferrari
-\footnote{GitHub link for source code: \url{https://github.com/pierluigiferrari/ssd_keras}} is extended to work with
-ROS and the Robocup@Home perception software structure. \todo{class diagram or perception libs structure?}
-
 \subsection{Pose estimation and grasp planning}
-
-This section describes how grasp poses are inferred from the objects detected in RGB images. First, simple pose
-estimation algorithms are implemented as the baseline grasp planning method. Next, the GQCNN grasp planner introduced
-by Mahler et al. \cite{mahler2017} is integrated for comparison.
-
-\subsubsection*{Pose estimation for detected objects}
 
 \begin{figure}[h!]
     \centering
     \small
-    \begin{subfigure}[b]{0.3\textwidth}
+    \begin{subfigure}[b]{0.25\textwidth}
         \includegraphics[width=\textwidth]{grasp_plan_pose_estimation}
         \caption{Pose estimation}
         \label{fig:grasp_plan_pose_estimation}
     \end{subfigure}
     \hfill  % add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
-            % (or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.55\textwidth}
+    % (or a blank line to force the subfigure onto a new line)
+    \begin{subfigure}[b]{0.6\textwidth}
         \includegraphics[width=\textwidth]{grasp_plan_gqcnn}
         \caption{GQCNN \cite{mahler2017}}
         \label{fig:grasp_plan_gqcnn}
     \end{subfigure}
-    \caption{Pipelines of the two integrated approaches for planning grasps.}\label{fig:grasp_planners}
+    \caption{Pipelines of the two approaches for planning grasps.} \label{fig:grasp_planners}
 \end{figure}
+
+This section describes how grasp poses are inferred from the objects detected in RGB images. First, simple pose
+estimation algorithms are implemented as the baseline grasp planning method. Next, the GQCNN grasp planner introduced
+by Mahler et al. \cite{mahler2017} is integrated for comparison. Figure \ref{fig:grasp_planners} illustrates the
+software structures of the two approaches.
+
+\subsubsection*{Pose estimation for detected objects}
 
 For the baseline method, the grasp approach vector is assumed to align with the $ x $-axis of the robot base coordinate
 frame, as illustrate in figure \ref{fig:base_link_frame}. This assumption reduces the 6-DOF grasp pose finding problem
-to finding the 3D coordinates of the object.
+to finding the 3D coordinates of the object. As shown in figure \ref{fig:grasp_plan_pose_estimation}, the RGB image is
+extracted from the point cloud for detection.
 
 \subsubsection*{Grasp detection with GQCNN}
 
@@ -101,11 +111,12 @@ to finding the 3D coordinates of the object.
 \pagebreak
 \section{Experiment}
 
-\picHereWidth{base_link_frame}{\texttt{base\_link} coordinate frame.}{fig:base_link_frame}{0.8\textwidth}
+\picHereWidth{base_link_frame}{\texttt{base\_link} coordinate frame. The $ z $-axis points upward into the robot model.}
+             {fig:base_link_frame}{0.6\textwidth}
 
 \picHereWidth{experimental_setup}
              {Experiment setup: the robot has the same starting pose facing the table before each grasp.}
-             {fig:experiment_setup}{\textwidth}
+             {fig:experiment_setup}{0.8\textwidth}
 
 \begin{figure}[htb]
     \centering
