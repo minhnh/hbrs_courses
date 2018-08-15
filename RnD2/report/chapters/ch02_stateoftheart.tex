@@ -7,7 +7,8 @@ consideration, how object-grasp representation is formulated based on such perce
 evaluated. This section will review these aspects are handled in recent methods, as well as approaches to augment and
 synthesize data relevant to grasping.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Extracting features from perceptual data for grasping}
 As RGB-D cameras become more accessible and affordable, they are often chosen in robotic systems as the primary
 perception sensor. While RGB-D data has been shown to provide richer features compared to pure 2D images for various
@@ -29,10 +30,10 @@ would be
 where $S_{r,i}$ is $1$ if feature $i$ belongs to modality $r$ and $0$ otherwise.
 
 \picHereWidth{Eitel_et_al-2015-depth_color_encodings}
-{Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
-    normals \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed
-    by Eitel et al. \cite{Eitel2015}.}
-{fig:depth-encodings}{\linewidth}
+             {Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
+              normals \cite{Bo2013}, HHA \cite{Gupta2014RGBDFeatures}, and the color mapping of depth values proposed
+              by Eitel et al. \cite{Eitel2015}.}
+             {fig:depth-encodings}{\linewidth}
 
 Building upon the success of Convolutional Neural Networks (CNN) in capturing 2D features \cite{Gu2018}, several
 multi-modal approaches convert depth data into three-channel images during the preprocessing step
@@ -79,7 +80,8 @@ which predicts if the obscured points are occupied. This output voxel grid is ei
 cubes algorithm to quickly create an object mesh and add it to the manipulation planning scene, or post-processing
 is applied to create a higher resolution mesh for grasp planning.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Object-Grasp representation}
 Bohg et al. \cite{Bohg2014} parameterize grasps by (1) the \emph{grasping point} of the object where the gripper
 should be aligned, (2) an \emph{approach vector} from which the gripper shall approach the \emph{grasping point},
@@ -87,15 +89,15 @@ should be aligned, (2) an \emph{approach vector} from which the gripper shall ap
 The article also categorized object-grasp representation approaches into ones which extract local (i.e. curvature,
 contact area with the hand) or global features (center of mass, bounding box).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Techniques based on global features}
 As illustrated in figure \ref{fig:dexnet-data-gen}, Mahler et al. \cite{mahler2017} represent grasps in 2D images by
 aligning the image center to the gripper central point and the image's middle row to the grasp axis. The grasp is
 assumed to have an approach vector perpendicular to the table and hence is characterized by the gripper center and the
 angle of the gripper axis with respect to the table.
 \picHereWidth{mahler_et_al-2017-dexnet_2-dataset_generation}
-{Dex-Net 2.0 data generation pipeline \cite{mahler2017}.}
-{fig:dexnet-data-gen}{\textwidth}
+             {Dex-Net 2.0 data generation pipeline \cite{mahler2017}.}
+             {fig:dexnet-data-gen}{\textwidth}
 
 Several methods use eigengrasps to represent the object-grasp relation in free space \cite{Goldfeder2011,Ciocarlie2009}.
 Ciocarlie and Allen \cite{Ciocarlie2009} introduced eigengrasps and defined them as principal components of the dataset
@@ -113,12 +115,12 @@ comparable to the second in the latter equation. Goldfeder and Allen \cite{Goldf
 to generate the Columbia Grasp Database. Grasp planning is then done by matching the query object to one in the
 database, then executing the best indexed grasp for the matched object.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Techniques based on local features} \label{subsub:object_grasp_local}
 
 \picHereWidth{detry_et_al-2012-fig3-part_candidates}
-{Generating part candidates with box-shaped region of interests \cite{Detry2012}.}
-{fig:part_candidates}{0.7\textwidth}
+             {Generating part candidates with box-shaped region of interests \cite{Detry2012}.}
+             {fig:part_candidates}{0.7\textwidth}
 
 Detry et al. \cite{Detry2012} attempt to apply grasp experience demonstrated on known objects to novel ones by finding
 similar graspable regions. As illustrated in figure \ref{fig:part_candidates}, part candidates are point clouds
@@ -134,9 +136,9 @@ ability to represent the robot hand's approach vector since rectangles in images
 parallel with the RGB-D camera's optical axis \cite{Gualtieri2016}.
 
 \picHereWidth{kappler_et_al-2015-fig8-local_shape_diff_viewpoints}
-{Local shape representations with different camera viewpoints of the same grasp. Cyan lines represent the
-    approach vectors while pink lines represent the camera viewpoint \cite{Kappler2015}.}
-{fig:local_shape_viewpoints}{0.8\textwidth}
+             {Local shape representations with different camera viewpoints of the same grasp. Cyan lines represent the
+              approach vectors while pink lines represent the camera viewpoint \cite{Kappler2015}.}
+             {fig:local_shape_viewpoints}{0.8\textwidth}
 
 Kappler et al. \cite{Kappler2015} extract local shape representations (or templates) of objects from point clouds
 generated from object meshes at various camera viewpoints. The templates are grids with predefined resolution
@@ -158,14 +160,15 @@ candidate grasp. In their experiments, this approach performs better than the ab
 the surface normals for each projection. This approach did not consider RGB data, arguing that the improvement would be
 insignificant considering the results from \cite{lenz2015}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Grasp evaluation}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Background and terminology}
 \picHereWidth{roa_suarez-2015-grasp_relations}
-{Relationships between velocities and forces, torques for multi-fingered grasping \cite{Roa2015}.}
-{fig:grasp_relations}{0.7\textwidth}
+             {Relationships between velocities and forces, torques for multi-fingered grasping \cite{Roa2015}.}
+             {fig:grasp_relations}{0.7\textwidth}
 
 Many classical grasp evaluation approaches follow Murray et al \cite{Murray1994}'s definition of grasp planning as the
 problem of finding a set of contact locations between a rigid-body object and the end-effector's fingers, mounted on a
@@ -229,7 +232,7 @@ Via approximating the friction cones at contact points $ \boldsymbol{p}_i $ as p
 represented by a linear combination of primitive wrenches. The convex hull $ \mathcal{P} $ containing all primitive
 wrenches is called the \emph{Grasp Wrench Space} (GWS).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Analytical grasp metrics}
 
 Roa and Su{\'a}rez \cite{Roa2015} group grasp quality measures into approaches focusing on contact point position, hand
@@ -272,7 +275,7 @@ that grasps with the best $ \epsilon $ score is much more likely to have low $ \
 are introduced, as compared to grasps which perform well under the proposed metric. However, the authors also admit
 that the calculation of the metric is intractable in real time, taking hours in worst cases.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Learning to predict grasp quality}
 
 \begin{table}[h!]
@@ -351,10 +354,11 @@ be included in the next section. The introduction of a new large-scale human gra
 al. \cite{Saudabayev2018}, however, may open up new possibilities for direct training of grasp evaluation models on
 human grasp experience.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Generating data for grasp success prediction}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Data synthesis for robot grasping} \label{subsub:data_synthesis}
 
 Most approaches to synthesize data for grasp evaluation models generate training samples from object meshes. Earlier
@@ -389,7 +393,7 @@ comprehensive model of their environment from perceptual sensors, training data 
 is normally available to the robot's perception pipeline. As a result, this project will focus on data synthesis
 approaches which generate grasp knowledge databases synthesizing and labeling perceptual data.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Data augmentation}
 
 For learned models to become robust to noise in real-world sensors and to alleviate the scarcity of real data,

@@ -42,7 +42,7 @@
 % \renewcommand{\familydefault}{\sfdefault}
 
 %-------------------------------------------------------------------------------
-%	VARIOUS REQUIRED PACKAGES AND CONFIGURATIONS
+%   VARIOUS REQUIRED PACKAGES AND CONFIGURATIONS
 %-------------------------------------------------------------------------------
 
 \usepackage[numbers]{natbib}\citeindextrue % Round brackets around citations, change to square for square brackets
@@ -65,8 +65,6 @@
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 \usepackage{subcaption}
 
-
-\usepackage{lipsum} % Used to test
 \usepackage{todonotes}
 
 \onehalfspacing

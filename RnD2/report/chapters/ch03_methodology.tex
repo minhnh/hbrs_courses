@@ -6,12 +6,14 @@
 Figure \ref{fig:grasp_pipeline} illustrates the main components of the object grasping pipeline implemented on the HSR.
 This section will detail the implementation of each component.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Object detection}
-\picHereWidth{bad_objects}
-{Example of objects that are partially invisible in point clouds.}{fig:bad_objects}{\textwidth}
+\picHereWidth{bad_objects}{Example of objects that are partially invisible in point clouds.}
+             {fig:bad_objects}{\textwidth}
 
 Originally object detection in the Robocup@Home team's code base \footnote{GitHub link for the source code:
-    \url{https://github.com/b-it-bots/mas\_perception/}} is done using existing algorithms available in the
+\url{https://github.com/b-it-bots/mas\_perception/}} is done using existing algorithms available in the
 \footnoteHref{http://docs.pointclouds.org/}{Point Cloud Library (PCL)}. First, a random sample consensus (RANSAC)
 algorithm is executed to find a plane and its inlaying points using point clouds from the RGB-D camera (multiple clouds
 are accumulated before processing to alleviate noise from the sensor). Only planes whose normals are parallel to the
@@ -22,20 +24,22 @@ objects as the SAC algorithm does not always find a plane, especially when sever
 on the depth information can also prove inadequate for object detection, as some materials of domestic objects can be
 noisy or even invisible for the depth sensor (two examples of which are shown in figure \ref{fig:bad_objects}). The 26
 parameters required for tuning the detection pipeline also make it inflexible in adapting different surfaces and
-objects. Finally, execution of the algorithm is slow, taking several seconds for plane detection and cluster extraction.
+objects. Finally, execution of the algorithm is slow, taking several seconds for plane detection and cluster
+extraction.
 
 The HSR from Toyota provides a built-in segmentation solution based on an existing
 \footnoteHref{http://www.ros.org}{Robot Operating System (ROS)} package called \linebreak
 \footnoteHref{http://wiki.ros.org/tabletop\_object\_detector}{\texttt{tabletop\_object\_detector}}. ROS is a software
 framework designed for robots, containing drivers for various robotic hardware devices as well as libraries commonly
 used in robotic applications. The detection package assumes objects to have a rotationally symmetric shape, to have a
-fixed orientation on a horizontal surface (e.g. a table), and to be no more than 3cm apart from each other. This package
-follows a similar segmentation algorithm to the aforementioned method, first detecting a plane then clustering points
-above this plane as objects. While the package is better optimized and performs faster than the previous implementation,
-the source code of the modified version is not released by Toyota, and the algorithm suffers from limitations similar to
-the ones described above.
+fixed orientation on a horizontal surface (e.g. a table), and to be no more than 3cm apart from each other. This
+package follows a similar segmentation algorithm to the aforementioned method, first detecting a plane then clustering
+points above this plane as objects. While the package is better optimized and performs faster than the previous
+implementation, the source code of the modified version is not released by Toyota, and the algorithm suffers from
+limitations similar to the ones described above.
 
-\subsection*{Single Shot MultiBox Detector}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Single Shot MultiBox Detector}
 
 \picHereWidth{liu_et_al-2016-ssd_arch}{SSD architecture \cite{Liu2016SSD}.}{fig:ssd_arch}{\textwidth}
 
@@ -56,8 +60,9 @@ where $ x $ is a chosen default box, $ c $ is the predicted confidence, $ l $ is
 ground truth box. Detection training is applied to multiple resolutions of the feature map (illustrated in figure
 \ref{fig:ssd_arch}) for the network to learn scale awareness.
 
-\picHereWidth{image_detection_class_structure}{Class diagram for the image detection implementation.}
-{fig:detection_class_diagram}{0.9\textwidth}
+\picHereWidth{image_detection_class_structure}
+             {Class diagram for the image detection implementation. In italics are abstract classes and methods.}
+             {fig:detection_class_diagram}{0.9\textwidth}
 
 The SSD implementation by Pierluigi Ferrari \footnote{GitHub link for source code:
     \url{https://github.com/pierluigiferrari/ssd_keras}} is extended to work with ROS and the Robocup@Home perception
@@ -70,8 +75,10 @@ sample detection result from the integrated SSD architecture. For detecting Robo
 model trained on the COCO dataset.
 
 \picHereWidth{detection_example}{Example of SSD detection using a model trained on the COCO dataset.}
-{fig:detection_example}{0.7\textwidth}
+             {fig:detection_example}{0.7\textwidth}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Pose estimation and grasp planning}
 
 This section describes how grasp poses are inferred from the objects detected in RGB images. First, simple pose
@@ -79,12 +86,13 @@ estimation algorithms are implemented as the baseline grasp planning method. Nex
 by Mahler et al. \cite{mahler2017} is integrated for comparison.
 
 \picHereWidth{base_link_frame}{\texttt{base\_link} coordinate frame. The $ z $-axis points upward into the robot.}
-{fig:base_link_frame}{0.5\textwidth}
+             {fig:base_link_frame}{0.5\textwidth}
 
-\subsection*{Pose estimation for detected objects}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Pose estimation for detected objects}
 
 \picHereWidth{grasp_plan_pose_estimation}{Flowchart for the pose estimation pipeline.}
-{fig:grasp_plan_pose_estimation}{\textwidth}
+             {fig:grasp_plan_pose_estimation}{\textwidth}
 
 For the baseline method, the grasp approach vector is assumed to align with the $ x $-axis of the robot base coordinate
 frame, as illustrated in figure \ref{fig:base_link_frame}. This assumption reduces the 6-DOF grasp-pose-finding problem
@@ -97,7 +105,7 @@ coordinates to points in the point cloud. As PCL is implemented in \texttt{C++},
 written in \texttt{Python}, interfaces between the two languages are developed for functions processing point clouds
 using the \footnoteHref{https://www.boost.org/doc/libs/1\_68\_0/libs/python/}{Boost Python} library. The grasping
 position $ \mathbf{p} = (x, y, z) $ is calculated from the extracted 3D coordinates. If matrix $ B $ of shape
-$ M \times 3 $ contains all the 3D coordinates extracted using the detected object's bounding box, we either take the 
+$ M \times 3 $ contains all the 3D coordinates extracted using the detected object's bounding box, we either take the
 closest point along the $ x $-axis of the base frame:
 \[ p = \left( \begin{matrix}
 x \\ y \\ z
@@ -111,24 +119,28 @@ or the mean along all three axes:
 \[ p_j = \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,j} \],
 where $ j = 1, 2, 3 $.
 
-\subsection*{Grasp detection with GQCNN}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Grasp detection with GQCNN}
 
 \picHereWidth{grasp_plan_gqcnn}{Flowchart for the GQCNN pipeline.}
-{fig:grasp_plan_gqcnn}{0.55\textwidth}
+             {fig:grasp_plan_gqcnn}{0.55\textwidth}
 
 The GQCNN grasp planner introduced by Mahler et al. \footnote{GitHub link:
-    \url{https://github.com/BerkeleyAutomation/gqcnn}} \cite{mahler2017} is integrated into ROS as a grasp detection
+\url{https://github.com/BerkeleyAutomation/gqcnn}} \cite{mahler2017} is integrated into ROS as a grasp detection
 service, which takes in a color, a depth image, and the detected object's bounding box. After planning it returns a
 pregrasp pose and a probability of grasp success. The planner first combines the image pair into a single 4-channel
 matrix and uses the 2D bounding box to crop out the relevant region. Bipedal grasp candidates, characterized by the
 pixel coordinates of the grasp center and the gripper's angle in the image plane, are then sampled for the cropped
-matrix. Corresponding local representations (as described in \ref{subsub:object_grasp_local}) are extracted for each
-grasp as input for the GQCNN model. The output success probability scores are compared to find the optimal grasp. To
-calculate the 3D grasp pose, the provided planner assume that the approach vector to align with the camera axis. The
+matrix. Corresponding local representations (as described in section \ref{subsub:object_grasp_local}) are extracted for
+each grasp as input for the GQCNN model. The output success probability scores are compared to find the optimal grasp.
+To calculate the 3D grasp pose, the provided planner assume that the approach vector to align with the camera axis. The
 returned pose is 10cm away from the object's surface along this axis.
 
-\picHereWidth{grasp_gqcnn_result}{An example grasp pose returned from the GQCNN grasp planner.}
-{fig:grasp_gqcnn_result}{\textwidth}
+\picHereWidth{grasp_gqcnn_result}
+             {The blue arrow represents an example grasp pose returned from the GQCNN grasp planner. The number
+              in parentheses is the probability of grasp success returned by the GQCNN model. On the left is the
+              visualized object detection result.}
+             {fig:grasp_gqcnn_result}{\textwidth}
 
 For this project, the GQCNN model trained on the full Dex-Net 2.0 dataset containing 6.7 million synthetic data points
 \cite{mahler2017} is integrated. Figure \ref{fig:grasp_gqcnn_result} shows an example of grasp poses returned from the
@@ -136,7 +148,26 @@ grasp planner using this model. Out of the four objects selected for experiments
 the integrated planner was only able to detect grasps for the noodle box at very low confidence. The planner's
 unreliability in grasp detection and its long planning time (from 10 to 20 seconds per detected object) discourage from
 including them in the grasp experiments performed. This can be attributed to the experimental setup, which is different
-from the statically mounted RGB-D camera with its principal axis perpendicular to the grasp surface (e.g. a table) as
+from the statically mounted RGB-D camera with its principal axis perpendicular to the grasping surface (e.g. a table)
+as
 described in the original paper. However, for a mobile robot like the HSR, such a setup is often impractical.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Grasp execution}
+
+Originally manipulation planning is done using the \footnoteHref{http://moveit.ros.org}{MoveIt!} mobile manipulation
+library. Currently, MoveIt! only fully supports planners available in the \footnoteHref{http://ompl.kavrakilab.org}{
+Open Motion Planning Library (OMPL)}, which are primarily randomized planners. This kind of planners samples a set of
+joint trajectories and choose the first plan that is physically feasible. Because of their stochastic nature, the
+planners may give unnatural, unexpected manipulation plans, such as one shown in figure \ref{fig:grasp_moveit_fail}.
+
+\picHereWidth{grasp_moveit_fail}{MoveIt! failing to plan a simple grasp.}
+             {fig:grasp_moveit_fail}{\textwidth}
+
+In order to have a more reliable setup for grasp experiments, manipulation motion is planned using the integration and
+extension of Dynamic Motion Primitives (DMP) libraries for a parallel project by Padalkar \cite{Padalkar2018}. DMP
+models demonstrated trajectories as a series of differential equations, allowing the robot to learn human motions and
+calculate kinematic commands via solving these equations to perform new manipulation tasks in a similar way. The work
+by Padalkar extends the DMP libraries to also use navigation commands to perform manipulation tasks that can't be
+reached by the learned motion alone.
