@@ -1,31 +1,85 @@
-% document definition 
-\documentclass[a4paper,11pt]{article} 
+%
+% LaTeX2e Style for MAS R&D and master thesis reports
+% Author: Argentina Ortega Sainz, Hochschule Bonn-Rhein-Sieg, Germany
+% Please feel free to send issues, suggestions or pull requests to:
+% https://github.com/mas-group/project-report
+% Based on the template created by Ronni Hartanto in 2003
+%
 
-% create the following file in the input from the template
-\input{PaperInformation}
-\input{Preamble}
-\input{Macro}
+\documentclass[rnd]{mas_report}
+
+% ****************************************************
+% THIS INFORMATION SHOULD BE UPDATED FOR YOUR REPORT
+% ****************************************************
+\author{Minh Nguyen}
+\title{Learning Grasp Evaluation Models Using Synthetic 3D Object-Grasp Representations}
+\supervisors{%
+    Prof. Dr. Paul G. Pl\"{o}ger \\
+    Alex Mitrevski \\
+    Maximilian Sch\"{o}bel
+}
+\date{August 2018}
 
 \begin{document}
-\singlespacing
+\begin{titlepage}
+    \maketitle
+\end{titlepage}
 
-% create title template 
-\input{Title}
-\onehalfspacing
+%----------------------------------------------------------------------------------------
+%   PREFACE
+%----------------------------------------------------------------------------------------
 
-% crate abstract template 
-\input{abstract}
+\pagestyle{plain}
 
-\pagebreak
+
+\cleardoublepage
+\statementpage
+
+\begin{abstract}
+Your abstract
+\end{abstract}
+
+
+\begin{acknowledgements}
+Thanks to ....
+\end{acknowledgements}
+
+
 \tableofcontents
+\listoffigures
+\listoftables
 
-% document content begin here
-\input{introduction}
-\input{content}
-%\input{summary}
-% create bibtex document
-\input{BibSetting}
+%-------------------------------------------------------------------------------
+%   CONTENT CHAPTERS
+%-------------------------------------------------------------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{mainmatter}
+
+\subfile{chapters/ch01_introduction}
+\subfile{chapters/ch02_stateoftheart}
+\subfile{chapters/ch03_methodology}
+\subfile{chapters/ch04_experiments}
+\subfile{chapters/ch05_conclusion}
+
+
+%-------------------------------------------------------------------------------
+%   APPENDIX
+%-------------------------------------------------------------------------------
+
+\begin{appendices}
+\subfile{chapters/appendix}
+
+\end{appendices}
+
+\backmatter
+
+%-------------------------------------------------------------------------------
+%   BIBLIOGRAPHY
+%-------------------------------------------------------------------------------
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{plainnat}
+\bibliography{../RnD.bib}
 
 \end{document}
-
-

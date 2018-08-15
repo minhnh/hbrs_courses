@@ -19,6 +19,8 @@ __pycache__/
 *.bbl
 *.blg
 *.log
+*.lof
+*.lot
 *.out
 *.dvi
 *.gz
