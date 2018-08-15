@@ -30,7 +30,7 @@
     \PassOptionsToClass{\CurrentOption}{book}
 }
 % Execute the default option
-\ExecuteOptions{thesis}
+\ExecuteOptions{rnd}
 \ExecuteOptions{twosides}
 % Process other options
 \ProcessOptions\relax
