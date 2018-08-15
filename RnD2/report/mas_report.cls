@@ -64,6 +64,7 @@
 \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 \usepackage{subcaption}
+\usepackage{multirow}
 
 \usepackage{todonotes}
 
