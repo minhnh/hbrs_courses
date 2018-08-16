@@ -7,15 +7,15 @@
 \section{Motivation}
 
 Manipulation is an important functionality for applied robotics. Manipulating objects involves moving an end effector
-to the desired object's location and using this end effector to interact with the manipulated object to execute a
-specific task. The task can be simply moving the object to another location or can require more complicated maneuvers
-of the object (i.e. moving a handle to open doors or moving a bottle to pour water). Traditionally the end effector in
-the industry is a two-fingered gripper. Any object movement, in this case, requires manipulating the whole arm, which is
-effective for transferring objects over large motion ranges but can be intractable for tasks requiring more precise
-movements. The recent vacuum based effectors face similar problems in object manipulation. To handle finer motions, the
-common solutions in the industry are either using custom designed end-effector or multi-finger robot hands. The problem
-of robotic grasping typically refers to the use of grippers and multi-finger end effectors to manipulate objects. 70
-years after the conception of the first robot arm, a general solution to finding a suitable grasp for objects is still a
+to the desired object's location and using this end effector to interact with this object to execute a specific task.
+The task can be simply moving the object to another location or can require more complicated maneuvers of the object
+(i.e. moving a handle to open doors or moving a bottle to pour water). Traditionally the end effector in the industry
+is a two-fingered gripper. Any object movement, in this case, requires manipulating the whole arm, which is effective
+for transferring objects over large motion ranges but can be intractable for tasks requiring more precise movements.
+The recent vacuum based effectors face similar problems in object manipulation. To handle finer motions, the common
+solutions in the industry are either using custom designed end-effector or multi-finger robot hands. The problem of
+robotic grasping typically refers to the use of grippers and multi-finger end effectors to manipulate objects. 70 years
+after the conception of the first robot arm, a general solution to finding a suitable grasp for objects is still a
 challenging problem and an area of active research.
 
 
@@ -31,7 +31,7 @@ This project focuses on the use cases of robotic grasping in the
 evaluate the performance of autonomous robots in service robotic applications in a domestic environment. The objects to
 be manipulated are ones that can be found in a typical household setting. Some examples of such objects can be seen in
 figure \ref{fig:robocup_objects}. These objects can be placed on tables, shelves or in a dishwasher, whose locations
-can be anywhere in a simulated apartment. Grasping tasks in such an environment is challenging than because of various
+can be anywhere in a simulated apartment. Grasping tasks in such an environment is challenging because of various
 factors, including the variety of object shapes, the uncertainty of the robot manipulator and objects' locations,
 and the many noise/disturbance sources which can interfere with the robot's perceptual sensors such as lighting
 condition or object occlusion.
@@ -103,4 +103,7 @@ In order to leverage the successes of deep learning for various perception and g
 supervised techniques, this project shall focus on data generation and augmentation for empirical approaches to grasp
 synthesis using labeled data.
 
-\todo{layout of the report}
+The next chapter of this report will examine recent advances in aspects relevant to generating data for a grasp quality
+model. Next, the methodology of the grasping pipeline's components implemented will be described in chapter 3. Chapter 4
+will describe the experiments performed using this pipeline, and chapter 5 will conclude by discussing the
+contributions and potential future extensions of the project.

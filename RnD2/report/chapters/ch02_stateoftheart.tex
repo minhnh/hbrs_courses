@@ -3,9 +3,9 @@
 \chapter{State of the Art}
 
 Empirical grasp synthesis techniques based on labeled data vary mainly in what type of perceptual data is taken into
-consideration, how object-grasp representation is formulated based on such perceptual data, and how grasps are
-evaluated. This section will review these aspects are handled in recent methods, as well as approaches to augment and
-synthesize data relevant to grasping.
+consideration, how object-grasp representation is formulated based on such perceptual data, and how grasp candidates are
+evaluated. This section will review recent approaches to handling these topics, as well as recent data augmentation and
+synthesis methods for training a grasp evaluation model.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -23,11 +23,13 @@ axes.
 Lenz et al. \cite{lenz2015} use deep auto-encoders to build a representation for each feature channel, reducing its data
 dimensions. To handle the multi-modality of RGB and depth data, the authors also introduced a structured regularization
 technique. Each modality (i.e. RGB and depth/surface normal) has a regularization term which will be added to each
-hidden unit. In case of a $p-norm$, with $K$ hidden units, $R$ modalities, and N visible units, the regularization term
-would be
-\[f(W) = \sum\limits^K_{j=1} \sum\limits^R_{r=1} \left( \sum\limits^N_{i=1} S_{r,i} \lvert W^p_{i,j} \rvert \right)
-^{1/p}, \]
-where $S_{r,i}$ is $1$ if feature $i$ belongs to modality $r$ and $0$ otherwise.
+hidden unit. In case of a $ p $-norm, with $K$ hidden units, $R$ modalities, and N visible units, the regularization
+term would be
+\begin{equation} \label{eq:structured_regularization}
+    f(W) = \sum\limits^K_{j=1} \sum\limits^R_{r=1} \left( \sum\limits^N_{i=1} S_{r,i} \lvert W^p_{i,j} \rvert \right)
+    ^{1/p}
+\end{equation}
+, where $S_{r,i}$ is $1$ if feature $i$ belongs to modality $r$ and $0$ otherwise.
 
 \picHereWidth{Eitel_et_al-2015-depth_color_encodings}
              {Different encodings of depth information \cite{Eitel2015}. From left: RGB, grayscale depth, surface
@@ -83,11 +85,11 @@ is applied to create a higher resolution mesh for grasp planning.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Object-Grasp representation}
-Bohg et al. \cite{Bohg2014} parameterize grasps by (1) the \emph{grasping point} of the object where the gripper
-should be aligned, (2) an \emph{approach vector} from which the gripper shall approach the \emph{grasping point},
-(3) the \emph{wrist orientation} of the robotic hand, and (4) an \emph{initial gripper configuration}.
-The article also categorized object-grasp representation approaches into ones which extract local (i.e. curvature,
-contact area with the hand) or global features (center of mass, bounding box).
+Bohg et al. \cite{Bohg2014} parameterize grasps by (1) the \emph{grasping point} of the object where the end-effector
+should be aligned, (2) an \emph{approach vector} from which the robot hand shall approach the \emph{grasping point},
+(3) the \emph{wrist orientation} of the hand, and (4) an \emph{initial finger configuration}. The article also
+categorized object-grasp representation approaches into ones which extract local (i.e. curvature, contact area with the
+hand) or global features (center of mass, bounding box).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Techniques based on global features}
@@ -105,15 +107,19 @@ of human hand configurations. Using this low-dimensional representation, the rob
 operator during grasp execution. The proposed Eigengrasp planner uses a simulated annealing algorithm to maximize a
 quality metric $Q$ calculated from the robot hand's posture and pose, where posture is represented using an eigengrasp.
 Specifically,
-\[ Q = \Sigma_i (1 - \delta_i) \]
+\begin{equation}
+    Q = \Sigma_i (1 - \delta_i)
+\end{equation}
 for all desired contacts $i$, where
-\[ \delta_i = \cfrac{|\mathbf{o_i}|}{\alpha}
-+ \left(1 - \cfrac{\mathbf{\hat{n}_i} \cdot \mathbf{o_i}}{|\mathbf{o_i}|} \right), \]
-in which the local surface normal $\mathbf{\hat{n}_i}$ and the distance between the desired contact location and the
+\begin{equation}
+    \delta_i = \cfrac{|\mathbf{o_i}|}{\alpha}
+    + \left(1 - \cfrac{\mathbf{\hat{n}_i} \cdot \mathbf{o_i}}{|\mathbf{o_i}|} \right)
+\end{equation}
+, in which the local surface normal $\mathbf{\hat{n}_i}$ and the distance between the desired contact location and the
 object $\mathbf{o_i}$ is related to the eigengrasp and hand position. $\alpha$ is a scaling factor make the first term
 comparable to the second in the latter equation. Goldfeder and Allen \cite{Goldfeder2011} used the Eigengrasp planner
-to generate the Columbia Grasp Database. Grasp planning is then done by matching the query object to one in the
-database, then executing the best indexed grasp for the matched object.
+to generate the \footnoteHref{http://grasping.cs.columbia.edu}{Columbia Grasp Database}. Grasp planning is then done by
+matching the query object to one in the database, then executing the best indexed grasp for the matched object.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Techniques based on local features} \label{subsub:object_grasp_local}
@@ -324,7 +330,7 @@ that the calculation of the metric is intractable in real time, taking hours in 
     \label{table:grasp_quality_approaches}
 \end{table}
 
-Table \ref{table:grasp_quality_approaches} lists recent and prominent empirical approaches to predicting grasp quality.
+Table \ref{table:grasp_quality_approaches} lists recent prominent empirical approaches to predicting grasp quality.
 Earlier techniques often rely on carefully designed features. Jiang et al.'s \cite{jiang2011} calculate spatial
 histograms for 17 different filters of each pixel in each RGB-D input image. These features are linearly combined using
 a weight matrix, creating a score value for each pixel. Three such weight matrices are initialized, creating three

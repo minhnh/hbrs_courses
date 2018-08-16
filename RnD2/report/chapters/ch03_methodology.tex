@@ -105,21 +105,25 @@ from the transformed clouds. This step relies on the second assumption that the 
 resemble an image or a 2D matrix where data is organized into rows and columns. This allows direct projection of pixel
 coordinates to points in the point cloud. As PCL is implemented in \texttt{C++}, while the SSD implementation is
 written in \texttt{Python}, interfaces between the two languages are developed for functions processing point clouds
-using the \footnoteHref{https://www.boost.org/doc/libs/1\_68\_0/libs/python/}{Boost Python} library. The grasping
-position $ \mathbf{p} = (x, y, z) $ is calculated from the extracted 3D coordinates. If matrix $ B $ of shape
+using the \footnoteHref{https://www.boost.org/doc/libs/1\_68\_0/libs/python/}{\texttt{Boost.Python}} library. The
+grasping position $ \mathbf{p} = (x, y, z) $ is calculated from the extracted 3D coordinates. If matrix $ B $ of shape
 $ M \times 3 $ contains all the 3D coordinates extracted using the detected object's bounding box, we either take the
 closest point along the $ x $-axis of the base frame:
-\[ p = \left( \begin{matrix}
-x \\ y \\ z
-\end{matrix} \right) =
-\left( \begin{matrix}
-\min_{i = 1}^M B_{i,1} \\
-\cfrac{1}{M} \sum_{i = 1}^{M} B_{i,2} \\
-\cfrac{1}{M} \sum_{i = 1}^{M} B_{i,3}
-\end{matrix} \right) \],
-or the mean along all three axes:
-\[ p_j = \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,j} \],
-where $ j = 1, 2, 3 $.
+\begin{equation} \label{eq:pose_estimation_min}
+    p = \left( \begin{matrix}
+    x \\ y \\ z
+    \end{matrix} \right) =
+    \left( \begin{matrix}
+    \min_{i = 1}^M B_{i,1} \\
+    \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,2} \\
+    \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,3}
+    \end{matrix} \right)
+\end{equation}
+, or the mean along all three axes:
+\begin{equation} \label{eq:pose_estimation_mean}
+    p_j = \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,j}
+\end{equation}
+, where $ j = 1, 2, 3 $.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Grasp detection with GQCNN}
