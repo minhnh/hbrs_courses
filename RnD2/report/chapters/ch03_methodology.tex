@@ -74,7 +74,9 @@ handle detection service requests from other ROS nodes during runtime. Figure \r
 sample detection result from the integrated SSD architecture. For detecting RoboCup@Home objects, we use a provided
 model trained on the COCO dataset.
 
-\picHereWidth{detection_example}{Example of SSD detection using a model trained on the COCO dataset.}
+\picHereWidth{detection_example}
+             {Example of SSD detection using a model trained on the COCO dataset. The bounding box label contains the
+              detected object class and the prediction confidence.}
              {fig:detection_example}{0.7\textwidth}
 
 
@@ -171,3 +173,6 @@ models demonstrated trajectories as a series of differential equations, allowing
 calculate kinematic commands via solving these equations to perform new manipulation tasks in a similar way. The work
 by Padalkar extends the DMP libraries to also use navigation commands to perform manipulation tasks that can't be
 reached by the learned motion alone.
+
+\todo{should physical/software limitation of HSR also be described? i.e. there's no way to grasp from all different
+approach vectors.}

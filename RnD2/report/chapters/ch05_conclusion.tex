@@ -2,10 +2,29 @@
 
 \chapter{Conclusions}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Contributions}
+\begin{itemize}
+    \item Review of recent approaches to synthesizing data to train a grasp evaluation model
+    \item Integration of the full grasp pipeline on the HSR, tested with two baseline grasp planning approaches using
+    pose estimation. More advanced grasp planning methods can now be examined for comparison.
+\end{itemize}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Lessons learned}
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Future work}
+\begin{itemize}
+    \item Extend grasp execution to allow the robot to grasp from different directions.
+    \item Retrain detection models with RoboCup@Home objects
+    \item Use nearest neighbor algorithms on the extracted points for better pose estimation
+    \item Add surface normal calculation from the extracted points and combine with GQCNN to redo their grasp pose
+    calculation, using only the angle of the gripper in the image plane and the gripper center's pixel coordinates
+    \item Integrate shape completion approach from Varley et al. \cite{Varley2017} for better pose estimation, combine
+    with object-grasp representation from Gualtieri et al. \cite{Gualtieri2016}, train on new human grasp database
+    introduced by Saudabayev et al. \cite{Saudabayev2018}.
+\end{itemize}

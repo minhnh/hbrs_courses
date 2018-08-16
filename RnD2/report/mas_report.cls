@@ -31,7 +31,7 @@
 }
 % Execute the default option
 \ExecuteOptions{rnd}
-\ExecuteOptions{twosides}
+\ExecuteOptions{oneside}
 % Process other options
 \ProcessOptions\relax
 
@@ -65,6 +65,7 @@
 \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}p{#1}}
 \usepackage{subcaption}
 \usepackage{multirow}
+\usepackage{pdfpages}
 
 \usepackage{todonotes}
 
