@@ -3,8 +3,9 @@
 
 \picHereWidth{grasp_pipeline}{Pipeline for object grasping.}{fig:grasp_pipeline}{\textwidth}
 
-Figure \ref{fig:grasp_pipeline} illustrates the main components of the object grasping pipeline implemented on the HSR.
-This section will detail the implementation of each component.
+In order to perform the experiments described in the next chapter, it is necessary to integrate a full object grasping
+pipeline on the HSR. Figure \ref{fig:grasp_pipeline} illustrates the main components of this pipeline. Details on the
+approaches considered and implemented for each component will be discussed in this chapter.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -177,6 +178,3 @@ models demonstrated trajectories as a series of differential equations, allowing
 calculate kinematic commands via solving these equations to perform new manipulation tasks in a similar way. The work
 by Padalkar extends the DMP libraries to also use navigation commands to perform manipulation tasks that can't be
 reached by the learned motion alone.
-
-\todo{should physical/software limitation of HSR also be described? i.e. there's no way to grasp from all different
-approach vectors.}

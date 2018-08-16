@@ -111,13 +111,13 @@ Specifically,
     Q = \Sigma_i (1 - \delta_i)
 \end{equation}
 for all desired contacts $i$, where
-\begin{equation}
+\begin{equation} \label{eq:eigengrasp}
     \delta_i = \cfrac{|\mathbf{o_i}|}{\alpha}
     + \left(1 - \cfrac{\mathbf{\hat{n}_i} \cdot \mathbf{o_i}}{|\mathbf{o_i}|} \right)
 \end{equation}
 , in which the local surface normal $\mathbf{\hat{n}_i}$ and the distance between the desired contact location and the
-object $\mathbf{o_i}$ is related to the eigengrasp and hand position. $\alpha$ is a scaling factor make the first term
-comparable to the second in the latter equation. Goldfeder and Allen \cite{Goldfeder2011} used the Eigengrasp planner
+object $\mathbf{o_i}$ is related to the eigengrasp and hand position. $\alpha$ is a scaling factor which make the two
+terms comparable in equation \ref{eq:eigengrasp}. Goldfeder and Allen \cite{Goldfeder2011} used the Eigengrasp planner
 to generate the \footnoteHref{http://grasping.cs.columbia.edu}{Columbia Grasp Database}. Grasp planning is then done by
 matching the query object to one in the database, then executing the best indexed grasp for the matched object.
 
@@ -429,4 +429,19 @@ transformations using diffeomorphisms. The authors first estimate the transforma
 These transformations are then used as observations to build a class-wise statistical model of transformations.
 New transformations are then sampled from this model and applied to input images.
 
-\todo{should adversarial approaches be included?}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Generative Adversarial Networks}
+
+Recently, Generative Adversarial Networks (GAN) are introduced as a powerful model for synthesizing images. As described
+in the original paper by Goodfellow et al. \cite{Goodfellow2014GAN}, a minimax algorithm is used to optimize two
+competing networks: one is the generator $ G $ which learns the generator's distribution $ p_g $ over data
+$ \boldsymbol{x} $ to map from a noise signal $ \boldsymbol{z} $ to the data space, and the other is the discriminator
+$ D $ which learns to predict whether an input is from data or from $ p_g $. The minimax game is formulated for the
+value function $ V(D,G) $ as:
+\begin{equation} \label{eq:gan}
+    \min_G \max_D V(D,G) =
+        \mathbb{E}_{\boldsymbol{x} \sim p_{data}(\boldsymbol{x})}\left[ \log D(\boldsymbol{x}) \right]
+        + \mathbb{E}_{\boldsymbol{z} \sim p_{z}(\boldsymbol{z})}\left[ \log(1 - D(G(\boldsymbol{z}))) \right]
+\end{equation}
+. In addition to applications in image generation, GAN have also been applied for reconstructing 3D objects from a
+single depth image \cite{Yang2017}, which in turn can be used for \todo{for what}
