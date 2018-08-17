@@ -5,23 +5,39 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Contributions}
-\begin{itemize}
-    \item Review of recent approaches to synthesizing data to train a grasp evaluation model
-    \item Integration of the full grasp pipeline on the HSR, tested with two baseline grasp planning approaches using
-    pose estimation. More advanced grasp planning methods can now be examined for comparison.
-\end{itemize}
+
+This report reviews recent advances in aspects most relevant to generating data for training a grasp evaluation models,
+namely feature extraction from perceptual data, object-grasp representation, grasp evaluation metrics, and data
+generation techniques. Additionally, five recent, prominent approaches to data synthesis for grasp evaluation are
+examined, and their solutions for each of the four aspects mentioned above are summarized in table
+\ref{table:grasp_quality_approaches}. Two of these approaches utilize human labeled data, but their dataset is small
+because human grasping datasets are time-consuming and costly to collect. The other three approaches rely on analytical
+grasp metrics to label their data, either built into simulators like OpenRAVE or GraspIt!, or calculated directly f
+or each grasp candidates. As discussed in section \ref{sub:overview}, analytical metrics have been shown to be
+unreliable when applied to real systems, and simulators often fail short in capturing all the details of the real world.
+
+The second contribution of this project is that, in collaboration with another Research and Development project by
+Padalkar \cite{Padalkar2018}, a full grasping pipeline is implemented, from perceiving objects to grasp execution. Two
+pose estimation methods are implemented, serving as baselines for experimenting and comparing with more advanced grasp
+planning techniques.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Future work}
-\begin{itemize}
-    \item Extend grasp execution to allow the robot to grasp from different directions.
-    \item Retrain detection models with RoboCup@Home objects
-    \item Use nearest neighbor algorithms on the extracted points for better pose estimation
-    \item Add surface normal calculation from the extracted points and combine with GQCNN to redo their grasp pose
-    calculation, using only the angle of the gripper in the image plane and the gripper center's pixel coordinates
-    \item Integrate shape completion approach from Varley et al. \cite{Varley2017} for better pose estimation, combine
-    with object-grasp representation from Gualtieri et al. \cite{Gualtieri2016}, train on new human grasp database
-    introduced by Saudabayev et al. \cite{Saudabayev2018}.
-    \item Task awareness
-\end{itemize}
+
+Several extensions and optimizations for the current implementation of the grasping pipeline are possible. First, the
+grasp execution implementation can be extended to allow the robot to grasp from different directions. Next, the
+detection model for the SSD architecture can also be fine-tuned to perform better in detecting RoboCup@Home objects.
+Nearest neighbor algorithms can also be used to improve object pose estimation from the points extracted from RGB-D
+clouds. Surface normal calculations can also be implemented to replace the grasp pose calculation provided with the
+GQCNN software. Specifically, the pixel coordinate of the detected can be directly transformed to its corresponding 3D
+coordinate, and the surface normal around this point can be used as the grasp's approach vector. This surface normal
+can also be used as the approach vector for the implemented pose estimation algorithms.
+
+Furthermore, several of the approaches reviewed in chapter 2 can be integrated. Particularly, the shape completion
+technique introduced by Varley et al. \cite{Varley2017}, can be used as a prior for Gualtieri et al.
+\cite{Gualtieri2016} sampling of the occluded points for their 12-channel 2D representation. Training on the new human
+grasp experience dataset by Saudabayev et al. \cite{Saudabayev2018} can also be examined for a direct comparison with
+training on data synthesized using analytical grasp metrics and simulation. Techniques to introduce task awareness into
+data generation can also be examined, i.e how the knowledge of the task to be performed with the manipulated object can
+be encoded into the data synthesis process.

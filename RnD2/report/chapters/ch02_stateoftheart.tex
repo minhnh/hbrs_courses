@@ -168,7 +168,7 @@ insignificant considering the results from \cite{lenz2015}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Grasp evaluation}
+\section{Grasp evaluation} \label{section:grasp_eval}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Background and terminology}
@@ -443,5 +443,7 @@ value function $ V(D,G) $ as:
         \mathbb{E}_{\boldsymbol{x} \sim p_{data}(\boldsymbol{x})}\left[ \log D(\boldsymbol{x}) \right]
         + \mathbb{E}_{\boldsymbol{z} \sim p_{z}(\boldsymbol{z})}\left[ \log(1 - D(G(\boldsymbol{z}))) \right]
 \end{equation}
-. In addition to applications in image generation, GAN have also been applied for reconstructing 3D objects from a
-single depth image \cite{Yang2017}, which in turn can be used for \todo{for what}
+. In addition to applications in image generation, GANs have also recently been applied for reconstructing 3D objects
+from a single depth image \cite{Yang2017}, which in turn can be used to introduce controlled permutations to object
+models during grasp data synthesis, or to provide additional information about the object for the grasp planner during
+execution.
