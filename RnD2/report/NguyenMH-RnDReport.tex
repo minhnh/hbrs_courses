@@ -38,9 +38,15 @@
 \begin{abstract}
 This project considers the problem of generating data for training grasp evaluation models. Recent advances are reviewed
 for four main aspects most relevant to labeled grasp data synthesis, namely feature extraction from perceptual data,
-object-grasp representation, grasp evaluation techniques, and data generation techniques. A completed object grasping
-pipeline is integrated, from object detection to grasp pose detection and grasp execution. Two set of experiments are
-performed for two pose estimation methods using this grasping pipeline.
+object-grasp representation, grasp evaluation techniques, and data generation techniques. From this review, one may
+conclude that while data synthesis for learning a grasp evaluation model is promising, recent approaches are either
+limited by difficulties in collecting large-scale human grasp experience, or by the shortcomings of using analytical
+metrics to label generated data. Additionally, a completed object grasping pipeline is integrated, from object
+detection to grasp pose detection and grasp execution. Two set of experiments are performed on the Toyota Human Service
+Robot for two pose estimation methods using this grasping pipeline. The pipeline proves reliable and fast enough for
+performing the experiments, being able to execute 20 grasps per object without interruption. While further extension and
+optimization are needed, the pipeline enables directly examining and comparing more advanced grasp planning methods in
+the future.
 \end{abstract}
 
 \tableofcontents

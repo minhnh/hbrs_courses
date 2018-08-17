@@ -12,8 +12,8 @@ generation techniques. Additionally, five recent, prominent approaches to data s
 examined, and their solutions for each of the four aspects mentioned above are summarized in table
 \ref{table:grasp_quality_approaches}. Two of these approaches utilize human labeled data, but their dataset is small
 because human grasping datasets are time-consuming and costly to collect. The other three approaches rely on analytical
-grasp metrics to label their data, either built into simulators like OpenRAVE or GraspIt!, or calculated directly f
-or each grasp candidates. As discussed in section \ref{sub:overview}, analytical metrics have been shown to be
+grasp metrics to label their data, either built into simulators like OpenRAVE or GraspIt!, or calculated directly for
+each grasp candidates. As discussed in section \ref{sub:overview}, analytical metrics have been shown to be
 unreliable when applied to real systems, and simulators often fail short in capturing all the details of the real world.
 
 The second contribution of this project is that, in collaboration with another Research and Development project by
@@ -28,11 +28,13 @@ planning techniques.
 Several extensions and optimizations for the current implementation of the grasping pipeline are possible. First, the
 grasp execution implementation can be extended to allow the robot to grasp from different directions. Next, the
 detection model for the SSD architecture can also be fine-tuned to perform better in detecting RoboCup@Home objects.
-Nearest neighbor algorithms can also be used to improve object pose estimation from the points extracted from RGB-D
-clouds. Surface normal calculations can also be implemented to replace the grasp pose calculation provided with the
-GQCNN software. Specifically, the pixel coordinate of the detected can be directly transformed to its corresponding 3D
-coordinate, and the surface normal around this point can be used as the grasp's approach vector. This surface normal
-can also be used as the approach vector for the implemented pose estimation algorithms.
+The grasp pipeline will also be tested on the \footnoteHref{https://www.care-o-bot.de/en/care-o-bot-3.html}{
+Care-o-bot 3}, the other robot platform available to the project. Nearest neighbor algorithms can also be used to
+improve object pose estimation from the points extracted from RGB-D clouds. Surface normal calculations can also be
+implemented to replace the grasp pose calculation provided with the GQCNN software. Specifically, the pixel coordinate
+of the detected object can be directly transformed to its corresponding 3D coordinate, and the surface normal around
+this point can be used as the grasp's approach vector. This surface normal can also be used as the approach vector for
+the implemented pose estimation algorithms.
 
 Furthermore, several of the approaches reviewed in chapter 2 can be integrated. Particularly, the shape completion
 technique introduced by Varley et al. \cite{Varley2017}, can be used as a prior for Gualtieri et al.
