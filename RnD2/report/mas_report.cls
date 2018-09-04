@@ -67,8 +67,6 @@
 \usepackage{multirow}
 \usepackage{pdfpages}
 
-\usepackage{todonotes}
-
 \onehalfspacing
 
 \graphicspath{{../images/}}
