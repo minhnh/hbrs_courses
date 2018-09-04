@@ -13,3 +13,6 @@
 [submodule "17s_ecta/src"]
 	path = 17s_ecta/src
 	url = https://github.com/minhnh/evolutionary_algorithm_course.git
+[submodule "RnD2"]
+	path = RnD2
+	url = https://github.com/minhnh/mas_grasp_learning.git
