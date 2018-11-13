@@ -24,7 +24,7 @@
 
 \title{Learning Grasp Evaluation Models Using Synthetic 3D Object-Grasp Representations}
 
-%\titlerunning{Abbreviated paper title}
+\titlerunning{Learning Grasp Evaluation Models}
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
 %
@@ -106,74 +106,136 @@ how to represent object-grasp relations from these features, how to evaluate the
 synthesize and augment grasp datasets.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Related work}
+\section{Advances in aspects relevant to empirical grasp synthesis}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Feature extraction from perceptual data for grasping}
+\subsection{Feature extraction from perceptual data for grasping}
 
-\begin{itemize}
-    \item Several approaches Convolutional Neural Networks (CNN) to combine depth and RGB features
-            \cite{Eitel2015,Gupta2014RGBDFeatures,Porzi2017}
-    \item Some approaches predict regions occluded in the RGB-D point clouds \cite{Qi2016,Su2015} or reconstruct objects
-            from the incomplete view of a single RGB-D camera \cite{Bohg2011MindTheGap,Varley2017}.
-\end{itemize}
+RGB-D cameras are becoming the perceptual sensor of choice for robotic systems because of their richer features
+compared to pure RGB images \cite{lenz2015,Eitel2015,Gupta2014RGBDFeatures,jiang2011}, especially in the context of
+grasping where 3D information of an object's surface heavily influences how it can be grasped. Extracting features from
+RGB-D data often requires consideration of their inherent multi-modality. Bo et al. \cite{Bo2013} build sparse coding
+dictionaries for RGB-D data using the K-SVD algorithm and propose to use a hierarchical matching pursuit (HMP)
+algorithm to compute a feature hierarchy for new RGB-D images. Lenz et al. \cite{lenz2015} use deep auto-encoders to
+build a representation for each feature channel, then introduce ``structured regularization'' to combine the depth and
+color representations.
+
+More recent approaches leverage the success of Convolutional Neural Networks (CNN) in image processing for extracting
+features from RGB-D data. Gupta et al. \cite{Gupta2014RGBDFeatures} propose the HHA representation, which encodes the
+depth each pixel of the depth image with horizontal disparity, height above ground, and the angle between the local
+surface normal and direction of gravity. Eitel et al. \cite{Eitel2015} propose to use convert the depth value directly
+into RGB values using a jet color mapping. Porzi et al. \cite{Porzi2017} introduce a convolutional block called
+\emph{DaConv} to learn scale awareness using depth information.
+
+Instead of projecting RGB-D data onto different feature channels, several methods are developed to deal with 3D
+information directly, via training either a volumetric CNN architecture or multiple CNN models from different
+perspectives on data generated from object meshes in simulation. Notably, Qi et al. \cite{Qi2016} develop two novel
+volumetric CNN architectures and extend the multi-view CNN technique proposed by Su et al. \cite{Su2015} for object
+classification.
+
+Techniques are also developed to deal with occluded regions in point clouds. Bohg et al. \cite{Bohg2011MindTheGap}
+search for a symmetric plane perpendicular to the workspace surface (i.e. table) and mirror the incomplete point cloud
+across this plane to fill in the missing information. Varley et al. \cite{Varley2017} train a CNN to predict whether
+the obscured cells in an occupancy grid are occupied.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Object-grasp representation}
-\begin{itemize}
-    \item Based on global features: can use CNN on RGB-D image of object \cite{mahler2017} or eigengrasps
-            \cite{Ciocarlie2009,Goldfeder2011}.
-    \item Based on local features: extract features from the rectangle/cuboid regions corresponding to a two-fingered
-            gripper \cite{Detry2012,lenz2015,jiang2011}, or local template grids at points of contact
-            \cite{Kappler2015}.
-\end{itemize}
+\subsection{Object-grasp representation}
+Bohg et al. categorizes object-grasp representations into ones using local (i.e. curvature, contact area with the hand)
+or global features (center of mass, bounding box).
+
+\subsubsection*{Techniques based on global features.}
+
+Ciocarlie and Allen \cite{Ciocarlie2009} introduce Eigengrasps and defined them as principal components of the dataset
+of human hand configurations. The Eigengrasp planner is proposed where a quality metric are optimized for the Eigengrasp
+representations of grasp candidates. The planner is also used by Goldfeder and Allen \cite{Goldfeder2011} to synthesize
+a grasp dataset for object models. Mahler et al. \cite{mahler2017} represent grasps in 2D images by aligning the image
+center to the gripper central point and the image's middle row to the grasp axis. The grasp is assumed to have an
+approach vector perpendicular to the table and hence can be characterized by the gripper center and the angle of the
+gripper axis with respect to the table.
+
+\subsubsection*{Techniques based on local features.}
+
+Several methods represent grasp candidates for bipedal gripper as rectangles positioned in RGB and/or depth images at
+contact point with the object \cite{jiang2011,Detry2012,lenz2015}. Features extracted from the RGB-D image regions
+within these rectangles are then used to train a model (e.g. Multilayer Perceptron (MLP) \cite{lenz2015} or CNN
+\cite{jiang2011}) to evaluate the respective grasp candidates.
+
+Kappler et al. \cite{Kappler2015} extract local shape representations (or templates) as projection of the objects'
+point clouds onto grids with a predefined resolution. These grids are aligned with the plane tangent to the object
+surface at the intersection point between the grasp approach vector and the object.
+
+Gualtieri et al \cite{Gualtieri2016} propose to represent a grasp candidate by the cuboid swept out by a two-fingered
+gripper as it closes on the object, where the occluded points are sampled. The regions are voxelized into $60 \times 60
+\times 60$ grids and projected onto three orthogonal planes to create 15 channels before being used as input for a CNN
+grasp evaluation model.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Grasp evaluation}
+\subsection{Grasp evaluation}
 
-\begin{itemize}
-    \item Analytical grasp metrics: focus on form/force closure properties, generally via analyzing the grasp matrix
-            $ G $, the force wrench space (FCS), the grasp wrench space (GSP), or the hand-object Jacobian $ J $.
-    \item Analytical metrics can be extended to consider task affordance via limiting the analysis only to movements
-            relevant to performing a specific task.
-    \item Learning to predict grasp quality: table \ref{table:grasp_approaches} summarize the most prominent approaches.
-\end{itemize}
+\subsubsection*{Analytical grasp metrics.}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Generating data for grasp success prediction}
+Roa and Su{\'a}rez \cite{Roa2015} group analytical grasp quality measures into approaches focusing on contact point
+position, hand configuration, and ones which combine both metric types. Contact point grasp quality measures focus on
+the object's properties, friction constraints, and form/force closure conditions, most often via analyzing properties
+of the grasp matrix $ G $ or the grasp wrench space (GWS) $ \mathcal{P} $. Methods focusing on hand configuration often
+extends metrics calculated from $ G $ to the hand-object Jacobian $ H $. Analytical metrics can be extended to consider
+task affordance via limiting the analysis to only movements relevant to performing a specific task.
+
+Most popular among analytical metrics is the $ \epsilon $-metric (also known as the ball metric). The metric can be
+geometrically characterized by the radius of the largest sphere that can be contained in $ \mathcal{P} $ and centered
+at its origin \cite{Roa2015}. Weisz and Allen \cite{WeiszAllen2012} extend the $\epsilon$-metric by introducing noise
+to object pose in simulations and rating grasp candidates by the probability that they obtain a certain
+$ \epsilon $-metric score for all pose perturbations. Evaluation using this extension shows that grasps with the best
+$ \epsilon $ score is much more likely to have low $ \epsilon $ score when pose variations are introduced. While the
+proposed approach is more robust to pose uncertainty, calculation of the metric is intractable in real time.
+
+\subsubsection*{Learning to predict grasp quality.}
+
+Table \ref{table:grasp_approaches} summarize the most recent and prominent approaches to training a grasp evaluation
+model. Jiang et al.'s \cite{jiang2011} trains an SVM model to learn the weight matrices which linearly combine
+pixel-wise values of numerous filters of the original RGB-D data to produce a final grasp quality score. Lenz et al
+\cite{lenz2015} use auto-encoders as feature extractors from RGB-D point clouds and use the encoder weights to
+initialize the MLP model before training it to predict the probability of success for grasp candidates. More recent
+approaches \cite{Kappler2015,Gualtieri2016,mahler2017} train CNN models directly on 2D projections or filters of their
+object-grasp representations to produce a grasp quality value.
+
 \begin{table}[h!]
     \scriptsize
     \def\arraystretch{1.2}
     \begin{tabularx}{\linewidth}{L{0.05\linewidth}C{0.39\linewidth}L{0.28\linewidth}L{0.28\linewidth}}
         Method & Object-grasp\linebreak representation & Feature extraction \& learning model & Data generation \\
         \toprule
+
         \cite{jiang2011}    & \includegraphics[scale=0.09,valign=t]{jiang_et_al-2011-grasp_representation}
-        & Histogram of hand-crafted filters; \linebreak Model: SVM.
-        & Rectangles manually \linebreak annotated. \\
+            & Histogram of hand-crafted filters; \linebreak Model: SVM.
+            & Rectangles manually \linebreak annotated. \\
+
         \cite{lenz2015}     & \includegraphics[scale=0.16,valign=t]{lenz_et_al-2015-grasp_representation}
-        & Auto-encoders to initialize weights, structured regularization to combine depth
-        and RGB data; \linebreak Model: MLP.
-        & Extension of the \linebreak dataset from \cite{jiang2011} \linebreak (above).\\
-        \cite{Kappler2015}  &
-        \includegraphics[scale=0.16,valign=t]{kappler_et_al-2015-fig8-local_shape_diff_viewpoints}
-        & RGB rendering of ``template grids''; \linebreak Model: LeNet CNN
-        & Quality of grasps are \linebreak calculated in simulation \linebreak for object
-        meshes, \linebreak verified via crow-sourcing. \\
+            & Auto-encoders to initialize weights, structured regularization to combine depth and RGB data;
+            \linebreak Model: MLP. & Extension of the \linebreak dataset from \cite{jiang2011} \linebreak (above). \\
+
+        \cite{Kappler2015}  & \includegraphics[scale=0.16,valign=t]{kappler_et_al-2015-fig8-local_shape_diff_viewpoints}
+            & RGB rendering of ``template grids''; \linebreak Model: LeNet CNN
+            & Quality of grasps are \linebreak calculated in simulation \linebreak for object meshes,
+            \linebreak verified via crow-sourcing. \\
+
         \cite{Gualtieri2016}& \includegraphics[scale=0.1,valign=t]{Gualtieri_et_al-2016-grasp_representation}
-        & Filters of cuboid regions projected onto 3 orthogonal planes, creating 15 channels;
-        \linebreak Model: LeNet CNN.
-        & Quality of grasps are \linebreak calculated for object \linebreak meshes using
-        force-closure \\
+            & Filters of cuboid regions projected onto 3 orthogonal planes, creating 15 channels;
+            \linebreak Model: LeNet CNN.
+            & Quality of grasps are \linebreak calculated for object \linebreak meshes using force-closure \\
+
         \cite{mahler2017}   & \includegraphics[scale=0.22,valign=t]{mahler_et_al-2017-grasp_representation}
-        & Depth images cropped and aligned to gripper; \linebreak Model: CNN combined
-        with single-layer NN.
-        & Quality of grasps are \linebreak calculated for object \linebreak meshes using a
-        variant of $ \epsilon $-metric from \cite{WeiszAllen2012} \\
+            & Depth images cropped and aligned to gripper; \linebreak Model: CNN combined with single-layer NN.
+            & Quality of grasps are \linebreak calculated for object \linebreak meshes using a variant of
+            $ \epsilon $-metric from \cite{WeiszAllen2012} \\
         \bottomrule
     \end{tabularx}
-    \caption{\scriptsize Five recent empirical approaches to grasp quality prediction}
+    \caption{\small Five recent empirical approaches to grasp quality prediction}
     \label{table:grasp_approaches}
 \end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Generating data for grasp success prediction}
 \begin{itemize}
     \item Data synthesis for robot grasping
     \item Data augmentation
