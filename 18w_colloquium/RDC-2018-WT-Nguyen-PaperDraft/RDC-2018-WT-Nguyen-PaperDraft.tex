@@ -1,5 +1,5 @@
 \documentclass[runningheads]{../llncs}
-
+\usepackage{amsmath}
 \usepackage{subcaption}
 \usepackage{tabularx}
 \usepackage{multirow}
@@ -63,8 +63,6 @@ the future.
 \section{Introduction}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Motivation}
-
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{robocup_typical_objects}
@@ -80,8 +78,6 @@ grasp experiments described in section \ref{section:experiments} will be conduct
 from Toyota \footnote{\url{https://www.toyota-global.com/innovation/partner_robot/robot/}}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Overview of robotic grasping}
-
 Figure \ref{fig:grasp_synthesis_mind_map} outlines the aspects relevant to generating a grasp strategy for an arbitrary
 object. Grasp synthesis approaches are generally classified as either analytical or empirical \cite{Sahbani2012}.
 Analytical methods typically consider the following mechanical properties of the contact points between the gripper's
@@ -106,7 +102,7 @@ how to represent object-grasp relations from these features, how to evaluate the
 synthesize and augment grasp datasets.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Advances in aspects relevant to empirical grasp synthesis}
+\section{Advances in aspects relevant to empirical grasp synthesis} \label{sec:soa}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Feature extraction from perceptual data for grasping}
@@ -143,7 +139,7 @@ the obscured cells in an occupancy grid are occupied.
 Bohg et al. categorizes object-grasp representations into ones using local (i.e. curvature, contact area with the hand)
 or global features (center of mass, bounding box).
 
-\subsubsection*{Techniques based on global features.}
+\subsubsection{Techniques based on global features.}
 
 Ciocarlie and Allen \cite{Ciocarlie2009} introduce Eigengrasps and defined them as principal components of the dataset
 of human hand configurations. The Eigengrasp planner is proposed where a quality metric are optimized for the Eigengrasp
@@ -153,7 +149,7 @@ center to the gripper central point and the image's middle row to the grasp axis
 approach vector perpendicular to the table and hence can be characterized by the gripper center and the angle of the
 gripper axis with respect to the table.
 
-\subsubsection*{Techniques based on local features.}
+\subsubsection{Techniques based on local features.}
 
 Several methods represent grasp candidates for bipedal gripper as rectangles positioned in RGB and/or depth images at
 contact point with the object \cite{jiang2011,Detry2012,lenz2015}. Features extracted from the RGB-D image regions
@@ -170,7 +166,7 @@ gripper as it closes on the object, where the occluded points are sampled. The r
 grasp evaluation model.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Grasp evaluation}
+\subsection{Grasp evaluation} \label{subsec:grasp_evaluation}
 
 \subsubsection*{Analytical grasp metrics.}
 
@@ -236,29 +232,46 @@ object-grasp representations to produce a grasp quality value.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Generating data for grasp success prediction}
-\begin{itemize}
-    \item Data synthesis for robot grasping
-    \item Data augmentation
-\end{itemize}
+
+Training a grasp evaluation model is heavily dependent on the quality of the grasp dataset. Humans are the most
+versatile and dexterous manipulators known, but human grasp experience data are often costly and time-consuming to
+collect. In table \ref{table:grasp_approaches}, the first two approaches use human-labeled data. However, Jiang et
+al.'s \cite{jiang2011} dataset contains only 300 data points for both training and testing, and the extended version
+used by Lenz et al. \cite{lenz2015} also has only 1000 data points. This motivates developing data synthesis techniques
+for creating large amount of data automatically and efficiently.
+
+The latter three approaches in table \ref{table:grasp_approaches} are different attempts at this task. They rely on
+analytical grasp metrics instead of human grasp experience to label grasp data, however, either calculated directly
+\cite{Kappler2015} or in simulation \cite{Gualtieri2016,mahler2017} for 3D object models. Evaluation models trained on
+these datasets, therefore, suffer from the same weaknesses of analytical metrics in real environments as discussed in
+\ref{subsec:grasp_evaluation}.
+
+In order to increase robustness against noises in real environments, augmentation techniques are also applied to the
+original dataset before training. Eitel et al. \cite{Eitel2015} sample noise patches of fixed size from real RGB-D
+data, divide them into five groups and randomly combine instances from these groups to create noise patterns for
+augmenting original training samples. Kappler at al \cite{Kappler2015} introduces noise to the object poses while
+sampling for reference grasps before generating each data point. Gupta et al. \cite{Gupta2014RGBDFeatures} simply add a
+low-frequency white noise to the disparity images to augment the depth information. RGB data augmentation techniques
+include geometric transformations such as mirroring, rotating, shifting \cite{Gu2018}, or photometric ones such as color
+scaling, contrasting \cite{Eigen2015}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Methodology}
+\section{Grasp planning} \label{sec:method}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Object detection}
+In order to perform grasp experiments, a simple pose estimation is implemented, and the Grasp Quality CNN (GQCNN)
+approach proposed by Mahler et al. \cite{mahler2017} is integrated. The Single-Shot Multibox Detector (SSD)
+\cite{Liu2016SSD} architecture is integrated to detect objects in RGB images as rectangle regions, which are then used
+to crop point clouds and depth images for the pose estimation and GQCNN algorithms.
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\textwidth]{liu_et_al-2016-ssd_arch}
-    \caption{SSD architecture \cite{Liu2016SSD}.}
-    \label{fig:ssd_arch}
+    \includegraphics[width=0.4\textwidth]{base_link_frame}
+    \caption{\texttt{base\_link} coordinate frame.}
+    \label{fig:base_link_frame}
 \end{figure}
 
-Integrate Single-Shot Multibox Detector (SSD) for object detection (figure \ref{fig:ssd_arch})
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Pose estimation and grasping}
-\subsubsection*{Baseline method}
+\subsection{Baseline pose estimation method} \label{sub:method_baseline}
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\textwidth]{grasp_plan_pose_estimation}
@@ -266,28 +279,37 @@ Integrate Single-Shot Multibox Detector (SSD) for object detection (figure \ref{
     \label{fig:grasp_plan_baseline}
 \end{figure}
 
-\begin{itemize}
-    \item assume the grasp approach to be along the $ x $-axis of the robot
-    \item extract object points using image detection result
-    \item estimate object positions in the \texttt{base\_link} coordinate frame
-    \item estimated $ y $- and $ z $-coordinates are mean of the object points
-    \item estimated $ x $-coordinate is either the minimum or mean of the object points
-\end{itemize}
+The first method assumes the grasp approach to be along the $ x $-axis of the \texttt{base\_link} coordinate frame,
+illustrated in figure \ref{fig:base_link_frame}. The object points are cropped from the detected rectangular regions as
+described above, and the grasping position $ \mathbf{p} = (x, y, z) $ is calculated from the extracted 3D coordinates.
+If matrix $ B $ of shape $ M \times 3 $ contains all the 3D coordinates extracted using the detected object's bounding
+box, we either take the closest point along the $ x $-axis of the base frame:
+\begin{equation} \label{eq:pose_estimation_min}
+p = \left( \begin{matrix} x \\ y \\ z \end{matrix} \right)
+  = \left( \begin{matrix} \min_{i = 1}^M B_{i,1} \\
+                          \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,2} \\
+                          \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,3} \end{matrix} \right)
+\end{equation}
+, or the mean along all three axes:
+\begin{equation} \label{eq:pose_estimation_mean}
+p_{j=1,2,3} = \cfrac{1}{M} \sum_{i = 1}^{M} B_{i,j}
+\end{equation}
 
-\subsubsection*{Grasp Quality CNN (GQCNN)}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{GQCNN method}
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{grasp_plan_gqcnn}
+    \includegraphics[width=\textwidth]{grasp_plan_gqcnn}
     \caption{Flowchart of the integrated GQCNN grasp planner \cite{mahler2017}.}
     \label{fig:grasp_plan_gqcnn}
 \end{figure}
 
-\begin{itemize}
-    \item GQCNN model \cite{mahler2017} is trained on Dex-Net 2.0 dataset to predict grasp robustness,
-    \item In the original setup, the grasp is assumed to be from above and perpendicular with the table,
-    \item Grasp approach vector is assumed to align with camera axis,
-    \item Not reliable enough for performing grasp experiments.
-\end{itemize}
+As mentioned in section \ref{subsec:grasp_evaluation}, the integrated GQCNN model \cite{mahler2017} is trained on the
+synthetic Dex-Net 2.0 dataset to predict grasp robustness. The provided implementation assumes the grasp approach
+vector to align with the camera axis and predict the gripper's orientation, position and success probability using
+depth and RGB images. Figure \ref{fig:gqcnn_result} visualizes a successfully planned grasp returned from the GQCNN
+planner. In practice, the planner only detects grasps for one of the objects used for experimentation, taking between
+30 seconds and a minute for planning each grasp. Experiments are therefore not performed using the GQCNN planner.
 
 \begin{figure}[h!]
     \centering
@@ -302,15 +324,6 @@ Integrate Single-Shot Multibox Detector (SSD) for object detection (figure \ref{
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Experimental Setup}
-
-\begin{itemize}
-    \item Two sets of experiments are performed for the variances of the baseline method described in slide
-    \item Before each grasp, the robot is moved to a marked position facing the dining table.
-    \item Objects further than 90cm in $ x $-axis and lower than 75cm in $ z $-axis are ignored.
-    \item We use the SSD model pre-trained on the COCO dataset.
-    \item Arm collisions and object slips are counted as failures.
-    \item Only one of the objects in figure \ref{fig:objects} is grasped at a time.
-\end{itemize}
 
 \begin{figure}[h!]
     \centering
@@ -340,8 +353,15 @@ Integrate Single-Shot Multibox Detector (SSD) for object detection (figure \ref{
     \caption{Objects selected for the experiments.}\label{fig:objects}
 \end{figure}
 
+Two sets of experiments are performed for the variants of the baseline method described in \ref{sub:method_baseline}.
+Before each grasp, the robot is moved to a marked position facing a grasp surface, (in this case a dining table). In the
+\texttt{base\_link} frame, objects further 0.9m in the positive $ x $-axis and lower than 0.75m in the positive
+$ z $-axis are ignored. We use the SSD model trained on the COCO dataset \footnote{\url{http://cocodataset.org/}} for
+detection. Arm collisions and object slipping from the gripper are counted as failures. Only one of the objects in
+figure \ref{fig:objects} is grasped at a time.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Results}
+\subsection{Results and discussion}
 
 \begin{table}[h!]
     \centering
@@ -357,14 +377,29 @@ Integrate Single-Shot Multibox Detector (SSD) for object detection (figure \ref{
         Duct tape               & 7         & 13                    & 13        & 7                     \\
         \cmidrule[0.08em](){1-5}
     \end{tabularx}
-    \caption{Results of the grasp experiments. On the left are results from using the mean $ x $ coordinates for
-        estimating the grasp pose, and on the right are results from using the min coordinates along the
-        $ x $-axis.}
+    \caption{Results of the grasp experiments. The left and right columns contain results from using the mean and
+    minimum $ x $ coordinates (\texttt{base\_link frame}) for estimating the grasp pose respectively.}
     \label{table:grasp_exp_result}
 \end{table}
 
+Table \ref{table:grasp_exp_result} shows the grasp success/failure results of the experiments. During the experiments,
+many of the failures while grasping the styrofoam ball is caused by the gripper pushing on the ball and making it roll
+forward (an example is shown in figure \ref{fig:grasp_ball_fail}). For this object, grasping using the minimum
+coordinate along the $ x $-axis proves to be much more reliable. Low objects like the roll of duct tape give low
+estimates for the $ z $ coordinate, causing many failures via collisions between the arm and the table. This suggests
+that a different approach vector from above may perform better for such objects. Many of the failures also occur
+because of slipping while the arm is moving back, which suggests that verification from the force sensors may boost
+grasp reliability.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=\textwidth]{grasp_ball_fail}
+    \caption{A failure instance where the gripper pushes on the ball and it rolls forward.}
+    \label{fig:grasp_ball_fail}
+\end{figure}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusion}
+\section{Conclusions}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Contributions}
@@ -375,9 +410,8 @@ synthesis for grasp evaluation are examined, and their solutions for each of the
 summarized in table \ref{table:grasp_approaches}.
 
 The second contribution of this project is the implementation of a full grasping pipeline, from perceiving objects to
-grasp execution, in collaboration with another Research and Development project by Padalkar \cite{Padalkar2018}. Two
-pose estimation methods are implemented, serving as baselines for experimenting and comparing with more advanced grasp
-planning techniques.
+grasp execution. Two pose estimation methods are implemented, serving as baselines for experimenting and comparing with
+more advanced grasp planning techniques.
 
 The review of recent approaches to grasp data synthesis demonstrates their limitations either in dataset size or by
 using theoretical approaches to generate data labels, suggesting possible extensions and improvements with larger human
@@ -386,20 +420,31 @@ grasp experience database \cite{Saudabayev2018} or more advanced feature extract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Future work}
 
-\begin{itemize}
-    \item Grasp execution can be extended for grasping from multiple directions.
-    \item SSD model for detection can be fine-tuned for RoboCup objects.
-    \item Grasp pipeline should be tested on the Care-o-bot.
-    \item More advanced method can be implemented to find better pose estimates using the object points.
-    \item Surface normal can be calculated for a better approach vector estimate.
-    \item Approaches in table \ref{table:grasp_approaches} can be integrated and extended with new human grasp
-    database \cite{Saudabayev2018}.
-    \item Techniques introducing task awareness into data generation and labeling can also be examined.
-\end{itemize}
+Several extensions and optimizations for the current implementation of the grasping pipeline are possible. First, the
+grasp execution implementation can be extended to allow the robot to grasp from different directions. Next, the
+detection model for the SSD architecture can also be fine-tuned to perform better in detecting RoboCup@Home objects.
+The grasp pipeline will also be tested on the Care-o-bot 3
+\footnote{\url{https://www.care-o-bot.de/en/care-o-bot-3.html}}, the other robot platform available to the project.
+Nearest neighbor algorithms can also be used to improve object pose estimation from the points extracted from RGB-D
+clouds. Surface normal calculations can also be implemented to replace the grasp pose calculation provided with the
+GQCNN software. Specifically, the pixel coordinate of the detected object can be directly transformed to its
+corresponding 3D coordinate, and the surface normal around this point can be used as the grasp's approach vector. This
+surface normal can also be used as the approach vector for the implemented pose estimation algorithms.
+
+Furthermore, several of the approaches reviewed in chapter 2 can be integrated. Particularly, the shape completion
+technique introduced by Varley et al. \cite{Varley2017}, can be used as a prior for Gualtieri et al.
+\cite{Gualtieri2016} sampling of the occluded points for their 12-channel 2D representation. Training on the new human
+grasp experience dataset by Saudabayev et al. \cite{Saudabayev2018} can also be examined for a direct comparison with
+training on data synthesized using analytical grasp metrics and simulation. Techniques to introduce task awareness into
+data generation can also be examined, i.e how the knowledge of the task to be performed with the manipulated object can
+be encoded into the data synthesis process.
 
 %
 \bibliographystyle{../splncs04}
-\bibliography{../RnD}
+{
+    \footnotesize
+    \bibliography{../RnD}
+}
 %
 
 \end{document}
