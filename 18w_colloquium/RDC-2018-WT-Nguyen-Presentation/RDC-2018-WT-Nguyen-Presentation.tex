@@ -212,7 +212,7 @@
     \end{figure}
     \begin{itemize}
         \item learns to adjust a set of default boxes to the ground truth bounding boxes
-        \item learning at different scales are simulated by training different resolutions of the feature map
+        \item learning at different scales is simulated by training different resolutions of the feature map
     \end{itemize}
 \end{frame}
 
@@ -254,7 +254,7 @@
     \end{figure}
 \begin{exampleblock}{Issues}
     \begin{itemize}
-        \item Assumpution of top-down camera view makes the depth prediction inaccurate
+        \item Assumption of top-down camera view makes the depth prediction inaccurate
         \item Planned grasps take too long to calculate and are highly variant in depth
     \end{itemize}
 \end{exampleblock}
@@ -275,12 +275,13 @@
 \begin{frame}{Grasping software pipeline}
     \framesubtitle{Grasp execution -- Dynamic Motion Primitives (DMP)}
     \includegraphics[width=\linewidth]{grasp_pipeline_execution}
-    \begin{itemize}
-        \item Manipulation planning uses the integration and extension of the DMP in a parallel project
-            \cite{Padalkar2018}
-        \item Model human-demonstrated trajectories as a series of differential equations
-        \item Robot learns to perform similar movements via the solutions to these equations
-    \end{itemize}
+    Manipulation planning uses the integration and extension of the DMP in a parallel project \cite{Padalkar2018}
+    \begin{equation*}
+        \tau \ddot{\mathbf{y}} = \alpha(\beta(\mathbf{g} - \mathbf{y}) - \dot{\mathbf{y}}) + \mathbf{f}
+    \end{equation*}
+    \begin{equation*}
+        f_j(t) = \frac{\sum_{i=1}^{N}\Psi_{i,j}(t)w_{i,j}}{\sum_{i=1}^{N}\Psi_{i,j}(t)}
+    \end{equation*}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -291,10 +292,10 @@
         \column{.6\textwidth}
         \begin{itemize}
             \footnotesize
-            \item 20 grasp attempts for each variances of the baseline method
+            \item 20 grasp attempts for each variance of the baseline method
             \item Predefined starting position for each attempt as seen in figure \ref{fig:exp_setup}
             \item Arm collisions and object slips are counted as failures
-            \item Only one of the objects in figure \ref{fig:objects} is grasped at a time
+            \item Only one of the objects in figure \ref{fig:objects} (next slide) is grasped at a time
         \end{itemize}
         \column{.35\textwidth}
         \begin{figure}[b]
@@ -372,9 +373,9 @@
     \begin{itemize}
         \small
         \item Grasping the ball using the Minimum $ x $ method is better since the arm doesn't push it forward
-        \item Low, hollow objects like duct tape give low $ z $ estimates, which suggest that a top-down grasp may
+        \item Low, hollow objects like duct tape give low $ z $ estimates, which suggests that a top-down grasp may
         perform better
-        \item Slippage can be avoided by utilizing the gripper's force sensors.
+        \item Slippage can be avoided by utilizing a different grasp mechanism (in hindsight)
     \end{itemize}
 \end{frame}
 
@@ -386,12 +387,12 @@
         \item Design and implementation of an object detection architecture which is compatible with old methods while
         flexible to new detection algorithms
         \item Implementation of a grasping pipeline (in conjunction with \cite{Padalkar2018}) reliable enough to
-            perform hudreds of grasps in succession, enabling evaluation of more advanced approaches in the future
+            perform hundreds of grasps in succession, enabling evaluation of more advanced approaches in the future
     \end{itemize}
 \end{exampleblock}
 \begin{exampleblock}{Future works}<2->
     \begin{itemize}
-        \item More advanced and reliable methods can be experimented in place for GQCNN
+        \item More advanced and reliable methods can be experimented instead of GQCNN
         \item Incorporating the force sensor and hand camera would provide much more information for grasp planning,
             and may produce more robust grasps
     \end{itemize}
