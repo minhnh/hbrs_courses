@@ -88,7 +88,7 @@ is assumed about the object: whether they are known, familiar or completely unkn
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.9\textwidth]{bohg14-grasp_synthesis_mind_map}
+    \includegraphics[width=0.8\textwidth]{bohg14-grasp_synthesis_mind_map}
     \caption{Aspects which may influence generation of grasp hypotheses \cite{Bohg2014}.}
     \label{fig:grasp_synthesis_mind_map}
 \end{figure}
@@ -353,12 +353,13 @@ planner. In practice, the planner only detects grasps for one of the objects use
     \caption{Objects selected for the experiments.}\label{fig:objects}
 \end{figure}
 
-Two sets of experiments are performed for the variants of the baseline method described in \ref{sub:method_baseline}.
-Before each grasp, the robot is moved to a marked position facing a grasp surface, (in this case a dining table). In the
-\texttt{base\_link} frame, objects further 0.9m in the positive $ x $-axis and lower than 0.75m in the positive
-$ z $-axis are ignored. We use the SSD model trained on the COCO dataset \footnote{\url{http://cocodataset.org/}} for
-detection. Arm collisions and object slipping from the gripper are counted as failures. Only one of the objects in
-figure \ref{fig:objects} is grasped at a time.
+Two sets of experiments are performed for the variants \footnote{A video of all grasp attempts using both variants for
+one object is available on YouTube at  \url{https://youtu.be/OC7vttt4-Jo}} of the baseline method described in
+\ref{sub:method_baseline}. Before each grasp, the robot is moved to a marked position facing a grasp surface, (in this
+case a dining table). In the \texttt{base\_link} frame, objects further 0.9m in the positive $ x $-axis and lower than
+0.75m in the positive $ z $-axis are ignored. We use the SSD model trained on the COCO dataset
+\footnote{\url{http://cocodataset.org/}} for detection. Arm collisions and object slipping from the gripper are counted
+as failures. Only one of the objects in figure \ref{fig:objects} is grasped at a time.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Results and discussion}
@@ -377,8 +378,9 @@ figure \ref{fig:objects} is grasped at a time.
         Duct tape               & 7         & 13                    & 13        & 7                     \\
         \cmidrule[0.08em](){1-5}
     \end{tabularx}
-    \caption{Results of the grasp experiments. The left and right columns contain results from using the mean and
-    minimum $ x $ coordinates (\texttt{base\_link frame}) for estimating the grasp pose respectively.}
+    \caption{Counts of successful and failed grasp attempts during the experiments. ``Mean $ x $'' and
+        ``Minimum $ x $''  refer to the two baseline pose estimation methods which, respectivly, use the mean and
+        minimum object coordinates along the $ x $-axis to estimate the grasp pose.}
     \label{table:grasp_exp_result}
 \end{table}
 
@@ -442,7 +444,7 @@ be encoded into the data synthesis process.
 %
 \bibliographystyle{../splncs04}
 {
-    \footnotesize
+    \scriptsize
     \bibliography{../RnD}
 }
 %
